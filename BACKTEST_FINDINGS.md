@@ -278,3 +278,34 @@ ground/calibrate on," organized as latent state (V-Dem/WDI) + transitions (calib
 
 Sources: GDELT vs POLECAT comparison (doi.org/10.3390/data11070158), PLOVER/POLECAT (Halterman et al.), V-Dem
 (v-dem.net), World Bank WDI, ACLED, and the WDI+V-Dem+ACLED stability-forecasting literature.
+
+---
+
+# Flywheel turn 6 — first external pastcasting benchmark: BTF-3 pilot (EXP-101)
+
+Ran the EXP-095 mechanism forecaster on 50 questions of FutureSearch's public BTF-3 pastcasting
+benchmark (all outcomes May–Jul 2026; leakage protocol code-enforced; paired arms: DeepSeek-V4-Flash
+[Apr-2026 cutoff ≈ the intended as-of state] and V3-0324 [mid-2024 cutoff, unambiguously clean]).
+
+| | brier | AUC | vs |
+|---|---|---|---|
+| WMv2 + V4-Flash | 0.263 | 0.497 | FutureSearch SOTA **0.092** / AUC 0.918; const-base 0.192 |
+| WMv2 + V3-0324 | 0.337 | 0.508 | same 50 questions |
+
+Both arms at chance discrimination — the EXP-089 result reproduced externally, and simultaneously a
+clean No-Evidence contamination probe (leakage inflates; it never nullifies). Damage is concentrated in
+8 wrong-side extreme predictions from two families: evidence deficit (Hormuz, BoJ — retrieval, not
+reasoning) and confident confabulation in the `aggregation`/`whipcount` kernels, which never inherited
+EXP-091's honest-ignorance posture. Model recency (V3→V4, two years of knowledge) bought only 0.073
+brier at chance AUC — the vintage is not the constraint; uncertainty discipline + evidence are.
+Cutoff forensics: V4 self-reports "May 2025" but is officially Apr 2026 — fine for BTF-3, **disqualifying
+for BTF-2 (resolves Oct–Dec 2025)**, which must use old-cutoff models via the new
+`swm/api/openrouter_backend.py`. Full report: `experiments/exp101_btf3_pilot.md`.
+
+**Turn 6 addendum — the provenance fix, measured.** Widening `aggregation`/`whipcount` under
+invented/quoted params (+ null-safe omission semantics) on the same 50: brier 0.263→0.201, AUC
+0.497→0.632, paired delta +0.063 (the four confabulated 0.00/0.98 extremes → 0.50). Scaled to n=200:
+**brier 0.2168 vs const-base 0.2244 — the first constant-baseline beat on an external benchmark** — AUC
+0.677, gap to FutureSearch SOTA now 0.112 (0.2168 vs 0.1048, same 187 questions). Uncertainty discipline
+recovered ~0.06 of the 0.17 gap; the remainder is evidence + research + ensembling. Next: evidence arm
+(BTF-2 inlined research on V3-0324) to price the missing-evidence share before building RetroSearch-lite.

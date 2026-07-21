@@ -1,0 +1,279 @@
+{
+ "n_questions": 104,
+ "n_domains": 16,
+ "gates": {
+  "requirements_produced": {
+   "value": 1.0,
+   "th": 1.0,
+   "op": "==",
+   "passed": true
+  },
+  "nonempty_bundle_public_rate": {
+   "value": 0.8889,
+   "th": 0.9,
+   "op": ">=",
+   "passed": false
+  },
+  "paired_rss_share": {
+   "value": 1.0,
+   "th": 0.95,
+   "op": ">=",
+   "passed": true
+  },
+  "paired_rss_violation_rate": {
+   "value": 0.0,
+   "th": 0.0,
+   "op": "==",
+   "passed": true
+  },
+  "raw_persisted_rate": {
+   "value": 1.0,
+   "th": 1.0,
+   "op": "==",
+   "passed": true
+  },
+  "material_change_rate": {
+   "value": 1.0,
+   "th": 0.5,
+   "op": ">=",
+   "passed": true
+  },
+  "forecast_abstention_rate": {
+   "value": 0.0,
+   "th": 0.0,
+   "op": "==",
+   "passed": true
+  },
+  "execution_failure_rate": {
+   "value": 0.0192,
+   "th": 0.1,
+   "op": "<",
+   "passed": true
+  },
+  "lean_only_rate_when_evidence": {
+   "value": 0.0,
+   "th": 0.5,
+   "op": "<",
+   "passed": true
+  }
+ },
+ "all_gates_passed": false,
+ "total_paired_rss_queries": 310,
+ "failure_taxonomy_histogram": {
+  "terminal_readout_unbindable@": 2
+ },
+ "mean_docs": 11.64,
+ "mean_included_claims": 6.84,
+ "mean_structural_changes": 10.91,
+ "per_domain": {
+  "acquisition": {
+   "n": 7,
+   "mean_docs": 12.0,
+   "material_rate": 0.8571
+  },
+  "best_action": {
+   "n": 6,
+   "mean_docs": 8.0,
+   "material_rate": 0.8333
+  },
+  "coalition": {
+   "n": 5,
+   "mean_docs": 7.8,
+   "material_rate": 0.6
+  },
+  "court_ruling": {
+   "n": 7,
+   "mean_docs": 14.3,
+   "material_rate": 0.8571
+  },
+  "election": {
+   "n": 8,
+   "mean_docs": 13.9,
+   "material_rate": 1.0
+  },
+  "fundraising": {
+   "n": 6,
+   "mean_docs": 12.0,
+   "material_rate": 0.8333
+  },
+  "legislation": {
+   "n": 8,
+   "mean_docs": 15.6,
+   "material_rate": 1.0
+  },
+  "market": {
+   "n": 5,
+   "mean_docs": 14.2,
+   "material_rate": 1.0
+  },
+  "messaging": {
+   "n": 8,
+   "mean_docs": 9.1,
+   "material_rate": 1.0
+  },
+  "negotiation": {
+   "n": 8,
+   "mean_docs": 13.9,
+   "material_rate": 1.0
+  },
+  "organizational_decision": {
+   "n": 9,
+   "mean_docs": 12.6,
+   "material_rate": 0.8889
+  },
+  "product_launch": {
+   "n": 7,
+   "mean_docs": 15.0,
+   "material_rate": 1.0
+  },
+  "protest": {
+   "n": 5,
+   "mean_docs": 3.4,
+   "material_rate": 0.4
+  },
+  "reputation_crisis": {
+   "n": 5,
+   "mean_docs": 9.2,
+   "material_rate": 1.0
+  },
+  "social_media_diffusion": {
+   "n": 7,
+   "mean_docs": 11.9,
+   "material_rate": 0.8571
+  },
+  "strike": {
+   "n": 3,
+   "mean_docs": 4.3,
+   "material_rate": 1.0
+  }
+ },
+ "forensic_examples": [
+  {
+   "domain": "messaging",
+   "question": "Will my manager reply to the budget-approval email I sent this morning by end of week?",
+   "as_of": "2023-05-01",
+   "horizon": "2023-05-08",
+   "requirements_produced": true,
+   "n_requirements": 7,
+   "n_documents": 8,
+   "n_included_claims": 6,
+   "n_independent_sources": 8,
+   "n_contradictions": 0,
+   "n_paired_rss": 3,
+   "n_rss_traces": 3,
+   "paired_rss_ok": true,
+   "paired_rss_violation": false,
+   "raw_persisted": true,
+   "structural_changes": 12,
+   "lean_only": false,
+   "plan_hash_changed": true,
+   "material_change": true,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "has_forecast": true,
+   "raw_probability": 0.5,
+   "bundle_hash": "746ca70a4861725c",
+   "failure_taxonomy": "",
+   "evidence_stage": "",
+   "error": "",
+   "latency_s": 27.4
+  },
+  {
+   "domain": "messaging",
+   "question": "If I send a follow-up nudge tomorrow, will the vendor respond within 48 hours?",
+   "as_of": "2023-06-10",
+   "horizon": "2023-06-13",
+   "requirements_produced": true,
+   "n_requirements": 7,
+   "n_documents": 1,
+   "n_included_claims": 1,
+   "n_independent_sources": 1,
+   "n_contradictions": 0,
+   "n_paired_rss": 3,
+   "n_rss_traces": 3,
+   "paired_rss_ok": true,
+   "paired_rss_violation": false,
+   "raw_persisted": true,
+   "structural_changes": 7,
+   "lean_only": false,
+   "plan_hash_changed": true,
+   "material_change": true,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "has_forecast": true,
+   "raw_probability": 0.5738,
+   "bundle_hash": "d6186b85908c0885",
+   "failure_taxonomy": "",
+   "evidence_stage": "",
+   "error": "",
+   "latency_s": 15.84
+  },
+  {
+   "domain": "messaging",
+   "question": "Will the recruiter answer my scheduling question before the weekend?",
+   "as_of": "2023-03-15",
+   "horizon": "2023-03-19",
+   "requirements_produced": true,
+   "n_requirements": 7,
+   "n_documents": 7,
+   "n_included_claims": 9,
+   "n_independent_sources": 7,
+   "n_contradictions": 0,
+   "n_paired_rss": 3,
+   "n_rss_traces": 3,
+   "paired_rss_ok": true,
+   "paired_rss_violation": false,
+   "raw_persisted": true,
+   "structural_changes": 11,
+   "lean_only": false,
+   "plan_hash_changed": true,
+   "material_change": true,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "has_forecast": true,
+   "raw_probability": 0.3934,
+   "bundle_hash": "631c687c5febf218",
+   "failure_taxonomy": "",
+   "evidence_stage": "",
+   "error": "",
+   "latency_s": 29.11
+  },
+  {
+   "domain": "messaging",
+   "question": "Is my co-founder likely to read and reply to the long strategy memo I just sent?",
+   "as_of": "2023-08-01",
+   "horizon": "2023-08-05",
+   "requirements_produced": true,
+   "n_requirements": 7,
+   "n_documents": 8,
+   "n_included_claims": 7,
+   "n_independent_sources": 8,
+   "n_contradictions": 0,
+   "n_paired_rss": 3,
+   "n_rss_traces": 3,
+   "paired_rss_ok": true,
+   "paired_rss_violation": false,
+   "raw_persisted": true,
+   "structural_changes": 7,
+   "lean_only": false,
+   "plan_hash_changed": true,
+   "material_change": true,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "has_forecast": true,
+   "raw_probability": 0.5125,
+   "bundle_hash": "d71ce5965359c6d3",
+   "failure_taxonomy": "",
+   "evidence_stage": "",
+   "error": "",
+   "latency_s": 28.02
+  }
+ ],
+ "_meta": {
+  "llm_calls": 716,
+  "est_cost_usd": 0.4795,
+  "runtime_s": 3241.6,
+  "lookback_days": 150,
+  "model": "deepseek-chat + live Google News RSS"
+ }
+}

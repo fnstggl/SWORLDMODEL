@@ -9,9 +9,47 @@ venv/
 data/
 *.parquet
 
+# large per-run forensic LLM-trace dumps (re-derivable by re-running; the committed *_findings.md +
+# summary JSON + stdout are the verifiable record). Full traces contain every prompt/reply and are big.
+experiments/results/exp104_simulate_world_traces.json
+experiments/results/exp104_checkpoints/
+experiments/results/exp104_checkpoints_*/
+
 # large re-derivable data-scaling caches (rebuild: python -m experiments.data.build_scaling_caches)
 experiments/results/exp074/cmv_pairs.json
 experiments/results/exp075/cmv_perop.json
 
 experiments/results/exp085/senate_bills.json
 experiments/results/*.log
+
+# the outcome-flywheel stream IS the moat — track it (data/ is otherwise ignored)
+!data/forecast_log.jsonl
+!data/dataset_registry.json
+!data/forward_ledger.jsonl
+experiments/results/higgs_nl_cache/
+
+# per-compile reproducibility cache (compile_world persists every attempt at runtime, incl. during tests);
+# the mechanism IS the reproducibility guarantee, but the transient artifacts are re-derivable and not committed.
+# Committed evidence of generality lives in experiments/results/compiler_generality/ + the validation JSONs.
+experiments/results/compiler_attempts/
+
+# machine-readable mechanism registry IS a deliverable (data/ is otherwise ignored)
+!swm/world_model_v2/registry/data/
+!swm/world_model_v2/registry/data/*.json
+experiments/results/phase10/voteview/
+experiments/results/phase10/scdb/
+data/phase13_real/
+artifacts/phase13/real/results*.jsonl
+
+experiments/results/exp105_checkpoints/
+experiments/results/exp105_simulate_world_traces.json
+experiments/results/exp105_simulate_world_traces_0.json
+
+# transient stdout of in-flight BTF-3 benchmark workers (checkpoints are the durable record)
+experiments/results/exp107_logs/
+# transient/re-derivable checkpoints; the committed FF baseline JSONs already tracked here stay
+# tracked (gitignore never untracks), this only keeps future scratch runs out
+experiments/results/exp107_checkpoints/
+
+# Lean V2 persistent compile cache (runtime artifact)
+.swm_cache/

@@ -1,0 +1,80 @@
+{
+ "experiment": "exp095_thiel_reply_first",
+ "mode": "live",
+ "hypotheses_source": "thiel_v3 saved (same as exp092/094)",
+ "result": {
+  "report_type": "cold_outreach_slate",
+  "recipient": "Peter Thiel",
+  "winner_best_supported_among_tested": "reply_first_winner",
+  "within_noise_of_winner": [
+   "finalist_polished"
+  ],
+  "hypothesis_fragility": {
+   "n_llm_calls": 157
+  },
+  "ranked": [
+   {
+    "arm": "reply_first_winner",
+    "text": "Peter Thiel,\n\nI'm Beckett, 17, starting Princeton in the fall but building Aurelius instead. AI infrastructure's real bottleneck isn't power\u2014it's that no scheduler optimizes a fleet's trajectory over time. In simulated replay of ~1.5M public production requests, it delivered +724% more SLA-safe goodput per dollar. Want the one-page technical memo? Beckett",
+    "persona": null,
+    "funnel_objective": null,
+    "funnel_interval80": null,
+    "stage_trace": null,
+    "contract": null,
+    "cold_read": null,
+    "critic": null,
+    "gates": {
+     "truth": true,
+     "language": false,
+     "language_score": 0.85,
+     "problems": [
+      {
+       "sentence": "I'm Beckett, 17, starting Princeton in the fall but building Aurelius instead.",
+       "problem": "Slightly formal self-introduction with age and school name, but plausible for a young person pitching to a busy adult."
+      },
+      {
+       "sentence": "In simulated replay of ~1.5M public production requests, it delivered +724% more SLA-safe goodput per dollar.",
+       "problem": "Two large numbers (1.5M and 724%) compete for attention; 'SLA-safe goodput' is an unglossed jargon compound that makes the reader do work."
+      }
+     ]
+    },
+    "origin": "S:iden>surp>evid>requ -> drop_evidence -> pre_polish"
+   },
+   {
+    "arm": "finalist_polished",
+    "text": "Subject: A question about AI infrastructure you might find contrarian\n\nPeter,\n\nIs the real bottleneck in AI infrastructure power, or is it that no one is optimizing a fleet's trajectory over time?\n\nI'm Beckett. I'm 17 and supposed to start Princeton this fall, but I'm building Aurelius instead. In simulated replay of ~1.5M public production requests, my constraint-aware orchestration delivered +724% more SLA-safe goodput per dollar and -84% GPU-hours vs the production scheduler.\n\nWant the one-page technical memo?\n\nBeckett",
+    "persona": null,
+    "funnel_objective": null,
+    "funnel_interval80": null,
+    "stage_trace": null,
+    "contract": null,
+    "cold_read": null,
+    "critic": null,
+    "gates": {
+     "truth": true,
+     "language": false,
+     "language_score": 0.3,
+     "problems": [
+      {
+       "sentence": "I'm Beckett. I'm 17 and supposed to start Princeton this fall, but I'm building Aurelius instead.",
+       "problem": "formal-bot register: self-introduction with age and college deferral reads like a press bio, not a quick note to a peer"
+      },
+      {
+       "sentence": "In simulated replay of ~1.5M public production requests, my constraint-aware orchestration delivered +724% more SLA-safe",
+       "problem": "more than one big number competing for attention; unglossed jargon compounds ('SLA-safe goodput') that make the reader do the work"
+      },
+      {
+       "sentence": "Want the one-page technical memo?",
+       "problem": "performed politeness/assistant-speak: the offer feels like a marketing cadence, not a busy person's natural close"
+      }
+     ]
+    },
+    "origin": null
+   }
+  ],
+  "optimal_strategy_spec": null,
+  "honesty": "best-supported candidate under the current assumptions; no reliable distinction between finalists (uncalibrated evaluator \u2014 real outreach outcomes, not more simulation, would sharpen this)"
+ },
+ "n_raw_llm_calls": 172,
+ "wall_s": 378.5
+}

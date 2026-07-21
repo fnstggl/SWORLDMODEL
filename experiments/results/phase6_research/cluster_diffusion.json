@@ -1,0 +1,665 @@
+[
+  {
+    "family": "Simple contagion (SI / independent cascade baseline)",
+    "registry_id": "simple_contagion_hazard",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.diffusion:contagion_window_predict + test_ref tests/test_diffusion_families.py resolve; fitted comparator on Higgs)",
+    "primary_sources": [
+      {
+        "title": "Talk of the Network: A Complex Systems Look at the Underlying Process of Word-of-Mouth",
+        "authors": "Goldenberg, J.; Libai, B.; Muller, E.",
+        "year": 2001,
+        "venue": "Marketing Letters 12(3):211-223",
+        "doi_or_url": "10.1023/A:1011122126881",
+        "verified": true,
+        "what_it_provides": "Independent-cascade / stochastic-cellular-automaton word-of-mouth formalism: each active tie transmits with a per-contact probability independently — the structural basis for the linear-in-exposure hazard lambda=q*k."
+      },
+      {
+        "title": "The Anatomy of a Scientific Rumor",
+        "authors": "De Domenico, M.; Lima, A.; Mougel, P.; Musolesi, M.",
+        "year": 2013,
+        "venue": "Scientific Reports 3:2980",
+        "doi_or_url": "10.1038/srep02980",
+        "verified": true,
+        "what_it_provides": "Source of the local Higgs Twitter diffusion dataset (~500k users, 1-7 July 2012; retweet/reply/mention/follower networks) on which the simple-contagion hazard was fitted as a baseline (SNAP higgs-twitter)."
+      }
+    ],
+    "formal_model": "Continuous-time survival hazard lambda_i(t) = q * k_i(t), where k_i(t) = number of already-active in-network neighbors (exposures) of ego i at time t; per-exposure transmissions are independent and additive (SI / independent-cascade limit). Adoption read from terminal survival state integrated event-by-event through the diffusion window.",
+    "causal_assumptions": [
+      "Exposures act independently and additively on the hazard (no reinforcement, no saturation).",
+      "Exposure count k is exogenous to latent susceptibility (no homophily/confounding driving co-adoption).",
+      "SUTVA per exposure; one exposure's effect does not depend on others.",
+      "Network edges and activation times are observed without measurement error."
+    ],
+    "required_variables": [
+      "exposure count k_i(t) = number of active neighbors",
+      "activation timestamps",
+      "network adjacency (who follows/neighbors whom)"
+    ],
+    "temporal_scale": "Event-level hazard integrated over a diffusion window (hours to days; Higgs window ~168h).",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "q (per-exposure transmission rate, linear hazard)",
+        "value_or_null": 0.0224,
+        "uncertainty_or_null": null,
+        "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (fitted.linear_q.q = 0.022391761)",
+        "context": "Local Higgs train-split MLE of the linear form; this is a per-cascade nuisance rate, not a transportable constant.",
+        "verified": true
+      },
+      {
+        "name": "linear-vs-concave held-out penalty (delta held-out loss)",
+        "value_or_null": 0.00234,
+        "uncertainty_or_null": "95% CI [0.00117, 0.00349]",
+        "source_ref": "swm/world_model_v2/registry/families/diffusion.py docstring (Higgs round)",
+        "context": "The linear-in-exposure hazard was SIGNIFICANTLY WORSE than a concave/log-linear exposure response on Higgs held-out; simple contagion is retained only as a comparator, not the preferred predictor.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Higgs Twitter diffusion (De Domenico 2013; local)",
+      "Goldenberg-Libai-Muller cellular-automaton simulations",
+      "generic SI/epidemic and independent-cascade benchmarks"
+    ],
+    "replication_evidence": "SI / independent-cascade is a canonical, universally reproduced baseline across epidemiology and diffusion research, but is routinely outperformed by nonlinear (saturating / reinforcement) hazards on real cascades — as replicated locally on Higgs.",
+    "critiques_or_nulls": [
+      "Higgs proved linear-in-k hazard is significantly worse than a concave exposure response (delta +0.00234 [0.00117,0.00349]).",
+      "Cannot distinguish contagion from homophily/confounding.",
+      "Ignores saturation, degree heterogeneity, and social reinforcement."
+    ],
+    "applicability_limits": [
+      "Baseline/comparator only; appropriate where reinforcement and saturation are genuinely absent (e.g., simple pathogen or trivial-information spread).",
+      "Single-exposure-sufficient contagions."
+    ],
+    "transport_risks": [
+      "q is per-campaign/per-network and requires refit for any new cascade.",
+      "Low structural risk but low predictive value — it is a known mis-specified shape for real social cascades."
+    ],
+    "local_refit_feasible": "yes (already fitted on Higgs; q=0.0224)",
+    "best_validation_route": "Retain as the null comparator inside the Higgs held-out survival benchmark; it has already lost to the concave form, which is the intended role.",
+    "expected_applicability": "high_as_baseline_low_as_predictor",
+    "expected_transport_risk": "low_structural_but_low_value",
+    "priority": "low",
+    "planned_implementation": "No new work — keep as the fitted linear comparator; ensure it remains the reference against which nonlinear forms are scored.",
+    "planned_parameter_packs": [
+      "Higgs local q pack (fitted q=0.0224; comparator/nuisance)"
+    ],
+    "promotion_blocker": "No held-out WIN: the linear form is a comparator that lost to the concave exposure-response on Higgs (delta +0.00234). Eligible only as software_implemented baseline, not as a standalone validated predictor.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Complex contagion (multiple-signal social reinforcement)",
+    "registry_id": "complex_contagion_hazard",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (code_ref diffusion:contagion_window_predict + test_ref tests/test_diffusion_families.py; Hill form fitted on Higgs)",
+    "primary_sources": [
+      {
+        "title": "The Spread of Behavior in an Online Social Network Experiment",
+        "authors": "Centola, D.",
+        "year": 2010,
+        "venue": "Science 329(5996):1194-1197",
+        "doi_or_url": "10.1126/science.1185231",
+        "verified": true,
+        "what_it_provides": "Randomized controlled experiment: behavior (joining a health forum) spread FARTHER and FASTER on clustered-lattice networks than on matched random networks, and individual adoption was much more likely when a participant received social reinforcement from MULTIPLE neighbors — the causal anchor for reinforcement-dependent (complex) contagion."
+      },
+      {
+        "title": "Complex Contagions and the Weakness of Long Ties",
+        "authors": "Centola, D.; Macy, M.",
+        "year": 2007,
+        "venue": "American Journal of Sociology 113(3):702-734",
+        "doi_or_url": "10.1086/521848",
+        "verified": true,
+        "what_it_provides": "Formal theory distinguishing simple vs complex contagion; when adoption needs multiple independent confirmations, wide/long bridging ties become LESS effective and local clustering (redundant ties) becomes advantageous — the theoretical basis for the superlinear/threshold hazard shape."
+      }
+    ],
+    "formal_model": "Hill hazard lambda_i(t) = exp(theta0) * k^alpha / (c^alpha + k^alpha). alpha>1 encodes superlinear onset (reinforcement: each additional distinct source raises the marginal effect), saturating at high k. alpha<=1 collapses toward simple/diminishing-returns contagion. Fitted by grid + profile likelihood.",
+    "causal_assumptions": [
+      "Reinforcement from multiple DISTINCT sources causes adoption beyond what independent per-exposure transmission would predict.",
+      "The superlinear region must be separable from mere higher exposure and from homophily — Centola identifies this by RANDOMIZING network structure (not available observationally).",
+      "Distinct-source signals are approximately independent.",
+      "Network clustering is observed."
+    ],
+    "required_variables": [
+      "exposure count k_i(t)",
+      "number of DISTINCT adopting neighbors",
+      "degree",
+      "network clustering / topology",
+      "activation timestamps"
+    ],
+    "temporal_scale": "Event-level hazard over the diffusion window (hours to days).",
+    "evidence_type": "causal_estimate",
+    "reported_coefficients": [
+      {
+        "name": "Hill exponent alpha (Higgs fit)",
+        "value_or_null": 0.75,
+        "uncertainty_or_null": null,
+        "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (fitted.hill.alpha = 0.75)",
+        "context": "LOCAL NULL: alpha=0.75 < 1 means Higgs did NOT exhibit the alpha>1 complex-contagion (superlinear reinforcement) signature — the fitted shape was concave/saturating, consistent with simple diminishing returns, not reinforcement.",
+        "verified": true
+      },
+      {
+        "name": "Hill intercept theta0 (Higgs fit)",
+        "value_or_null": -1.2988,
+        "uncertainty_or_null": null,
+        "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (fitted.hill.theta0)",
+        "context": "Local Higgs baseline log-hazard; per-cascade nuisance.",
+        "verified": true
+      },
+      {
+        "name": "Clustered-lattice vs random spread (Centola 2010)",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Centola 2010 Science 329:1194-1197",
+        "context": "Behavior spread farther and faster in clustered than random networks; adoption probability rose with the number of reinforcing neighbors. Paper reports the qualitative causal direction; a single transportable coefficient is not extracted here (null rather than fabricated).",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Centola 2010 online health-community experiment (artificial clustered vs random networks)",
+      "Twitter political-hashtag diffusion (Romero et al. 2011)",
+      "Higgs Twitter (local; alpha=0.75)"
+    ],
+    "replication_evidence": "Centola 2010 is the landmark randomized result; the mechanism is broadly supported theoretically and in follow-ups (e.g., reach-vs-reinforcement trade-off, arXiv:2411.07907), but the effect and the required alpha are context-dependent and have been debated. Observational support from Romero 2011. Locally NOT reproduced on Higgs (alpha<1).",
+    "critiques_or_nulls": [
+      "Higgs fitted alpha=0.75 (<1): no superlinear reinforcement signature in this cascade.",
+      "The clustered>random result depends on artificial network manipulation; observational alpha is not causally identified (reinforcement vs homophily vs exposure volume are confounded).",
+      "Requires distinct-source counts that many datasets lack."
+    ],
+    "applicability_limits": [
+      "Behaviors requiring social validation / costly or risky adoption (health behaviors, high-commitment norms).",
+      "Needs a clustered network AND multi-source exposure to manifest; poorly suited to trivial information.",
+      "Not expected on low-cost information cascades (consistent with Higgs alpha<1)."
+    ],
+    "transport_risks": [
+      "alpha is highly context-dependent (Higgs 0.75 vs Centola superlinear); do not transport across behaviors.",
+      "Depends on network clustering, which itself varies across platforms."
+    ],
+    "local_refit_feasible": "yes (already fitted on Higgs; alpha=0.75)",
+    "best_validation_route": "Refit alpha per-cascade on Higgs held-out (done; sublinear). For a true positive test, validate against a dataset with manipulated/measured multi-source reinforcement (Centola-style clustered-vs-random) — not currently local.",
+    "expected_applicability": "high_for_costly_behaviors_low_for_trivial_information",
+    "expected_transport_risk": "high_for_alpha",
+    "priority": "high",
+    "planned_implementation": "Keep Hill hazard; add a distinct-source (not just total-exposure) feature so alpha estimates reinforcement rather than exposure volume; document Higgs alpha<1 as the honest local null.",
+    "planned_parameter_packs": [
+      "Higgs local Hill pack (theta0=-1.299, alpha=0.75; local null, reinforcement not present)"
+    ],
+    "promotion_blocker": "No local held-out PASS record and no transfer record; moreover Higgs alpha=0.75 fails to reproduce the alpha>1 reinforcement signature, so the Centola causal evidence is not locally realized. Blocked above software_implemented.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Threshold adoption (collective-behavior thresholds / global cascades)",
+    "registry_id": "threshold_adoption",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.social:threshold_adopt + test_ref tests/test_social_families.py)",
+    "primary_sources": [
+      {
+        "title": "Threshold Models of Collective Behavior",
+        "authors": "Granovetter, M.",
+        "year": 1978,
+        "venue": "American Journal of Sociology 83(6):1420-1443",
+        "doi_or_url": "10.1086/226707",
+        "verified": true,
+        "what_it_provides": "Defines an individual threshold as the proportion of the group one must see adopt before joining; shows aggregate outcomes are a knife-edge function of the threshold DISTRIBUTION (the 100-person riot example) — foundation of fraction-of-neighbors adoption rules."
+      },
+      {
+        "title": "A Simple Model of Global Cascades on Random Networks",
+        "authors": "Watts, D. J.",
+        "year": 2002,
+        "venue": "PNAS 99(9):5766-5771",
+        "doi_or_url": "10.1073/pnas.082090499",
+        "verified": true,
+        "what_it_provides": "Networked threshold model + a cascade condition: global cascades occur when a percolating 'vulnerable cluster' exists; cascades are rare and occur in a bounded connectivity window, with bimodal cascade sizes at high connectivity."
+      }
+    ],
+    "formal_model": "Deterministic threshold rule: node i adopts iff the fraction of its neighbors already active >= phi_i, with phi_i drawn from a heterogeneous threshold distribution F(phi). Watts: a node is 'vulnerable' if phi_i <= 1/degree_i; global cascade iff the vulnerable subgraph percolates (G'(1) >= z boundary).",
+    "causal_assumptions": [
+      "Each actor has a stable, exogenous threshold (fraction of neighbors) that deterministically triggers adoption.",
+      "Thresholds are heterogeneous across actors; the DISTRIBUTION, not the mean, governs outcomes.",
+      "Network adjacency is fully observed; updating is synchronous/round-based.",
+      "No strategic anticipation or discounting of future adopters."
+    ],
+    "required_variables": [
+      "per-node active-neighbor fraction",
+      "threshold distribution F(phi)",
+      "full network adjacency",
+      "adoption order / rounds"
+    ],
+    "temporal_scale": "Discrete adoption rounds / static equilibrium (cascade completes over the update horizon; scale set by updating cadence).",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "Granovetter knife-edge threshold example",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Granovetter 1978 AJS 83:1420-1443",
+        "context": "Illustrative, not an empirical coefficient: shifting one actor's threshold can flip a crowd from ~0 to 100 participants. Reported as a structural property; no transportable number to fabricate.",
+        "verified": true
+      },
+      {
+        "name": "Watts cascade window",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Watts 2002 PNAS 99:5766-5771",
+        "context": "Global cascades confined to an intermediate mean-degree window bounded by the vulnerable-cluster percolation condition; exact bounds depend on the threshold distribution, so left null.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Watts 2002 simulated random/scale-free networks (analytic + Monte Carlo)",
+      "Granovetter 1978 stylized applications (riots, innovation, rumor, strikes, voting, migration)"
+    ],
+    "replication_evidence": "Theoretically robust and heavily reproduced in simulation (Watts cascade condition is a standard result). Empirical identification of individual thresholds from field data remains weak and rarely attempted.",
+    "critiques_or_nulls": [
+      "Extreme (knife-edge) sensitivity to the threshold distribution — Granovetter's own central point; small mis-specification flips outcomes.",
+      "Thresholds are almost never directly observed.",
+      "Deterministic rule is brittle; describes equilibrium more than dynamics."
+    ],
+    "applicability_limits": [
+      "Collective-action settings with observable local adoption fractions and genuine threshold heterogeneity.",
+      "Round-based / static-equilibrium framing; not continuous hazards."
+    ],
+    "transport_risks": [
+      "Threshold distribution is non-transportable across populations.",
+      "Tiny changes in F(phi) flip cascade / no-cascade — inherently high transport risk."
+    ],
+    "local_refit_feasible": "limited (Higgs has neighbor-fraction exposure but no per-user threshold ground truth; baby names have adoption fractions but no network — thresholds not point-identified locally)",
+    "best_validation_route": "Posterior-predictive check on Higgs cascade-size distribution under a fitted threshold distribution (calibrate F(phi) to reproduce observed cascade sizes), rather than per-node threshold recovery.",
+    "expected_applicability": "moderate",
+    "expected_transport_risk": "high",
+    "priority": "medium",
+    "planned_implementation": "Keep the fraction-of-neighbors rule; add a fitted heterogeneous threshold distribution and validate via cascade-size PPC (not point thresholds).",
+    "planned_parameter_packs": [
+      "Structural Granovetter/Watts pack (threshold distribution as a prior; no data-fitted numbers yet)"
+    ],
+    "promotion_blocker": "No validation record (validation:[]); thresholds are not identifiable from available local datasets (no per-user threshold ground truth). Blocked above software_implemented until a cascade-size PPC passes.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Social reinforcement (multi-source repeated-exposure persistence)",
+    "registry_id": null,
+    "current_registry_status": "absent (NO explicit registry family; distinct from reinforcement_learning, which is Q-learning)",
+    "current_executable_status": "not_implemented (no code_ref / test_ref; mechanism partially captured by complex_contagion_hazard's Hill exponent alpha)",
+    "primary_sources": [
+      {
+        "title": "Differences in the Mechanics of Information Diffusion Across Topics: Idioms, Political Hashtags, and Complex Contagion on Twitter",
+        "authors": "Romero, D. M.; Meeder, B.; Kleinberg, J.",
+        "year": 2011,
+        "venue": "Proc. 20th International World Wide Web Conference (WWW '11), pp. 695-704",
+        "doi_or_url": "10.1145/1963405.1963503",
+        "verified": true,
+        "what_it_provides": "Defines STICKINESS (probability of adoption given one-or-more exposures) and PERSISTENCE (relative extent to which REPEATED exposures keep having large marginal effect). Empirical finding: politically controversial hashtags are the MOST PERSISTENT — repeated exposures keep raising adoption (a complex-contagion signature) — whereas idioms are sticky but plateau. First large-scale observational validation that content types differ in complex-contagion behavior."
+      },
+      {
+        "title": "The Spread of Behavior in an Online Social Network Experiment",
+        "authors": "Centola, D.",
+        "year": 2010,
+        "venue": "Science 329(5996):1194-1197",
+        "doi_or_url": "10.1126/science.1185231",
+        "verified": true,
+        "what_it_provides": "Causal evidence that reinforcement from MULTIPLE distinct neighbors (not just more exposure) raises individual adoption probability — the mechanism this family would encode."
+      }
+    ],
+    "formal_model": "Adoption probability increasing in the number of DISTINCT adopting sources s (not just total exposures k): p_adopt = g(s), g convex/persistent when repeated distinct exposures keep large marginal effect. Operationally equivalent to the complex_contagion Hill hazard when s is used in place of k; 'persistence' = the marginal-effect decay rate of successive exposures (Romero's exposure-curve ratio).",
+    "causal_assumptions": [
+      "Adoption responds to the count of DISTINCT adopting sources, separable from raw exposure volume and from homophily.",
+      "Distinct sources are approximately independent signals.",
+      "Repeated exposure effect (persistence) is a property of the content/behavior, not of confounded audience selection."
+    ],
+    "required_variables": [
+      "count of distinct adopting sources per ego",
+      "timing/order of each source's adoption",
+      "exposure curve (adoption prob vs number of exposures)",
+      "network"
+    ],
+    "temporal_scale": "Per-exposure, accumulating over hours to days.",
+    "evidence_type": "associational",
+    "reported_coefficients": [
+      {
+        "name": "Persistence ranking by topic (Romero 2011)",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Romero, Meeder, Kleinberg 2011 WWW",
+        "context": "Political/controversial hashtags show the highest persistence (repeated exposures keep large marginal effect); idioms high stickiness but low persistence. Category-level curve ratios reported in-paper; no single transportable scalar extracted (null rather than fabricated).",
+        "verified": true
+      },
+      {
+        "name": "Multi-neighbor reinforcement effect (Centola 2010)",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Centola 2010 Science",
+        "context": "Adoption 'much more likely' with reinforcement from multiple neighbors; qualitative causal direction, coefficient left null.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Twitter hashtag diffusion (Romero et al. 2011)",
+      "Centola 2010 clustered-vs-random experiment"
+    ],
+    "replication_evidence": "Romero 2011 is the primary large-scale observational support; Centola 2010 the causal anchor. The distinct-source persistence effect is real but overlaps heavily with what complex_contagion_hazard already models.",
+    "critiques_or_nulls": [
+      "Hard to separate 'distinct sources' from raw exposure count and from homophily in observational data.",
+      "No registry family exists; the mechanism is currently redundant with complex_contagion_hazard's alpha.",
+      "Adding a separate family risks double-counting reinforcement."
+    ],
+    "applicability_limits": [
+      "Only where distinct-source counts are measurable and separable from total exposure.",
+      "Content/behavior types with genuine repeated-exposure persistence (controversial/political, costly norms)."
+    ],
+    "transport_risks": [
+      "Persistence strength varies strongly by content type / behavior cost.",
+      "Observational persistence conflates selection with reinforcement."
+    ],
+    "local_refit_feasible": "yes-but-redundant (Higgs has exposure counts; distinct-source count derivable — but this reduces to the complex_contagion Hill fit, which gave alpha<1)",
+    "best_validation_route": "Do NOT create a separate family first; validate reinforcement through complex_contagion_hazard alpha (using distinct-source counts) on Higgs held-out, and only split it out if the distinct-source signal is separable from total exposure and improves held-out loss.",
+    "expected_applicability": "moderate",
+    "expected_transport_risk": "moderate",
+    "priority": "low",
+    "planned_implementation": "No standalone family unless justified: fold reinforcement into complex_contagion_hazard by feeding distinct-source count s instead of/alongside k; document Romero persistence and Centola reinforcement as the evidence base for that feature.",
+    "planned_parameter_packs": [
+      "(none standalone) — reinforcement encoded via complex_contagion Hill pack using distinct-source counts"
+    ],
+    "promotion_blocker": "No registry entry, no code_ref, no test_ref — cannot even reach 'implemented'. Mechanism is currently redundant with complex_contagion_hazard; a separate family is not yet justified.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Finite-population diffusion (Bass innovation/imitation saturation)",
+    "registry_id": "finite_population_saturation",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (code_ref diffusion:closed_form_window_p + test_ref tests/test_diffusion_families.py)",
+    "primary_sources": [
+      {
+        "title": "A New Product Growth for Model Consumer Durables",
+        "authors": "Bass, F. M.",
+        "year": 1969,
+        "venue": "Management Science 15(5):215-227",
+        "doi_or_url": "10.1287/mnsc.15.5.215",
+        "verified": true,
+        "what_it_provides": "The Bass diffusion model: hazard of first purchase = p + q*F(t), with p = coefficient of innovation (external influence) and q = coefficient of imitation (internal word-of-mouth), over a fixed finite population m; tested on 11 consumer durables. Closed-form S-curve adoption with saturation at m."
+      },
+      {
+        "title": "A Meta-Analysis of Applications of Diffusion Models",
+        "authors": "Sultan, F.; Farley, J. U.; Lehmann, D. R.",
+        "year": 1990,
+        "venue": "Journal of Marketing Research 27(1):70-77",
+        "doi_or_url": "10.1177/002224379002700107",
+        "verified": true,
+        "what_it_provides": "Meta-analysis of ~213 diffusion-model applications: mean coefficient of innovation p ~ 0.03 (SD ~0.03) and mean coefficient of imitation q ~ 0.38 (SD ~0.35) — the canonical published-research prior ranges for Bass p and q."
+      }
+    ],
+    "formal_model": "Bass: f(t)/(1-F(t)) = p + q*F(t), giving F(t) = (1 - e^{-(p+q)t}) / (1 + (q/p) e^{-(p+q)t}); adopters at t = m*f(t) with fixed finite susceptible population m. p = external/innovation hazard, q = internal/imitation (word-of-mouth) hazard. Local closed-form window-probability variant closed_form_window_p implements the finite-susceptible saturation.",
+    "causal_assumptions": [
+      "Fixed finite susceptible population m; every member eventually adopts (no repeat / no churn).",
+      "Adoption hazard = constant external term p + imitation term q proportional to cumulative adopters F(t).",
+      "Homogeneous mixing (every non-adopter equally exposed to prior adopters).",
+      "p, q constant over the diffusion horizon."
+    ],
+    "required_variables": [
+      "cumulative adoptions over time",
+      "total addressable population m",
+      "adoption timestamps"
+    ],
+    "temporal_scale": "Product/behavior life cycle: months-to-years for durables (Bass); decades for cultural adoption (baby names).",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "p (coefficient of innovation), meta-analytic mean",
+        "value_or_null": 0.03,
+        "uncertainty_or_null": "SD ~0.03 across ~213 applications",
+        "source_ref": "Sultan, Farley & Lehmann 1990 JMR 27(1):70-77",
+        "context": "Published-research prior for the external-influence coefficient; note SD approximately equals the mean (heavy-tailed, not a tight point).",
+        "verified": true
+      },
+      {
+        "name": "q (coefficient of imitation), meta-analytic mean",
+        "value_or_null": 0.38,
+        "uncertainty_or_null": "SD ~0.35 across ~213 applications",
+        "source_ref": "Sultan, Farley & Lehmann 1990 JMR 27(1):70-77",
+        "context": "Published-research prior for the internal word-of-mouth coefficient; SD ~0.35 is nearly as large as the mean 0.38 — wide, product/country-dependent.",
+        "verified": true
+      },
+      {
+        "name": "meta-analysis sample size",
+        "value_or_null": 213,
+        "uncertainty_or_null": "approx (reported as 'more than 200 product innovations' across 15 studies)",
+        "source_ref": "Sultan, Farley & Lehmann 1990 JMR",
+        "context": "Number of diffusion-model applications pooled.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Bass 1969: 11 consumer durables (e.g., TVs, refrigerators, freezers, air conditioners)",
+      "Sultan-Farley-Lehmann 1990: ~213 applications from 15 studies",
+      "baby names 1880+ (local; cultural adoption trajectories) — natural local Bass test"
+    ],
+    "replication_evidence": "Among the most heavily replicated models in management science — hundreds of applications in Sultan-Farley-Lehmann alone and thousands since; the p/q ranges are stable enough to serve as a prior but too wide for point transport.",
+    "critiques_or_nulls": [
+      "p and q are not stably transportable: q SD (~0.35) is close to its mean (~0.38).",
+      "Market size m is often unidentified before the adoption peak (fits before the inflection are unreliable).",
+      "Deterministic aggregate model with no individual heterogeneity; retrospective fits are over-optimistic.",
+      "Assumes no repeat adoption / no churn."
+    ],
+    "applicability_limits": [
+      "First-purchase / durable adoption in a bounded market.",
+      "Cultural popularity adoption with a well-defined susceptible pool (e.g., naming cohorts).",
+      "NOT recurrent/repeat behaviors; NOT open/unbounded populations without an informative m prior."
+    ],
+    "transport_risks": [
+      "p, q vary by product category, country, and era (large meta-analytic SDs).",
+      "Use the Sultan-Farley-Lehmann pack as a PRIOR, not a point transport; m must be re-identified per domain."
+    ],
+    "local_refit_feasible": "yes (baby-name cumulative adoption curves 1880+ are an ideal local Bass fit; Higgs cumulative cascade is a secondary target)",
+    "best_validation_route": "Fit Bass to baby-name adoption trajectories (per-name m, p, q), then TRANSFER-check the fitted p/q against the Sultan-Farley-Lehmann meta-analytic ranges (0.03 / 0.38) as an out-of-sample plausibility gate.",
+    "expected_applicability": "high",
+    "expected_transport_risk": "moderate",
+    "priority": "high",
+    "planned_implementation": "Add a published_research Bass pack encoding p ~ (0.03, SD 0.03) and q ~ (0.38, SD 0.35) from Sultan-Farley-Lehmann as informative priors; fit a local baby-names pack and compare to the pack ranges for transfer validation.",
+    "planned_parameter_packs": [
+      "published_research Bass pack: p mean 0.03 (SD 0.03), q mean 0.38 (SD 0.35) [Sultan-Farley-Lehmann 1990]",
+      "local baby-names Bass pack (per-name m,p,q — to fit)"
+    ],
+    "promotion_blocker": "No held-out / PPC record yet (validation:[]). Needs a local Bass fit (baby names) with a PASS to reach locally_validated, then a transfer check vs the Sultan-Farley-Lehmann pack to move toward transfer_validated.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Hawkes / self-excitation (point-process contagion)",
+    "registry_id": "hawkes_self_excitation",
+    "current_registry_status": "quarantined",
+    "current_executable_status": "executable-but-quarantined (code_ref diffusion:fit_hawkes + test_ref tests/test_diffusion_families.py run; held-out count forecast FAILED vs Poisson on Higgs)",
+    "primary_sources": [
+      {
+        "title": "Spectra of Some Self-Exciting and Mutually Exciting Point Processes",
+        "authors": "Hawkes, A. G.",
+        "year": 1971,
+        "venue": "Biometrika 58(1):83-90",
+        "doi_or_url": "10.1093/biomet/58.1.83",
+        "verified": true,
+        "what_it_provides": "Original self-exciting point process: conditional intensity lambda(t) = mu + integral of a kernel over past events, so each event raises the rate of future events — the structural basis of self-excitation."
+      },
+      {
+        "title": "SEISMIC: A Self-Exciting Point Process Model for Predicting Tweet Popularity",
+        "authors": "Zhao, Q.; Erdogdu, M. A.; He, H. Y.; Rajaraman, A.; Leskovec, J.",
+        "year": 2015,
+        "venue": "Proc. 21st ACM SIGKDD (KDD '15); arXiv:1506.02594",
+        "doi_or_url": "arXiv:1506.02594 (10.1145/2783258.2783401)",
+        "verified": true,
+        "what_it_provides": "Where Hawkes WORKS: predicting the FINAL retweet/reshare count of a single cascade from its early timestamps + node degrees; intensity = infectivity x accumulated self-excitation. Cascade-SIZE prediction, not aggregate multi-cascade count forecasting."
+      },
+      {
+        "title": "Feature Driven and Point Process Approaches for Popularity Prediction",
+        "authors": "Mishra, S.; Rizoiu, M.-A.; Xie, L.",
+        "year": 2016,
+        "venue": "Proc. 25th ACM CIKM '16; arXiv:1608.04862",
+        "doi_or_url": "10.1145/2983323.2983812",
+        "verified": true,
+        "what_it_provides": "Marked Hawkes for cascade popularity: estimates content virality, memory decay, and user influence; hybrid with features. Confirms the regime where Hawkes adds value = per-cascade total-popularity prediction."
+      }
+    ],
+    "formal_model": "Self-exciting intensity lambda(t) = mu + alpha*omega * sum_{t_i<t} exp(-omega (t - t_i)) (exponential kernel; branching ratio = alpha). Fitted by EM/MLE. Marked variants (SEISMIC/Mishra) scale excitation by user degree/influence for final-size prediction.",
+    "causal_assumptions": [
+      "Past events causally raise future intensity via a fixed kernel (endogenous clustering).",
+      "Branching ratio alpha < 1 required for stationarity/finite cascades.",
+      "No unmodeled exogenous shock drives the clustering that the self-excitation term absorbs.",
+      "Process approximately stationary within the fitting window."
+    ],
+    "required_variables": [
+      "event timestamps (per-cascade or aggregate stream)",
+      "optional marks (user degree / influence)",
+      "event history"
+    ],
+    "temporal_scale": "Sub-daily event stream (seconds-to-hours); forecast horizon 24-72h in the local test.",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "held-out 24-72h count-forecast MAE, Hawkes",
+        "value_or_null": 1098.9,
+        "uncertainty_or_null": null,
+        "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (hawkes_family_validation.held_out_24_72h.mae_hawkes)",
+        "context": "LOCAL FAILURE: Hawkes MAE 1098.9 WORSE than the Poisson baseline MAE 973.0 on the Higgs aggregate count forecast.",
+        "verified": true
+      },
+      {
+        "name": "held-out 24-72h count-forecast MAE, Poisson baseline",
+        "value_or_null": 973.0,
+        "uncertainty_or_null": null,
+        "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (hawkes_family_validation.held_out_24_72h.mae_poisson)",
+        "context": "The simpler Poisson beat Hawkes — the failure that quarantines this family.",
+        "verified": true
+      },
+      {
+        "name": "fitted branching ratio alpha (Higgs)",
+        "value_or_null": 0.95,
+        "uncertainty_or_null": null,
+        "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (hawkes_family_validation.fitted.branching_alpha)",
+        "context": "Near-critical (alpha->1): the fit sits at the edge of the explosive regime, explaining unstable extrapolation and the under-forecast (Hawkes total 7149 vs Poisson total 10144).",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Higgs Twitter aggregate activity stream (local; FAILED count forecast)",
+      "SEISMIC: ~166k Twitter cascades (final-size prediction; works)",
+      "Mishra et al.: Twitter/Weibo cascades",
+      "MemeTracker / retweet-cascade benchmarks"
+    ],
+    "replication_evidence": "Strong and widely replicated FOR per-cascade popularity/final-size prediction (SEISMIC, Mishra, HIP, many follow-ups). NOT universal: the local Higgs AGGREGATE 24-72h count forecast failed against Poisson, showing self-excitation does not help this forecasting task.",
+    "critiques_or_nulls": [
+      "LOCAL FAILURE preserved: Higgs 24-72h aggregate count forecast MAE 1098.9 > Poisson 973.0.",
+      "Fitted branching alpha=0.95 is near-critical -> unstable extrapolation and under-forecast (7149 vs 10144).",
+      "Self-excitation conflates endogenous contagion with exogenous shocks/circadian structure.",
+      "Works for size-given-early-cascade, not aggregate forward count forecasting."
+    ],
+    "applicability_limits": [
+      "Per-cascade FINAL-size prediction from early timestamps (SEISMIC/Mishra regime) — the ONLY regime with strong support.",
+      "NOT aggregate multi-cascade forward count forecasting (the task it failed on Higgs)."
+    ],
+    "transport_risks": [
+      "Kernel parameters are per-cascade; near-critical alpha makes transport explosive.",
+      "The aggregate-count forecasting transport has ALREADY FAILED locally — do not reuse for that task."
+    ],
+    "local_refit_feasible": "yes (already fitted on Higgs — and it FAILED held-out vs Poisson; failure is the record)",
+    "best_validation_route": "Failure preserved on the aggregate 24-72h count forecast (Higgs). The only route toward a lesser status would be a SEPARATE, re-scoped task: per-tweet final-retweet-size prediction on a cascade dataset (SEISMIC benchmark). Until such a scoped test passes, it stays quarantined.",
+    "expected_applicability": "domain_restricted_to_cascade_size_prediction_only",
+    "expected_transport_risk": "high",
+    "priority": "low",
+    "planned_implementation": "Do NOT reuse for aggregate count forecasting (preserve failure). If revisited, re-scope to per-cascade final-size prediction (SEISMIC/marked-Hawkes) as a distinct family/task with its own held-out gate; keep the quarantined aggregate-forecast pack as a recorded negative result.",
+    "planned_parameter_packs": [
+      "Higgs Hawkes pack (mu=0.00322/s, branching_alpha=0.95, omega=0.001667/s) — QUARANTINED negative result, kept as recorded failure"
+    ],
+    "promotion_blocker": "QUARANTINED and MUST remain so: held-out 24-72h aggregate count forecast FAILED vs Poisson on Higgs (MAE 1098.9 > 973.0). This preserved failure blocks any promotion. It could be reconsidered as domain_restricted ONLY under a different, re-scoped task (per-cascade final-retweet-size prediction, SEISMIC regime) with its own passing held-out record — not the aggregate-count task it failed.",
+    "disposition": "quarantined"
+  },
+  {
+    "family": "Information aging / novelty decay",
+    "registry_id": "information_aging",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (code_ref diffusion:fit_aging_tau + test_ref tests/test_diffusion_families.py; tau fitted on Higgs)",
+    "primary_sources": [
+      {
+        "title": "Novelty and Collective Attention",
+        "authors": "Wu, F.; Huberman, B. A.",
+        "year": 2007,
+        "venue": "PNAS 104(45):17599-17601",
+        "doi_or_url": "10.1073/pnas.0704916104",
+        "verified": true,
+        "what_it_provides": "Empirical measurement (1M Digg users): collective attention to a novel item decays with a STRETCHED-EXPONENTIAL law governed by a single novelty factor, with a characteristic decay time of approximately ONE HOUR on Digg news — establishes that novelty/attention has an intrinsic fading time scale."
+      },
+      {
+        "title": "TiDeH: Time-Dependent Hawkes Process for Predicting Retweet Dynamics",
+        "authors": "Kobayashi, R.; Lambiotte, R.",
+        "year": 2016,
+        "venue": "Proc. 10th International AAAI Conference on Web and Social Media (ICWSM 2016)",
+        "doi_or_url": "https://ojs.aaai.org/index.php/ICWSM/article/view/14717",
+        "verified": true,
+        "what_it_provides": "Operationalizes information aging inside a point process: a time-dependent Hawkes intensity with an explicit aging (memory-decay) term plus circadian modulation, fitted to retweet dynamics (parameters p0, r0, phi0, tau_m) — a methodological template for embedding a decay time constant in a diffusion hazard."
+      }
+    ],
+    "formal_model": "Age-weighted effective exposure k_eff(t) = sum_j exp(-age_j / tau), where age_j = time since exposure j and tau is a fitted decay (e-folding) time; the hazard uses k_eff instead of raw exposure count. tau fitted on a grid by likelihood.",
+    "causal_assumptions": [
+      "Susceptibility/attention to a given exposure decays with its age via a fixed time constant tau (intrinsic novelty decay).",
+      "Decay is separable from susceptible-population depletion (novelty, not just fewer targets).",
+      "tau is stationary within the window."
+    ],
+    "required_variables": [
+      "exposure timestamps with ages",
+      "activation time",
+      "decay grid for tau"
+    ],
+    "temporal_scale": "Decay time constant spanning minutes-to-hours (Digg news, ~1h) to days (Higgs, tau=48h) to potentially weeks (cultural names).",
+    "evidence_type": "descriptive",
+    "reported_coefficients": [
+      {
+        "name": "fitted decay time constant tau (Higgs)",
+        "value_or_null": 48.0,
+        "uncertainty_or_null": "grid {6,12,24,48}h; best log-likelihood at 48h (grid boundary) — upper end not bracketed",
+        "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (fitted.aging_tau_h.value = 48.0)",
+        "context": "Local Higgs e-folding decay time; sits at the top of the search grid, so it is a lower bound on the true tau (identification weak upward).",
+        "verified": true
+      },
+      {
+        "name": "aging improvement over no-aging (paired delta Brier, Higgs held-out)",
+        "value_or_null": 0.000281,
+        "uncertainty_or_null": "95% CI [-8e-06, 0.000585] (touches zero)",
+        "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (paired.M5_vs_M3_aging)",
+        "context": "The aging term barely improves held-out Brier and the CI includes zero — MARGINAL local signal, not a clear win.",
+        "verified": true
+      },
+      {
+        "name": "novelty decay characteristic time (Digg)",
+        "value_or_null": "~1 hour (stretched-exponential)",
+        "uncertainty_or_null": null,
+        "source_ref": "Wu & Huberman 2007 PNAS 104:17599-17601",
+        "context": "Platform-specific (Digg news); illustrates that the decay time scale is domain-dependent and NOT the same as the local Higgs 48h.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Digg 1M users (Wu & Huberman 2007)",
+      "Twitter retweet cascades (TiDeH; Kobayashi & Lambiotte 2016)",
+      "Higgs Twitter (local; tau=48h)"
+    ],
+    "replication_evidence": "The qualitative stretched-exponential/decaying-attention finding is reproduced across platforms (Digg, Twitter, YouTube), but the fitted time constant varies by orders of magnitude across domains, and the local Higgs aging gain is only marginal.",
+    "critiques_or_nulls": [
+      "Local aging gain is marginal on Higgs (paired delta Brier +0.000281, CI touches 0).",
+      "tau=48h sits at the grid boundary — likely underestimated / upper end unidentified.",
+      "Decay is confounded with susceptible-pool depletion (can look like aging even without novelty decay)."
+    ],
+    "applicability_limits": [
+      "Attention/novelty-driven contexts (news, memes, rumors) where recency matters.",
+      "Time constant must be RE-FIT per platform; do not assume a universal half-life."
+    ],
+    "transport_risks": [
+      "Half-life spans minutes (Digg news ~1h) to days (Higgs 48h) to weeks (cultural adoption) — tau is strongly domain-specific.",
+      "Transporting a tau across domains would badly mis-time the decay."
+    ],
+    "local_refit_feasible": "yes (already fitted tau=48h on Higgs; re-fittable per dataset)",
+    "best_validation_route": "Higgs held-out already run (aging gain marginal); strengthen by fitting the decay on a second local series (e.g., decline phase of dropped baby names) and checking the tau/half-life is consistent with an aging (not depletion) mechanism.",
+    "expected_applicability": "moderate",
+    "expected_transport_risk": "high",
+    "priority": "medium",
+    "planned_implementation": "Keep age-weighted exposure; widen the tau grid beyond 48h (currently boundary-limited); report tau as a per-domain fitted quantity with a wide prior; document Digg ~1h vs Higgs 48h as the transport warning.",
+    "planned_parameter_packs": [
+      "Higgs local aging pack (tau=48h; grid-boundary, treat as lower bound)"
+    ],
+    "promotion_blocker": "Aging improvement over the no-aging model is marginal on Higgs (paired delta Brier +0.000281, CI95 includes 0); no PASS held-out record, so it stays 'implemented'. tau is also unidentified at the grid boundary.",
+    "disposition": "software_implemented"
+  }
+]

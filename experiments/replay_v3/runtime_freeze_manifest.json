@@ -1,0 +1,35 @@
+{
+ "frozen_at_commit": "ab29d2c38ade307dcc79c0108e53937afc5cf1f6",
+ "runtime_fingerprint": {
+  "unified_runtime": "unified-1.0",
+  "compiler": "compiler",
+  "evidence": "phase2-1.0",
+  "posterior": "phase3",
+  "actor_policy": "phase4",
+  "mechanism_registry": "phase6",
+  "nonlinear": "phase7",
+  "populations_networks": "phase9",
+  "institutions": "phase10 + integration-completion rule-normalization",
+  "persistence": "phase8-1.0",
+  "recompilation": "phase11",
+  "integration_completion": "integration-completion-1.0",
+  "activation_synthesis": "activation-synthesis-1.0 (relevance gate + consumers)",
+  "phase_consumers": "phase-consumers-1.0 (institutional_decision/population/network/actor-polarity)",
+  "commit": "ab29d2c",
+  "fingerprint_hash": "27bbb3965b901401"
+ },
+ "model": "deepseek-v4-flash (thinking disabled, temp 0.2)",
+ "model_reference": "hf:deepseek-ai/DeepSeek-V4-Flash@60d8d70770c6776ff598c94bb586a859a38244f1",
+ "vault": "experiments/replay_vault_v3/events.json (100 worlds, chronological 40/20/40)",
+ "preflight": "12/12 qualified rows, zero blocked relevant phases",
+ "rule": "any runtime/model change after this point invalidates subsequently generated forecasts",
+ "refrozen_after_engineering_repair": {
+  "commit": "7320a21ed542100272055d58e54ab3a5c3773543",
+  "repairs": [
+   "relation-name normalization (blocked_no_mechanism p9net)",
+   "org actors as strategic substrate"
+  ],
+  "note": "repairs made WITHOUT accessing any outcome; all previously generated forecasts invalidated and regenerated under the refrozen runtime",
+  "fingerprint": "9ba1511f5a47a619"
+ }
+}

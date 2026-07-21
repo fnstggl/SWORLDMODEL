@@ -1,0 +1,1943 @@
+{
+ "bundle_id": "eb_182f60",
+ "question": "Will the governor sign the education-funding bill into law?",
+ "as_of": 1688169600.0,
+ "compiler_plan_hash": "66a4578573b7",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_3bd2ab6e9d",
+   "claim_or_quantity": "The terminal value of governor.sign_decision on 2023-07-31 determines the outcome; 'sign' if the governor signs, 'veto' otherwise.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "governor",
+    "state_legislature",
+    "education_department",
+    "teachers_union"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6870176551",
+   "claim_or_quantity": "value/context of state_legislature.majority_party",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "state_legislature.majority_party",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ae9edad5f5",
+   "claim_or_quantity": "value/context of governor.ideology_score",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "governor.ideology_score",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3cf6da5c3c",
+   "claim_or_quantity": "value/context of voters_public_opinion.support_for_bill",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "voters_public_opinion.support_for_bill",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_00d06fa1d1",
+   "claim_or_quantity": "evidence discriminating structural hypothesis party_line",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:party_line",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_bdc6a2e7e8",
+   "claim_or_quantity": "evidence discriminating structural hypothesis public_pressure",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:public_pressure",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ce2c3e237d",
+   "claim_or_quantity": "decision rules / process of state_legislature",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "state_legislature",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ed41790bd8",
+   "claim_or_quantity": "decision rules / process of governor_office",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "governor_office",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_3bd2ab6e9d",
+   "terms": "governor sign education funding bill law governor state legislature education department",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_6870176551",
+   "terms": "state legislature majority party",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_ae9edad5f5",
+   "terms": "governor ideology score",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_3bd2ab6e9d",
+   "logical_query": "governor sign education funding bill law governor state legislature education department after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=governor+sign+education+funding+bill+law+governor+state+legislature+education+department+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783906896.2287548,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:41:37 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmII1pBiOFR1hiG54wxDChDXAXEDELfePMc6GYhLFp1nbQLiLiCeAcSGCpdY7YH4cvol1iKJK6wNQPyp6garQPUN1m_FvmwsJUD81p_NNCSQzRmIt2gGswlxc1xsuXiJTeDEnls6SspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgCltzqe\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "7d0429269fa3d8d1a33d90f42339c107be6a5c1bb3863588b864dbe386373ffc",
+   "n_bytes": 64926,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.829
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_6870176551",
+   "logical_query": "state legislature majority party after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=state+legislature+majority+party+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783906897.0604606,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:41:37 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0ZBiSO44w5ACxHVAzFfxnKn15jnWyUBcsug8axMQdwHxDCA2VLjEag_El9MvsRZJXGFtAOJPVTdYBapvsH4r9mVjKQHit_5spiGBbM5AvEUzmE2Ih-Niy8VLbAINO-_9ZlJSTsovjE_JLykuLshJLM4oTi0qSy2KNzIwMjMwNzDTMzCJLzAAAIA7OLE\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "aa080023ec19ae35ae913bbcbd3e588c361dca6ecc4b4d8aaea26c5dcd3df7eb",
+   "n_bytes": 77005,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.7
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ae9edad5f5",
+   "logical_query": "governor ideology score after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=governor+ideology+score+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783906897.7627964,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:41:38 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII0pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDcanl4iU2gRMHO1YwKikn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAoJI26w\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a697d8bd203b485e88f80db3f97c83a774293db6652f2effb1900f7797fc183d",
+   "n_bytes": 8066,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 3,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.507
+  }
+ ],
+ "raw_content_refs": [
+  "7d0429269fa3d8d1a33d90f42339c107be6a5c1bb3863588b864dbe386373ffc",
+  "a697d8bd203b485e88f80db3f97c83a774293db6652f2effb1900f7797fc183d",
+  "aa080023ec19ae35ae913bbcbd3e588c361dca6ecc4b4d8aaea26c5dcd3df7eb"
+ ],
+ "documents": [
+  {
+   "id": "345fb20c34a4db7c",
+   "source": "Executive Office of Governor Ron DeSantis",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPUlpUUUk2MzFyd1lzb3RGaWd4NzN3MENaZWpQRTh6cFFwRDFGcW5ITlBJNkNiOWZLNFlmUU9ORmtYaDhIYW1CZWNmVDBOaDkwYVRWcVJ0SUpFNlI1a2hOQTdQM2FKQk8ycE5SMmJqaG1lTnV6TmJfYTFEdm51OGctQXNPSDdoc05HRWJKVzVYYmI4ZWVPUTJLOGRRdUFteHVkUkJmRUhUM1FjbUZzQVM4bXFnNXNyZVlnXzQ4?oc=5",
+   "title": "Governor Ron DeSantis Signs Legislation to Strengthen Florida\u2019s Position as National Leader in Higher Education - Executive Office of Governor Ron DeSantis",
+   "text": "Governor Ron DeSantis Signs Legislation to Strengthen Florida\u2019s Position as National Leader in Higher Education - Executive Office of Governor Ron DeSantis. Governor Ron DeSantis Signs Legislation to Strengthen Florida\u2019s Position as National Leader in Higher Education Executive Office of Governor Ron DeSantis",
+   "content_hash": "ab068cd09087659c",
+   "raw_feed_hash": "7d0429269fa3d8d1a33d90f42339c107be6a5c1bb3863588b864dbe386373ffc",
+   "published_at": 1684134000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_3bd2ab6e9d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a220fd83073cbef7",
+   "source": "governor.state.nm.us",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQbWNPeENQN3p5XzdwdlhzUmMwQjdIaUN4NGpXUzNrQUZXTmk2V2h0RDYyRjJOaGFfcWdlX2cxWXJnTnFBTlppTkFMYVZlWWR0WG9QckM4R0J2TFN2X0E5UlgxT2stN0NLUzRzazZPcUhVTTFsTXpsZEJkM2dZVUdjamVaQmpaWkZxcDJOcVg1d201bW82M1o5UUVrbk5qNjZyYzgzekcxWFVRM0hHQjh2VmhoeWVBX3lTT2RpeHVTd3lMLWlKcHc1Z2RkbS04eWF3dEZMcg?oc=5",
+   "title": "Governor touts legislation to reduce educator healthcare costs as bill passes first committee - governor.state.nm.us",
+   "text": "Governor touts legislation to reduce educator healthcare costs as bill passes first committee - governor.state.nm.us. Governor touts legislation to reduce educator healthcare costs as bill passes first committee governor.state.nm.us",
+   "content_hash": "e9f159929640b5a6",
+   "raw_feed_hash": "7d0429269fa3d8d1a33d90f42339c107be6a5c1bb3863588b864dbe386373ffc",
+   "published_at": 1675238400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_3bd2ab6e9d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f2c3160a38f4cd4b",
+   "source": "The Nevada Independent",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNSmZTUGRVVERRVEtQRWFCZWIwZ2ROLUt5dVVDQmNnZGJzVHFCZkFlQ1YtSFdNbDRwN2RXRGZvaUczUkJqWEppR3kwNmFOOEpUZTc0Umo0R0RvcFBKQjEzTnF3My1fR0FYVjRWUkptT1BlYmp5ZFNIV3NjNmpPZlJuZVlsTExFemVtcWpSYWcyNVR3Q0QxN21kZFVtNmtrendreV9PYzVXU0pwcWxSTV9KWWNka0FCMFcyUnc?oc=5",
+   "title": "Lombardo, Democrats strike deal to avoid budget crisis, advance education bills - The Nevada Independent",
+   "text": "Lombardo, Democrats strike deal to avoid budget crisis, advance education bills - The Nevada Independent. Lombardo, Democrats strike deal to avoid budget crisis, advance education bills The Nevada Independent",
+   "content_hash": "06ac8131912d7260",
+   "raw_feed_hash": "7d0429269fa3d8d1a33d90f42339c107be6a5c1bb3863588b864dbe386373ffc",
+   "published_at": 1685516400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_3bd2ab6e9d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d4bd7f115f6835b2",
+   "source": "Office of the Texas Governor (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOVEtvSlROWXFRN3dmN0J5Q2VacDhnMTQwLTNyVGNDUE0wSkRlVUtkYUlPMTBrekUxSEFmZWs4NHVyak5wQ2s0TkdCcTJmNXRLLVFIVHBoQkxJZ1AzcGUzWFAtMHZXYkhTNzlfbWJVcW03eXBDMTRGaXozQ0dMUF85Z2hIWEZOZ2dvcWJueXdkcHJHMlpiQkZ5WEVB?oc=5",
+   "title": "Governor Abbott Signs Key Legislation Empowering Texas Parents - Office of the Texas Governor (.gov)",
+   "text": "Governor Abbott Signs Key Legislation Empowering Texas Parents - Office of the Texas Governor (.gov). Governor Abbott Signs Key Legislation Empowering Texas Parents Office of the Texas Governor (.gov)",
+   "content_hash": "6794ea040d5ddc72",
+   "raw_feed_hash": "7d0429269fa3d8d1a33d90f42339c107be6a5c1bb3863588b864dbe386373ffc",
+   "published_at": 1686553200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_3bd2ab6e9d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9f2b24440f4f5187",
+   "source": "Source New Mexico",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPWjlIN1J3WldOcGRHWkk4WkRGbTJBMEtqUUhWbVluMnB6Ul8ydTlUWGRMRG1QQzNoRnVhMXpTblRsaVM1UWFJdU13ajl4eG5rVlVFZVlQU1pHU3czTzNRblBPY19wemFDRVcyN21fcFpDbmY5Rmp0clJyZG05TzREdkJaaFlyZ1l4ZVhuOGRrNm54VmlCN3pnNWVZWQ?oc=5",
+   "title": "NM governor signs state budget and money for projects into law - Source New Mexico",
+   "text": "NM governor signs state budget and money for projects into law - Source New Mexico. NM governor signs state budget and money for projects into law Source New Mexico",
+   "content_hash": "91e6a9e495d43c13",
+   "raw_feed_hash": "7d0429269fa3d8d1a33d90f42339c107be6a5c1bb3863588b864dbe386373ffc",
+   "published_at": 1680850800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_3bd2ab6e9d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d4037b9e1b628cd5",
+   "source": "Arkansas Advocate",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQU0prWEF6YkhnVVVMRXRqMmRULTk0d0pRbllYQXFfOV9EZDJLeXRrN29RRF9ZR0VoZ2Jnamx4Y0RoRHJ6WEUwbFh1MlNTWmlvTWx6VklMcHVSYUM1VktnZEQtNFRtTF8xTGVUc0RWUGh3ZDBuc2d5MmgxbWc1V3dZUG5Pc3hINEgyOEhUUVAyelRXZ205LWR0elFzd1lSUkVpXzVN?oc=5",
+   "title": "Arkansas governor signs wide-ranging education bill into law - Arkansas Advocate",
+   "text": "Arkansas governor signs wide-ranging education bill into law - Arkansas Advocate. Arkansas governor signs wide-ranging education bill into law Arkansas Advocate",
+   "content_hash": "f2bbc2801ad40e36",
+   "raw_feed_hash": "7d0429269fa3d8d1a33d90f42339c107be6a5c1bb3863588b864dbe386373ffc",
+   "published_at": 1678262400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_3bd2ab6e9d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "bed6d5fa13feff12",
+   "source": "Oklahoma House of Representatives (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBTRXFnd2VIdjU4b2c1MTVjQXlWS292UWRSa0dBb0FvQ3hRVWs0SG1yNEtqbkd5NU1UVnRvQ1RxOXgwUUljdVY3LTVZNjJRMXQ0X0xkM09ldnc?oc=5",
+   "title": "Legislature Sends Historic Education Package to Governor - Oklahoma House of Representatives (.gov)",
+   "text": "Legislature Sends Historic Education Package to Governor - Oklahoma House of Representatives (.gov). Legislature Sends Historic Education Package to Governor Oklahoma House of Representatives (.gov)",
+   "content_hash": "dbfbc12560b7ad0a",
+   "raw_feed_hash": "7d0429269fa3d8d1a33d90f42339c107be6a5c1bb3863588b864dbe386373ffc",
+   "published_at": 1684479600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_3bd2ab6e9d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3384a4cbaf4e2530",
+   "source": "TN.gov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOMDA4NThRMlBoVFV1M21RNmppLXI1TWNmUUFKVVo2NUE0UXJXM0xZN3h0VnlfVDhHRzNURTlyMXZfWXRKbEVTaXJfTGpvWmFNYzJEbTZVeHlkWlZhMFVsVkpUZTBma3NFeWRmVmFOVzByQlhSeXhBSS0zWGZZSURMQTI0cnpUYU13UFc2RGhwYmt1UkM0QWxtcGNQb3NYMFJmcl9SVjZSQ1RPYkZTYU1fUVB4am9yOGs?oc=5",
+   "title": "Gov. Lee, Legislative Leadership Present Strong School Safety Actions - TN.gov",
+   "text": "Gov. Lee, Legislative Leadership Present Strong School Safety Actions - TN.gov. Gov. Lee, Legislative Leadership Present Strong School Safety Actions TN.gov",
+   "content_hash": "ebd87645316eec6b",
+   "raw_feed_hash": "7d0429269fa3d8d1a33d90f42339c107be6a5c1bb3863588b864dbe386373ffc",
+   "published_at": 1680505200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_3bd2ab6e9d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1782871097ab0d63",
+   "source": "National Conference of State Legislatures (NCSL)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQV2N4NFpFNEJfZjhBM3I0elZHN29wazUwSzFMX281aHBlbWVkeVVCMVR5UkVPa0RmdVJUNVhJVnVMZTdWVlBRemxpS3QtMGNON3J0UktJc1RmNDY1NXZJN1Q0V25kSHlRMFI3MDdfcmZWZ1Z6UEFzNFdzRFVxLUxWUkdhMW1qa3VpMVQtdzBn?oc=5",
+   "title": "Democrats (Re)Take Control of Pennsylvania House -... - National Conference of State Legislatures (NCSL)",
+   "text": "Democrats (Re)Take Control of Pennsylvania House -... - National Conference of State Legislatures (NCSL). Democrats (Re)Take Control of Pennsylvania House -... National Conference of State Legislatures (NCSL)",
+   "content_hash": "b3194392f8090b76",
+   "raw_feed_hash": "aa080023ec19ae35ae913bbcbd3e588c361dca6ecc4b4d8aaea26c5dcd3df7eb",
+   "published_at": 1675843200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_6870176551",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b1b0cfc2e5ef9f3b",
+   "source": "MultiState",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNZEtkcUlQVmxpRUpfcHJLX0E3U1l1bFRFTTZPajNqUXh2SzZ4djlXQ3lwZ3Y4NTgxalRJeUZUejNGYUhJdTBvZlMyOEdvMzR1OG1MRGNxYkcyVTV6aUN2dHdHRmxEVUZhZ2psOHRpVlZRMDhKQWI1TmFONmtsZDJXckVKVGh2aHVC?oc=5",
+   "title": "Party Switchers in State Legislatures - MultiState",
+   "text": "Party Switchers in State Legislatures - MultiState. Party Switchers in State Legislatures MultiState",
+   "content_hash": "07542c8910611eea",
+   "raw_feed_hash": "aa080023ec19ae35ae913bbcbd3e588c361dca6ecc4b4d8aaea26c5dcd3df7eb",
+   "published_at": 1680246000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_6870176551",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c840b34c7c40f7af",
+   "source": "Politico",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQSGQ1TFZzZVZpUlgyTW1OQzVTNlhMTEVtbk5VQkEyWXdtaHBFc2NYTTc3VjZLck9ibFc0TDNTNUdIR3hhbWYxWUV1RjhLLXZWbnVRemNweTJRTlMzQjRhTUhDbnRwMWtia0NpNW9lU001RmJTOGlkajlPUEFsclR6eGVvZWtRRmRxbDFwTWNJcEpldGZn?oc=5",
+   "title": "\u2018I get my butt kicked every 20 minutes\u2019: Life in a state legislature\u2019s superminority - Politico",
+   "text": "\u2018I get my butt kicked every 20 minutes\u2019: Life in a state legislature\u2019s superminority - Politico. \u2018I get my butt kicked every 20 minutes\u2019: Life in a state legislature\u2019s superminority Politico",
+   "content_hash": "fc9f37ca5ba0e983",
+   "raw_feed_hash": "aa080023ec19ae35ae913bbcbd3e588c361dca6ecc4b4d8aaea26c5dcd3df7eb",
+   "published_at": 1687935600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_6870176551",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fd72dc80cae3e2c3",
+   "source": "Spotlight PA",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxORmJOZGw4emgzXzBUMjBIQkpVTHhSRm1NSDRMWXgtMGRCbjEyY1dwbEZqVzNzaTl0cng3YWU0N2NSTEZ4dDRlNGZwTEhvelhIWGdwYnlWWTBJZklaX2tRSXJEMVlSWnpFUkVOUEJQY3lrU0FqbzhaYjU4TDUtbnRtemttVXN6R3VMNFhSTnppeE5KZlpxVUl5WGd1SWpDUHM?oc=5",
+   "title": "Democrats win special elections, Pa. House majority - Spotlight PA",
+   "text": "Democrats win special elections, Pa. House majority - Spotlight PA. Democrats win special elections, Pa. House majority Spotlight PA",
+   "content_hash": "5732db8c8934436b",
+   "raw_feed_hash": "aa080023ec19ae35ae913bbcbd3e588c361dca6ecc4b4d8aaea26c5dcd3df7eb",
+   "published_at": 1675756800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_6870176551",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b5f54043ee899f8a",
+   "source": "PBS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPNmJfREtsbXlaenh4WERPeERhOUpIeXRUTGdsNHlOWEh1eGFmb3JEY1U5Z3VCRjFfVFNPZmg4M1Z0TUttNkJnMEZTYTVtcXRod1lJa3FVU1FhMkUxUFAwcmFjU2RWb1pDNlE1SG9Gb1V0WjhqOEJfQm55SHVBODZpcmdfWk13c3RqTXQ2QzFoUXN1b1hpRDJUWlF3MjhqTk1QT2UxbDMyUnV4ajExQmxkdF9ZV2FlZjN6?oc=5",
+   "title": "Oregon\u2019s longest state legislative walkout enters sixth week - PBS",
+   "text": "Oregon\u2019s longest state legislative walkout enters sixth week - PBS. Oregon\u2019s longest state legislative walkout enters sixth week PBS",
+   "content_hash": "aa2f1600dbf8e3b0",
+   "raw_feed_hash": "aa080023ec19ae35ae913bbcbd3e588c361dca6ecc4b4d8aaea26c5dcd3df7eb",
+   "published_at": 1686726000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_6870176551",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "cec2051b384f8168",
+   "source": "New Jersey Globe",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQdFFKdEdmQ3JSSnZyQTM3V241M093SndqMDJyUTdxRElzOVlOZEIxUXV1bXFZemQ3eVk2aTN4dnNxYU43OVJfeFBmblYxeUJsUVA4ZzE4cUsxWVZhdXZtM1p0NlZiWlYtd2RRVFdpWGdObEF2TXpTdHg4WklCMEthYll3V2p4WnlXM0duSDNzYWsyMEtyTTZNRHowTVhPR0ZjSDcyU25QeW1mSTNhTUU5UFAybkRtbkJxWVF0d0FR?oc=5",
+   "title": "Sam Thompson will switch parties and seek re-election to N.J. Senate as a Democrat - New Jersey Globe",
+   "text": "Sam Thompson will switch parties and seek re-election to N.J. Senate as a Democrat - New Jersey Globe. Sam Thompson will switch parties and seek re-election to N.J. Senate as a Democrat New Jersey Globe",
+   "content_hash": "d79f66a25adab59f",
+   "raw_feed_hash": "aa080023ec19ae35ae913bbcbd3e588c361dca6ecc4b4d8aaea26c5dcd3df7eb",
+   "published_at": 1676188800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_6870176551",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0473c10ed6c6a5c0",
+   "source": "Axios",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPbEJQWnR4RkZUYzhMYXJkdDJ2M1ByYlpSNFBUTl9STXNqZlBxUXZtY1JZTzFqTUF5dXVBdTFRSHotMGI5VG9pNWdEUnl4aFVxN3FjMXIxMWRNa2RmckhyNU13ODRueFFJQTBZTHBlSEhJdVZsZ0JmRU5VaXduNzdlLU0wOFg2Sm8?oc=5",
+   "title": "How Democrats are using their new power in these two state legislatures - Axios",
+   "text": "How Democrats are using their new power in these two state legislatures - Axios. How Democrats are using their new power in these two state legislatures Axios",
+   "content_hash": "1e5f2ea818611b0a",
+   "raw_feed_hash": "aa080023ec19ae35ae913bbcbd3e588c361dca6ecc4b4d8aaea26c5dcd3df7eb",
+   "published_at": 1676966400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_6870176551",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "84f13ce7f4933b82",
+   "source": "The Colorado Sun",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOZ2FBVHRpMk1SY05kTS1rLW93Sjg1M2ZPeUxjdmRRNms3Sk9qdTVCRkhHSDdRc3dic3BidE5yY250dmlqNjZnS3dCcEVsUlJ5emx2eW9Pai0wMkVScVlHTTZNQTBsRWpQSVBZRWdCNkFIb0F4MEpnSTZiM194NWRmZV9EbklpcVcwb1FlRg?oc=5",
+   "title": "There\u2019s no guaranteed filibuster in the Colorado legislature. So why do Democrats let Republicans stall lawmaking? - The Colorado Sun",
+   "text": "There\u2019s no guaranteed filibuster in the Colorado legislature. So why do Democrats let Republicans stall lawmaking? - The Colorado Sun. There\u2019s no guaranteed filibuster in the Colorado legislature. So why do Democrats let Republicans stall lawmaking? The Colorado Sun",
+   "content_hash": "15fa90495cd6862d",
+   "raw_feed_hash": "aa080023ec19ae35ae913bbcbd3e588c361dca6ecc4b4d8aaea26c5dcd3df7eb",
+   "published_at": 1678950000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_6870176551",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "daaa1d65878b29d3",
+   "source": "Al Jazeera",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxPZnZLanVwRWtoOUtBWjd0SUdlNm1DemZNTGNBWENsZUlWZ2d0RW5lU1pMRVNFMkFUQnNtNXhxYUVUSkJETHBsZkRaUzduUUxSMTA3RlFFdHdXZ2xUUHB5TFpveDhQN0kwVnZneW5zWjI5TTJnR0JTaDh2T3FXbWNOZUlOc21yaFNUZjQ40gGQAUFVX3lxTFBqYWI0aXBwdktZWEduNTNiQnR6cF9VQVhjNG94WndyNEM1ek8tOUVKZ2RIS2JHZlJQc05iTjFzUGRVcTRRNkJfd0NHRFNoMEVMTFZVcHIyZjlkblU1VGI1SGYyZE9GV2VVbHVWMXVCdkZoRWVPM2prd2xYVEFVaUFuVUotN1ZHVm5pUVgtbzJTVQ?oc=5",
+   "title": "Nigeria presidential election results 2023 by the numbers - Al Jazeera",
+   "text": "Nigeria presidential election results 2023 by the numbers - Al Jazeera. Nigeria presidential election results 2023 by the numbers Al Jazeera",
+   "content_hash": "ab2aa9b728411e6f",
+   "raw_feed_hash": "a697d8bd203b485e88f80db3f97c83a774293db6652f2effb1900f7797fc183d",
+   "published_at": 1677571200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ae9edad5f5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1f923c04cb56b622",
+   "source": "The Hindu",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxPcXFxenRVUFA1YlpJU0tPMVZ1WGZpMlhqYVYtY2wzdjZNMWZjS3dkdDFaN2RYYVJ6a1FyN25iYTN4b2tiSjhEWDhYcTBTMHExQ3c0S1c3WFU3UWZzZmMwMU42cjdPYWZTY2pPX21HY3pHWTVzRV8xaXhnekh5Yk5RRXBuOHdiZWdiakFNM3FzRGhaUXdac0VKVjZKWU10aUdpQU9fV2FOREhqTHE1WmtNQUlkX0k2M01MbW9YTHhhTWFTZWUxaFRhVFNFeWtUMG1BNFpGSW5jN0RKZEd1QWJ2RUNKbFRkNlAzOHhGVG9VMGZtaVJZ0gH7AUFVX3lxTE1QUVVodTRKUURqZEZHYlVaX1lqb0N2SC1CczJTemhMUGFHWWdYM040ck42WXRXMUcxRW9Zbmpta2hXUGFLN2ZGMV8ybEJSVFVFb0xBbHZUdDdpd3h3TUU4elZTUEVEWHVJeE9pTXlxVy16ejNVT1ZRQVVydWFvUE93QUtaZm9sSFRtN2RFWWZWSTdpcDI5c2QzTndabk5LVUdDbTk4ckk3WE1tNW1iNklyUW5oY3RvOWlWQVdhRGZjTkdNWWJaZmxSZmxETXp1bno3em9oaWJGSnhSVXJHMDlyRlNMX2RqZlczckdyZWU1REtjaU4wRWd1X1lr?oc=5",
+   "title": "\u2018Dravidian ideology\u2019 has rendered Sanathana dharma, Varnashrama and Manu Needhi outdated: Stalin - The Hindu",
+   "text": "\u2018Dravidian ideology\u2019 has rendered Sanathana dharma, Varnashrama and Manu Needhi outdated: Stalin - The Hindu. \u2018Dravidian ideology\u2019 has rendered Sanathana dharma, Varnashrama and Manu Needhi outdated: Stalin The Hindu",
+   "content_hash": "af87b71dc5ad50e0",
+   "raw_feed_hash": "a697d8bd203b485e88f80db3f97c83a774293db6652f2effb1900f7797fc183d",
+   "published_at": 1683442800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ae9edad5f5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2f00dcfad8c921e6",
+   "source": "The Times of India",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxOcE80R29VcDFsZmJYRGlVa2tjXzB2cGFfNjRsYWNFSkJLa1hhNkxvQVFDM216VUpIZl9MUHRqVEliQmFPVVVXdFo4a2dmY3pFUjRVN2hPV0tFakpYNDFQbUpwdUdwcnh0b29KelR6SUxsNXBoQm1NVWlVTHRSc2lqUkYzTmtMeEFkSDNwQ3k0ejBpVWpZckZfNFNIX1M1WTVYMzhoRnFxR3RRU0tfZVFTS3IzMk9JU2dNZlpTQ2VHNDdfel9Fd1pQUHdMdHpCTmxfVTBNNDU2MDJwSUtUc2J4VjBtTVHSAeoBQVVfeXFMUHFuRnN6WEU2bWwwcE1Pbmt4U1NrQnZRYVdJYWRMUV9LRkpRXzBMMEhrUFZud2NFMElhOU1PYTJKbFoxOFVYR2hpSHVfQVlBcjZpenk4WGhEZ1c1Nzk5eGM5R2JxTTdyQ093LW9JbHFoMERnMkpKaUtCeE5NRk5nSnlqWWpVY3Rwd0xYd3lXYmMzU1ZsT2dxdTVMZl91NGloam9xVFM4cl8zU3lCcGkzQlRLdkdfdnY2ZzllenFyODFyeGlRSVlXQ3UxdUthdFdxLWp4YmtjdHBCdkwyc2pPZ19ybnFmdFpuUU1R?oc=5",
+   "title": "Tamil Nadu governor RN Ravi's exclusive interview with TOI: 'DMK's ideology parochial, dead' - The Times of India",
+   "text": "Tamil Nadu governor RN Ravi's exclusive interview with TOI: 'DMK's ideology parochial, dead' - The Times of India. Tamil Nadu governor RN Ravi's exclusive interview with TOI: 'DMK's ideology parochial, dead' The Times of India",
+   "content_hash": "83bd25abed52b85c",
+   "raw_feed_hash": "a697d8bd203b485e88f80db3f97c83a774293db6652f2effb1900f7797fc183d",
+   "published_at": 1683183600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ae9edad5f5",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "345fb20c34a4db7c:c0",
+   "source_id": "345fb20c34a4db7c",
+   "subject": "Governor Ron DeSantis",
+   "predicate": "signed",
+   "object": "legislation to strengthen Florida\u2019s position as national leader in higher education",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Governor Ron DeSantis Signs Legislation to Strengthen Florida\u2019s Position as National Leader in Higher Education",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684134000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Governor Ron DeSantis",
+    "Florida"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d3077a19ef",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3bd2ab6e9d"
+   }
+  },
+  {
+   "claim_id": "1782871097ab0d63:c0",
+   "source_id": "1782871097ab0d63",
+   "subject": "Democrats",
+   "predicate": "take control of",
+   "object": "Pennsylvania House",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Democrats (Re)Take Control of Pennsylvania House",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675843200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Democrats",
+    "Pennsylvania House"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_b50d577cdb",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6870176551"
+   }
+  },
+  {
+   "claim_id": "daaa1d65878b29d3:c0",
+   "source_id": "daaa1d65878b29d3",
+   "subject": "Nigeria presidential election results 2023",
+   "predicate": "are presented by",
+   "object": "Al Jazeera",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Nigeria presidential election results 2023 by the numbers - Al Jazeera",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1677571200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Nigeria",
+    "Al Jazeera"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bd0f916f9c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ae9edad5f5"
+   }
+  },
+  {
+   "claim_id": "a220fd83073cbef7:c0",
+   "source_id": "a220fd83073cbef7",
+   "subject": "Governor",
+   "predicate": "touts",
+   "object": "legislation to reduce educator healthcare costs",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Governor touts legislation to reduce educator healthcare costs as bill passes first committee",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675238400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Governor"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_83c6347e82",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3bd2ab6e9d"
+   }
+  },
+  {
+   "claim_id": "a220fd83073cbef7:c1",
+   "source_id": "a220fd83073cbef7",
+   "subject": "bill",
+   "predicate": "passes",
+   "object": "first committee",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "bill passes first committee",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675238400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_83c6347e82",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3bd2ab6e9d"
+   }
+  },
+  {
+   "claim_id": "b1b0cfc2e5ef9f3b:c0",
+   "source_id": "b1b0cfc2e5ef9f3b",
+   "subject": "Party Switchers in State Legislatures",
+   "predicate": "is a resource by",
+   "object": "MultiState",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Party Switchers in State Legislatures - MultiState",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680246000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Party Switchers in State Legislatures",
+    "MultiState"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f25f04528f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6870176551"
+   }
+  },
+  {
+   "claim_id": "b1b0cfc2e5ef9f3b:c1",
+   "source_id": "b1b0cfc2e5ef9f3b",
+   "subject": "MultiState",
+   "predicate": "provides",
+   "object": "Party Switchers in State Legislatures",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Party Switchers in State Legislatures MultiState",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680246000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "MultiState",
+    "Party Switchers in State Legislatures"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f25f04528f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6870176551"
+   }
+  },
+  {
+   "claim_id": "1f923c04cb56b622:c0",
+   "source_id": "1f923c04cb56b622",
+   "subject": "Dravidian ideology",
+   "predicate": "has rendered",
+   "object": "Sanathana dharma, Varnashrama and Manu Needhi outdated",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "\u2018Dravidian ideology\u2019 has rendered Sanathana dharma, Varnashrama and Manu Needhi outdated: Stalin",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683442800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Dravidian ideology",
+    "Sanathana dharma",
+    "Varnashrama",
+    "Manu Needhi",
+    "Stalin"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7e0142f31f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ae9edad5f5"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Governor Ron DeSantis",
+   "normalized": "ron desantis",
+   "candidates": [
+    {
+     "entity_id": "ent_809f37733d",
+     "canonical": "ron desantis",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Governor Ron DeSantis"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Florida",
+   "normalized": "florida",
+   "candidates": [
+    {
+     "entity_id": "ent_36a7ac9bd1",
+     "canonical": "florida",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Florida"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Democrats",
+   "normalized": "democrats",
+   "candidates": [
+    {
+     "entity_id": "ent_f3d91dd97c",
+     "canonical": "democrats",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Democrats"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Pennsylvania House",
+   "normalized": "pennsylvania house",
+   "candidates": [
+    {
+     "entity_id": "ent_4241a1181b",
+     "canonical": "pennsylvania house",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Pennsylvania House"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Nigeria",
+   "normalized": "nigeria",
+   "candidates": [
+    {
+     "entity_id": "ent_33e49263a0",
+     "canonical": "nigeria",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Nigeria"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Al Jazeera",
+   "normalized": "al jazeera",
+   "candidates": [
+    {
+     "entity_id": "ent_e9e0955231",
+     "canonical": "al jazeera",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Al Jazeera"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Governor",
+   "normalized": "",
+   "candidates": [
+    {
+     "entity_id": "ent_6414bbfb5e",
+     "canonical": "party switchers in state legislatures",
+     "support": 0.2833,
+     "evidence_mentions": [
+      "Party Switchers in State Legislatures",
+      "Party Switchers in State Legislatures"
+     ]
+    },
+    {
+     "entity_id": "ent_e682d277fd",
+     "canonical": "multistate",
+     "support": 0.2833,
+     "evidence_mentions": [
+      "MultiState",
+      "MultiState"
+     ]
+    },
+    {
+     "entity_id": "ent_809f37733d",
+     "canonical": "ron desantis",
+     "support": 0.2167,
+     "evidence_mentions": [
+      "Governor Ron DeSantis"
+     ]
+    },
+    {
+     "entity_id": "ent_36a7ac9bd1",
+     "canonical": "florida",
+     "support": 0.2167,
+     "evidence_mentions": [
+      "Florida"
+     ]
+    }
+   ],
+   "resolved": false,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Party Switchers in State Legislatures",
+   "normalized": "party switchers in state legislatures",
+   "candidates": [
+    {
+     "entity_id": "ent_6414bbfb5e",
+     "canonical": "party switchers in state legislatures",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "Party Switchers in State Legislatures",
+      "Party Switchers in State Legislatures"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "MultiState",
+   "normalized": "multistate",
+   "candidates": [
+    {
+     "entity_id": "ent_e682d277fd",
+     "canonical": "multistate",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "MultiState",
+      "MultiState"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "MultiState",
+   "normalized": "multistate",
+   "candidates": [
+    {
+     "entity_id": "ent_e682d277fd",
+     "canonical": "multistate",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "MultiState",
+      "MultiState"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Party Switchers in State Legislatures",
+   "normalized": "party switchers in state legislatures",
+   "candidates": [
+    {
+     "entity_id": "ent_6414bbfb5e",
+     "canonical": "party switchers in state legislatures",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "Party Switchers in State Legislatures",
+      "Party Switchers in State Legislatures"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Dravidian ideology",
+   "normalized": "dravidian ideology",
+   "candidates": [
+    {
+     "entity_id": "ent_b8b112153f",
+     "canonical": "dravidian ideology",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Dravidian ideology"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Sanathana dharma",
+   "normalized": "sanathana dharma",
+   "candidates": [
+    {
+     "entity_id": "ent_3b5bd092fa",
+     "canonical": "sanathana dharma",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Sanathana dharma"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Varnashrama",
+   "normalized": "varnashrama",
+   "candidates": [
+    {
+     "entity_id": "ent_a52d9f1345",
+     "canonical": "varnashrama",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Varnashrama"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Manu Needhi",
+   "normalized": "manu needhi",
+   "candidates": [
+    {
+     "entity_id": "ent_2a82cc1ae5",
+     "canonical": "manu needhi",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Manu Needhi"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Stalin",
+   "normalized": "stalin",
+   "candidates": [
+    {
+     "entity_id": "ent_5f399373de",
+     "canonical": "stalin",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Stalin"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "345fb20c34a4db7c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684134000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684134000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a220fd83073cbef7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1675238400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675238400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f2c3160a38f4cd4b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1685516400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685516400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d4bd7f115f6835b2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1686553200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686553200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9f2b24440f4f5187": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680850800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680850800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d4037b9e1b628cd5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1678262400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678262400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "bed6d5fa13feff12": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684479600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684479600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3384a4cbaf4e2530": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680505200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680505200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1782871097ab0d63": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1675843200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675843200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b1b0cfc2e5ef9f3b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680246000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680246000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c840b34c7c40f7af": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687935600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687935600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fd72dc80cae3e2c3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1675756800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675756800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b5f54043ee899f8a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1686726000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686726000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "cec2051b384f8168": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1676188800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676188800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0473c10ed6c6a5c0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1676966400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676966400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "84f13ce7f4933b82": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1678950000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678950000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "daaa1d65878b29d3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677571200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677571200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1f923c04cb56b622": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1683442800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683442800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2f00dcfad8c921e6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1683183600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683183600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_d3077a19ef",
+   "member_ids": [
+    "345fb20c34a4db7c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Executive Office of Governor Ron DeSantis",
+   "primary_source": "Executive Office of Governor Ron DeSantis",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_83c6347e82",
+   "member_ids": [
+    "a220fd83073cbef7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "governor.state.nm.us",
+   "primary_source": "governor.state.nm.us",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ca8680b2a7",
+   "member_ids": [
+    "f2c3160a38f4cd4b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Nevada Independent",
+   "primary_source": "The Nevada Independent",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d3cd877a2f",
+   "member_ids": [
+    "d4bd7f115f6835b2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Office of the Texas Governor (.gov)",
+   "primary_source": "Office of the Texas Governor (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7ec6174726",
+   "member_ids": [
+    "9f2b24440f4f5187"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Source New Mexico",
+   "primary_source": "Source New Mexico",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9919f717dd",
+   "member_ids": [
+    "d4037b9e1b628cd5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Arkansas Advocate",
+   "primary_source": "Arkansas Advocate",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4067f76fae",
+   "member_ids": [
+    "bed6d5fa13feff12"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Oklahoma House of Representatives (.gov)",
+   "primary_source": "Oklahoma House of Representatives (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2abc416444",
+   "member_ids": [
+    "3384a4cbaf4e2530"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "TN.gov",
+   "primary_source": "TN.gov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b50d577cdb",
+   "member_ids": [
+    "1782871097ab0d63"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "National Conference of State Legislatures (NCSL)",
+   "primary_source": "National Conference of State Legislatures (NCSL)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f25f04528f",
+   "member_ids": [
+    "b1b0cfc2e5ef9f3b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "MultiState",
+   "primary_source": "MultiState",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_57798e74c2",
+   "member_ids": [
+    "c840b34c7c40f7af"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Politico",
+   "primary_source": "Politico",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_af82576a8e",
+   "member_ids": [
+    "fd72dc80cae3e2c3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Spotlight PA",
+   "primary_source": "Spotlight PA",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_64207ea205",
+   "member_ids": [
+    "b5f54043ee899f8a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "PBS",
+   "primary_source": "PBS",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_da53ef5a38",
+   "member_ids": [
+    "cec2051b384f8168"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "New Jersey Globe",
+   "primary_source": "New Jersey Globe",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6679a8c6e9",
+   "member_ids": [
+    "0473c10ed6c6a5c0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Axios",
+   "primary_source": "Axios",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_02a4b6bdeb",
+   "member_ids": [
+    "84f13ce7f4933b82"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Colorado Sun",
+   "primary_source": "The Colorado Sun",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bd0f916f9c",
+   "member_ids": [
+    "daaa1d65878b29d3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Al Jazeera",
+   "primary_source": "Al Jazeera",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7e0142f31f",
+   "member_ids": [
+    "1f923c04cb56b622"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Hindu",
+   "primary_source": "The Hindu",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0c7f1c815d",
+   "member_ids": [
+    "2f00dcfad8c921e6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Times of India",
+   "primary_source": "The Times of India",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "345fb20c34a4db7c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684134000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1782871097ab0d63:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675843200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "daaa1d65878b29d3:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677571200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a220fd83073cbef7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675238400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a220fd83073cbef7:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675238400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b1b0cfc2e5ef9f3b:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680246000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b1b0cfc2e5ef9f3b:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680246000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1f923c04cb56b622:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683442800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "345fb20c34a4db7c:c0",
+  "1782871097ab0d63:c0",
+  "daaa1d65878b29d3:c0",
+  "a220fd83073cbef7:c0",
+  "a220fd83073cbef7:c1",
+  "b1b0cfc2e5ef9f3b:c0",
+  "b1b0cfc2e5ef9f3b:c1",
+  "1f923c04cb56b622:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_3bd2ab6e9d": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_6870176551": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_ae9edad5f5": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_3cf6da5c3c": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_00d06fa1d1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_bdc6a2e7e8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ce2c3e237d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ed41790bd8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_3cf6da5c3c",
+  "req_00d06fa1d1",
+  "req_bdc6a2e7e8",
+  "req_ce2c3e237d",
+  "req_ed41790bd8"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 19,
+  "n_contradictions": 0,
+  "n_documents": 19
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 15.984,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "08ef50a658f0b8c5",
+ "bundle_hash": "08ef50a658f0b8c5",
+ "_persisted_at": "2026-07-13T01:41:59Z"
+}

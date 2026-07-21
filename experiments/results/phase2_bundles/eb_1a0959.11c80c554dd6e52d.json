@@ -1,0 +1,1173 @@
+{
+ "bundle_id": "eb_1a0959",
+ "question": "Will the industry groups unite behind the single lobbying position?",
+ "as_of": 1682899200.0,
+ "compiler_plan_hash": "868bab2d25a3",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_8c937344cd",
+   "claim_or_quantity": "unified_position if at least 51% of weighted industry groups (by membership/revenue) publicly adopt the same lobbying stance; else no_unified_position",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "industry_coalition"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_aff34aa4e5",
+   "claim_or_quantity": "value/context of industry_groups.true_preference",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "industry_groups.true_preference",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_254626c382",
+   "claim_or_quantity": "evidence discriminating structural hypothesis dominant_firm_drives",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:dominant_firm_drives",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_55dfb222fd",
+   "claim_or_quantity": "evidence discriminating structural hypothesis fragmented_inaction",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:fragmented_inaction",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_b9fa9b3f5b",
+   "claim_or_quantity": "value/context of industry_groups.trust_in_leadership",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "industry_groups.trust_in_leadership",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_dcbdaa08d8",
+   "claim_or_quantity": "decision rules / process of industry_coalition",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "industry_coalition",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5ca128e6b1",
+   "claim_or_quantity": "value/context of industry_coalition.leadership_agenda",
+   "why_relevant": "high-sensitivity latent (0.60) driving the outcome distribution",
+   "affected_component": "industry_coalition.leadership_agenda",
+   "expected_sensitivity": 0.6,
+   "expected_voi": 0.6,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_8c937344cd",
+   "terms": "industry groups unite behind single lobbying position industry coalition",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_aff34aa4e5",
+   "terms": "industry groups true preference",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_254626c382",
+   "terms": "structural hypothesis dominant firm drives evidence",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_8c937344cd",
+   "logical_query": "industry groups unite behind single lobbying position industry coalition after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=industry+groups+unite+behind+single+lobbying+position+industry+coalition+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783907916.9473035,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:58:37 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmLw0JBiSO44w5ACxHVA3AjEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YR4OM72XLzEJvCh59ELJiXlpPzC-JT8kuLigpzE4ozi1KKy1KJ4IwMjMwNzAzM9A5P4AgMAmV86vg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "f0e8dd9d82af1f0436f4984752db18f24049622b13e14f6177181347893bd858",
+   "n_bytes": 1309,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.715
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_aff34aa4e5",
+   "logical_query": "industry groups true preference after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=industry+groups+true+preference+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783907917.663131,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:58:38 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw15BiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc53ouXmIT-PCyZxWjknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCzZTkT\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "c5efbbc2230daa310da2d71ef87d321dca731ca969e6e690ad96e0437ddbf548",
+   "n_bytes": 8503,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 5,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.6
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_254626c382",
+   "logical_query": "structural hypothesis dominant firm drives evidence after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=structural+hypothesis+dominant+firm+drives+evidence+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783907918.2641249,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:58:38 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII1pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDca7n4iU2gROvmtcyKykn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAqLE3Gw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "dcdc68990d5f96e573cdd3afb95f83860fb75c85ef0b75da99d91fb006d0ee2d",
+   "n_bytes": 1267,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.544
+  }
+ ],
+ "raw_content_refs": [
+  "c5efbbc2230daa310da2d71ef87d321dca731ca969e6e690ad96e0437ddbf548"
+ ],
+ "documents": [
+  {
+   "id": "2e15e1ea6f0b68f5",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxQV0J5clM1eWxIUjlrSjQzUWg3VDVYSy1CWFBrUFYwZmZJUDR4eUREZVZaVG0yc1J4MEJUMVBkWjlfN0RSakZCT0V1YS1uNGdRaXZ1R1pJQmgtbkV2ZVVaSUl2RURkUWRFSjdhemhPUFZMNnc1LWhkVl9KUy1reUFReTU4aWhJVzB6cWsyUlZScVVZU0c4YXdQVmttWUw3Qk41Mk9ILXNtSFZCcExub0NDN0NxN2lfV2p5bU9xRU9DVmRRaHJfYURmRXNuQ1hPSS1UNmFXOUNKYXBSdw?oc=5",
+   "title": "Consumers care about sustainability\u2014and back it up with their wallets - McKinsey & Company",
+   "text": "Consumers care about sustainability\u2014and back it up with their wallets - McKinsey & Company. Consumers care about sustainability\u2014and back it up with their wallets McKinsey & Company",
+   "content_hash": "14478edeced1b694",
+   "raw_feed_hash": "c5efbbc2230daa310da2d71ef87d321dca731ca969e6e690ad96e0437ddbf548",
+   "published_at": 1675670400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_aff34aa4e5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8626089e95fb55e4",
+   "source": "Business Wire",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxNS01mcmhQSW5SVTBzTWJsdG5XZDJCMl9RYTlKN1l5OVI5dHpuX01qSXRxMTRFZFdQQmlHa2xKdF80UXVVOGdyeVQ3RnY0VTVGdU1vdlRnVVBVT1JFdDR3bmx0Vl93eXQ4WHNRVXdOMXlmZDI5enh1REhyMTEtMWRLWmdSRjZqY1JNS1hSY0Z4RjJNVVRIZDBENld0ZEtoRnhpblk1bnJDSTA4NHVoSGlnUnhBbE5Gdnk0WEM1U1lwemdrYVNaZUVjSWZKZ3dZLUZEUGlObXBEQzNveFRX?oc=5",
+   "title": "True Digital Announces Bus Tour to Unite America\u2019s Financial Institutions For Innovation - Business Wire",
+   "text": "True Digital Announces Bus Tour to Unite America\u2019s Financial Institutions For Innovation - Business Wire. True Digital Announces Bus Tour to Unite America\u2019s Financial Institutions For Innovation Business Wire",
+   "content_hash": "7509eb818702114a",
+   "raw_feed_hash": "c5efbbc2230daa310da2d71ef87d321dca731ca969e6e690ad96e0437ddbf548",
+   "published_at": 1678348800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_aff34aa4e5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3a197542a6c3fb3d",
+   "source": "embedded.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPaklSU3N1dk9aMDRZdTQ5cWU4aTJlTnVqVjE4RkU0czlsQTQ5TndNMU52NDZlZUstaTdBZGFjdUJzZE85N1p4MUJ1ZE5UVkdyczdlUFNtWktGZmtTSVRObVpwZnlJS0lvWXRzZnNNWnNZSWQ1Uk1FYlVFYl9Dck1kY1BUcEczbGRESW52ZnJJTVdMdVVYN1dwR09mVEt3SFBuTERjM3ZfV0hha3hmR3VuSGplcDZRcHpH?oc=5",
+   "title": "How a preferred audio response curve enhances sound quality in true wireless stereo devices - embedded.com",
+   "text": "How a preferred audio response curve enhances sound quality in true wireless stereo devices - embedded.com. How a preferred audio response curve enhances sound quality in true wireless stereo devices embedded.com",
+   "content_hash": "e33ba3eec1ee5bde",
+   "raw_feed_hash": "c5efbbc2230daa310da2d71ef87d321dca731ca969e6e690ad96e0437ddbf548",
+   "published_at": 1681801200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_aff34aa4e5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "97f4680f4e1c69b7",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxNMFRuLXM3cW5GT2N0amxMaXQwLU5LNmFPU3F5ck5sQldqVVUtc3otSEdFLVRFYzBxdF96cmhMRzZEQlNVSzRiWDJDd1hoMy1QT1BHNDFhYUlVUmx3a0ZWNmtkZFJJRTlEeWRiSm9pVmp3RUVNQW5hQXZodU1hWnJRMzJQYVFPY2I4bUlKT19mQVJsR0hLN2J0OGF2MkxxVUhiZUZGczNTWTIxS1lHTl9xcndteThqMGRwMGtPRXJHeDdVbElCd1hGS3E2M3gxMF9pWGI0T1hOMkRYQ1ZFTGVNSjhn?oc=5",
+   "title": "Gen what? Debunking age-based myths about worker preferences - McKinsey & Company",
+   "text": "Gen what? Debunking age-based myths about worker preferences - McKinsey & Company. Gen what? Debunking age-based myths about worker preferences McKinsey & Company",
+   "content_hash": "a05a239151844ad6",
+   "raw_feed_hash": "c5efbbc2230daa310da2d71ef87d321dca731ca969e6e690ad96e0437ddbf548",
+   "published_at": 1681974000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_aff34aa4e5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f0d91afdcf0123d6",
+   "source": "restaurantonline.co.uk",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQcm9sdjlqMW5XQk03OGlQaWNiQ1BKM1dXQnVfbUd0Njl2dkp0RjRUQVBTUm5YZXZGeEtzaWttelZTZW14SVVIcXRMWl9TMVRFVVUzV3BHVHhGWGEzczBRUm9oQ3dDY0wzMHdPTVdsUVNaV2NQWlFIMXNXM3EyenR2Q0xFeFYxdVo1c2FnZEExX1AyV0paWEV3MFhlSUxPUDZZaDFEMmxicW1EU05GZ1A5WFozWTFjWW9rZWFRckVzVmJHQ04zaG9sMHVDUkpiYzkzU3ltUWVyTHl6SmM?oc=5",
+   "title": "Flash-grilled: Collin Brown - restaurantonline.co.uk",
+   "text": "Flash-grilled: Collin Brown - restaurantonline.co.uk. Flash-grilled: Collin Brown restaurantonline.co.uk",
+   "content_hash": "a21e350325360620",
+   "raw_feed_hash": "c5efbbc2230daa310da2d71ef87d321dca731ca969e6e690ad96e0437ddbf548",
+   "published_at": 1670572800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_aff34aa4e5",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "2e15e1ea6f0b68f5:c0",
+   "source_id": "2e15e1ea6f0b68f5",
+   "subject": "Consumers",
+   "predicate": "care about",
+   "object": "sustainability",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Consumers care about sustainability\u2014and back it up with their wallets",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675670400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Consumers",
+    "sustainability"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c5cae9fd0e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_aff34aa4e5"
+   }
+  },
+  {
+   "claim_id": "2e15e1ea6f0b68f5:c1",
+   "source_id": "2e15e1ea6f0b68f5",
+   "subject": "Consumers",
+   "predicate": "back up with their wallets",
+   "object": "sustainability",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Consumers care about sustainability\u2014and back it up with their wallets",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675670400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Consumers",
+    "sustainability"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c5cae9fd0e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_aff34aa4e5"
+   }
+  },
+  {
+   "claim_id": "8626089e95fb55e4:c0",
+   "source_id": "8626089e95fb55e4",
+   "subject": "True Digital",
+   "predicate": "announces",
+   "object": "bus tour to unite America\u2019s financial institutions for innovation",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "True Digital Announces Bus Tour to Unite America\u2019s Financial Institutions For Innovation",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678348800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "True Digital"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_cf0080df3a",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_aff34aa4e5"
+   }
+  },
+  {
+   "claim_id": "3a197542a6c3fb3d:c0",
+   "source_id": "3a197542a6c3fb3d",
+   "subject": "a preferred audio response curve",
+   "predicate": "enhances",
+   "object": "sound quality in true wireless stereo devices",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "How a preferred audio response curve enhances sound quality in true wireless stereo devices",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681801200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "preferred audio response curve",
+    "true wireless stereo devices"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_b7013b8204",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_aff34aa4e5"
+   }
+  },
+  {
+   "claim_id": "97f4680f4e1c69b7:c0",
+   "source_id": "97f4680f4e1c69b7",
+   "subject": "McKinsey & Company",
+   "predicate": "published",
+   "object": "article debunking age-based myths about worker preferences",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Gen what? Debunking age-based myths about worker preferences - McKinsey & Company",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681974000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "McKinsey & Company"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6fa74668a4",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_aff34aa4e5"
+   }
+  },
+  {
+   "claim_id": "f0d91afdcf0123d6:c0",
+   "source_id": "f0d91afdcf0123d6",
+   "subject": "Collin Brown",
+   "predicate": "is featured in",
+   "object": "Flash-grilled",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Flash-grilled: Collin Brown - restaurantonline.co.uk",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1670572800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Collin Brown",
+    "restaurantonline.co.uk"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_54acbd463f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_aff34aa4e5"
+   }
+  },
+  {
+   "claim_id": "f0d91afdcf0123d6:c1",
+   "source_id": "f0d91afdcf0123d6",
+   "subject": "Flash-grilled",
+   "predicate": "is published by",
+   "object": "restaurantonline.co.uk",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Flash-grilled: Collin Brown - restaurantonline.co.uk",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1670572800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "restaurantonline.co.uk"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_54acbd463f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_aff34aa4e5"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Consumers",
+   "normalized": "consumers",
+   "candidates": [
+    {
+     "entity_id": "ent_44f6713822",
+     "canonical": "consumers",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "Consumers",
+      "Consumers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "sustainability",
+   "normalized": "sustainability",
+   "candidates": [
+    {
+     "entity_id": "ent_86b38fdd14",
+     "canonical": "sustainability",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "sustainability",
+      "sustainability"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Consumers",
+   "normalized": "consumers",
+   "candidates": [
+    {
+     "entity_id": "ent_44f6713822",
+     "canonical": "consumers",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "Consumers",
+      "Consumers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "sustainability",
+   "normalized": "sustainability",
+   "candidates": [
+    {
+     "entity_id": "ent_86b38fdd14",
+     "canonical": "sustainability",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "sustainability",
+      "sustainability"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "True Digital",
+   "normalized": "true digital",
+   "candidates": [
+    {
+     "entity_id": "ent_efffeacc2b",
+     "canonical": "true digital",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "True Digital"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "preferred audio response curve",
+   "normalized": "preferred audio response curve",
+   "candidates": [
+    {
+     "entity_id": "ent_de312f1e53",
+     "canonical": "preferred audio response curve",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "preferred audio response curve"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "true wireless stereo devices",
+   "normalized": "true wireless stereo devices",
+   "candidates": [
+    {
+     "entity_id": "ent_7a9fa2ed5c",
+     "canonical": "true wireless stereo devices",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "true wireless stereo devices"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "McKinsey & Company",
+   "normalized": "mckinsey &",
+   "candidates": [
+    {
+     "entity_id": "ent_d8546ba112",
+     "canonical": "mckinsey &",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "McKinsey & Company"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Collin Brown",
+   "normalized": "collin brown",
+   "candidates": [
+    {
+     "entity_id": "ent_a3313252df",
+     "canonical": "collin brown",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Collin Brown"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "restaurantonline.co.uk",
+   "normalized": "restaurantonline co uk",
+   "candidates": [
+    {
+     "entity_id": "ent_edccee5cd9",
+     "canonical": "restaurantonline co uk",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "restaurantonline.co.uk",
+      "restaurantonline.co.uk"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "restaurantonline.co.uk",
+   "normalized": "restaurantonline co uk",
+   "candidates": [
+    {
+     "entity_id": "ent_edccee5cd9",
+     "canonical": "restaurantonline co uk",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "restaurantonline.co.uk",
+      "restaurantonline.co.uk"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "2e15e1ea6f0b68f5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1675670400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675670400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8626089e95fb55e4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678348800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678348800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3a197542a6c3fb3d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1681801200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681801200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "97f4680f4e1c69b7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1681974000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681974000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f0d91afdcf0123d6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1670572800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1670572800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_c5cae9fd0e",
+   "member_ids": [
+    "2e15e1ea6f0b68f5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "McKinsey & Company",
+   "primary_source": "McKinsey & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_cf0080df3a",
+   "member_ids": [
+    "8626089e95fb55e4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Wire",
+   "primary_source": "Business Wire",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b7013b8204",
+   "member_ids": [
+    "3a197542a6c3fb3d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "embedded.com",
+   "primary_source": "embedded.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6fa74668a4",
+   "member_ids": [
+    "97f4680f4e1c69b7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "McKinsey & Company",
+   "primary_source": "McKinsey & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_54acbd463f",
+   "member_ids": [
+    "f0d91afdcf0123d6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "restaurantonline.co.uk",
+   "primary_source": "restaurantonline.co.uk",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "2e15e1ea6f0b68f5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675670400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2e15e1ea6f0b68f5:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675670400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8626089e95fb55e4:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678348800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3a197542a6c3fb3d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681801200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "97f4680f4e1c69b7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681974000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f0d91afdcf0123d6:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1670572800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f0d91afdcf0123d6:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1670572800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "2e15e1ea6f0b68f5:c0",
+  "2e15e1ea6f0b68f5:c1",
+  "8626089e95fb55e4:c0",
+  "3a197542a6c3fb3d:c0",
+  "97f4680f4e1c69b7:c0",
+  "f0d91afdcf0123d6:c0",
+  "f0d91afdcf0123d6:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_8c937344cd": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_aff34aa4e5": {
+   "status": "fulfilled",
+   "n_claims": 7,
+   "n_included": 7
+  },
+  "req_254626c382": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_55dfb222fd": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_b9fa9b3f5b": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_dcbdaa08d8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_5ca128e6b1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_8c937344cd",
+  "req_254626c382",
+  "req_55dfb222fd",
+  "req_b9fa9b3f5b",
+  "req_dcbdaa08d8",
+  "req_5ca128e6b1"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 5,
+  "n_contradictions": 0,
+  "n_documents": 5
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 12.14,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "11c80c554dd6e52d",
+ "bundle_hash": "11c80c554dd6e52d",
+ "_persisted_at": "2026-07-13T01:58:50Z"
+}

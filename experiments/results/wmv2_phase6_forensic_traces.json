@@ -1,0 +1,1236 @@
+{
+ "_meta": {
+  "n_traces": 10,
+  "harness": "experiments/wmv2_phase6_traces.py",
+  "executed_end_to_end": [
+   "strategic_choice",
+   "trust",
+   "participation",
+   "participation_donation",
+   "diffusion_product"
+  ]
+ },
+ "traces": [
+  {
+   "category": "strategic_choice",
+   "question": "In a one-shot ultimatum split of $100, will the responder accept a $40 offer?",
+   "causal_process_request": "offer_response",
+   "scenario": {
+    "domain": "one_shot_bargaining",
+    "population_kind": "lab"
+   },
+   "registry_candidates": [
+    "ultimatum_offer_response",
+    "social_preference_population"
+   ],
+   "rejected_candidates": [],
+   "selected_family": "ultimatum_offer_response",
+   "status": "domain_restricted",
+   "applicability": {
+    "combined": 0.898,
+    "process_match": 1.0,
+    "applicability": 0.83,
+    "subscores": {
+     "domain_match": 1.0,
+     "population_match": 1.0,
+     "time_scale_match": 0.5,
+     "variable_compatibility": 1.0,
+     "data_availability": 1.0,
+     "institutional_compatibility": 1.0,
+     "evidence_quality": 0.4
+    }
+   },
+   "selected_pack": "ultimatum_oosterbeek_2004",
+   "parameter_posterior": {
+    "accept_threshold": {
+     "dataset": "Oosterbeek 2004 + Camerer 2003",
+     "hi": 0.5,
+     "lo": 0.0,
+     "method": "MAO implied by rejection of <0.2 offers",
+     "sd": 0.1,
+     "source": "reference_class_prior",
+     "value": 0.25
+    },
+    "mean_offer": {
+     "dataset": "Oosterbeek 2004",
+     "method": "meta-analytic mean",
+     "sd": 0.08,
+     "source": "published_research",
+     "value": 0.4
+    },
+    "rejection_rate": {
+     "dataset": "Oosterbeek 2004",
+     "method": "meta-analytic mean",
+     "sd": 0.08,
+     "source": "published_research",
+     "value": 0.16
+    }
+   },
+   "transport": {
+    "overall_risk": 0.304,
+    "decision": "transport_widened",
+    "widening": 1.609,
+    "decisive_failures": [],
+    "per_axis": {
+     "population": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "domain": {
+      "risk": 0.9,
+      "why": "no overlap \u2192 out of context"
+     },
+     "platform": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "geography": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "period": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "outcome_definition": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "action_space": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "exposure_process": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "network_structure": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "time_scale": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "measurement": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "intervention_type": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     }
+    },
+    "note": "widen parameter uncertainty by the factor; point estimate unchanged"
+   },
+   "provenance": [
+    {
+     "ref": "Oosterbeek, Sloof & van de Kuilen 2004, Experimental Economics 7:171-188",
+     "doi_or_url": "10.1023/B:EXEC.0000026978.14316.74",
+     "limits": "lab one-shot ultimatum; cultural variation; NOT the SPE split; NOT repeated bargaining"
+    }
+   ],
+   "support_tier": 4,
+   "support_grade": "transfer_supported",
+   "competing_mechanisms": [
+    "social_preference_population"
+   ],
+   "limitations": [
+    "repeated_bargaining: reputation changes offers"
+   ],
+   "evidence_class": "verified published estimate, transported (widened)",
+   "execution": {
+    "world_before": {
+     "quantities": []
+    },
+    "triggering_event": {
+     "etype": "behavioral_mechanism",
+     "payload_mechanism": "ultimatum_offer_response"
+    },
+    "state_delta": {
+     "at": "2020-01-01T00:00:00Z",
+     "event_type": "behavioral_mechanism",
+     "operator": "behavioral_mechanism",
+     "changes": [
+      {
+       "path": "quantities[accepted]",
+       "before": null,
+       "after": "accept"
+      }
+     ],
+     "reason_codes": [
+      "behavioral:ultimatum_offer_response",
+      "p=0.9526"
+     ],
+     "uncertainty": {
+      "pack_id": "",
+      "transport_widening": 1.0,
+      "diagnostics": {
+       "readout": "P(accept)"
+      }
+     },
+     "evidence_deps": []
+    },
+    "world_after": {
+     "accepted": "accept"
+    },
+    "terminal_sensitivity": {
+     "varied": "offer_frac",
+     "sweep": {
+      "0.05": 0.017,
+      "0.4": 0.97
+     },
+     "moves": true
+    }
+   }
+  },
+  {
+   "category": "trust",
+   "question": "In an anonymous trust game, does the investor's trust pay off?",
+   "causal_process_request": "trust_change_after_interaction",
+   "scenario": {
+    "domain": "trust_game",
+    "population_kind": "lab"
+   },
+   "registry_candidates": [
+    "trust_game_transfer",
+    "reputation_updating"
+   ],
+   "rejected_candidates": [],
+   "selected_family": "trust_game_transfer",
+   "status": "domain_restricted",
+   "applicability": {
+    "combined": 0.868,
+    "process_match": 1.0,
+    "applicability": 0.78,
+    "subscores": {
+     "domain_match": 1.0,
+     "population_match": 1.0,
+     "time_scale_match": 0.5,
+     "variable_compatibility": 1.0,
+     "data_availability": 1.0,
+     "institutional_compatibility": 1.0,
+     "evidence_quality": 0.15
+    }
+   },
+   "selected_pack": "trust_game_johnson_mislin_2011",
+   "parameter_posterior": {
+    "return_frac": {
+     "dataset": "Johnson & Mislin 2011",
+     "method": "meta-analytic mean",
+     "sd": 0.1,
+     "source": "published_research",
+     "value": 0.37
+    },
+    "send_frac": {
+     "dataset": "Johnson & Mislin 2011",
+     "method": "meta-analytic mean",
+     "sd": 0.1,
+     "source": "published_research",
+     "value": 0.5
+    }
+   },
+   "transport": {
+    "overall_risk": 0.196,
+    "decision": "transport_widened",
+    "widening": 1.393,
+    "decisive_failures": [],
+    "per_axis": {
+     "population": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "domain": {
+      "risk": 0.0,
+      "why": "exact match"
+     },
+     "platform": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "geography": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "period": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "outcome_definition": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "action_space": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "exposure_process": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "network_structure": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "time_scale": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "measurement": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "intervention_type": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     }
+    },
+    "note": "widen parameter uncertainty by the factor; point estimate unchanged"
+   },
+   "provenance": [
+    {
+     "ref": "Johnson & Mislin 2011, J. Economic Psychology 32(5):865-889",
+     "doi_or_url": "10.1016/j.joep.2011.05.007",
+     "limits": "anonymous one-shot lab trust game; NOT real-world relationship trust; NOT a general 'trust level' scalar"
+    }
+   ],
+   "support_tier": 4,
+   "support_grade": "transfer_supported",
+   "competing_mechanisms": [
+    "reputation_updating"
+   ],
+   "limitations": [
+    "repeated_interaction: reputation changes g",
+    "no_monetary_transfer: not a trust game"
+   ],
+   "evidence_class": "verified published estimate, transported (widened)",
+   "execution": {
+    "world_before": {
+     "quantities": []
+    },
+    "triggering_event": {
+     "etype": "behavioral_mechanism",
+     "payload_mechanism": "trust_game_transfer"
+    },
+    "state_delta": {
+     "at": "2020-01-01T00:00:00Z",
+     "event_type": "behavioral_mechanism",
+     "operator": "behavioral_mechanism",
+     "changes": [
+      {
+       "path": "quantities[trust_paid_off]",
+       "before": null,
+       "after": "True"
+      }
+     ],
+     "reason_codes": [
+      "behavioral:trust_game_transfer",
+      "p=1.0"
+     ],
+     "uncertainty": {
+      "pack_id": "",
+      "transport_widening": 1.0,
+      "diagnostics": {
+       "sent": 5.0,
+       "received_by_trustee": 15.0,
+       "returned": 5.55,
+       "investor_payoff": 10.55,
+       "trustee_payoff": 9.45,
+       "investor_net_from_trust": 0.55
+      }
+     },
+     "evidence_deps": []
+    },
+    "world_after": {
+     "trust_paid_off": "True"
+    },
+    "terminal_sensitivity": {
+     "varied": "return_frac",
+     "sweep": {
+      "0.2": 0.0,
+      "0.37": 1.0
+     },
+     "moves": true
+    }
+   }
+  },
+  {
+   "category": "participation",
+   "question": "Will a 'Neighbors' social-pressure mailer raise this voter's turnout probability?",
+   "causal_process_request": "participation_after_mobilization",
+   "scenario": {
+    "domain": "election",
+    "population_kind": "registered_voters"
+   },
+   "registry_candidates": [
+    "social_pressure_turnout"
+   ],
+   "rejected_candidates": [
+    {
+     "family_id": "matching_donation_response",
+     "process_match": 0.3,
+     "reason": "combined 0.2244 < 0.4"
+    }
+   ],
+   "selected_family": "social_pressure_turnout",
+   "status": "domain_restricted",
+   "applicability": {
+    "combined": 0.898,
+    "process_match": 1.0,
+    "applicability": 0.83,
+    "subscores": {
+     "domain_match": 1.0,
+     "population_match": 1.0,
+     "time_scale_match": 0.5,
+     "variable_compatibility": 1.0,
+     "data_availability": 1.0,
+     "institutional_compatibility": 1.0,
+     "evidence_quality": 0.4
+    }
+   },
+   "selected_pack": "ggl_2008_michigan",
+   "parameter_posterior": {
+    "levels": {
+     "dataset": "Gerber-Green-Larimer 2008",
+     "method": "randomized ITT turnout levels",
+     "sd": 0.02,
+     "source": "published_research",
+     "value": {
+      "civic_duty": 0.315,
+      "control": 0.297,
+      "hawthorne": 0.322,
+      "neighbors": 0.378,
+      "self": 0.345
+     }
+    }
+   },
+   "transport": {
+    "overall_risk": 0.304,
+    "decision": "transport_widened",
+    "widening": 1.609,
+    "decisive_failures": [],
+    "per_axis": {
+     "population": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "domain": {
+      "risk": 0.9,
+      "why": "no overlap \u2192 out of context"
+     },
+     "platform": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "geography": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "period": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "outcome_definition": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "action_space": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "exposure_process": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "network_structure": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "time_scale": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "measurement": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "intervention_type": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     }
+    },
+    "note": "widen parameter uncertainty by the factor; point estimate unchanged"
+   },
+   "provenance": [
+    {
+     "ref": "Gerber, Green & Larimer 2008, APSR 102(1):33-48",
+     "doi_or_url": "10.1017/S000305540808009X",
+     "limits": "low-salience primary; household mailers; effect is on a low baseline; transport to high-salience elections overstates (ceiling)"
+    }
+   ],
+   "support_tier": 4,
+   "support_grade": "transfer_supported",
+   "competing_mechanisms": [],
+   "limitations": [
+    "high_salience_election: ceiling effect",
+    "vote_choice: this is turnout, not persuasion"
+   ],
+   "evidence_class": "verified published estimate, transported (widened)",
+   "execution": {
+    "world_before": {
+     "quantities": []
+    },
+    "triggering_event": {
+     "etype": "behavioral_mechanism",
+     "payload_mechanism": "social_pressure_turnout"
+    },
+    "state_delta": {
+     "at": "2020-01-01T00:00:00Z",
+     "event_type": "behavioral_mechanism",
+     "operator": "behavioral_mechanism",
+     "changes": [
+      {
+       "path": "quantities[turnout]",
+       "before": null,
+       "after": "True"
+      }
+     ],
+     "reason_codes": [
+      "behavioral:social_pressure_turnout",
+      "p=0.378"
+     ],
+     "uncertainty": {
+      "pack_id": "",
+      "transport_widening": 1.0,
+      "diagnostics": {
+       "readout": "P(turnout)"
+      }
+     },
+     "evidence_deps": []
+    },
+    "world_after": {
+     "turnout": "True"
+    },
+    "terminal_sensitivity": {
+     "varied": "treatment",
+     "sweep": {
+      "control": 0.307,
+      "neighbors": 0.387
+     },
+     "moves": true
+    }
+   }
+  },
+  {
+   "category": "participation_donation",
+   "question": "Does announcing a matching grant raise this prior donor's probability of giving?",
+   "causal_process_request": "donation_after_ask",
+   "scenario": {
+    "domain": "fundraising"
+   },
+   "registry_candidates": [
+    "matching_donation_response"
+   ],
+   "rejected_candidates": [],
+   "selected_family": "matching_donation_response",
+   "status": "domain_restricted",
+   "applicability": {
+    "combined": 0.868,
+    "process_match": 1.0,
+    "applicability": 0.78,
+    "subscores": {
+     "domain_match": 1.0,
+     "population_match": 0.5,
+     "time_scale_match": 0.5,
+     "variable_compatibility": 1.0,
+     "data_availability": 1.0,
+     "institutional_compatibility": 1.0,
+     "evidence_quality": 0.4
+    }
+   },
+   "selected_pack": "karlan_list_2007",
+   "parameter_posterior": {
+    "ratio_is_flat": {
+     "dataset": "Karlan & List 2007",
+     "hi": null,
+     "lo": null,
+     "method": "randomized arms 1:1/2:1/3:1",
+     "sd": null,
+     "source": "published_research",
+     "value": true
+    },
+    "relative_lift": {
+     "dataset": "Karlan & List 2007",
+     "hi": 0.4,
+     "lo": 0.05,
+     "method": "randomized field experiment",
+     "sd": 0.08,
+     "source": "published_research",
+     "value": 0.22
+    }
+   },
+   "transport": {
+    "overall_risk": 0.196,
+    "decision": "transport_widened",
+    "widening": 1.393,
+    "decisive_failures": [],
+    "per_axis": {
+     "population": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "domain": {
+      "risk": 0.0,
+      "why": "exact match"
+     },
+     "platform": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "geography": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "period": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "outcome_definition": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "action_space": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "exposure_process": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "network_structure": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "time_scale": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "measurement": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "intervention_type": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     }
+    },
+    "note": "widen parameter uncertainty by the factor; point estimate unchanged"
+   },
+   "provenance": [
+    {
+     "ref": "Karlan & List 2007, American Economic Review 97(5):1774-1793",
+     "doi_or_url": "10.1257/aer.97.5.1774",
+     "limits": "prior donors (renewal), one org; do NOT scale by ratio; 22% is RELATIVE, not percentage points; cold acquisition unvalidated"
+    }
+   ],
+   "support_tier": 4,
+   "support_grade": "transfer_supported",
+   "competing_mechanisms": [],
+   "limitations": [
+    "cold_acquisition: effect measured on prior donors",
+    "scaling the effect by match ratio (the study's key null forbids it)"
+   ],
+   "evidence_class": "verified published estimate, transported (widened)",
+   "execution": {
+    "world_before": {
+     "quantities": []
+    },
+    "triggering_event": {
+     "etype": "behavioral_mechanism",
+     "payload_mechanism": "matching_donation_response"
+    },
+    "state_delta": {
+     "at": "2020-01-01T00:00:00Z",
+     "event_type": "behavioral_mechanism",
+     "operator": "behavioral_mechanism",
+     "changes": [
+      {
+       "path": "quantities[donated]",
+       "before": null,
+       "after": "True"
+      }
+     ],
+     "reason_codes": [
+      "behavioral:matching_donation_response",
+      "p=0.244"
+     ],
+     "uncertainty": {
+      "pack_id": "",
+      "transport_widening": 1.0,
+      "diagnostics": {
+       "readout": "P(donate)"
+      }
+     },
+     "evidence_deps": []
+    },
+    "world_after": {
+     "donated": "True"
+    },
+    "terminal_sensitivity": {
+     "varied": "match_offered",
+     "sweep": {
+      "False": 0.223,
+      "True": 0.273
+     },
+     "moves": true
+    }
+   }
+  },
+  {
+   "category": "diffusion_product",
+   "question": "What fraction of the market adopts a new durable good over 4 years?",
+   "causal_process_request": "cascade_saturation",
+   "scenario": {
+    "domain": "product_launch",
+    "available_state": [
+     "quantities"
+    ]
+   },
+   "registry_candidates": [
+    "bass_diffusion"
+   ],
+   "rejected_candidates": [],
+   "selected_family": "bass_diffusion",
+   "status": "domain_restricted",
+   "applicability": {
+    "combined": 0.838,
+    "process_match": 1.0,
+    "applicability": 0.73,
+    "subscores": {
+     "domain_match": 1.0,
+     "population_match": 0.5,
+     "time_scale_match": 0.5,
+     "variable_compatibility": 1.0,
+     "data_availability": 1.0,
+     "institutional_compatibility": 1.0,
+     "evidence_quality": 0.15
+    }
+   },
+   "selected_pack": "bass_sultan_farley_lehmann_1990",
+   "parameter_posterior": {
+    "p": {
+     "dataset": "Sultan-Farley-Lehmann 1990",
+     "hi": 0.12,
+     "lo": 0.001,
+     "method": "meta-analytic mean",
+     "sd": 0.03,
+     "source": "published_research",
+     "value": 0.03
+    },
+    "q": {
+     "dataset": "Sultan-Farley-Lehmann 1990",
+     "hi": 1.0,
+     "lo": 0.05,
+     "method": "meta-analytic mean",
+     "sd": 0.35,
+     "source": "published_research",
+     "value": 0.38
+    }
+   },
+   "transport": {
+    "overall_risk": 0.304,
+    "decision": "transport_widened",
+    "widening": 1.609,
+    "decisive_failures": [],
+    "per_axis": {
+     "population": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "domain": {
+      "risk": 0.9,
+      "why": "no overlap \u2192 out of context"
+     },
+     "platform": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "geography": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "period": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "outcome_definition": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "action_space": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "exposure_process": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "network_structure": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "time_scale": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "measurement": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "intervention_type": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     }
+    },
+    "note": "widen parameter uncertainty by the factor; point estimate unchanged"
+   },
+   "provenance": [
+    {
+     "ref": "Sultan, Farley & Lehmann 1990, J. Marketing Research 27(1):70-77",
+     "doi_or_url": "10.1177/002224379002700107",
+     "limits": "SDs \u2248 means (p SD\u22480.03, q SD\u22480.35) \u2192 transport as a WIDE prior, never a point; durable-goods/innovation only; not low-cost social behavior"
+    }
+   ],
+   "support_tier": 4,
+   "support_grade": "transfer_supported",
+   "competing_mechanisms": [],
+   "limitations": [
+    "unknown_market_size: Bass needs a finite M",
+    "low_cost_social_behavior: exposure\u2260adoption",
+    "fails when exposure\u2260adoption (social behavior) or M is unknown"
+   ],
+   "evidence_class": "verified published estimate, transported (widened)",
+   "execution": {
+    "world_before": {
+     "quantities": []
+    },
+    "triggering_event": {
+     "etype": "behavioral_mechanism",
+     "payload_mechanism": "bass_diffusion"
+    },
+    "state_delta": {
+     "at": "2020-01-01T00:00:00Z",
+     "event_type": "behavioral_mechanism",
+     "operator": "behavioral_mechanism",
+     "changes": [
+      {
+       "path": "quantities[majority_adopts]",
+       "before": null,
+       "after": "True"
+      }
+     ],
+     "reason_codes": [
+      "behavioral:bass_diffusion",
+      "p=1.0"
+     ],
+     "uncertainty": {
+      "pack_id": "",
+      "transport_widening": 1.0,
+      "diagnostics": {
+       "readout": "cumulative adoption fraction at horizon",
+       "peak_time": 6.192619197703112
+      }
+     },
+     "evidence_deps": []
+    },
+    "world_after": {
+     "majority_adopts": "True"
+    },
+    "terminal_sensitivity": {
+     "varied": "q",
+     "sweep": {
+      "0.1": 0.997,
+      "0.38": 1.0
+     },
+     "moves": true
+    }
+   }
+  },
+  {
+   "category": "resource_dropout",
+   "question": "Will this month-to-month telecom subscriber churn?",
+   "causal_process_request": "relationship_dropout",
+   "scenario": {
+    "domain": "subscription_churn",
+    "available_data": [
+     "actor_features"
+    ]
+   },
+   "registry_candidates": [],
+   "rejected_candidates": [
+    {
+     "family_id": "attrition_dropout_hazard",
+     "process_match": 1.0,
+     "reason": "required state absent: ['entities']"
+    },
+    {
+     "family_id": "reputation_updating",
+     "process_match": 0.3,
+     "reason": "combined 0.2154 < 0.4"
+    },
+    {
+     "family_id": "trust_game_transfer",
+     "process_match": 0.3,
+     "reason": "combined 0.2154 < 0.4"
+    }
+   ],
+   "selected": null,
+   "support_tier": 6,
+   "note": "no evidence-backed family answers this process \u2192 generic/competing fallback"
+  },
+  {
+   "category": "platform_attention",
+   "question": "Which of two headlines will win an A/B click test?",
+   "causal_process_request": "content_response",
+   "scenario": {
+    "domain": "content_ab_test",
+    "available_state": [
+     "populations"
+    ]
+   },
+   "registry_candidates": [
+    "content_response_click"
+   ],
+   "rejected_candidates": [],
+   "selected_family": "content_response_click",
+   "status": "production_eligible",
+   "applicability": {
+    "combined": 0.928,
+    "process_match": 1.0,
+    "applicability": 0.88,
+    "subscores": {
+     "domain_match": 1.0,
+     "population_match": 0.5,
+     "time_scale_match": 0.5,
+     "variable_compatibility": 1.0,
+     "data_availability": 1.0,
+     "institutional_compatibility": 1.0,
+     "evidence_quality": 0.9
+    }
+   },
+   "selected_pack": "upworthy_archive_2021",
+   "parameter_posterior": {
+    "surface_w": {
+     "dataset": "experiments/results/exp054_upworthy/upworthy_parsed.json",
+     "features": [
+      "len_words",
+      "has_number",
+      "has_question",
+      "has_quote",
+      "has_you",
+      "all_caps_word"
+     ],
+     "hi": null,
+     "lo": null,
+     "method": "within-test CTR z-score linear fit",
+     "sd": null,
+     "source": "fitted",
+     "value": [
+      0.0549,
+      0.0151,
+      -0.1887,
+      0.0099,
+      0.0302,
+      -0.0822
+     ]
+    }
+   },
+   "transport": {
+    "overall_risk": 0.174,
+    "decision": "transport_widened",
+    "widening": 1.348,
+    "decisive_failures": [],
+    "per_axis": {
+     "population": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "domain": {
+      "risk": 0.0,
+      "why": "exact match"
+     },
+     "platform": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "geography": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "period": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "outcome_definition": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "action_space": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "exposure_process": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "network_structure": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "time_scale": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "measurement": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "intervention_type": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     }
+    },
+    "note": "widen parameter uncertainty by the factor; point estimate unchanged"
+   },
+   "provenance": [
+    {
+     "ref": "Upworthy Research Archive (Matias, Munger, Le Quere, Ebersole 2021, Sci Data)",
+     "doi_or_url": "10.1038/s41597-021-00934-7",
+     "limits": "clickbait-era Upworthy; identifies CONTENT response NOT position/examination bias; ~22% of tests had a caching-induced randomization failure (2024 correction) \u2014 content-response ordering signal is robust but caveated"
+    }
+   ],
+   "support_tier": 2,
+   "support_grade": "empirically_supported",
+   "competing_mechanisms": [],
+   "limitations": [
+    "position_bias: rank NOT manipulated here",
+    "surface features alone (no population layer) ~random on P@1 \u2014 population is load-bearing (ablation preserved)"
+   ],
+   "evidence_class": "evidence-backed (validated)",
+   "execution": {
+    "note": "executes in the reference world / family test (swm.world_model_v2.reference.upworthy:population_rank); selection+applicability+transport shown here"
+   }
+  },
+  {
+   "category": "diffusion_social",
+   "question": "Among exposed non-adopters on a follower graph, who activates in the next 24h?",
+   "causal_process_request": "adoption_after_repeated_exposure",
+   "scenario": {
+    "domain": "social_media_diffusion",
+    "population_kind": "online_social",
+    "available_state": [
+     "network"
+    ]
+   },
+   "registry_candidates": [
+    "exposure_response_hazard"
+   ],
+   "rejected_candidates": [
+    {
+     "family_id": "bass_diffusion",
+     "process_match": 1.0,
+     "reason": "required state absent: ['quantities']"
+    },
+    {
+     "family_id": "content_response_click",
+     "process_match": 0.6,
+     "reason": "required state absent: ['populations']"
+    },
+    {
+     "family_id": "position_bias_propensity",
+     "process_match": 0.6,
+     "reason": "required state absent: ['quantities']"
+    }
+   ],
+   "selected_family": "exposure_response_hazard",
+   "status": "locally_validated",
+   "applicability": {
+    "combined": 0.844,
+    "process_match": 1.0,
+    "applicability": 0.74,
+    "subscores": {
+     "domain_match": 1.0,
+     "population_match": 1.0,
+     "time_scale_match": 0.5,
+     "variable_compatibility": 1.0,
+     "data_availability": 0.0,
+     "institutional_compatibility": 1.0,
+     "evidence_quality": 0.7
+    }
+   },
+   "selected_pack": "higgs_2012_rumor",
+   "parameter_posterior": {
+    "theta": {
+     "dataset": "SNAP higgs-twitter, time-forward train cohort",
+     "feature_map": [
+      "1",
+      "log1p(k)",
+      "log1p(deg)",
+      "k/deg",
+      "exp(-recency/24)"
+     ],
+     "hi": null,
+     "lo": null,
+     "method": "Bernoulli-hazard GLM, cloglog link",
+     "note": "REAL fitted GLM coefficients (was a pointer); see artifact for CI",
+     "sd": null,
+     "source": "fitted",
+     "value": [
+      -3.32685,
+      0.86402,
+      -0.17042,
+      0.10905,
+      -0.03488
+     ]
+    }
+   },
+   "transport": {
+    "overall_risk": 0.196,
+    "decision": "transport_widened",
+    "widening": 1.393,
+    "decisive_failures": [],
+    "per_axis": {
+     "population": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "domain": {
+      "risk": 0.0,
+      "why": "exact match"
+     },
+     "platform": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "geography": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "period": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "outcome_definition": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "action_space": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "exposure_process": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "network_structure": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "time_scale": {
+      "risk": 0.5,
+      "why": "one side specifies a context the other does not \u2192 real uncertainty (medium)"
+     },
+     "measurement": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     },
+     "intervention_type": {
+      "risk": 0.15,
+      "why": "neither side specifies this axis \u2192 not a known mismatch (low)"
+     }
+    },
+    "note": "widen parameter uncertainty by the factor; point estimate unchanged"
+   },
+   "provenance": [
+    {
+     "ref": "Romero, Meeder & Kleinberg 2011 (WWW)",
+     "doi_or_url": "",
+     "limits": "Twitter only; hashtag adoption, not general behavior"
+    }
+   ],
+   "support_tier": 2,
+   "support_grade": "empirically_supported",
+   "competing_mechanisms": [],
+   "limitations": [
+    "no_follower_graph: needs a network",
+    "rollout adds nothing when in-sample subgraph is sparse (honest scope)"
+   ],
+   "evidence_class": "evidence-backed (local held-out)",
+   "execution": {
+    "note": "executes in the reference world / family test (swm.world_model_v2.registry.families.diffusion:contagion_window_predict); selection+applicability+transport shown here"
+   }
+  },
+  {
+   "category": "network",
+   "question": "Does friendship-nomination seeding outperform random seeding for a community intervention?",
+   "causal_process_request": "network_targeting",
+   "scenario": {
+    "domain": "public_health",
+    "available_state": [
+     "network"
+    ]
+   },
+   "registry_candidates": [],
+   "rejected_candidates": [],
+   "selected": null,
+   "support_tier": 6,
+   "note": "no evidence-backed family answers this process \u2192 generic/competing fallback"
+  },
+  {
+   "category": "opinion",
+   "question": "Will a single campaign contact persuade this voter to change their vote choice?",
+   "causal_process_request": "persuasion_success",
+   "scenario": {
+    "domain": "political_persuasion"
+   },
+   "registry_candidates": [
+    "persuasion_minimal_effects"
+   ],
+   "rejected_candidates": [],
+   "selected_family": "persuasion_minimal_effects",
+   "status": "research_encoded",
+   "applicability": {
+    "combined": 0.838,
+    "process_match": 1.0,
+    "applicability": 0.73,
+    "subscores": {
+     "domain_match": 1.0,
+     "population_match": 0.5,
+     "time_scale_match": 0.5,
+     "variable_compatibility": 1.0,
+     "data_availability": 1.0,
+     "institutional_compatibility": 1.0,
+     "evidence_quality": 0.15
+    }
+   },
+   "selected_pack": null,
+   "parameter_posterior": "no pack (research_encoded / structural)",
+   "transport": null,
+   "provenance": [
+    {
+     "ref": "Kalla & Broockman 2018, APSR 112(1):148-166",
+     "doi_or_url": "10.1017/S0003055417000363",
+     "limits": "general-election vote choice; NOT turnout; a guardrail against inventing large persuasion effects"
+    }
+   ],
+   "support_tier": 4,
+   "support_grade": "transfer_supported",
+   "competing_mechanisms": [],
+   "limitations": [],
+   "evidence_class": "research-encoded structural family (broad uncertainty)",
+   "execution": {
+    "note": "executes in the reference world / family test (); selection+applicability+transport shown here"
+   }
+  }
+ ]
+}

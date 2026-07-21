@@ -1,0 +1,1007 @@
+{
+ "schema_version": "actor.policy.benchmark.v1",
+ "backend": "deepseek",
+ "n_cases": 9,
+ "hypotheses": 3,
+ "samples": 2,
+ "seed": 0,
+ "arms": {
+  "numeric_policy": {
+   "summary": {
+    "n_cases": 9,
+    "next_action_accuracy": 0.4444,
+    "top2_accuracy": 0.5556,
+    "mean_log_loss": 1.3863,
+    "mean_brier": 0.75,
+    "mean_confidence": 0.25,
+    "confidence_accuracy_gap": 0.1944,
+    "mean_novel_rate": 0.0,
+    "total_fallbacks": 0,
+    "total_llm_calls": 0,
+    "total_latency_s": 0.0
+   },
+   "cases": [
+    {
+     "case_id": "khrushchev_1962_cuba",
+     "actual": "accept",
+     "top1": "escalate",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.25,
+     "log_loss": 1.3863,
+     "brier": 0.75,
+     "confidence": 0.25,
+     "distribution": {
+      "escalate": 0.25,
+      "hold_position": 0.25,
+      "delay": 0.25,
+      "accept": 0.25
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 0,
+     "latency_s": 0.0
+    },
+    {
+     "case_id": "nixon_1974_resignation",
+     "actual": "exit",
+     "top1": "exit",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.25,
+     "log_loss": 1.3863,
+     "brier": 0.75,
+     "confidence": 0.25,
+     "distribution": {
+      "exit": 0.25,
+      "hold_position": 0.25,
+      "escalate": 0.25,
+      "delay": 0.25
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 0,
+     "latency_s": 0.0
+    },
+    {
+     "case_id": "yeltsin_1991_coup",
+     "actual": "mobilize",
+     "top1": "mobilize",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.25,
+     "log_loss": 1.3863,
+     "brier": 0.75,
+     "confidence": 0.25,
+     "distribution": {
+      "mobilize": 0.25,
+      "accept": 0.25,
+      "exit": 0.25,
+      "wait": 0.25
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 0,
+     "latency_s": 0.0
+    },
+    {
+     "case_id": "thatcher_1990_ballot",
+     "actual": "exit",
+     "top1": "seek_mediator",
+     "correct": false,
+     "top2_correct": true,
+     "p_actual": 0.25,
+     "log_loss": 1.3863,
+     "brier": 0.75,
+     "confidence": 0.25,
+     "distribution": {
+      "seek_mediator": 0.25,
+      "exit": 0.25,
+      "delay": 0.25,
+      "hold_position": 0.25
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 0,
+     "latency_s": 0.0
+    },
+    {
+     "case_id": "musk_2022_twitter_close",
+     "actual": "acquire",
+     "top1": "delay",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.25,
+     "log_loss": 1.3863,
+     "brier": 0.75,
+     "confidence": 0.25,
+     "distribution": {
+      "delay": 0.25,
+      "counteroffer": 0.25,
+      "acquire": 0.25,
+      "hold_position": 0.25
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 0,
+     "latency_s": 0.0
+    },
+    {
+     "case_id": "johnson_2022_resignation",
+     "actual": "exit",
+     "top1": "exit",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.25,
+     "log_loss": 1.3863,
+     "brier": 0.75,
+     "confidence": 0.25,
+     "distribution": {
+      "exit": 0.25,
+      "delay": 0.25,
+      "hold_position": 0.25,
+      "escalate": 0.25
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 0,
+     "latency_s": 0.0
+    },
+    {
+     "case_id": "zelenskyy_2022_kyiv",
+     "actual": "hold_position",
+     "top1": "hold_position",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.25,
+     "log_loss": 1.3863,
+     "brier": 0.75,
+     "confidence": 0.25,
+     "distribution": {
+      "hold_position": 0.25,
+      "exit": 0.25,
+      "delay": 0.25,
+      "seek_mediator": 0.25
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 0,
+     "latency_s": 0.0
+    },
+    {
+     "case_id": "deklerk_1990_unbanning",
+     "actual": "reveal",
+     "top1": "delay",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.25,
+     "log_loss": 1.3863,
+     "brier": 0.75,
+     "confidence": 0.25,
+     "distribution": {
+      "delay": 0.25,
+      "hold_position": 0.25,
+      "reveal": 0.25,
+      "amend": 0.25
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 0,
+     "latency_s": 0.0
+    },
+    {
+     "case_id": "disney_2022_iger",
+     "actual": "fire",
+     "top1": "amend",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.25,
+     "log_loss": 1.3863,
+     "brier": 0.75,
+     "confidence": 0.25,
+     "distribution": {
+      "amend": 0.25,
+      "delay": 0.25,
+      "fire": 0.25,
+      "hold_position": 0.25
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 0,
+     "latency_s": 0.0
+    }
+   ]
+  },
+  "persona_blended_numeric_policy": {
+   "summary": {
+    "n_cases": 9,
+    "next_action_accuracy": 0.1111,
+    "top2_accuracy": 0.7778,
+    "mean_log_loss": 1.58,
+    "mean_brier": 0.7867,
+    "mean_confidence": 0.4119,
+    "confidence_accuracy_gap": 0.3008,
+    "mean_novel_rate": 0.0,
+    "total_fallbacks": 0,
+    "total_llm_calls": 9,
+    "total_latency_s": 58.7
+   },
+   "cases": [
+    {
+     "case_id": "khrushchev_1962_cuba",
+     "actual": "accept",
+     "top1": "send_private_letter_to_kennedy",
+     "correct": false,
+     "top2_correct": true,
+     "p_actual": 0.2797,
+     "log_loss": 1.274,
+     "brier": 0.833,
+     "confidence": 0.5493,
+     "distribution": {
+      "send_private_letter_to_kennedy": 0.5493,
+      "accept": 0.2797,
+      "hold_position": 0.0916,
+      "delay": 0.061,
+      "escalate": 0.0184
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 1,
+     "latency_s": 5.39
+    },
+    {
+     "case_id": "nixon_1974_resignation",
+     "actual": "exit",
+     "top1": "resignation_speech_prep",
+     "correct": false,
+     "top2_correct": true,
+     "p_actual": 0.2915,
+     "log_loss": 1.2328,
+     "brier": 0.7226,
+     "confidence": 0.4235,
+     "distribution": {
+      "resignation_speech_prep": 0.4235,
+      "exit": 0.2915,
+      "pardon_negotiation_backchannel": 0.1943,
+      "delay": 0.0486,
+      "hold_position": 0.0324,
+      "escalate": 0.0098
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 1,
+     "latency_s": 6.38
+    },
+    {
+     "case_id": "yeltsin_1991_coup",
+     "actual": "mobilize",
+     "top1": "broadcast_appeal",
+     "correct": false,
+     "top2_correct": true,
+     "p_actual": 0.2832,
+     "log_loss": 1.2618,
+     "brier": 0.7376,
+     "confidence": 0.4114,
+     "distribution": {
+      "broadcast_appeal": 0.4114,
+      "mobilize": 0.2832,
+      "climb_tank": 0.2247,
+      "wait": 0.0618,
+      "accept": 0.0095,
+      "exit": 0.0095
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 1,
+     "latency_s": 6.49
+    },
+    {
+     "case_id": "thatcher_1990_ballot",
+     "actual": "exit",
+     "top1": "hold_position",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.0416,
+     "log_loss": 3.18,
+     "brier": 1.1678,
+     "confidence": 0.3743,
+     "distribution": {
+      "hold_position": 0.3743,
+      "rally_cabinet_loyalists": 0.2495,
+      "direct_appeal_to_party_members": 0.1906,
+      "seek_mediator": 0.0817,
+      "delay": 0.0624,
+      "exit": 0.0416
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 1,
+     "latency_s": 6.54
+    },
+    {
+     "case_id": "musk_2022_twitter_close",
+     "actual": "acquire",
+     "top1": "counteroffer",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.0586,
+     "log_loss": 2.8366,
+     "brier": 1.1365,
+     "confidence": 0.3517,
+     "distribution": {
+      "counteroffer": 0.3517,
+      "leak_settlement_offer": 0.2686,
+      "hire_crisis_pr": 0.2154,
+      "delay": 0.0879,
+      "acquire": 0.0586,
+      "hold_position": 0.0177
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 1,
+     "latency_s": 5.82
+    },
+    {
+     "case_id": "johnson_2022_resignation",
+     "actual": "exit",
+     "top1": "resign_with_grace",
+     "correct": false,
+     "top2_correct": true,
+     "p_actual": 0.3102,
+     "log_loss": 1.1706,
+     "brier": 0.7009,
+     "confidence": 0.4507,
+     "distribution": {
+      "resign_with_grace": 0.4507,
+      "exit": 0.3102,
+      "call_sunak": 0.1266,
+      "delay": 0.0677,
+      "hold_position": 0.0345,
+      "escalate": 0.0104
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 1,
+     "latency_s": 6.86
+    },
+    {
+     "case_id": "zelenskyy_2022_kyiv",
+     "actual": "hold_position",
+     "top1": "record_defiant_video",
+     "correct": false,
+     "top2_correct": true,
+     "p_actual": 0.2455,
+     "log_loss": 1.4044,
+     "brier": 0.7464,
+     "confidence": 0.3567,
+     "distribution": {
+      "record_defiant_video": 0.3567,
+      "hold_position": 0.2455,
+      "call_nato_emergency": 0.1637,
+      "delay": 0.125,
+      "seek_mediator": 0.0818,
+      "exit": 0.0273
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 1,
+     "latency_s": 6.89
+    },
+    {
+     "case_id": "deklerk_1990_unbanning",
+     "actual": "reveal",
+     "top1": "address_parliament_reforms",
+     "correct": false,
+     "top2_correct": true,
+     "p_actual": 0.3874,
+     "log_loss": 0.9483,
+     "brier": 0.558,
+     "confidence": 0.3874,
+     "distribution": {
+      "address_parliament_reforms": 0.3874,
+      "reveal": 0.3874,
+      "private_assurance_to_security": 0.1777,
+      "amend": 0.0296,
+      "delay": 0.0089,
+      "hold_position": 0.0089
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 1,
+     "latency_s": 8.18
+    },
+    {
+     "case_id": "disney_2022_iger",
+     "actual": "fire",
+     "top1": "fire",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.4021,
+     "log_loss": 0.9111,
+     "brier": 0.4779,
+     "confidence": 0.4021,
+     "distribution": {
+      "fire": 0.4021,
+      "approach_iger_as_interim": 0.268,
+      "board_statement_of_accountability": 0.2047,
+      "delay": 0.067,
+      "amend": 0.0447,
+      "hold_position": 0.0135
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 1,
+     "latency_s": 6.19
+    }
+   ]
+  },
+  "stateless_llm_policy": {
+   "summary": {
+    "n_cases": 9,
+    "next_action_accuracy": 0.5556,
+    "top2_accuracy": 0.5556,
+    "mean_log_loss": 1.1378,
+    "mean_brier": 0.7778,
+    "mean_confidence": 0.8333,
+    "confidence_accuracy_gap": 0.2778,
+    "mean_novel_rate": 0.3333,
+    "total_fallbacks": 0,
+    "total_llm_calls": 54,
+    "total_latency_s": 606.2
+   },
+   "cases": [
+    {
+     "case_id": "khrushchev_1962_cuba",
+     "actual": "accept",
+     "top1": "accept",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.8333,
+     "log_loss": 0.1823,
+     "brier": 0.0556,
+     "confidence": 0.8333,
+     "distribution": {
+      "accept": 0.8333,
+      "accept_kenndey_pledge_no_turkey_trade_public": 0.1667
+     },
+     "novel_rate": 0.16666666666666666,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 65.06
+    },
+    {
+     "case_id": "nixon_1974_resignation",
+     "actual": "exit",
+     "top1": "resign",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.0,
+     "log_loss": 2.4849,
+     "brier": 1.7222,
+     "confidence": 0.8333,
+     "distribution": {
+      "resign": 0.8333,
+      "resign_presidency": 0.1667
+     },
+     "novel_rate": 1.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 51.13
+    },
+    {
+     "case_id": "yeltsin_1991_coup",
+     "actual": "mobilize",
+     "top1": "mobilize_resistance",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.0,
+     "log_loss": 2.4849,
+     "brier": 1.7222,
+     "confidence": 0.8333,
+     "distribution": {
+      "mobilize_resistance": 0.8333,
+      "mobilize_defenders": 0.1667
+     },
+     "novel_rate": 1.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 69.28
+    },
+    {
+     "case_id": "thatcher_1990_ballot",
+     "actual": "exit",
+     "top1": "hold_position",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.1667,
+     "log_loss": 1.7918,
+     "brier": 1.1667,
+     "confidence": 0.6667,
+     "distribution": {
+      "hold_position": 0.6667,
+      "withdraw_from_ballot": 0.1667,
+      "exit": 0.1667
+     },
+     "novel_rate": 0.16666666666666666,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 79.28
+    },
+    {
+     "case_id": "musk_2022_twitter_close",
+     "actual": "acquire",
+     "top1": "acquire",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.6667,
+     "log_loss": 0.4055,
+     "brier": 0.1667,
+     "confidence": 0.6667,
+     "distribution": {
+      "acquire": 0.6667,
+      "conditional_settle_then_acquire": 0.1667,
+      "negotiate_settlement": 0.1667
+     },
+     "novel_rate": 0.3333333333333333,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 64.7
+    },
+    {
+     "case_id": "johnson_2022_resignation",
+     "actual": "exit",
+     "top1": "hold_position",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.0,
+     "log_loss": 2.4849,
+     "brier": 2.0,
+     "confidence": 1.0,
+     "distribution": {
+      "hold_position": 1.0
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 70.64
+    },
+    {
+     "case_id": "zelenskyy_2022_kyiv",
+     "actual": "hold_position",
+     "top1": "hold_position",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 1.0,
+     "log_loss": -0.0,
+     "brier": 0.0,
+     "confidence": 1.0,
+     "distribution": {
+      "hold_position": 1.0
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 68.57
+    },
+    {
+     "case_id": "deklerk_1990_unbanning",
+     "actual": "reveal",
+     "top1": "reveal",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.6667,
+     "log_loss": 0.4055,
+     "brier": 0.1667,
+     "confidence": 0.6667,
+     "distribution": {
+      "reveal": 0.6667,
+      "unban_and_negotiate": 0.1667,
+      "negotiation_reveal": 0.1667
+     },
+     "novel_rate": 0.3333333333333333,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 78.47
+    },
+    {
+     "case_id": "disney_2022_iger",
+     "actual": "fire",
+     "top1": "fire",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 1.0,
+     "log_loss": -0.0,
+     "brier": 0.0,
+     "confidence": 1.0,
+     "distribution": {
+      "fire": 1.0
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 59.1
+    }
+   ]
+  },
+  "persistent_qualitative_llm_policy": {
+   "summary": {
+    "n_cases": 9,
+    "next_action_accuracy": 0.7778,
+    "top2_accuracy": 0.7778,
+    "mean_log_loss": 0.8049,
+    "mean_brier": 0.5124,
+    "mean_confidence": 0.7778,
+    "confidence_accuracy_gap": 0.0,
+    "mean_novel_rate": 0.1667,
+    "total_fallbacks": 0,
+    "total_llm_calls": 54,
+    "total_latency_s": 880.6
+   },
+   "cases": [
+    {
+     "case_id": "khrushchev_1962_cuba",
+     "actual": "accept",
+     "top1": "accept",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.8333,
+     "log_loss": 0.1823,
+     "brier": 0.0556,
+     "confidence": 0.8333,
+     "distribution": {
+      "accept": 0.8333,
+      "accept_public_trade": 0.1667
+     },
+     "novel_rate": 0.16666666666666666,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 89.77
+    },
+    {
+     "case_id": "nixon_1974_resignation",
+     "actual": "exit",
+     "top1": "exit",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.6667,
+     "log_loss": 0.4055,
+     "brier": 0.2222,
+     "confidence": 0.6667,
+     "distribution": {
+      "exit": 0.6667,
+      "resign": 0.3333
+     },
+     "novel_rate": 0.3333333333333333,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 87.71
+    },
+    {
+     "case_id": "yeltsin_1991_coup",
+     "actual": "mobilize",
+     "top1": "mobilize",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.6667,
+     "log_loss": 0.4055,
+     "brier": 0.2222,
+     "confidence": 0.6667,
+     "distribution": {
+      "mobilize": 0.6667,
+      "mobilize_resistance": 0.3333
+     },
+     "novel_rate": 0.3333333333333333,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 85.13
+    },
+    {
+     "case_id": "thatcher_1990_ballot",
+     "actual": "exit",
+     "top1": "hold_position",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.0,
+     "log_loss": 2.4849,
+     "brier": 2.0,
+     "confidence": 1.0,
+     "distribution": {
+      "hold_position": 1.0
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 87.61
+    },
+    {
+     "case_id": "musk_2022_twitter_close",
+     "actual": "acquire",
+     "top1": "acquire",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.3333,
+     "log_loss": 1.0986,
+     "brier": 0.5556,
+     "confidence": 0.3333,
+     "distribution": {
+      "acquire": 0.3333,
+      "counteroffer": 0.1667,
+      "reengage_settlement": 0.1667,
+      "renegotiate_settlement": 0.1667,
+      "negotiate_settlement": 0.1667
+     },
+     "novel_rate": 0.5,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 88.06
+    },
+    {
+     "case_id": "johnson_2022_resignation",
+     "actual": "exit",
+     "top1": "hold_position",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.0,
+     "log_loss": 2.4849,
+     "brier": 1.5,
+     "confidence": 0.6667,
+     "distribution": {
+      "hold_position": 0.6667,
+      "resign_with_conditions": 0.1667,
+      "delay": 0.1667
+     },
+     "novel_rate": 0.16666666666666666,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 98.13
+    },
+    {
+     "case_id": "zelenskyy_2022_kyiv",
+     "actual": "hold_position",
+     "top1": "hold_position",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 1.0,
+     "log_loss": -0.0,
+     "brier": 0.0,
+     "confidence": 1.0,
+     "distribution": {
+      "hold_position": 1.0
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 118.24
+    },
+    {
+     "case_id": "deklerk_1990_unbanning",
+     "actual": "reveal",
+     "top1": "reveal",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.8333,
+     "log_loss": 0.1823,
+     "brier": 0.0556,
+     "confidence": 0.8333,
+     "distribution": {
+      "reveal": 0.8333,
+      "hold_position": 0.1667
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 115.64
+    },
+    {
+     "case_id": "disney_2022_iger",
+     "actual": "fire",
+     "top1": "fire",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 1.0,
+     "log_loss": -0.0,
+     "brier": 0.0,
+     "confidence": 1.0,
+     "distribution": {
+      "fire": 1.0
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 110.34
+    }
+   ]
+  },
+  "hybrid_relevant_actor_policy": {
+   "summary": {
+    "n_cases": 9,
+    "next_action_accuracy": 0.5556,
+    "top2_accuracy": 0.8889,
+    "mean_log_loss": 0.9184,
+    "mean_brier": 0.6296,
+    "mean_confidence": 0.7222,
+    "confidence_accuracy_gap": 0.1667,
+    "mean_novel_rate": 0.1667,
+    "total_fallbacks": 0,
+    "total_llm_calls": 55,
+    "total_latency_s": 913.9
+   },
+   "cases": [
+    {
+     "case_id": "khrushchev_1962_cuba",
+     "actual": "accept",
+     "top1": "accept",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 1.0,
+     "log_loss": -0.0,
+     "brier": 0.0,
+     "confidence": 1.0,
+     "distribution": {
+      "accept": 1.0
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 100.17
+    },
+    {
+     "case_id": "nixon_1974_resignation",
+     "actual": "exit",
+     "top1": "resign",
+     "correct": false,
+     "top2_correct": true,
+     "p_actual": 0.3333,
+     "log_loss": 1.0986,
+     "brier": 0.6111,
+     "confidence": 0.3333,
+     "distribution": {
+      "resign": 0.3333,
+      "exit": 0.3333,
+      "resignation_announcement": 0.1667,
+      "resign_announcement": 0.1667
+     },
+     "novel_rate": 0.6666666666666666,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 106.31
+    },
+    {
+     "case_id": "yeltsin_1991_coup",
+     "actual": "mobilize",
+     "top1": "mobilize",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 1.0,
+     "log_loss": -0.0,
+     "brier": 0.0,
+     "confidence": 1.0,
+     "distribution": {
+      "mobilize": 1.0
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 111.14
+    },
+    {
+     "case_id": "thatcher_1990_ballot",
+     "actual": "exit",
+     "top1": "hold_position",
+     "correct": false,
+     "top2_correct": true,
+     "p_actual": 0.1667,
+     "log_loss": 1.7918,
+     "brier": 1.3889,
+     "confidence": 0.8333,
+     "distribution": {
+      "hold_position": 0.8333,
+      "exit": 0.1667
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 7,
+     "latency_s": 117.29
+    },
+    {
+     "case_id": "musk_2022_twitter_close",
+     "actual": "acquire",
+     "top1": "acquire",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.3333,
+     "log_loss": 1.0986,
+     "brier": 0.6111,
+     "confidence": 0.3333,
+     "distribution": {
+      "acquire": 0.3333,
+      "counteroffer": 0.3333,
+      "settle_on_modified_terms": 0.1667,
+      "negotiate_settlement": 0.1667
+     },
+     "novel_rate": 0.3333333333333333,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 81.5
+    },
+    {
+     "case_id": "johnson_2022_resignation",
+     "actual": "exit",
+     "top1": "hold_position",
+     "correct": false,
+     "top2_correct": false,
+     "p_actual": 0.0,
+     "log_loss": 2.4849,
+     "brier": 2.0,
+     "confidence": 1.0,
+     "distribution": {
+      "hold_position": 1.0
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 104.25
+    },
+    {
+     "case_id": "zelenskyy_2022_kyiv",
+     "actual": "hold_position",
+     "top1": "hold_position",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 0.5,
+     "log_loss": 0.6931,
+     "brier": 0.3333,
+     "confidence": 0.5,
+     "distribution": {
+      "hold_position": 0.5,
+      "defy_evacuation_and_film_defiance": 0.1667,
+      "record_video_defiance": 0.1667,
+      "defiant_broadcast_from_kyiv": 0.1667
+     },
+     "novel_rate": 0.5,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 110.01
+    },
+    {
+     "case_id": "deklerk_1990_unbanning",
+     "actual": "reveal",
+     "top1": "amend",
+     "correct": false,
+     "top2_correct": true,
+     "p_actual": 0.3333,
+     "log_loss": 1.0986,
+     "brier": 0.7222,
+     "confidence": 0.5,
+     "distribution": {
+      "amend": 0.5,
+      "reveal": 0.3333,
+      "hold_position": 0.1667
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 93.54
+    },
+    {
+     "case_id": "disney_2022_iger",
+     "actual": "fire",
+     "top1": "fire",
+     "correct": true,
+     "top2_correct": true,
+     "p_actual": 1.0,
+     "log_loss": -0.0,
+     "brier": 0.0,
+     "confidence": 1.0,
+     "distribution": {
+      "fire": 1.0
+     },
+     "novel_rate": 0.0,
+     "n_fallbacks": 0,
+     "llm_calls": 6,
+     "latency_s": 89.67
+    }
+   ]
+  }
+ }
+}

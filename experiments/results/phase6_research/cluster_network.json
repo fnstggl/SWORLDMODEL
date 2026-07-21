@@ -1,0 +1,479 @@
+[
+  {
+    "family": "Weak ties (strength-of-weak-ties / opportunity transmission)",
+    "registry_id": null,
+    "current_registry_status": "not_in_registry",
+    "current_executable_status": "none",
+    "primary_sources": [
+      {
+        "title": "The Strength of Weak Ties",
+        "authors": "Mark S. Granovetter",
+        "year": 1973,
+        "venue": "American Journal of Sociology 78(6):1360-1380",
+        "doi_or_url": "10.1086/225469",
+        "verified": true,
+        "what_it_provides": "structural_model/theory: foundational claim that weak ties bridge otherwise-disconnected clusters and carry non-redundant information (e.g. job leads); qualitative, non-causal."
+      },
+      {
+        "title": "A causal test of the strength of weak ties",
+        "authors": "Karthik Rajkumar, Guillaume Saint-Jacques, Iavor Bojinov, Erik Brynjolfsson, Sinan Aral",
+        "year": 2022,
+        "venue": "Science 377(6612):1304-1310",
+        "doi_or_url": "10.1126/science.abl4476",
+        "verified": true,
+        "what_it_provides": "causal_estimate: randomized LinkedIn People-You-May-Know experiments varying weak-tie prevalence for >20M users over 5 years (~2B new ties, ~600k new jobs); establishes a CAUSAL, nonlinear (inverted-U) effect of tie strength on job mobility."
+      }
+    ],
+    "formal_model": "Hazard/probability that a social tie transmits a job (or opportunity) is a nonlinear, concave (inverted-U) function of tie strength s: P(transmit | tie) rises as ties get weaker but only up to a point, then declines (diminishing returns to weakness). Which s maximizes transmission is measurement-dependent: moderately weak ties by mutual-connection count vs the weakest ties by interaction-intensity. Effect sign is moderated by industry digitalness.",
+    "causal_assumptions": [
+      "Rajkumar 2022 identifies the causal effect via algorithmic randomization of recommended ties (PYMK A/B variation) — exogenous variation in tie formation, not observational tie choice.",
+      "Interpreting it as a general 'opportunity diffusion' law assumes transportability from LinkedIn/job-search to other opportunity types (unwarranted without evidence).",
+      "Granovetter alone supplies NO causal identification (theoretical/associational)."
+    ],
+    "required_variables": [
+      "tie_strength (mutual-connection count AND interaction intensity — they diverge)",
+      "edge_creation_events",
+      "downstream opportunity/job-change outcome per tie",
+      "industry / context digitalness (effect modifier)"
+    ],
+    "temporal_scale": "multi-year (5-year experimental window)",
+    "evidence_type": "causal_estimate",
+    "reported_coefficients": [
+      {
+        "name": "tie_strength_to_job_transmission_shape",
+        "value_or_null": "inverted_U (nonlinear, concave)",
+        "uncertainty_or_null": null,
+        "source_ref": "Rajkumar et al. 2022 Science",
+        "context": "Weaker ties raise job transmission up to a point, then diminishing marginal returns to tie weakness.",
+        "verified": true
+      },
+      {
+        "name": "which_ties_maximize_mobility",
+        "value_or_null": "moderately weak ties (by mutual connections); weakest ties (by interaction intensity)",
+        "uncertainty_or_null": null,
+        "source_ref": "Rajkumar et al. 2022 Science (abstract)",
+        "context": "Measurement-dependent result; weak ties help most in more-digital industries, strong ties in less-digital industries.",
+        "verified": true
+      },
+      {
+        "name": "experiment_scale",
+        "value_or_null": ">20,000,000 people; ~2,000,000,000 new ties; ~600,000 new jobs; 5 years",
+        "uncertainty_or_null": null,
+        "source_ref": "Rajkumar et al. 2022 Science",
+        "context": "Scale of the LinkedIn field experiments (descriptive, not an effect size).",
+        "verified": true
+      },
+      {
+        "name": "per_tie_job_mobility_marginal_effect_magnitude",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Rajkumar et al. 2022 Science",
+        "context": "Point magnitude / slope of the inverted-U is figure-level in the full text; not extracted from the abstract — left null rather than invented.",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "LinkedIn People-You-May-Know randomized experiments (~2015-2019); replication code+data on Zenodo (rajkumarkarthik/weak_ties_data_and_code, record 6533898)"
+    ],
+    "replication_evidence": "Public replication package on Zenodo (record 6533898). Single-platform result; no independent large-scale randomized replication yet.",
+    "critiques_or_nulls": [
+      "Effect is industry-heterogeneous and can REVERSE (strong ties help in less-digital industries).",
+      "'Which tie is best' depends on the tie-strength operationalization (mutual connections vs interaction intensity).",
+      "External validity beyond professional-network job search is untested."
+    ],
+    "applicability_limits": [
+      "Professional/online networks with labor-mobility outcomes.",
+      "Not a general information-diffusion law; specific to opportunity/job transmission."
+    ],
+    "transport_risks": [
+      "high: LinkedIn-specific, algorithm-mediated tie formation, US-centric labor market",
+      "sign-flip risk across industry digitalness"
+    ],
+    "local_refit_feasible": false,
+    "best_validation_route": "Cannot locally validate the causal job-mobility claim (no local dataset pairs tie strength with labor outcomes; Higgs/Enron lack job-transmission labels). Import the inverted-U functional form as a structural prior only; magnitudes remain unverified until LinkedIn-like or labeled-mobility data is available.",
+    "expected_applicability": "moderate (opportunity/referral diffusion contexts)",
+    "expected_transport_risk": "high",
+    "priority": "medium",
+    "planned_implementation": "Register a 'weak_tie_transmission' family: opportunity-transmission hazard as an inverted-U function of tie strength, with industry-digitalness modifier. Encode only the DIRECTION from Rajkumar; leave magnitudes null/prior.",
+    "planned_parameter_packs": [
+      "linkedin_direction_pack (qualitative inverted-U + industry modifier; effect magnitudes null/unverified)"
+    ],
+    "promotion_blocker": "No local dataset for refit; effect magnitudes not extracted (verified:false) and causal effect not transportable. Cannot exceed structural_candidate_only.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Homophily vs influence (peer-effect identification / confounding)",
+    "registry_id": "network_rewiring",
+    "current_registry_status": "partial — only the homophily-driven edge-formation term exists (inside network_rewiring); the influence-vs-homophily SEPARATION / confounding guardrail is not represented",
+    "current_executable_status": "partial — homophily edge weight executable via network_rewiring; no peer-influence identification/discount mechanism implemented",
+    "primary_sources": [
+      {
+        "title": "Birds of a Feather: Homophily in Social Networks",
+        "authors": "Miller McPherson, Lynn Smith-Lovin, James M. Cook",
+        "year": 2001,
+        "venue": "Annual Review of Sociology 27:415-444",
+        "doi_or_url": "10.1146/annurev.soc.27.1.415",
+        "verified": true,
+        "what_it_provides": "descriptive/review: documents that homophily pervasively structures ties of every type — the reason tied nodes co-behave even absent influence."
+      },
+      {
+        "title": "Distinguishing influence-based contagion from homophily-driven diffusion in dynamic networks",
+        "authors": "Sinan Aral, Lev Muchnik, Arun Sundararajan",
+        "year": 2009,
+        "venue": "PNAS 106(51):21544-21549",
+        "doi_or_url": "10.1073/pnas.0908800106",
+        "verified": true,
+        "what_it_provides": "causal_estimate (bounded): dynamic matched-sample estimation on a large IM/mobile-service adoption network shows homophily explains >=50% of apparent contagion and naive methods overstate influence by 300-700% — an UPPER BOUND on influence, not point identification."
+      },
+      {
+        "title": "Homophily and Contagion Are Generically Confounded in Observational Social Network Studies",
+        "authors": "Cosma Rohilla Shalizi, Andrew C. Thomas",
+        "year": 2011,
+        "venue": "Sociological Methods & Research 40(2):211-239",
+        "doi_or_url": "10.1177/0049124111404820",
+        "verified": true,
+        "what_it_provides": "methodological: proves homophily, contagion, and covariate causation are GENERICALLY CONFOUNDED in observational network data; separation requires randomization or strong, unverifiable parametric/covariate assumptions."
+      }
+    ],
+    "formal_model": "Observed co-behavior among tied nodes = peer_influence + latent_homophily (tie formation on shared traits) + external/contextual confounds. From observational tie + behavior data this decomposition is NOT identified (Shalizi-Thomas). Best achievable without randomization: an UPPER BOUND on influence via dynamic matching on time-varying covariates (Aral): influence_share <= ~0.498, homophily_share >= ~0.50.",
+    "causal_assumptions": [
+      "CENTRAL CAVEAT: observational tie/co-behavior data does NOT identify peer influence — homophily and contagion are generically confounded (Shalizi-Thomas 2011).",
+      "Aral's matched-sample estimate identifies only an UPPER BOUND under selection-on-observables (dynamic propensity matching on measured time-varying covariates); latent homophily remains uncontrolled.",
+      "Point identification of influence requires randomization of exposure (which this family, on observational data, lacks)."
+    ],
+    "required_variables": [
+      "node attributes (for homophily / matching covariates)",
+      "time-varying behavior/adoption states",
+      "tie timing",
+      "rich dynamic covariates (for any matching attempt)"
+    ],
+    "temporal_scale": "event to multi-month",
+    "evidence_type": "methodological",
+    "reported_coefficients": [
+      {
+        "name": "homophily_share_of_perceived_contagion",
+        "value_or_null": ">=50% (influence upper bound = 49.8%)",
+        "uncertainty_or_null": null,
+        "source_ref": "Aral, Muchnik & Sundararajan 2009 PNAS",
+        "context": "Adoption of a paid mobile service application on a global instant-messaging network; dynamic matched-sample vs naive estimation.",
+        "verified": true
+      },
+      {
+        "name": "overestimation_of_peer_influence_by_naive_methods",
+        "value_or_null": "300-700%",
+        "uncertainty_or_null": "up to 7x for users with >=4 adopter friends",
+        "source_ref": "Aral et al. 2009 PNAS",
+        "context": "Random matching vs dynamic matched sample; quantifies homophily-induced inflation of contagion estimates.",
+        "verified": true
+      },
+      {
+        "name": "identifiability_of_influence_from_observational_ties",
+        "value_or_null": "not_identified (generically confounded)",
+        "uncertainty_or_null": null,
+        "source_ref": "Shalizi & Thomas 2011 Sociological Methods & Research",
+        "context": "Formal result: absent randomization or strong assumptions, influence cannot be separated from homophily/covariate causation.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Aral 2009: global instant-messaging network + adoption of a paid mobile service application (exact n not extracted here)",
+      "McPherson 2001: review synthesizing many homophily studies",
+      "Shalizi-Thomas 2011: methodological (reanalysis/critique, incl. Christakis-Fowler obesity contagion)"
+    ],
+    "replication_evidence": "Aral is a single large-scale observational study with matched-sample robustness checks. The Shalizi-Thomas confounding result is a general theorem, repeatedly invoked to discount observational contagion claims (no counter-result).",
+    "critiques_or_nulls": [
+      "Shalizi-Thomas 2011: even dynamic matching relies on unverifiable selection-on-observables; latent homophily can never be fully controlled — strongest null against any observational influence point estimate.",
+      "Any peer-effect coefficient learned from Higgs/Enron (observational) is an upper bound at best and likely homophily-inflated."
+    ],
+    "applicability_limits": [
+      "Applies as a GUARDRAIL wherever the world model would infer peer influence from observational network co-behavior.",
+      "Not a source of a transportable influence coefficient."
+    ],
+    "transport_risks": [
+      "high: the influence/homophily split is specific to the covariate set and context of estimation"
+    ],
+    "local_refit_feasible": "partial — Enron/Higgs can DEMONSTRATE the confounding (naive contagion estimate >> homophily-adjusted estimate) and refit the homophily edge term, but CANNOT identify a true causal influence coefficient (no randomized exposure locally).",
+    "best_validation_route": "Use Enron (temporal email, attributes) and Higgs (follower graph + diffusion) to reproduce the naive-vs-adjusted contagion gap as a methodological demonstration; adopt Aral's >=50% homophily share and 3-7x overestimation as a prior/guardrail that discounts observational peer-effect estimates. Do NOT promote any local influence coefficient to causal.",
+    "expected_applicability": "high as an identification guardrail; low as a point estimator of influence",
+    "expected_transport_risk": "high",
+    "priority": "high",
+    "planned_implementation": "(a) Keep homophily edge-formation term in network_rewiring. (b) Add an 'influence_identification_guard': any peer-effect estimated from observational data is flagged upper-bound and discounted by the Aral homophily share (>=0.5). (c) Optionally refit homophily edge weights on Enron.",
+    "planned_parameter_packs": [
+      "aral_homophily_share_prior (>=0.50 of apparent contagion attributable to homophily; naive-method inflation 3x-7x)"
+    ],
+    "promotion_blocker": "Causal peer-influence is not identifiable from local observational data; the family can reach locally_validated only for the confounding-DEMONSTRATION / homophily-edge part, never transfer_validated for an influence coefficient.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Network targeting / seeding (friendship-nomination targeting; friendship paradox)",
+    "registry_id": null,
+    "current_registry_status": "not_in_registry",
+    "current_executable_status": "none (a diffusion family exists separately and could host seeding, but no targeting/seed-selection mechanism is registered)",
+    "primary_sources": [
+      {
+        "title": "Social network targeting to maximise population behaviour change: a cluster randomised controlled trial",
+        "authors": "David A. Kim, Alison R. Hwong, Derek Stafford, D. Alex Hughes, A. James O'Malley, James H. Fowler, Nicholas A. Christakis",
+        "year": 2015,
+        "venue": "Lancet 386(9989):145-153",
+        "doi_or_url": "10.1016/S0140-6736(15)60095-2",
+        "verified": true,
+        "what_it_provides": "causal_estimate: cluster RCT (32 rural-Honduras villages, 5,773 participants; NCT01672580) randomizing seed-TARGETING method; friendship-nomination seeding causally beat random and in-degree seeding for health-behavior adoption."
+      },
+      {
+        "title": "Why Your Friends Have More Friends Than You Do",
+        "authors": "Scott L. Feld",
+        "year": 1991,
+        "venue": "American Journal of Sociology 96(6):1464-1477",
+        "doi_or_url": "10.1086/229693",
+        "verified": true,
+        "what_it_provides": "structural_model: the friendship paradox — a randomly nominated friend has, in expectation, higher degree than a randomly chosen individual; the mathematical basis for why nomination targeting reaches more-central seeds without measuring the network."
+      }
+    ],
+    "formal_model": "Seed-set selection rule maps to expected cascade size. Nomination targeting: sample a random individual, seed a randomly named FRIEND of theirs; by the friendship paradox E[degree(nominated friend)] > E[degree(random node)], so seeds are systematically more central, enlarging diffusion. Contrast rules: random seeding; in-degree (highest-degree) seeding. Coupled to a diffusion model, cascade_size(nomination) > cascade_size(random) ~= cascade_size(in-degree) in the Kim RCT.",
+    "causal_assumptions": [
+      "Kim 2015 identifies the targeting-method effect via village-level randomization (clusters assigned to nomination / in-degree / random) — causal for the TARGETING RULE's effect on population adoption, assuming negligible between-village spillover.",
+      "The friendship paradox itself is a deterministic property of any degree-heterogeneous graph (no assumptions).",
+      "Transporting absolute effect sizes to other populations/behaviors is not licensed."
+    ],
+    "required_variables": [
+      "friendship-nomination elicitation (name-a-friend)",
+      "seed set / targeting rule",
+      "adoption outcome",
+      "village/cluster structure",
+      "node degree (for in-degree comparison and paradox check)"
+    ],
+    "temporal_scale": "months (intervention rollout and adoption window)",
+    "evidence_type": "causal_estimate",
+    "reported_coefficients": [
+      {
+        "name": "nomination_vs_random_multivitamin_adoption",
+        "value_or_null": "+12.2 percentage points",
+        "uncertainty_or_null": "95% CI 6.9-17.9",
+        "source_ref": "Kim et al. 2015 Lancet",
+        "context": "Nutritional-supplement redemption: nomination 74.3% (951/1280) vs random 66.2% (940/1420); all pairwise differences p<0.01.",
+        "verified": true
+      },
+      {
+        "name": "indegree_targeting_vs_random",
+        "value_or_null": "no significant benefit",
+        "uncertainty_or_null": null,
+        "source_ref": "Kim et al. 2015 Lancet",
+        "context": "In-degree (most-connected) seeding = 61.0% (744/1220); targeting highest-degree individuals was NOT better than random — key null.",
+        "verified": true
+      },
+      {
+        "name": "study_scale",
+        "value_or_null": "32 villages; 5,773 participants",
+        "uncertainty_or_null": null,
+        "source_ref": "Kim et al. 2015 Lancet",
+        "context": "Rural Honduras; interventions = chlorine (water) + multivitamins; ClinicalTrials NCT01672580.",
+        "verified": true
+      },
+      {
+        "name": "friendship_paradox",
+        "value_or_null": "E[degree(friend)] > E[degree(random node)]",
+        "uncertainty_or_null": null,
+        "source_ref": "Feld 1991 AJS",
+        "context": "Mathematical guarantee on any degree-heterogeneous graph; explains why nomination targeting reaches more-central seeds.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Kim 2015: 32-village Honduras cluster RCT (NCT01672580), chlorine + multivitamin adoption",
+      "Feld 1991: illustrative (Coleman high-school friendship data)"
+    ],
+    "replication_evidence": "Single large field RCT (Kim 2015) for the field effect; friendship paradox is analytically guaranteed and universally reproducible on any graph.",
+    "critiques_or_nulls": [
+      "In-degree targeting failed to beat random — naive centrality targeting is not sufficient (must exploit nomination, not raw degree).",
+      "Effect sizes are behavior- and context-specific (rural offline health products).",
+      "Requires eliciting friend nominations (data-collection cost)."
+    ],
+    "applicability_limits": [
+      "Offline community health-behavior diffusion; digital-platform seeding dynamics may differ.",
+      "Requires nomination elicitation or a proxy for it."
+    ],
+    "transport_risks": [
+      "high: rural-Honduras population and specific health products; absolute +12.2pp unlikely to transport",
+      "the RANKING (nomination > in-degree ~= random) is more transportable than the magnitude"
+    ],
+    "local_refit_feasible": "partial — Higgs follower graph and Enron let you (1) verify the friendship paradox directly and (2) SIMULATE nomination vs random vs in-degree seeding on real topology with the existing diffusion family and compare cascade sizes; there is NO local randomized adoption outcome, so the field effect size cannot be validated locally.",
+    "best_validation_route": "On Higgs (and Enron): (1) confirm friendship paradox (mean friend-degree > mean degree) as a cheap structural check; (2) drive the existing diffusion/exposure family with nomination vs random vs in-degree seed sets and confirm cascade-size ordering; use Kim's +12.2pp only as an external anchor, not a local target.",
+    "expected_applicability": "moderate-high for ranking seeding strategies; low for absolute lift transport",
+    "expected_transport_risk": "high (magnitudes); moderate (strategy ranking)",
+    "priority": "high",
+    "planned_implementation": "Register 'friendship_nomination_targeting': seed-selection operator (random-friend nomination) that composes with the diffusion family; expose expected seed-degree inflation from the friendship paradox and cascade-size comparison across rules.",
+    "planned_parameter_packs": [
+      "higgs_friendship_paradox_pack (degree-inflation measured on the real follower graph)",
+      "kim2015_effect_anchor (nomination vs random +12.2pp, CI 6.9-17.9; external, not locally refit)"
+    ],
+    "promotion_blocker": "No local randomized adoption outcome — field effect not locally validatable. Can reach locally_validated only for the structural friendship-paradox + simulated cascade-ordering claim; magnitude stays transport-restricted.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Network rewiring / edge formation & decay (SAOM; triadic closure)",
+    "registry_id": "network_rewiring",
+    "current_registry_status": "implemented (status=implemented; executable transition + tests; NO validation history, NO parameter packs)",
+    "current_executable_status": "implemented — swm.world_model_v2.registry.families.interaction:rewire_probability; simplified logistic P(edge)=sigmoid(w*(homophily-0.5)+log(age_decay)); NOT full SAOM (no reciprocity/triadic terms); defaults (decay_days=90, homophily_weight=1.0) are UNFITTED priors",
+    "primary_sources": [
+      {
+        "title": "Introduction to stochastic actor-based models for network dynamics",
+        "authors": "Tom A. B. Snijders, Gerhard G. van de Bunt, Christian E. G. Steglich",
+        "year": 2010,
+        "venue": "Social Networks 32(1):44-60",
+        "doi_or_url": "10.1016/j.socnet.2009.02.004",
+        "verified": true,
+        "what_it_provides": "structural_model/methodological: canonical SAOM — continuous-time Markov process where actors myopically optimize a network objective (density, reciprocity, transitive triads, homophily) via tie micro-steps; parameters estimated from network panel waves (RSiena)."
+      },
+      {
+        "title": "Empirical Analysis of an Evolving Social Network",
+        "authors": "Gueorgi Kossinets, Duncan J. Watts",
+        "year": 2006,
+        "venue": "Science 311(5757):88-90",
+        "doi_or_url": "10.1126/science.1116869",
+        "verified": true,
+        "what_it_provides": "associational/descriptive: on a university EMAIL network (43,553 people, 1 year) tie formation is driven by closure of short cycles (triadic closure) plus shared foci/attribute similarity — directly analogous to the Enron temporal email data."
+      }
+    ],
+    "formal_model": "SAOM: dN(t) as a continuous-time Markov chain; a rate function lambda_i sets when actor i gets a change opportunity, and an objective/evaluation function f_i(x) = sum_k beta_k s_ik(x) (outdegree/density, reciprocity, transitive triads/closure, homophily/covariate similarity) governs which tie change maximizes myopic utility. Repo's current reduced form keeps only homophily + tie-age decay in a logistic; full family adds reciprocity and triadic-closure terms.",
+    "causal_assumptions": [
+      "SAOM parameters are MODEL-BASED: identified only if the actor-oriented generative process is correctly specified; estimated within-model from >=2 network panel waves.",
+      "Kossinets-Watts is observational/descriptive — mechanisms are associational, not interventional.",
+      "No claim of causal edge-formation effects transportable across settings; parameters are per-network."
+    ],
+    "required_variables": [
+      "entities/nodes",
+      "node attributes (for homophily)",
+      "edge timestamps (formation AND dissolution)",
+      "tie age",
+      "at least two network panel snapshots (for SAOM estimation)"
+    ],
+    "temporal_scale": "event to longitudinal (panel waves)",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "saom_parameters_universal",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Snijders et al. 2010 Social Networks",
+        "context": "Rate, outdegree/density, reciprocity, transitive-triads, homophily are estimated PER network panel — there are no transportable universal constants.",
+        "verified": true
+      },
+      {
+        "name": "repo_rewire_defaults_unfitted",
+        "value_or_null": "decay_days=90, homophily_weight=1.0",
+        "uncertainty_or_null": null,
+        "source_ref": "interaction.py:rewire_probability (repo)",
+        "context": "Current defaults are UNFITTED priors, not estimated from any dataset (verified by reading source).",
+        "verified": true
+      },
+      {
+        "name": "triadic_closure_drives_tie_formation",
+        "value_or_null": "qualitative (closure of short cycles + shared foci dominate edge creation)",
+        "uncertainty_or_null": null,
+        "source_ref": "Kossinets & Watts 2006 Science",
+        "context": "University email network, 43,553 people, 1 year; associational — magnitudes are dataset-specific.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "SAOM canonical panels: van de Bunt freshman networks; Glasgow 'Teenage Friends and Lifestyle' study (RSiena)",
+      "Kossinets & Watts 2006: university email network (43,553 nodes, 1 academic year)"
+    ],
+    "replication_evidence": "SAOM is a mature, widely-replicated method with reference software (RSiena) and many published fits. The REPO implementation, however, is a reduced logistic with no validation history and no packs.",
+    "critiques_or_nulls": [
+      "Repo form omits triadic closure and reciprocity — the very mechanisms Snijders and Kossinets-Watts identify as central; it is a homophily+age-decay stub.",
+      "Repo parameters are unfitted priors (no data behind decay_days=90, homophily_weight=1.0).",
+      "SAOM requires panel data and strong generative assumptions; goodness-of-fit is sensitive to specification."
+    ],
+    "applicability_limits": [
+      "Needs longitudinal edge data with timestamps; currently tagged domain=social_media_diffusion only.",
+      "Static graphs (e.g. the Higgs follower snapshot) cannot support edge-formation/decay estimation."
+    ],
+    "transport_risks": [
+      "high (registry already marks transport_risk=high): SAOM parameters are setting-specific and do not transport"
+    ],
+    "local_refit_feasible": true,
+    "best_validation_route": "Fit rewire_probability (age-decay + homophily) on the ENRON temporal email network (pairwise timestamped ties -> formation/decay + triadic closure); held-out route: predict future edge formation/persistence on a later time window; add triadic-closure/reciprocity terms toward SAOM and compare against Kossinets-Watts qualitative findings. (Higgs is a STATIC follower snapshot with no edge timestamps -> usable only for static degree/structure, not decay.)",
+    "expected_applicability": "moderate-high for timestamped communication/social networks",
+    "expected_transport_risk": "high",
+    "priority": "high",
+    "planned_implementation": "Extend rewire_probability with triadic-closure and reciprocity terms (move toward a lightweight SAOM evaluation function); fit on Enron; build the first parameter pack from that fit.",
+    "planned_parameter_packs": [
+      "enron_rewire_pack (decay_days, homophily_weight, triadic_closure_weight FITTED on Enron temporal edges — currently unfitted/null)"
+    ],
+    "promotion_blocker": "Implemented but has NO validation history and NO packs; defaults are unfitted priors. Blocked from locally_validated until an Enron held-out / posterior-predictive fit record AND a parameter pack exist (per registry promotion gates).",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Diffusion-network coevolution (coupled point processes)",
+    "registry_id": null,
+    "current_registry_status": "not_in_registry",
+    "current_executable_status": "none (separate diffusion families exist; related hawkes_self_excitation is QUARANTINED after failing held-out)",
+    "primary_sources": [
+      {
+        "title": "COEVOLVE: A Joint Point Process Model for Information Diffusion and Network Co-evolution",
+        "authors": "Mehrdad Farajtabar, Yichen Wang, Manuel Gomez-Rodriguez, Shuang Li, Hongyuan Zha, Le Song",
+        "year": 2015,
+        "venue": "Advances in Neural Information Processing Systems 28 (NeurIPS 2015); extended in JMLR 2017",
+        "doi_or_url": "https://proceedings.neurips.cc/paper/2015/hash/52292e0c763fd027c6eba6b8f494d2eb-Abstract.html",
+        "verified": true,
+        "what_it_provides": "structural_model: coupled temporal point processes where information-diffusion intensity is modulated by the network and link-creation intensity is modulated by diffusion (mutual excitation); efficient interleaved simulation; code at github.com/Networks-Learning/Coevolution."
+      }
+    ],
+    "formal_model": "Two interleaved (Hawkes-like) point processes with cross terms: diffusion events (e.g. retweets) have intensity that depends on current edges; link-creation events have intensity boosted by recent diffusion exposure. Each process's conditional intensity is modulated by the other's history, yielding joint (network, cascade) traces. Parameters (base intensities, triggering kernels, diffusion<->link cross-excitation weights) fit by MLE per dataset.",
+    "causal_assumptions": [
+      "Generative/fitted model, not interventional — parameters estimated by MLE assuming the specified mutually-exciting parametric form is correct.",
+      "No causal transportability claim; identification is within-model given both event streams."
+    ],
+    "required_variables": [
+      "timestamped information-diffusion events (shares/retweets)",
+      "timestamped link-creation events",
+      "both streams jointly on the same population"
+    ],
+    "temporal_scale": "event (continuous time)",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "coevolve_cross_excitation_parameters",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Farajtabar et al. 2015 NeurIPS",
+        "context": "Base intensities, triggering kernels, and diffusion<->link cross-excitation weights are per-dataset MLE fits; no transportable constant reported.",
+        "verified": true
+      },
+      {
+        "name": "local_hawkes_self_excitation_held_out_result",
+        "value_or_null": "FAILED vs Poisson (quarantined in this repo)",
+        "uncertainty_or_null": null,
+        "source_ref": "repo registry: hawkes_self_excitation (audit notes)",
+        "context": "A related self-exciting point-process mechanism already failed held-out count forecasting here — a cautionary local null for coupled-Hawkes coevolution.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "COEVOLVE paper: Twitter (joint link-creation + retweet event logs) and synthetic simulations"
+    ],
+    "replication_evidence": "Public code (Networks-Learning/Coevolution); NeurIPS 2015 plus an extended JMLR 2017 version. No independent held-out validation in this repo.",
+    "critiques_or_nulls": [
+      "Requires BOTH coupled event streams (diffusion AND link creation) on the same population — rarely available.",
+      "This repo's hawkes_self_excitation already FAILED held-out vs Poisson and is quarantined — coupled self-exciting processes risk the same overfitting here.",
+      "High parametric complexity and scalability cost."
+    ],
+    "applicability_limits": [
+      "Needs joint diffusion + link-formation event logs; not satisfiable by either local dataset.",
+      "Online-platform-specific dynamics."
+    ],
+    "transport_risks": [
+      "high: heavily parametric, platform-specific, and coupled to two event-generating processes"
+    ],
+    "local_refit_feasible": false,
+    "best_validation_route": "Not locally validatable: Higgs has diffusion events but a STATIC follower graph (no link-creation timestamps -> cannot fit the network-coevolution half); Enron has communication/link events but no separate information-cascade layer. NEITHER dataset supplies both coupled streams. Given the local Hawkes held-out failure, keep gated as a structural candidate; only revisit with Twitter-style joint logs and explicit guards against the known self-excitation overfit.",
+    "expected_applicability": "low-moderate (data-availability constrained)",
+    "expected_transport_risk": "high",
+    "priority": "low",
+    "planned_implementation": "Defer. Register as a structural candidate only. If pursued, reuse point-process infrastructure but REQUIRE joint diffusion+link event data and a held-out check that beats the Poisson/independent-process baseline (which the repo's Hawkes did not).",
+    "planned_parameter_packs": [],
+    "promotion_blocker": "No local dataset with coupled diffusion+link streams; related Hawkes self-excitation already failed held-out (quarantined). Cannot be locally validated; stays structural_candidate_only.",
+    "disposition": "structural_candidate_only"
+  }
+]

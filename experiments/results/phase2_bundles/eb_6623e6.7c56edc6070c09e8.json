@@ -1,0 +1,1670 @@
+{
+ "bundle_id": "eb_6623e6",
+ "question": "Will the campaign hashtag trend nationally within 24 hours of launch?",
+ "as_of": 1682899200.0,
+ "compiler_plan_hash": "5b5d2bd31e3a",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_c47ef3bab3",
+   "claim_or_quantity": "If the hashtag appears in the platform's national trending topics list at any point within 24 hours of launch, outcome is 'trend'; otherwise 'not_trend'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "campaign_team",
+    "platform"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6be0f88c92",
+   "claim_or_quantity": "value/context of platform.trending_algorithm",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "platform.trending_algorithm",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_9eb7c78d1a",
+   "claim_or_quantity": "value/context of social_media_users.engagement_probability",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "social_media_users.engagement_probability",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6fec4c26bf",
+   "claim_or_quantity": "value/context of campaign_team.coordination_level",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "campaign_team.coordination_level",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5a64090ceb",
+   "claim_or_quantity": "evidence discriminating structural hypothesis cascade_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:cascade_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_57a29f73f6",
+   "claim_or_quantity": "evidence discriminating structural hypothesis organic_grassroots",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:organic_grassroots",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3dff0235e3",
+   "claim_or_quantity": "decision rules / process of platform",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "platform",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_c47ef3bab3",
+   "terms": "campaign hashtag trend nationally hours launch campaign team platform",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_6be0f88c92",
+   "terms": "platform trending algorithm",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_9eb7c78d1a",
+   "terms": "social media users engagement probability",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_c47ef3bab3",
+   "logical_query": "campaign hashtag trend nationally hours launch campaign team platform after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=campaign+hashtag+trend+nationally+hours+launch+campaign+team+platform+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783907319.2894218,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:48:39 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw05BiSO44w5ACxJVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc39svXmITuHC4aRuzknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCwQzj2\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "8ecb5d703b20ee7ed5005eae9b7fd177aed82fd4405c249619147f2eab79c6ae",
+   "n_bytes": 1303,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.545
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_6be0f88c92",
+   "logical_query": "platform trending algorithm after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=platform+trending+algorithm+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783907319.8354673,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:48:40 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw05BiSO44w5ACxJVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8aP94iU2gYad8yczKSkn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAluc2vg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d0f54540e67f80166affe23a04f6ad69cb8e3ddedd4f31f28c99661fa99886bc",
+   "n_bytes": 58032,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.7
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_9eb7c78d1a",
+   "logical_query": "social media users engagement probability after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=social+media+users+engagement+probability+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783907320.5377119,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:48:41 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII1JBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcP9svXmITuPDrR7iSclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAJUsOUw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "428b97e91647a63284f2b3501b4d7884c2c209164e8137487ac97e5460d3561e",
+   "n_bytes": 9058,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 7,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.56
+  }
+ ],
+ "raw_content_refs": [
+  "428b97e91647a63284f2b3501b4d7884c2c209164e8137487ac97e5460d3561e",
+  "d0f54540e67f80166affe23a04f6ad69cb8e3ddedd4f31f28c99661fa99886bc"
+ ],
+ "documents": [
+  {
+   "id": "328543f1b760c297",
+   "source": "| Knight First Amendment Institute",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPX1ZUcEF6N19Sc1hNNGw4ZU83bFNGdmZmRnZOX29rdzlNbzRjNS1nZElQUTl1SHpLdnRSc1g3emJVejZETFlZdTlIOUVzbmJodWR6SVdPcHRiU241Q0w3OFE5dTBCc2tyRXNVUlVlSmxIYVpEdjZrT2RuY3M3QjN3TXd3Z29QRWNVamJCNTgySU8?oc=5",
+   "title": "Understanding Social Media Recommendation Algorithms - | Knight First Amendment Institute",
+   "text": "Understanding Social Media Recommendation Algorithms - | Knight First Amendment Institute. Understanding Social Media Recommendation Algorithms | Knight First Amendment Institute",
+   "content_hash": "4829d020ee91548e",
+   "raw_feed_hash": "d0f54540e67f80166affe23a04f6ad69cb8e3ddedd4f31f28c99661fa99886bc",
+   "published_at": 1678348800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_6be0f88c92",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6190ded5f5c8d0ad",
+   "source": "The Pennsylvania State University",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQVHE5S3BnZU9kUjg4cjlTUkxhR3ZCZEZub09UaElpYXdRbGtRSlhwSHhXQnZMcjl6ckNmd1BXV05vM29ydGp1V2p4dkdoWDNMZUszSElQa3VjV0ZiSVZVLWtCenNPYURUb2hFaWgtbVFxdWoxalR2TUhTcDRqa0ZkVTM5eGVUZVU4VnZrTE9uZk10MW93UnBRbmxXVHZ0NGNvY2F1VVlEcXVUZ09VTXJRVzdrMA?oc=5",
+   "title": "TikTok lowers barriers to virality, keeps tight control through algorithm - The Pennsylvania State University",
+   "text": "TikTok lowers barriers to virality, keeps tight control through algorithm - The Pennsylvania State University. TikTok lowers barriers to virality, keeps tight control through algorithm The Pennsylvania State University",
+   "content_hash": "7ab9311d4647c383",
+   "raw_feed_hash": "d0f54540e67f80166affe23a04f6ad69cb8e3ddedd4f31f28c99661fa99886bc",
+   "published_at": 1670572800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_6be0f88c92",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e64f3fc7327f2fa6",
+   "source": "AlgorithmWatch",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBEcTJibC0xWFNyV0x1S3RObVhGcF9Eb243V2JvOU9IQlI3TWtsZzdrXzZZbVBhaFY2dl9ycXh6Q1VRRG8wTW9EOHpJc3hacHVxTjdza2ROSzNWNWFJY1RPSWNYTVRQR0M2QXRGajlDNmx2T0hxY0NkTQ?oc=5",
+   "title": "Risky business: How do we get a grip on social media algorithms? - AlgorithmWatch",
+   "text": "Risky business: How do we get a grip on social media algorithms? - AlgorithmWatch. Risky business: How do we get a grip on social media algorithms? AlgorithmWatch",
+   "content_hash": "d7e7a41605a2cf6d",
+   "raw_feed_hash": "d0f54540e67f80166affe23a04f6ad69cb8e3ddedd4f31f28c99661fa99886bc",
+   "published_at": 1678863600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_6be0f88c92",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0c9e0639edf4d87b",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1xeG1Jc0I2TmpFc1hybFlXeVMwLUhEd0V3bkwwY3pweEpVN283ZDk0X2lISmhHeTlRcFVkWGRrRDhSVV9WNjVwTUI0TzFOVHdTYUVsYmhCeEJKZEFCYmtZ?oc=5",
+   "title": "Echo chamber effects on short video platforms - Nature",
+   "text": "Echo chamber effects on short video platforms - Nature. Echo chamber effects on short video platforms Nature",
+   "content_hash": "f4e51c68443d756c",
+   "raw_feed_hash": "d0f54540e67f80166affe23a04f6ad69cb8e3ddedd4f31f28c99661fa99886bc",
+   "published_at": 1681801200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_6be0f88c92",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d4cda57281333c54",
+   "source": "drugdiscoverytrends.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQQzhlZ3pNRXlOQUdwMXRPN3Fuc1ZzcUw0MXUxMXpIdk9KSklQVG5RdE9Zb212QWgtSDFqS3Y5SkF2THp0RlBlb3U4dldRRXg5eVN3ZmZfczZ3eFQxOWZLcGlrQmlEUkxDQmVpdFZoQ2N2dno3c2JKNGlQcl9RdHF3WDVTSFJRTjB4QXdZX1NhdFEzX1FxeEJDRng1cE9hclU2QmI5OWNPQ2NkZ2c?oc=5",
+   "title": "PathAI debuts AISight digital pathology platform | DDD - drugdiscoverytrends.com",
+   "text": "PathAI debuts AISight digital pathology platform | DDD - drugdiscoverytrends.com. PathAI debuts AISight digital pathology platform | DDD drugdiscoverytrends.com",
+   "content_hash": "29760e5be135b908",
+   "raw_feed_hash": "d0f54540e67f80166affe23a04f6ad69cb8e3ddedd4f31f28c99661fa99886bc",
+   "published_at": 1678435200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_6be0f88c92",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7313420051f4f7f8",
+   "source": "MarketingProfs",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNdi1OMndNUC1HNEhyRnJPbGxxd0FuR3B5bmZ5Qy1Ua1k2M1lKY2dCZkxhT2Z3UzhrOU5aNXpIa2J1bTlMTFptWFdMc05ISk9pS3d1dXRpTVktN0hBaVFJVGF2N3FXNmgxVzFYdS1yc3JFRHhlRTFGYVpfOUNxRGI5WlVMSHVBMXc0OEtzUUFQUkRITmxMMWcydg?oc=5",
+   "title": "Google vs. Social Media Algorithms: What's the Difference? [Infographic] - MarketingProfs",
+   "text": "Google vs. Social Media Algorithms: What's the Difference? [Infographic] - MarketingProfs. Google vs. Social Media Algorithms: What's the Difference? [Infographic] MarketingProfs",
+   "content_hash": "a4fe52b4a1b7e2b0",
+   "raw_feed_hash": "d0f54540e67f80166affe23a04f6ad69cb8e3ddedd4f31f28c99661fa99886bc",
+   "published_at": 1675353488.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_6be0f88c92",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b4bf482030780e77",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQY2N3NHVCbjRlLTBtWUk5anRIS1J4R1pJMy1RVEJnSklLQkh6T2tQdDAxVGZ4NHhSeXFxTmhXZnpWZjNOSy0wV2pSX2txTEowa0pveWVIS1dpb3ZRTk5Gd3FGZ0ZKbzdrU3FxNHB2RE50b245NTZLcFBXN1MwM2lTaEY0azlsY2E2YTdqcnI0Z0xXcDNleGlVQVY5bTZUMUpKRFcwWnNSdXlRaG9uS0NsdDJR?oc=5",
+   "title": "Instagram is becoming as uncool as Facebook \u2014 and it has only itself to blame - Business Insider",
+   "text": "Instagram is becoming as uncool as Facebook \u2014 and it has only itself to blame - Business Insider. Instagram is becoming as uncool as Facebook \u2014 and it has only itself to blame Business Insider",
+   "content_hash": "02ebb85cb8c9bf94",
+   "raw_feed_hash": "d0f54540e67f80166affe23a04f6ad69cb8e3ddedd4f31f28c99661fa99886bc",
+   "published_at": 1675324800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_6be0f88c92",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8d6ad29f5ee73636",
+   "source": "Workweek",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNUEo0LVJ3NnIxUUNYdHA2ZlVXU0lCZHRhYWh3SFJzZFpkbkE0MVJaLVdtTkg4VnQxWFFCRW5vZjh3WWFZREVQSTNNenlUMy1iRFJXemkzd1czc2pZUThacTExNHJIaUg5S0J3d2JPbzBiSExnM0R3Sm9LT0lLQXcyZjFRbTlPNm5taGtKZGowZ3VLOE5sQUMtd3pNcDVDS2taeU9lOW0tQkVmUTluR01wZUE1UXFhTTg?oc=5",
+   "title": "Reels are dead-How are social media managers actually growing accounts on Instagram? - - Workweek",
+   "text": "Reels are dead-How are social media managers actually growing accounts on Instagram? - - Workweek. Reels are dead-How are social media managers actually growing accounts on Instagram? - Workweek",
+   "content_hash": "d2d5ebbbfb505982",
+   "raw_feed_hash": "d0f54540e67f80166affe23a04f6ad69cb8e3ddedd4f31f28c99661fa99886bc",
+   "published_at": 1676534400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_6be0f88c92",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "328543f1b760c297",
+   "source": "| Knight First Amendment Institute",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPX1ZUcEF6N19Sc1hNNGw4ZU83bFNGdmZmRnZOX29rdzlNbzRjNS1nZElQUTl1SHpLdnRSc1g3emJVejZETFlZdTlIOUVzbmJodWR6SVdPcHRiU241Q0w3OFE5dTBCc2tyRXNVUlVlSmxIYVpEdjZrT2RuY3M3QjN3TXd3Z29QRWNVamJCNTgySU8?oc=5",
+   "title": "Understanding Social Media Recommendation Algorithms - | Knight First Amendment Institute",
+   "text": "Understanding Social Media Recommendation Algorithms - | Knight First Amendment Institute. Understanding Social Media Recommendation Algorithms | Knight First Amendment Institute",
+   "content_hash": "4829d020ee91548e",
+   "raw_feed_hash": "428b97e91647a63284f2b3501b4d7884c2c209164e8137487ac97e5460d3561e",
+   "published_at": 1678348800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_9eb7c78d1a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8ab12559d10d139f",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE51OHRoc3dQZUJOQWc5MEdqTkRjXzRLZXdMa1QxRWNhQ3JSX3RwY3Z1eEVqOHhaWVFSTkx1aWR3YzBuLVZhTWRWVWdjMV9IRm95WHdrSE9uNXRoemttTzZZ?oc=5",
+   "title": "Psychological inoculation protects against the social media infodemic - Nature",
+   "text": "Psychological inoculation protects against the social media infodemic - Nature. Psychological inoculation protects against the social media infodemic Nature",
+   "content_hash": "38459b57a9545fdf",
+   "raw_feed_hash": "428b97e91647a63284f2b3501b4d7884c2c209164e8137487ac97e5460d3561e",
+   "published_at": 1680937200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_9eb7c78d1a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f8354aacb10bcd29",
+   "source": "The Conversation",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNTDd5eFpUalgxSUl2Q1VZQmNaZVJ1bTlVSU5NNk9BTVp1QnNFZ2lrcm5fbmx0ZkNmdUpKSnlZUFJ4Q0ZhTzBDYmwtQUI3enpBdXJyRnFZX21mZTFCSXY4cVVrQTNkVy1INHc1U3RfVlZLTUJfaktFcEJ5bVJKT2JiazRQNDFCd210WUZ2dlkzeF9Ea2FGYnNMUTA4YXRtWFlHUndyYklDdjBSdw?oc=5",
+   "title": "How fitness influencers game the algorithms to pump up their engagement - The Conversation",
+   "text": "How fitness influencers game the algorithms to pump up their engagement - The Conversation. How fitness influencers game the algorithms to pump up their engagement The Conversation",
+   "content_hash": "c98d452a1ee01c42",
+   "raw_feed_hash": "428b97e91647a63284f2b3501b4d7884c2c209164e8137487ac97e5460d3561e",
+   "published_at": 1677052800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_9eb7c78d1a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c2e4c80433f319ad",
+   "source": "| Knight First Amendment Institute",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQdXpDVmd0RUlsbEtTUzR1LVZTZ1ZFM3ZyMy1zUzJ0ZHZsLVFIZl90MnpjdFRWellvTGJaRjB5YlBQZmwteTlDUElsSUh2WFVBei1NdjJMVkp4elJHeklDWHpyUFFhY0YzTDEwMFdUNHJScVJuNE9lZmhTX3lXRmpadldkbk55Zlh1M0VSU2xneFI?oc=5",
+   "title": "Twitter showed us its algorithm. What does it tell us? - | Knight First Amendment Institute",
+   "text": "Twitter showed us its algorithm. What does it tell us? - | Knight First Amendment Institute. Twitter showed us its algorithm. What does it tell us? | Knight First Amendment Institute",
+   "content_hash": "62a71a168e8a5311",
+   "raw_feed_hash": "428b97e91647a63284f2b3501b4d7884c2c209164e8137487ac97e5460d3561e",
+   "published_at": 1681110000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_9eb7c78d1a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "770968f20b950465",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFA4Y25vY0F5RzRoTjVuVnFIa0VVMFpPV0J1clVoOWVBNzVIbWROc0VGYjFselVHU2hFb0hzOHNmWC1XeWJ3NjZoeFgzYmdOWi1pRC1yX2hrc1RnZGtyYTJN?oc=5",
+   "title": "The role of the big geographic sort in online news circulation among U.S. Reddit users - Nature",
+   "text": "The role of the big geographic sort in online news circulation among U.S. Reddit users - Nature. The role of the big geographic sort in online news circulation among U.S. Reddit users Nature",
+   "content_hash": "8117c248d3f33fd0",
+   "raw_feed_hash": "428b97e91647a63284f2b3501b4d7884c2c209164e8137487ac97e5460d3561e",
+   "published_at": 1682406000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_9eb7c78d1a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c9b93c3bd374ea54",
+   "source": "Plann",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9yRnladTMtdzRTVV9kNmpmWThiOUx4d3dsc1J3UlVvR2ZJd3lIak9mNGl4RjZfbzQ5LXY2NjN2U0JVWWl1MGJYRWpndTNoUTItbkN2bl93Snd4R2RrczdFWG1KSUFPOEZwemxF?oc=5",
+   "title": "10 Proven Hacks to Increase Engagement on Instagram Reels - Plann",
+   "text": "10 Proven Hacks to Increase Engagement on Instagram Reels - Plann. 10 Proven Hacks to Increase Engagement on Instagram Reels Plann",
+   "content_hash": "50b6a341c831ff64",
+   "raw_feed_hash": "428b97e91647a63284f2b3501b4d7884c2c209164e8137487ac97e5460d3561e",
+   "published_at": 1680087682.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_9eb7c78d1a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "68b0723af52163ec",
+   "source": "Hootsuite Blog",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOeWgxc3dVR3RzLXZtUEJWTU1SZkdPNnNxWW9PTDEtVFNFNkVRTkVtSDFvSDZlN2JENkZRanloVHFseU9sbndMZGR0WHFIQlAzTDBBUEpDWl9zb2lSVmVQUHU4Q2h1RzJGLThaUzRmdlhMRTAxZUdxUGJRUnNFd1Nya19zNkVqaXpGV1Z1TUtULUJWbWRTMUl5bUFrLVAxdVMzci1SMk1IeExqVTFrV2Rtaw?oc=5",
+   "title": "Twitter reveals how its recommendation algorithm works - Hootsuite Blog",
+   "text": "Twitter reveals how its recommendation algorithm works - Hootsuite Blog. Twitter reveals how its recommendation algorithm works Hootsuite Blog",
+   "content_hash": "9731a992dc61bc14",
+   "raw_feed_hash": "428b97e91647a63284f2b3501b4d7884c2c209164e8137487ac97e5460d3561e",
+   "published_at": 1680332400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_9eb7c78d1a",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "328543f1b760c297:c0",
+   "source_id": "328543f1b760c297",
+   "subject": "Knight First Amendment Institute",
+   "predicate": "has published",
+   "object": "a piece titled 'Understanding Social Media Recommendation Algorithms'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Understanding Social Media Recommendation Algorithms - | Knight First Amendment Institute",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678348800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Knight First Amendment Institute"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c24f30a32b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6be0f88c92"
+   }
+  },
+  {
+   "claim_id": "6190ded5f5c8d0ad:c0",
+   "source_id": "6190ded5f5c8d0ad",
+   "subject": "TikTok",
+   "predicate": "lowers",
+   "object": "barriers to virality",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "TikTok lowers barriers to virality",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1670572800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "TikTok"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6eea90da70",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6be0f88c92"
+   }
+  },
+  {
+   "claim_id": "6190ded5f5c8d0ad:c1",
+   "source_id": "6190ded5f5c8d0ad",
+   "subject": "TikTok",
+   "predicate": "keeps",
+   "object": "tight control through algorithm",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "keeps tight control through algorithm",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1670572800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "TikTok"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6eea90da70",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6be0f88c92"
+   }
+  },
+  {
+   "claim_id": "8ab12559d10d139f:c0",
+   "source_id": "8ab12559d10d139f",
+   "subject": "Psychological inoculation",
+   "predicate": "protects against",
+   "object": "the social media infodemic",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Psychological inoculation protects against the social media infodemic - Nature",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680937200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Psychological inoculation",
+    "social media infodemic",
+    "Nature"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7d44224c99",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9eb7c78d1a"
+   }
+  },
+  {
+   "claim_id": "e64f3fc7327f2fa6:c0",
+   "source_id": "e64f3fc7327f2fa6",
+   "subject": "we",
+   "predicate": "need to get a grip on",
+   "object": "social media algorithms",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "How do we get a grip on social media algorithms?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678863600.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "social media algorithms"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_48303ec418",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6be0f88c92"
+   }
+  },
+  {
+   "claim_id": "e64f3fc7327f2fa6:c1",
+   "source_id": "e64f3fc7327f2fa6",
+   "subject": "social media algorithms",
+   "predicate": "are",
+   "object": "risky business",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Risky business: How do we get a grip on social media algorithms?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678863600.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "social media algorithms"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_48303ec418",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6be0f88c92"
+   }
+  },
+  {
+   "claim_id": "f8354aacb10bcd29:c0",
+   "source_id": "f8354aacb10bcd29",
+   "subject": "fitness influencers",
+   "predicate": "game",
+   "object": "the algorithms",
+   "value": "",
+   "units": "",
+   "qualifiers": "to pump up their engagement",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "How fitness influencers game the algorithms to pump up their engagement",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677052800.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "fitness influencers",
+    "algorithms"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6f9b981ab1",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9eb7c78d1a"
+   }
+  },
+  {
+   "claim_id": "0c9e0639edf4d87b:c0",
+   "source_id": "0c9e0639edf4d87b",
+   "subject": "Echo chamber effects on short video platforms",
+   "predicate": "is a topic of",
+   "object": "Nature",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Echo chamber effects on short video platforms - Nature",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681801200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Echo chamber effects on short video platforms",
+    "Nature"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_49bf782740",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6be0f88c92"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Knight First Amendment Institute",
+   "normalized": "knight first amendment institute",
+   "candidates": [
+    {
+     "entity_id": "ent_8bfa1f2dd8",
+     "canonical": "knight first amendment institute",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Knight First Amendment Institute"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "TikTok",
+   "normalized": "tiktok",
+   "candidates": [
+    {
+     "entity_id": "ent_8d7624972d",
+     "canonical": "tiktok",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "TikTok",
+      "TikTok"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "TikTok",
+   "normalized": "tiktok",
+   "candidates": [
+    {
+     "entity_id": "ent_8d7624972d",
+     "canonical": "tiktok",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "TikTok",
+      "TikTok"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Psychological inoculation",
+   "normalized": "psychological inoculation",
+   "candidates": [
+    {
+     "entity_id": "ent_486e3f0747",
+     "canonical": "psychological inoculation",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Psychological inoculation"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "social media infodemic",
+   "normalized": "social media infodemic",
+   "candidates": [
+    {
+     "entity_id": "ent_495b698590",
+     "canonical": "social media infodemic",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "social media infodemic"
+     ]
+    },
+    {
+     "entity_id": "ent_1b27322dd9",
+     "canonical": "social media algorithms",
+     "support": 0.2167,
+     "evidence_mentions": [
+      "social media algorithms",
+      "social media algorithms"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Nature",
+   "normalized": "nature",
+   "candidates": [
+    {
+     "entity_id": "ent_a5197f1026",
+     "canonical": "nature",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Nature",
+      "Nature"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "social media algorithms",
+   "normalized": "social media algorithms",
+   "candidates": [
+    {
+     "entity_id": "ent_1b27322dd9",
+     "canonical": "social media algorithms",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "social media algorithms",
+      "social media algorithms"
+     ]
+    },
+    {
+     "entity_id": "ent_5f0f56a948",
+     "canonical": "algorithms",
+     "support": 0.2333,
+     "evidence_mentions": [
+      "algorithms"
+     ]
+    },
+    {
+     "entity_id": "ent_495b698590",
+     "canonical": "social media infodemic",
+     "support": 0.1333,
+     "evidence_mentions": [
+      "social media infodemic"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "social media algorithms",
+   "normalized": "social media algorithms",
+   "candidates": [
+    {
+     "entity_id": "ent_1b27322dd9",
+     "canonical": "social media algorithms",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "social media algorithms",
+      "social media algorithms"
+     ]
+    },
+    {
+     "entity_id": "ent_5f0f56a948",
+     "canonical": "algorithms",
+     "support": 0.2333,
+     "evidence_mentions": [
+      "algorithms"
+     ]
+    },
+    {
+     "entity_id": "ent_495b698590",
+     "canonical": "social media infodemic",
+     "support": 0.1333,
+     "evidence_mentions": [
+      "social media infodemic"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "fitness influencers",
+   "normalized": "fitness influencers",
+   "candidates": [
+    {
+     "entity_id": "ent_5c5f6707f5",
+     "canonical": "fitness influencers",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "fitness influencers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "algorithms",
+   "normalized": "algorithms",
+   "candidates": [
+    {
+     "entity_id": "ent_5f0f56a948",
+     "canonical": "algorithms",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "algorithms"
+     ]
+    },
+    {
+     "entity_id": "ent_1b27322dd9",
+     "canonical": "social media algorithms",
+     "support": 0.3167,
+     "evidence_mentions": [
+      "social media algorithms",
+      "social media algorithms"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Echo chamber effects on short video platforms",
+   "normalized": "echo chamber effects on short video platforms",
+   "candidates": [
+    {
+     "entity_id": "ent_0f9dbbda61",
+     "canonical": "echo chamber effects on short video platforms",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Echo chamber effects on short video platforms"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Nature",
+   "normalized": "nature",
+   "candidates": [
+    {
+     "entity_id": "ent_a5197f1026",
+     "canonical": "nature",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Nature",
+      "Nature"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "328543f1b760c297": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678348800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678348800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6190ded5f5c8d0ad": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1670572800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1670572800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e64f3fc7327f2fa6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678863600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678863600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0c9e0639edf4d87b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1681801200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681801200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d4cda57281333c54": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678435200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678435200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7313420051f4f7f8": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1675353488.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675353488.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b4bf482030780e77": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1675324800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675324800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8d6ad29f5ee73636": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1676534400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676534400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8ab12559d10d139f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1680937200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680937200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f8354aacb10bcd29": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1677052800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677052800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c2e4c80433f319ad": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1681110000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681110000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "770968f20b950465": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1682406000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682406000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c9b93c3bd374ea54": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1680087682.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680087682.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "68b0723af52163ec": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1680332400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680332400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_c24f30a32b",
+   "member_ids": [
+    "328543f1b760c297",
+    "328543f1b760c297"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "| Knight First Amendment Institute",
+   "primary_source": "| Knight First Amendment Institute",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_6eea90da70",
+   "member_ids": [
+    "6190ded5f5c8d0ad"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Pennsylvania State University",
+   "primary_source": "The Pennsylvania State University",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_48303ec418",
+   "member_ids": [
+    "e64f3fc7327f2fa6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "AlgorithmWatch",
+   "primary_source": "AlgorithmWatch",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_49bf782740",
+   "member_ids": [
+    "0c9e0639edf4d87b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d23ee4ffc5",
+   "member_ids": [
+    "d4cda57281333c54"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "drugdiscoverytrends.com",
+   "primary_source": "drugdiscoverytrends.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7213b8a747",
+   "member_ids": [
+    "7313420051f4f7f8"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "MarketingProfs",
+   "primary_source": "MarketingProfs",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3e9177edc8",
+   "member_ids": [
+    "b4bf482030780e77"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_74b9d9eec2",
+   "member_ids": [
+    "8d6ad29f5ee73636"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Workweek",
+   "primary_source": "Workweek",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7d44224c99",
+   "member_ids": [
+    "8ab12559d10d139f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6f9b981ab1",
+   "member_ids": [
+    "f8354aacb10bcd29"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Conversation",
+   "primary_source": "The Conversation",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_37a4ee4aa0",
+   "member_ids": [
+    "c2e4c80433f319ad"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "| Knight First Amendment Institute",
+   "primary_source": "| Knight First Amendment Institute",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b9a507aac2",
+   "member_ids": [
+    "770968f20b950465"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_58624f0459",
+   "member_ids": [
+    "c9b93c3bd374ea54"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Plann",
+   "primary_source": "Plann",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5c6d270cb3",
+   "member_ids": [
+    "68b0723af52163ec"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Hootsuite Blog",
+   "primary_source": "Hootsuite Blog",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "328543f1b760c297:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678348800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6190ded5f5c8d0ad:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1670572800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6190ded5f5c8d0ad:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1670572800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8ab12559d10d139f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680937200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "e64f3fc7327f2fa6:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678863600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "e64f3fc7327f2fa6:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678863600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f8354aacb10bcd29:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677052800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0c9e0639edf4d87b:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681801200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "328543f1b760c297:c0",
+  "6190ded5f5c8d0ad:c0",
+  "6190ded5f5c8d0ad:c1",
+  "8ab12559d10d139f:c0",
+  "e64f3fc7327f2fa6:c0",
+  "e64f3fc7327f2fa6:c1",
+  "f8354aacb10bcd29:c0",
+  "0c9e0639edf4d87b:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_c47ef3bab3": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_6be0f88c92": {
+   "status": "fulfilled",
+   "n_claims": 6,
+   "n_included": 6
+  },
+  "req_9eb7c78d1a": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_6fec4c26bf": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_5a64090ceb": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_57a29f73f6": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_3dff0235e3": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_c47ef3bab3",
+  "req_6fec4c26bf",
+  "req_5a64090ceb",
+  "req_57a29f73f6",
+  "req_3dff0235e3"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 14,
+  "n_contradictions": 0,
+  "n_documents": 15
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.446,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "7c56edc6070c09e8",
+ "bundle_hash": "7c56edc6070c09e8",
+ "_persisted_at": "2026-07-13T01:48:57Z"
+}

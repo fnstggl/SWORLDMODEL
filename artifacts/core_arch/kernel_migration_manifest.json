@@ -1,0 +1,201 @@
+{
+  "manifest": "kernel_migration_manifest",
+  "section": "§23 — validated legacy kernels vs World Model V2",
+  "source_audit": "auditC_mechanisms (2026-07-19)",
+  "date": "2026-07-19",
+  "note": "All 19 audit candidates (10 port / 9 reject). Four ports are implemented this round as V2 TransitionOperators in swm/world_model_v2/kernel_ports.py with MechanismSpec records; the remaining port candidates are marked not_ported_this_round honestly. sim_arrival is NOT a row here: it was already ported pre-audit (transitions.RareEventArrivalOperator, the template these ports follow). The lean compiler entries for poll_error_aggregation/whipcount_binomial are deliberately NOT flipped: the compiler keeps rejecting them (pinned by tests/test_wmv2_tier_a_fixes.py) until wiring is a deliberate decision; the ported operators are reachable by name in the transitions registry and fully contract-tested.",
+  "kernels": [
+    {
+      "kernel": "sim_aggregation (latent share vs threshold with empirical poll error)",
+      "old_location": "swm/api/mechanisms.py::sim_aggregation",
+      "validated_semantics": "Monte-Carlo share ~ Normal(grounded share, poll-error sd ~3-6pt, default 0.06) vs threshold; integrates measurement error so a 52% lead with 4pt error is ~0.7, not 1.0; no data -> base rate (base-rate fallback NOT ported: the V2 fallback hierarchy owns it)",
+      "new_operator": "poll_error_aggregation (swm/world_model_v2/kernel_ports.py::PollErrorAggregationOperator, kind=measurement)",
+      "parameter_source": "grounded poll/current share WITH named provenance (rejected otherwise); share_sd empirical documented prior (default 0.06, labeled on the delta)",
+      "tests": ["tests/test_mechanisms.py::test_aggregation_integrates_poll_error (legacy pin)", "tests/test_mechanism_spec.py (V2 port: contract, Monte-Carlo equivalence vs legacy kernel, provenance rejection)"],
+      "production_eligibility": "ported_contract_tested",
+      "reason_accepted_or_rejected": "ACCEPTED: fills the declared-but-dead poll_error_aggregation registry entry; pure measurement mechanism (no human cognition modeled); one latent draw per branch so the closed form emerges across particles, matching the poisson_arrival porting template"
+    },
+    {
+      "kernel": "sim_whipcount (undecideds break at grounded lean; Binomial vs needed threshold)",
+      "old_location": "swm/api/mechanisms.py::sim_whipcount",
+      "validated_semantics": "committed_yes + Binomial(undecided, lean) >= needed; needed defaults to bare majority of total; short-circuits when arithmetic decides",
+      "new_operator": "whipcount_binomial (swm/world_model_v2/kernel_ports.py::WhipcountBinomialOperator, kind=institution)",
+      "parameter_source": "grounded whip counts + grounded lean or per-member yes-probabilities from plan/pack, all WITH named provenance; the legacy default lean=0.5 is REMOVED — missing probabilities produce a rejection ValidationResult, never a default",
+      "tests": ["tests/test_mechanisms.py::test_whipcount_counts_votes (legacy pin)", "tests/test_wmv2_tier_a_fixes.py (compiler-rejection pin for the unwired lean entry, unchanged)", "tests/test_mechanism_spec.py (V2 port: short-circuit + binomial equivalence, invented-probability refusal, conservation)"],
+      "production_eligibility": "ported_contract_tested",
+      "reason_accepted_or_rejected": "ACCEPTED with guardrail: the audit flags that undecided-break behavior is numerically modeled human choice — admissible ONLY because every probability must arrive grounded with provenance (whip signal / party lean), and the port refuses to run without them; complements institutional_vote for members not individually modeled"
+    },
+    {
+      "kernel": "sim_contest (Elo/logistic head-to-head with rating uncertainty)",
+      "old_location": "swm/api/mechanisms.py::sim_contest",
+      "validated_semantics": "win prob from grounded odds, or 400-scale Elo diff with Gaussian rating noise integrated; no data -> base rate",
+      "new_operator": null,
+      "parameter_source": "ratings/odds grounded by caller",
+      "tests": ["tests/test_mechanisms.py::test_contest_elo_and_winprob"],
+      "production_eligibility": "not_ported_this_round",
+      "reason_accepted_or_rejected": "ACCEPTED for port (kind=numerical: small, closed-form, domain-general — sports/court/race; no v2 equivalent) but not implemented this round; port should follow the per-branch latent-draw template"
+    },
+    {
+      "kernel": "FutureEvent calendar + SurpriseHazard (+ EXP-077 calibrated jump variance, directional_event_model conditional impacts)",
+      "old_location": "swm/transition/future_events.py + swm/simulation/event_model.py + swm/simulation/directional_event_model.py",
+      "validated_semantics": "dated events with categorical outcome distributions forking reality into branches; Poisson surprise hazard of unscheduled shocks; EXP-077 calibrates jump frequency/magnitude from realized moves with interval-coverage validation",
+      "new_operator": "outside_world_hazard (swm/world_model_v2/kernel_ports.py::OutsideWorldHazardOperator, kind=exogenous)",
+      "parameter_source": "OutsideWorldProcess families: scheduled_exact calendar (deterministic dates), observed_base_rate / documented_broad_prior Poisson rates with named provenance; unresolved families surfaced, never sampled",
+      "tests": ["tests/test_future_events.py (legacy pin)", "tests/test_branching_rollout.py (legacy pin)", "tests/test_mechanism_spec.py (V2 port: entry events emitted through the queue, forbidden-write refusal, unresolved never sampled, scheduled-exact determinism)"],
+      "production_eligibility": "ported_contract_tested",
+      "reason_accepted_or_rejected": "ACCEPTED: the strongest v1 backing for the OutsideWorldProcess residual; ported as typed entry events (never terminal writes — outside_world.FORBIDDEN_WRITES enforced three ways). Deliberately NOT ported: the per-outcome belief-jump/resolution term (a direct terminal write, forbidden by §5.1) — outcome marks ride the entry payload instead; EXP-077 calibrated jump-magnitude joining is a recorded follow-up",
+      "follow_up": "join simulation/event_model.py calibrate() output as fitted magnitude packs for arrival marks; directional_event_model state-conditional impacts enter only as entry-mechanism payloads"
+    },
+    {
+      "kernel": "BeliefTransition + EXP-035 heteroskedastic drift/variance (fitted belief-series numerics)",
+      "old_location": "swm/transition/belief_dynamics.py + swm/transition/event_model.py",
+      "validated_semantics": "event-conditioned belief delta vs efficient-market martingale null; drift(state)/log_var(state) with decaying event drift; martingale-anchored, no-cheat train fits, pre-shift features only",
+      "new_operator": null,
+      "parameter_source": "fitted on train trajectories (leakage-safe)",
+      "tests": ["tests/test_belief_dynamics.py", "tests/test_event_model.py"],
+      "production_eligibility": "not_ported_this_round",
+      "reason_accepted_or_rejected": "ACCEPTED for port (kind=numerical/market: belief-series dynamics for aggregate/market belief QUANTITIES between events; fitted provenance satisfies v2 rules; explicitly NOT for individual human actors — Phase-4 policy owns that) but not implemented this round"
+    },
+    {
+      "kernel": "MeanFieldRollout + PopulationSimulator turnout coupling (coupled population dynamics)",
+      "old_location": "swm/simulation/mean_field.py + swm/simulation/population_simulator.py",
+      "validated_semantics": "per-agent belief evolves toward the influence-weighted aggregate (conformity) + exogenous event shocks + social-proof self-reinforcement; non-separable (dp_i/dp_j != 0); honestly held to beating the independent mean (EXP-053); demographic cells from real survey/census rows",
+      "new_operator": "population_segment_exposure (swm/world_model_v2/kernel_ports.py::PopulationSegmentExposureOperator, kind=population)",
+      "parameter_source": "grounded segment cells WITH named provenance + every coupling constant supplied as {value, source} (documented priors / sampled_coupling / fitted pack); legacy in-code defaults removed — unsourced params produce a rejection ValidationResult",
+      "tests": ["tests/test_mean_field.py (legacy pin)", "tests/test_population_simulator.py (legacy pin)", "tests/test_mechanism_spec.py (V2 port: numerical equality vs the legacy kernel on a fixed case, provenance rejection)"],
+      "production_eligibility": "ported_contract_tested",
+      "reason_accepted_or_rejected": "ACCEPTED with guardrail: the repo's only validated coupled within-horizon population dynamic (phase9 is compositional, world_dynamics bandwagon is stance-level). It is population-level numerical behavior — admissible because segments and couplings must carry provenance and the operator executes the validated kernel itself (numerics pinned identical). The stance-coupled differential-turnout variant (PopulationSimulator) is a recorded follow-up on the same operator",
+      "follow_up": "adapt PopulationSimulator participation-propensity coupling as a declared mode of the same operator; migrate couplings to a fitted pack when scored trajectories exist"
+    },
+    {
+      "kernel": "BayesianLogistic (Laplace posterior over weights; predictions widen under weight uncertainty)",
+      "old_location": "swm/variables/bayes_logistic.py",
+      "validated_semantics": "MAP + Laplace covariance shrunk toward prior mean; predict_dist integrates weight uncertainty so uncertain weights WIDEN predictions instead of biasing; variance_contribution triage",
+      "new_operator": null,
+      "parameter_source": "estimator; priors from literature elasticities",
+      "tests": ["tests/test_bayes_logistic.py"],
+      "production_eligibility": "not_ported_this_round",
+      "reason_accepted_or_rejected": "ACCEPTED for port as a Phase-6 PACK-PRODUCER upgrade (registry/ingestion.fit_logistic is point-estimate only; this gives parameter packs weight POSTERIORS), not as a runtime world mechanism; not implemented this round"
+    },
+    {
+      "kernel": "elasticity_fit harness (prior-anchored logistic + per-recipient offset + ECE grade)",
+      "old_location": "swm/decision/elasticity_fit.py",
+      "validated_semantics": "recovers known elasticities on synthetic ground truth with calibrated held-out grade; real-world claims explicitly blocked on private data; grade A/B/C/F by ECE",
+      "new_operator": null,
+      "parameter_source": "beta shrunk toward world-knowledge priors",
+      "tests": ["tests/test_elasticity_fit.py"],
+      "production_eligibility": "not_ported_this_round",
+      "reason_accepted_or_rejected": "ACCEPTED for port as a Phase-6 pack PRODUCER (fitting harness whose graded-fit pattern is exactly MechanismSpec calibration evidence), not a runtime mechanism; not implemented this round"
+    },
+    {
+      "kernel": "demographic_to_values (demographics -> 10 latent value dimensions)",
+      "old_location": "swm/variables/demographic_values.py",
+      "validated_semantics": "grounded Inglehart-axis heuristic; non-circular (never sees the answer); interpretable",
+      "new_operator": null,
+      "parameter_source": "published political-science associations (heuristic, unfitted) — reference_class_prior",
+      "tests": ["tests/test_demographic_values.py"],
+      "production_eligibility": "not_ported_this_round",
+      "reason_accepted_or_rejected": "ACCEPTED for port as a population trait-prior SOURCE for segment heterogeneity fields (label reference_class_prior), feeding population_segment_exposure segments; not implemented this round"
+    },
+    {
+      "kernel": "measurement/validation tooling: ConformalBinary + calibration_grade + nonstationarity drift + DirectionModel",
+      "old_location": "swm/uncertainty/conformal.py + swm/uncertainty/calibration.py + swm/eval/metrics.py + swm/transition/nonstationarity.py + swm/transition/direction_model.py",
+      "validated_semantics": "split-conformal {0,1} prediction sets with finite-sample coverage (honest abstention analog); held-out ECE A/B/C/F with n>=30 gate; windowed drift statistic + interval widening under drift; leakage-safe lean-predicts-direction diagnostic (~70% for confident beliefs)",
+      "new_operator": null,
+      "parameter_source": "distribution-free / windowed statistics / fitted leakage-safe diagnostic",
+      "tests": ["tests/test_conformal.py", "tests/test_calibration.py", "tests/test_metrics.py", "tests/test_direction_model.py"],
+      "production_eligibility": "not_ported_this_round",
+      "reason_accepted_or_rejected": "ACCEPTED for port as MechanismSpec VALIDATION-RULE tooling and calibration_status transition machinery (a fitted pack whose base rate drifted should lose fitted_validated; conformal sets grade result support; direction model folds into family_hazards-style base-rate machinery) — measurement infrastructure, not world mechanisms; not implemented this round"
+    },
+    {
+      "kernel": "independent_cascade / linear_threshold / hawkes_intensity (unfitted diffusion)",
+      "old_location": "swm/transition/diffusion.py",
+      "validated_semantics": "textbook KKT-IC, Granovetter LT, Hawkes intensity; the module itself labels output unvalidated until backtested",
+      "new_operator": null,
+      "parameter_source": "edge weights/thresholds supplied, unfitted",
+      "tests": [],
+      "production_eligibility": "rejected",
+      "reason_accepted_or_rejected": "REJECTED: superseded by the Phase-6/7 FITTED diffusion families (simple/complex contagion, exposure_response — Higgs-validated) and hawkes_self_excitation is already QUARANTINED on evidence; porting unfitted versions would regress provenance"
+    },
+    {
+      "kernel": "LLM-decision cascade simulator (archetype reshare decisions on heavy-tailed follower graph)",
+      "old_location": "swm/engine/diffusion.py",
+      "validated_semantics": "grade-or-abstain design; ships ungraded",
+      "new_operator": null,
+      "parameter_source": "sampled LLM decisions (probability minting)",
+      "tests": ["engine tests"],
+      "production_eligibility": "rejected",
+      "reason_accepted_or_rejected": "REJECTED: LLM probability minting on the production path is exactly what gap-audit RC4 quarantined; nonlinear_contagion covers the class with fitted hazards"
+    },
+    {
+      "kernel": "hierarchical individual response stack (pooled rates, EWMA recency, interactions, GBDT readout, Platt)",
+      "old_location": "swm/transition/response_model.py + individual_transition.py + learned_transition.py + swm/worlds/individual_world.py",
+      "validated_semantics": "as-of online evaluation, no leakage; ablation toggles",
+      "new_operator": null,
+      "parameter_source": "fitted online",
+      "tests": ["tests/test_individual_simulator.py", "tests/test_recipient_history.py", "tests/test_retrieval_response.py"],
+      "production_eligibility": "rejected",
+      "reason_accepted_or_rejected": "REJECTED: already re-fitted natively as leak-free fitted mechanism packs in reference/enron.py (hierarchical_rate_shrinkage lives in the Phase-6 registry); porting the old stack would duplicate them"
+    },
+    {
+      "kernel": "AggregateTransition + AggregateWorld (state-conditioned calibrated head + state recurrence)",
+      "old_location": "swm/transition/aggregate_transition.py + swm/worlds/aggregate_world.py",
+      "validated_semantics": "state enters prediction; state transitions after outcomes; temporal-backtest grade",
+      "new_operator": null,
+      "parameter_source": "calibrated OutcomeHead over declared features",
+      "tests": ["tests/test_state_world_model.py", "tests/test_rollout.py"],
+      "production_eligibility": "rejected",
+      "reason_accepted_or_rejected": "REJECTED: models human behavior through the arbitrary-variable logistic-over-features path explicitly quarantined from v2 (pinned by test); its useful ideas (drift tracking, state-conditioned rates) already exist as nonstationarity + posterior machinery"
+    },
+    {
+      "kernel": "HN score-formation SimulationEngine + reactions",
+      "old_location": "swm/simulation/engine.py + reactions.py + world_rollout.py (grades in models/hn_simulation_grade.json)",
+      "validated_semantics": "multi-step segment reactions with state updates; graded on the HN backtest",
+      "new_operator": null,
+      "parameter_source": "fitted/heuristic per HN",
+      "tests": ["tests/test_simulation.py", "tests/test_world_model_bench.py"],
+      "production_eligibility": "rejected",
+      "reason_accepted_or_rejected": "REJECTED: platform-specific; the generalizable pieces (position bias, platform ranking, examination) already exist as Phase-6 platform families (position_bias_propensity, domain_restricted)"
+    },
+    {
+      "kernel": "agent_society LLM personas",
+      "old_location": "swm/simulation/agent_society.py",
+      "validated_semantics": "persona role-play agents; never held to a calibration grade",
+      "new_operator": null,
+      "parameter_source": "LLM-minted persona behavior (invented utilities and reaction probabilities)",
+      "tests": ["tests/test_agent_society.py"],
+      "production_eligibility": "rejected",
+      "reason_accepted_or_rejected": "REJECTED: invented utilities — free-form LLM persona role-play mints behavior probabilities with no provenance; v2's constitution routes all actor decisions through typed institution-validated actions with fitted or loudly-uniform policies"
+    },
+    {
+      "kernel": "WorldSubstrate (persistent coupled multi-scale twin)",
+      "old_location": "swm/world/substrate.py",
+      "validated_semantics": "entities with own step_fn/readout coupled on one clock",
+      "new_operator": null,
+      "parameter_source": "per-entity mechanisms",
+      "tests": ["tests/test_world_substrate.py"],
+      "production_eligibility": "rejected",
+      "reason_accepted_or_rejected": "REJECTED: WorldState + EventQueue + operators IS this architecture, with provenance; nothing left to port"
+    },
+    {
+      "kernel": "sim_escalation + sim_persistence (self-reinforcing tipping; status-quo survival)",
+      "old_location": "swm/api/mechanisms.py::sim_escalation + sim_persistence",
+      "validated_semantics": "logit drift from measured pressure/trend amplified by a reinforcement gain and horizon; exp(-h*H) survival of the default under a disruption hazard",
+      "new_operator": null,
+      "parameter_source": "GDELT pressure signals; reinforcement gain ASSUMED (hand-set); base rate over reference horizon",
+      "tests": ["tests/test_mechanisms.py"],
+      "production_eligibility": "rejected",
+      "reason_accepted_or_rejected": "REJECTED: sim_escalation models human collective reaction numerically with a hand-set reinforcement gain that fails v2 parameter-provenance rules and is superseded by mode-graph world-driven pathways + nonlinear forms + first_passage consumption of causal state; sim_persistence is exactly the first_passage/temporal_hazards machinery with a constant rate — porting would create a second survival path"
+    },
+    {
+      "kernel": "stubs: graph/diffusion.py, inference/filter.py, transition/mechanistic.py",
+      "old_location": "swm/graph/diffusion.py + swm/inference/filter.py + swm/transition/mechanistic.py",
+      "validated_semantics": "IMPLEMENTED=False placeholders",
+      "new_operator": null,
+      "parameter_source": "none",
+      "tests": [],
+      "production_eligibility": "rejected",
+      "reason_accepted_or_rejected": "REJECTED: no implementation exists — nothing to port"
+    }
+  ]
+}

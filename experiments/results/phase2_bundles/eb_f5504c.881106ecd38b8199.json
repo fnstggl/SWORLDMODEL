@@ -1,0 +1,2022 @@
+{
+ "bundle_id": "eb_f5504c",
+ "question": "Should we launch the campaign now or after the competitor's announcement?",
+ "as_of": 1688169600.0,
+ "compiler_plan_hash": "a98e84692587",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_0400bb6f1b",
+   "claim_or_quantity": "Compare the expected reach (or response occurrence) if launched before vs. after the competitor's announcement; the readout is the difference in reach.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "our_organization",
+    "competitor"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ee212176bc",
+   "claim_or_quantity": "value/context of competitor.announcement_content",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "competitor.announcement_content",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c528c58261",
+   "claim_or_quantity": "evidence discriminating structural hypothesis first_mover_advantage",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:first_mover_advantage",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c89438c041",
+   "claim_or_quantity": "evidence discriminating structural hypothesis second_mover_advantage",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:second_mover_advantage",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5ee9ebece8",
+   "claim_or_quantity": "value/context of target_audience.attention_drift_rate",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "target_audience.attention_drift_rate",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0f465046c4",
+   "claim_or_quantity": "value/context of target_audience.susceptibility_to_competitor",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "target_audience.susceptibility_to_competitor",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_00679b4045",
+   "claim_or_quantity": "decision rules / process of our_organization",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "our_organization",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_bded279286",
+   "claim_or_quantity": "decision rules / process of competitor",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "competitor",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_0400bb6f1b",
+   "terms": "launch campaign competitor announcement our organization competitor",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_ee212176bc",
+   "terms": "competitor announcement content",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_c528c58261",
+   "terms": "structural hypothesis first mover advantage evidence",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_0400bb6f1b",
+   "logical_query": "launch campaign competitor announcement our organization competitor after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=launch+campaign+competitor+announcement+our+organization+competitor+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783908262.455607,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:04:23 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcy_svXmITeLC5M1RJOSm_MD4lv6S4uCAnsTijOLWoLLUo3sjAyMzA3MBMz8AkvsAAAGytOFg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "1387e7adc317964fca4c7e021b467d0cd8a08cbbb88b0cd4580d67b114c161ff",
+   "n_bytes": 67815,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.696
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ee212176bc",
+   "logical_query": "competitor announcement content after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=competitor+announcement+content+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783908263.153684,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:04:23 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw1ZBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsbz_4iU2gQ2zZkxhVlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAiNU2fQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "592e90d991190c8dfc9ccf7e389319bbde9941aaf55deb4fd31b3e6ac52b7e2d",
+   "n_bytes": 33643,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.624
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_c528c58261",
+   "logical_query": "structural hypothesis first mover advantage evidence after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=structural+hypothesis+first+mover+advantage+evidence+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783908263.7792513,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:04:24 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw1JBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsaL_4iU2gQPdy08yKikn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAkSE2vQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d74ee438b2eddf10ffd7a6ca48516ca365c331a87597457b9f23b34c0fae6b28",
+   "n_bytes": 1269,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.574
+  }
+ ],
+ "raw_content_refs": [
+  "1387e7adc317964fca4c7e021b467d0cd8a08cbbb88b0cd4580d67b114c161ff",
+  "592e90d991190c8dfc9ccf7e389319bbde9941aaf55deb4fd31b3e6ac52b7e2d"
+ ],
+ "documents": [
+  {
+   "id": "a3f536c145d104f6",
+   "source": "CNBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxONlFlaWo0Y2NNMFYtaDZhUXBWQ2h2Z2s5N3c5dl9uejFrT3RRYjE4a3V2QUpqSmhYZTNMR0lPR1lvMGxteFl2elpuX1pYVVdlT3JYbnhHazg3MFhnUTJsOXEzcV9yRDBNOTNGY2hyc0JkaUdBbGkwc2d2YkxlbjZMVmlrTE82UE1iQ3ZkTWJUa0c0LThZZHlPTC1sQ2RnM2ZMVERZS1JfNVjSAa4BQVVfeXFMTnNjdXUzNVRxeFdzU1FuazZsbFBJS09jZ0pudXZrVzg1Qk1JRTEzOS0tVElQdjZOZ3NwWk0tU2s1US1wMFo1bTBOUGxMVXdQSW1ucWRkcDlBSFotczlncVFKNHRtWjA0d0VTTTdDQ2o5d2Y3cW5mQlRnYVVMZEM4SlJzMGVwVFZoUDB3OWFsQ3A1Z3l5UUthSzViMkxueElMOVpXUDVCZ09YTUdjSy1B?oc=5",
+   "title": "Google employees criticize CEO Sundar Pichai for \u2018rushed, botched\u2019 announcement of GPT competitor Bard - CNBC",
+   "text": "Google employees criticize CEO Sundar Pichai for \u2018rushed, botched\u2019 announcement of GPT competitor Bard - CNBC. Google employees criticize CEO Sundar Pichai for \u2018rushed, botched\u2019 announcement of GPT competitor Bard CNBC",
+   "content_hash": "446930323cdbe67d",
+   "raw_feed_hash": "1387e7adc317964fca4c7e021b467d0cd8a08cbbb88b0cd4580d67b114c161ff",
+   "published_at": 1676016000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_0400bb6f1b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8c58e950a90c2c5b",
+   "source": "Iowa Capital Dispatch",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOUTVHVEMzdG9VWUk2SGJ2LUU4MDZjZ2JGcWFqWk96QlR6RHAxaVR1WU9vQlBIVkp4ck5mQ1hzcE4zSmQxaUJPbmhfSDVmQXVFYTJxTG9PMUY1dGVQSWJjTzlWY2dFS3lQWTNFaFZRcENXQVhMRkljTEFZWXRYdV9HU1BiakhaRXVEUWZUdDRCLWJibkZVUG5aaVdFNHl0MmxIYzUyRkg5bXRMSGkwc1hpZWVLM3ptXzdnakJtb2kyN2E2SHg2UHpYaE5hN2ZnOUZmYjVN?oc=5",
+   "title": "When he enters POTUS race, DeSantis\u2019 cash haul will likely overwhelm competitors \u2014 but it depends - Iowa Capital Dispatch",
+   "text": "When he enters POTUS race, DeSantis\u2019 cash haul will likely overwhelm competitors \u2014 but it depends - Iowa Capital Dispatch. When he enters POTUS race, DeSantis\u2019 cash haul will likely overwhelm competitors \u2014 but it depends Iowa Capital Dispatch",
+   "content_hash": "8c106ff88edd03c8",
+   "raw_feed_hash": "1387e7adc317964fca4c7e021b467d0cd8a08cbbb88b0cd4580d67b114c161ff",
+   "published_at": 1684306800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_0400bb6f1b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d1e26d9b14fac0b1",
+   "source": "Campaign US",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPY1RvbTg5MWRXYlZCb3RaeVdQaE40dmFBZC1feTZwdkZpU21MVnQ4NUY0N3VJS2ZVVTJuMTBGMTRzNDFDalI1R29Wc1R5SE9OVkNXTWM3VHkyWVFBUzJrSW16MUpuc2tnUnpuc19iVlhIZDNGTUhnMUtsRm5JenhIRVlpNG0wR2o4RVBxSDIzT0hnUHpSSDhvN1VrcTk2RDlQcFRvZHBHdW85eGoxQVE?oc=5",
+   "title": "Nike and G\u00f6t2b partner with Revry to launch a vogue ballroom dance competition - Campaign US",
+   "text": "Nike and G\u00f6t2b partner with Revry to launch a vogue ballroom dance competition - Campaign US. Nike and G\u00f6t2b partner with Revry to launch a vogue ballroom dance competition Campaign US",
+   "content_hash": "1349c875602d083b",
+   "raw_feed_hash": "1387e7adc317964fca4c7e021b467d0cd8a08cbbb88b0cd4580d67b114c161ff",
+   "published_at": 1686639600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_0400bb6f1b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9444d6d67f7018a7",
+   "source": "VOA - Voice of America English News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNNFhMcUpESXFfY29SaC0yTUd1b245NmdXc3lhUTlUalZrOTRNRWNGNkVZbmQ1OGlpcGZ0ckEzcFNOcU5nOXM4VDdBRjNiUXh2cGJaalNlaEdsV1lZMVdKQlhXVGgyUUItbVBIdTJ0NW5CY2ZOMTFNV0pjQjN4UkxSdkM0aFFURm56TzlqdzFPWTBYRnI5UkhLOTF4bWPSAZ8BQVVfeXFMTTNuemU1WWNwRVdoUU5YWWZocWY3RnA5cExuSUx4ODVmeGxzN0psbTZ0SUFyQ09kSEdWZUdQS3ZsMkVZdWIxcHlITHRjR0k3enEtTmNNTTZWbkVNbmMwUFN6RTdrZDVSYi1qRGJCZkhPNG5uVldxVmY5R2pUa0VCaUVQNmFSdTN3LW4yTjM4OGV4cnhHRThCZlhSU1JUQVFJ?oc=5",
+   "title": "Major Republican Donor Network Seeks Alternative to Trump - VOA - Voice of America English News",
+   "text": "Major Republican Donor Network Seeks Alternative to Trump - VOA - Voice of America English News. Major Republican Donor Network Seeks Alternative to Trump VOA - Voice of America English News",
+   "content_hash": "4e841270d2f6e3aa",
+   "raw_feed_hash": "1387e7adc317964fca4c7e021b467d0cd8a08cbbb88b0cd4580d67b114c161ff",
+   "published_at": 1675670400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_0400bb6f1b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d3f36fbe343dd656",
+   "source": "WHYY",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFA5MGNQQjBZaTVBTmFHUjh1RkN3bTBvLUh2b2Y1bGlyVVZGNDI0dnpIOEo2YnI4d3BBcmhWempBcVA2NUVWa1JRS1BYeFA1TlRHVWs4NnRSQlBkYWhrYnc?oc=5",
+   "title": "Florida Gov. Ron DeSantis launches 2024 GOP presidential campaign to challenge Trump - WHYY",
+   "text": "Florida Gov. Ron DeSantis launches 2024 GOP presidential campaign to challenge Trump - WHYY. Florida Gov. Ron DeSantis launches 2024 GOP presidential campaign to challenge Trump WHYY",
+   "content_hash": "7347f396ee52b25b",
+   "raw_feed_hash": "1387e7adc317964fca4c7e021b467d0cd8a08cbbb88b0cd4580d67b114c161ff",
+   "published_at": 1684911600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_0400bb6f1b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "47d9a5a3de10eb16",
+   "source": "Politico",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPQUpKaHFSd01DTEd5Tk5kWm1wX2NTR0JjT1ZCQXFlZ210dS1CdTlROGNYRHdYUG01bmJFNXNFWWZLT0dkY3FhX2pNYzJMZFktTXZIdzVUTElFU21UbUtLNjZCZlpROXZCWnBxZ2JLdGVXQ0F6NnVXSk9LUkhmQThwUGRFR3pfQkVsUUE?oc=5",
+   "title": "\u2018It turned out to be a mistake\u2019: Botched rollout puts DeSantis on his heels - Politico",
+   "text": "\u2018It turned out to be a mistake\u2019: Botched rollout puts DeSantis on his heels - Politico. \u2018It turned out to be a mistake\u2019: Botched rollout puts DeSantis on his heels Politico",
+   "content_hash": "bfc799d615f9d546",
+   "raw_feed_hash": "1387e7adc317964fca4c7e021b467d0cd8a08cbbb88b0cd4580d67b114c161ff",
+   "published_at": 1684998000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_0400bb6f1b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6b7bd70a955369bb",
+   "source": "10tv.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOM1QxN1FfcDQxakhBdVdfSTcxN3pERmkydUF0aW1nT2VEYlU5WUpCT2o4WlBVS1pvTzZEV3ppSnR4YVRVclMwSl9xdm9SSVBrLU8xMUQ3ZldKcHZvd2pTNllrM1VJVkxHV2VxNlczYlYwUmxwYXZHRU4xcUMwTldtV2lreWFVdVBndHpfRVNWMEZWUS1fNzZxRWVIVkp4N29MVzIwLWJBWU5mVlhISFFzVGd4bW11QXZ4SXJjb1lxS051TmtmRllMNTdCVQ?oc=5",
+   "title": "Mike Pence to launch campaign for president in Iowa June 7 - 10tv.com",
+   "text": "Mike Pence to launch campaign for president in Iowa June 7 - 10tv.com. Mike Pence to launch campaign for president in Iowa June 7 10tv.com",
+   "content_hash": "87764d1abe149880",
+   "raw_feed_hash": "1387e7adc317964fca4c7e021b467d0cd8a08cbbb88b0cd4580d67b114c161ff",
+   "published_at": 1685516400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_0400bb6f1b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fe55ca69df022bd0",
+   "source": "Refresh the World. Make a Difference",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQdTVJNDdibHR0NEdmRkYyRXpOWmdINEp5RjAtdno2ajNZdmxSd2RvMjA2X21IRVdkdi13SmU3X0VxTDZFdmUxMGc2WWFSdlNWTDRIcFh0VnY4UlhseGpnTVB6dGRpc1lkcDg3SWZkVE53ZWhYTlZUdzdxeWxRbjAtcXpCRnZCZDdFaE91blJvdjFiYThDcTJrVUk2aHRzRkx2amdrdU5zdGYzR3pOMzEtTEJTUmJDQ29CbzE1VzVNWQ?oc=5",
+   "title": "Coca-Cola Invites Digital Artists to \u2018Create Real Magic\u2019 Using New AI Platform - Refresh the World. Make a Difference",
+   "text": "Coca-Cola Invites Digital Artists to \u2018Create Real Magic\u2019 Using New AI Platform - Refresh the World. Make a Difference. Coca-Cola Invites Digital Artists to \u2018Create Real Magic\u2019 Using New AI Platform Refresh the World. Make a Difference",
+   "content_hash": "709e6c9b73a0aff2",
+   "raw_feed_hash": "1387e7adc317964fca4c7e021b467d0cd8a08cbbb88b0cd4580d67b114c161ff",
+   "published_at": 1679295600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_0400bb6f1b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "833135ded9db79e0",
+   "source": "Expedite | Kristen Hawley",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1NbXlZQk5hTjc1SEwxVWgyYm9XNXBJeHo4U09ISHhEQmRFSmF2OFVqOFpwQWFxVzVfc2Z5NVlxdXQ4SFlHZ0dMMWwxUFl6MXdhZkVET1BBN0hLYngzWVA2TGw2a3JEQQ?oc=5",
+   "title": "A boozy #content partnership - Expedite | Kristen Hawley",
+   "text": "A boozy #content partnership - Expedite | Kristen Hawley. A boozy #content partnership Expedite | Kristen Hawley",
+   "content_hash": "08b0a6a464b023ae",
+   "raw_feed_hash": "592e90d991190c8dfc9ccf7e389319bbde9941aaf55deb4fd31b3e6ac52b7e2d",
+   "published_at": 1681369200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ee212176bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a25cd4332ef5747a",
+   "source": "nlr.gov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPYnYxSHJfTmhYXzZwRERXYnAyWXhvdXdaSkh0VDBIeTRUdGNpODhidVNKR0ZsUVNsamxfTmRmZkx1c19aYzE4Nk5aVFFzY1R5eUdmVWpISy1XYjhCSVF5SGRGTDJSaFAzQjZtLU5valBvX1pMUkw2eDFvN3BuV1VWNVdoWVQxamVBWGNDTy1Ncm8xb0pZY1k5QjJJTFNIV2JlLThNT252VVI?oc=5",
+   "title": "Announcing the 2023 JUMP Into STEM Final Competition Winners - nlr.gov",
+   "text": "Announcing the 2023 JUMP Into STEM Final Competition Winners - nlr.gov. Announcing the 2023 JUMP Into STEM Final Competition Winners nlr.gov",
+   "content_hash": "d81ed9404c1f6135",
+   "raw_feed_hash": "592e90d991190c8dfc9ccf7e389319bbde9941aaf55deb4fd31b3e6ac52b7e2d",
+   "published_at": 1677139200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ee212176bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9fbc1e8e980fde6b",
+   "source": "Harvard Business School",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1ZWmxfQ1dVblJLdUNWYmxJMjZhdHViUkJpWnRJWGl2TEhFdVY5M0c5S2J1ZVNTbmdSbnJoNEZjckNUWngwQlZtQXdHMVV5cWxPVkUyX09td0JMUjItN0Fz?oc=5",
+   "title": "2023 Harvard Business School New Venture Competition: Bringing Out the Best in HBS Students and Alumni, with Ideas and Ventures to Change the World - Harvard Business School",
+   "text": "2023 Harvard Business School New Venture Competition: Bringing Out the Best in HBS Students and Alumni, with Ideas and Ventures to Change the World - Harvard Business School. 2023 Harvard Business School New Venture Competition: Bringing Out the Best in HBS Students and Alumni, with Ideas and Ventures to Change the World Harvard Business School",
+   "content_hash": "0dec9bf9f3ae316a",
+   "raw_feed_hash": "592e90d991190c8dfc9ccf7e389319bbde9941aaf55deb4fd31b3e6ac52b7e2d",
+   "published_at": 1680246000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ee212176bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "aae0b021dcfa1325",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE93cGFxRTRPUUsxVHMwQ2ZBQTc5TzhCVlpsWDZocWVzT3l6RWp4RG9lNG5EZVg5S0ZNQ0w4d2ZFMDd1QWhtNmxjOFNqckY1cktNcTlselhkUG5RYTJuOHhr?oc=5",
+   "title": "Comparing content marketing strategies of digital brands using machine learning - Nature",
+   "text": "Comparing content marketing strategies of digital brands using machine learning - Nature. Comparing content marketing strategies of digital brands using machine learning Nature",
+   "content_hash": "39167dfc3ef8b34e",
+   "raw_feed_hash": "592e90d991190c8dfc9ccf7e389319bbde9941aaf55deb4fd31b3e6ac52b7e2d",
+   "published_at": 1676361600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_ee212176bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "31b3410b30cbf867",
+   "source": "Google Research",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNd2JBX2lFSDg1MGg0aWdCaWd1M2hmWVlfQldHM3VheVV6Wm5KMmxVbmFGLW0yWGd5aEJCWWEyQ0RMdzBDYXVQQUdwdHV6MS1USXh2WDVSTi02T0NYMFV5Yi1rbWZEV2UzRmZDMzA3aFROeUl4dzNEY2ZIYzJyUnk2ak9iU1lvdw?oc=5",
+   "title": "Announcing the first Machine Unlearning Challenge - Google Research",
+   "text": "Announcing the first Machine Unlearning Challenge - Google Research. Announcing the first Machine Unlearning Challenge Google Research",
+   "content_hash": "1f7ce7158fd44a8f",
+   "raw_feed_hash": "592e90d991190c8dfc9ccf7e389319bbde9941aaf55deb4fd31b3e6ac52b7e2d",
+   "published_at": 1688022000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_ee212176bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "cad374387c978ebc",
+   "source": "SiliconANGLE",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOTm9XWURONEpIY3ozTGdzUHd2MmhQR2I5RDZuUjhHMmtmT3AweEJrTURfOW10enhTV0R6Z0U0bVdhMTZWaTVHOGljTzVrQngxZmpYd2NsRlRQbFA4bFpkc0RFZjU1ZXZ6eHNZWmhPVGkzbXlJNC1jaXdpdlZTdU4xbG9uSjBFZ3hsV1Y0ckpFRHVOMUJx?oc=5",
+   "title": "Web development startup Netlify acquires rival Gatsby - SiliconANGLE",
+   "text": "Web development startup Netlify acquires rival Gatsby - SiliconANGLE. Web development startup Netlify acquires rival Gatsby SiliconANGLE",
+   "content_hash": "9abfd2af863e57f2",
+   "raw_feed_hash": "592e90d991190c8dfc9ccf7e389319bbde9941aaf55deb4fd31b3e6ac52b7e2d",
+   "published_at": 1675238400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_ee212176bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "aa195ea3c4b2db00",
+   "source": "USGA",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQbG1Xd3NqQnBfU1NHQlRWMVB4REw2QmRqV3VtUlAtN0Z0R3ZDdkozNjFNZGlCeTJzQkotRzc0eDNrajZJOVZBZmdFOEVuaU5pV3JGQVpZakxZR29LRFd5UVZWRTJ5c3YtdDA5NUtMNi13WkJFdk5RX080Y1RtWFNDOFl6dWlGYkEzdFExWkNmdjhWRWVYT3BGZWMzeTVad0VDZkg3UzZOT18yQWx4Q0NiMlAxWmJueENqY29VTkJackg?oc=5",
+   "title": "USGA Launches U.S. National Golf Development Program - USGA",
+   "text": "USGA Launches U.S. National Golf Development Program - USGA. USGA Launches U.S. National Golf Development Program USGA",
+   "content_hash": "3fa8c1795f64106b",
+   "raw_feed_hash": "592e90d991190c8dfc9ccf7e389319bbde9941aaf55deb4fd31b3e6ac52b7e2d",
+   "published_at": 1677225600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_ee212176bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0a039656655e2ccf",
+   "source": "About Amazon",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNaENNcmQ0Y2NlNFRDTW1CTjJwQjd6N2Nmc01MS2EyQ2dHaEFFX0lDLUhCcmhNUVNVQlJKTmJOTVBSakdCcF9jSXZGUGdDSWJPd0Q5c193TnZ4UE9MRDEyUGpZMG1MSXBjUER4NFFxV0xNLUN6X3FGZ0VzSHIteWgxVHNzMzZzSEU?oc=5",
+   "title": "8 highlights from Amazon\u2019s 2023 NewFront: TNF, Prime Video, Freevee - About Amazon",
+   "text": "8 highlights from Amazon\u2019s 2023 NewFront: TNF, Prime Video, Freevee - About Amazon. 8 highlights from Amazon\u2019s 2023 NewFront: TNF, Prime Video, Freevee About Amazon",
+   "content_hash": "d0fcfd26a6dc2a58",
+   "raw_feed_hash": "592e90d991190c8dfc9ccf7e389319bbde9941aaf55deb4fd31b3e6ac52b7e2d",
+   "published_at": 1682924400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_ee212176bc",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "a3f536c145d104f6:c0",
+   "source_id": "a3f536c145d104f6",
+   "subject": "Google employees",
+   "predicate": "criticize",
+   "object": "CEO Sundar Pichai",
+   "value": "",
+   "units": "",
+   "qualifiers": "for \u2018rushed, botched\u2019 announcement of GPT competitor Bard",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Google employees criticize CEO Sundar Pichai for \u2018rushed, botched\u2019 announcement of GPT competitor Bard",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676016000.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Google employees",
+    "Sundar Pichai",
+    "Bard"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_2666230604",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0400bb6f1b"
+   }
+  },
+  {
+   "claim_id": "833135ded9db79e0:c0",
+   "source_id": "833135ded9db79e0",
+   "subject": "A boozy #content partnership",
+   "predicate": "is",
+   "object": "Expedite | Kristen Hawley",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "A boozy #content partnership - Expedite | Kristen Hawley",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681369200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Expedite",
+    "Kristen Hawley"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d9512feba9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee212176bc"
+   }
+  },
+  {
+   "claim_id": "833135ded9db79e0:c1",
+   "source_id": "833135ded9db79e0",
+   "subject": "A boozy #content partnership",
+   "predicate": "is",
+   "object": "Expedite | Kristen Hawley",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "A boozy #content partnership Expedite | Kristen Hawley",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681369200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Expedite",
+    "Kristen Hawley"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d9512feba9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee212176bc"
+   }
+  },
+  {
+   "claim_id": "8c58e950a90c2c5b:c0",
+   "source_id": "8c58e950a90c2c5b",
+   "subject": "DeSantis",
+   "predicate": "enters",
+   "object": "POTUS race",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "speculative",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "When he enters POTUS race",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684306800.0,
+   "extraction_confidence": 0.7,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "DeSantis"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7b8511beba",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0400bb6f1b"
+   }
+  },
+  {
+   "claim_id": "8c58e950a90c2c5b:c1",
+   "source_id": "8c58e950a90c2c5b",
+   "subject": "DeSantis' cash haul",
+   "predicate": "will likely overwhelm",
+   "object": "competitors",
+   "value": "",
+   "units": "",
+   "qualifiers": "but it depends",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "DeSantis\u2019 cash haul will likely overwhelm competitors \u2014 but it depends",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684306800.0,
+   "extraction_confidence": 0.6,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "DeSantis"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7b8511beba",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0400bb6f1b"
+   }
+  },
+  {
+   "claim_id": "a25cd4332ef5747a:c0",
+   "source_id": "a25cd4332ef5747a",
+   "subject": "2023 JUMP Into STEM Final Competition Winners",
+   "predicate": "announced",
+   "object": "by nlr.gov",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Announcing the 2023 JUMP Into STEM Final Competition Winners - nlr.gov",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1677139200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "2023 JUMP Into STEM Final Competition Winners",
+    "nlr.gov"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_937cfc42b2",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee212176bc"
+   }
+  },
+  {
+   "claim_id": "d1e26d9b14fac0b1:c0",
+   "source_id": "d1e26d9b14fac0b1",
+   "subject": "Nike",
+   "predicate": "partner with",
+   "object": "Revry",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Nike and G\u00f6t2b partner with Revry to launch a vogue ballroom dance competition",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686639600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Nike",
+    "Revry"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f0be5ea6f0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0400bb6f1b"
+   }
+  },
+  {
+   "claim_id": "d1e26d9b14fac0b1:c1",
+   "source_id": "d1e26d9b14fac0b1",
+   "subject": "G\u00f6t2b",
+   "predicate": "partner with",
+   "object": "Revry",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Nike and G\u00f6t2b partner with Revry to launch a vogue ballroom dance competition",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686639600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "G\u00f6t2b",
+    "Revry"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f0be5ea6f0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0400bb6f1b"
+   }
+  },
+  {
+   "claim_id": "d1e26d9b14fac0b1:c2",
+   "source_id": "d1e26d9b14fac0b1",
+   "subject": "Nike and G\u00f6t2b",
+   "predicate": "launch",
+   "object": "a vogue ballroom dance competition",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Nike and G\u00f6t2b partner with Revry to launch a vogue ballroom dance competition",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686639600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Nike",
+    "G\u00f6t2b"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f0be5ea6f0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0400bb6f1b"
+   }
+  },
+  {
+   "claim_id": "9fbc1e8e980fde6b:c0",
+   "source_id": "9fbc1e8e980fde6b",
+   "subject": "2023 Harvard Business School New Venture Competition",
+   "predicate": "brings out the best in HBS students and alumni",
+   "object": "HBS students and alumni",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "2023 Harvard Business School New Venture Competition: Bringing Out the Best in HBS Students and Alumni",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1680246000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Harvard Business School",
+    "HBS students",
+    "HBS alumni"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5ef0e20ff4",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee212176bc"
+   }
+  },
+  {
+   "claim_id": "9fbc1e8e980fde6b:c1",
+   "source_id": "9fbc1e8e980fde6b",
+   "subject": "2023 Harvard Business School New Venture Competition",
+   "predicate": "features ideas and ventures to change the world",
+   "object": "ideas and ventures to change the world",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "with Ideas and Ventures to Change the World",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1680246000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Harvard Business School"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5ef0e20ff4",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee212176bc"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Google employees",
+   "normalized": "google employees",
+   "candidates": [
+    {
+     "entity_id": "ent_a0a3508094",
+     "canonical": "google employees",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "Google employees"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Sundar Pichai",
+   "normalized": "sundar pichai",
+   "candidates": [
+    {
+     "entity_id": "ent_e4b7969c7e",
+     "canonical": "sundar pichai",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "Sundar Pichai"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Bard",
+   "normalized": "bard",
+   "candidates": [
+    {
+     "entity_id": "ent_c40cbb33be",
+     "canonical": "bard",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "Bard"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Expedite",
+   "normalized": "expedite",
+   "candidates": [
+    {
+     "entity_id": "ent_cd4ebec97f",
+     "canonical": "expedite",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "Expedite",
+      "Expedite"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Kristen Hawley",
+   "normalized": "kristen hawley",
+   "candidates": [
+    {
+     "entity_id": "ent_cdea352a83",
+     "canonical": "kristen hawley",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "Kristen Hawley",
+      "Kristen Hawley"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Expedite",
+   "normalized": "expedite",
+   "candidates": [
+    {
+     "entity_id": "ent_cd4ebec97f",
+     "canonical": "expedite",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "Expedite",
+      "Expedite"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Kristen Hawley",
+   "normalized": "kristen hawley",
+   "candidates": [
+    {
+     "entity_id": "ent_cdea352a83",
+     "canonical": "kristen hawley",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "Kristen Hawley",
+      "Kristen Hawley"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "DeSantis",
+   "normalized": "desantis",
+   "candidates": [
+    {
+     "entity_id": "ent_872ed06b71",
+     "canonical": "desantis",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "DeSantis",
+      "DeSantis"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "DeSantis",
+   "normalized": "desantis",
+   "candidates": [
+    {
+     "entity_id": "ent_872ed06b71",
+     "canonical": "desantis",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "DeSantis",
+      "DeSantis"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "2023 JUMP Into STEM Final Competition Winners",
+   "normalized": "2023 jump into stem final competition winners",
+   "candidates": [
+    {
+     "entity_id": "ent_470a6caea0",
+     "canonical": "2023 jump into stem final competition winners",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "2023 JUMP Into STEM Final Competition Winners"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "nlr.gov",
+   "normalized": "nlr",
+   "candidates": [
+    {
+     "entity_id": "ent_3dae521a77",
+     "canonical": "nlr",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "nlr.gov"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Nike",
+   "normalized": "nike",
+   "candidates": [
+    {
+     "entity_id": "ent_d44bdaf0ed",
+     "canonical": "nike",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "Nike",
+      "Nike"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Revry",
+   "normalized": "revry",
+   "candidates": [
+    {
+     "entity_id": "ent_b310a721de",
+     "canonical": "revry",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "Revry",
+      "Revry"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "G\u00f6t2b",
+   "normalized": "g\u00f6t2b",
+   "candidates": [
+    {
+     "entity_id": "ent_a355b82d13",
+     "canonical": "g\u00f6t2b",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "G\u00f6t2b",
+      "G\u00f6t2b"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Revry",
+   "normalized": "revry",
+   "candidates": [
+    {
+     "entity_id": "ent_b310a721de",
+     "canonical": "revry",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "Revry",
+      "Revry"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Nike",
+   "normalized": "nike",
+   "candidates": [
+    {
+     "entity_id": "ent_d44bdaf0ed",
+     "canonical": "nike",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "Nike",
+      "Nike"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "G\u00f6t2b",
+   "normalized": "g\u00f6t2b",
+   "candidates": [
+    {
+     "entity_id": "ent_a355b82d13",
+     "canonical": "g\u00f6t2b",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "G\u00f6t2b",
+      "G\u00f6t2b"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Harvard Business School",
+   "normalized": "harvard business school",
+   "candidates": [
+    {
+     "entity_id": "ent_6390ff5e5f",
+     "canonical": "harvard business school",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "Harvard Business School",
+      "Harvard Business School"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "HBS students",
+   "normalized": "hbs students",
+   "candidates": [
+    {
+     "entity_id": "ent_ff0fb662e8",
+     "canonical": "hbs students",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "HBS students"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "HBS alumni",
+   "normalized": "hbs alumni",
+   "candidates": [
+    {
+     "entity_id": "ent_90358273ab",
+     "canonical": "hbs alumni",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "HBS alumni"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Harvard Business School",
+   "normalized": "harvard business school",
+   "candidates": [
+    {
+     "entity_id": "ent_6390ff5e5f",
+     "canonical": "harvard business school",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "Harvard Business School",
+      "Harvard Business School"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "a3f536c145d104f6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1676016000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676016000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8c58e950a90c2c5b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684306800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684306800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d1e26d9b14fac0b1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1686639600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686639600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9444d6d67f7018a7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1675670400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675670400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d3f36fbe343dd656": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684911600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684911600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "47d9a5a3de10eb16": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684998000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684998000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6b7bd70a955369bb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1685516400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685516400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fe55ca69df022bd0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1679295600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679295600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "833135ded9db79e0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1681369200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681369200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a25cd4332ef5747a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677139200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677139200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9fbc1e8e980fde6b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680246000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680246000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "aae0b021dcfa1325": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1676361600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676361600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "31b3410b30cbf867": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1688022000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688022000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "cad374387c978ebc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1675238400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675238400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "aa195ea3c4b2db00": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677225600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677225600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0a039656655e2ccf": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1682924400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682924400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_2666230604",
+   "member_ids": [
+    "a3f536c145d104f6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CNBC",
+   "primary_source": "CNBC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7b8511beba",
+   "member_ids": [
+    "8c58e950a90c2c5b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Iowa Capital Dispatch",
+   "primary_source": "Iowa Capital Dispatch",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f0be5ea6f0",
+   "member_ids": [
+    "d1e26d9b14fac0b1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Campaign US",
+   "primary_source": "Campaign US",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_011e95a84a",
+   "member_ids": [
+    "9444d6d67f7018a7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "VOA - Voice of America English News",
+   "primary_source": "VOA - Voice of America English News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_56e1f20402",
+   "member_ids": [
+    "d3f36fbe343dd656"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WHYY",
+   "primary_source": "WHYY",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f4eff71fb4",
+   "member_ids": [
+    "47d9a5a3de10eb16"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Politico",
+   "primary_source": "Politico",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2e578b82d8",
+   "member_ids": [
+    "6b7bd70a955369bb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "10tv.com",
+   "primary_source": "10tv.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b6fb21a2a7",
+   "member_ids": [
+    "fe55ca69df022bd0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Refresh the World. Make a Difference",
+   "primary_source": "Refresh the World. Make a Difference",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d9512feba9",
+   "member_ids": [
+    "833135ded9db79e0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Expedite | Kristen Hawley",
+   "primary_source": "Expedite | Kristen Hawley",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_937cfc42b2",
+   "member_ids": [
+    "a25cd4332ef5747a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "nlr.gov",
+   "primary_source": "nlr.gov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5ef0e20ff4",
+   "member_ids": [
+    "9fbc1e8e980fde6b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Harvard Business School",
+   "primary_source": "Harvard Business School",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e985ea0f66",
+   "member_ids": [
+    "aae0b021dcfa1325"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_45bd15fb90",
+   "member_ids": [
+    "31b3410b30cbf867"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Google Research",
+   "primary_source": "Google Research",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1160ece7d8",
+   "member_ids": [
+    "cad374387c978ebc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "SiliconANGLE",
+   "primary_source": "SiliconANGLE",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_360dcb7601",
+   "member_ids": [
+    "aa195ea3c4b2db00"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "USGA",
+   "primary_source": "USGA",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c307ec9bda",
+   "member_ids": [
+    "0a039656655e2ccf"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "About Amazon",
+   "primary_source": "About Amazon",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "a3f536c145d104f6:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676016000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "833135ded9db79e0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681369200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "833135ded9db79e0:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681369200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8c58e950a90c2c5b:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684306800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8c58e950a90c2c5b:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684306800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a25cd4332ef5747a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677139200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d1e26d9b14fac0b1:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686639600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d1e26d9b14fac0b1:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686639600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d1e26d9b14fac0b1:c2",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686639600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "9fbc1e8e980fde6b:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680246000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "9fbc1e8e980fde6b:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680246000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "a3f536c145d104f6:c0",
+  "833135ded9db79e0:c0",
+  "833135ded9db79e0:c1",
+  "8c58e950a90c2c5b:c0",
+  "8c58e950a90c2c5b:c1",
+  "a25cd4332ef5747a:c0",
+  "d1e26d9b14fac0b1:c0",
+  "d1e26d9b14fac0b1:c1",
+  "d1e26d9b14fac0b1:c2",
+  "9fbc1e8e980fde6b:c0",
+  "9fbc1e8e980fde6b:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_0400bb6f1b": {
+   "status": "fulfilled",
+   "n_claims": 6,
+   "n_included": 6
+  },
+  "req_ee212176bc": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_c528c58261": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c89438c041": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_5ee9ebece8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_0f465046c4": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_00679b4045": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_bded279286": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_c528c58261",
+  "req_c89438c041",
+  "req_5ee9ebece8",
+  "req_0f465046c4",
+  "req_00679b4045",
+  "req_bded279286"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 17.68,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "881106ecd38b8199",
+ "bundle_hash": "881106ecd38b8199",
+ "_persisted_at": "2026-07-13T02:04:41Z"
+}

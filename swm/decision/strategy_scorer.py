@@ -35,7 +35,11 @@ from swm.variables.schema import BY_CATEGORY, spec
 # are added per recipient as situational levers (swm/decision/situational_levers.py), never hardcoded here.
 MESSAGE_VARS = [
     "personalization", "relevance_fit", "clarity", "credibility_proof", "responder_incentive",
-    "ask_directness", "low_effort_ask", "pushiness", "warmth", "length_fit", "credential_signaling",
+    "ask_directness", "low_effort_ask", "convenience_selling", "pushiness", "warmth", "length_fit",
+    "credential_signaling",
+    # cold-outreach funnel levers (see swm/decision/response_funnel.py for the conjunctive model)
+    "identity_legibility", "claim_believability", "cognitive_effort", "adversarial_framing",
+    "next_step_clarity",
 ]
 
 
@@ -74,11 +78,22 @@ _MAIN: list[WeightPrior] = [
     WeightPrior("credibility_proof", 1.1, 0.6, "llm"),        # evidence/traction backing the claim
     WeightPrior("responder_incentive", 1.2, 0.6, "llm"),      # what's in it for THEM
     WeightPrior("ask_directness", 0.7, 0.5, "llm"),
-    WeightPrior("low_effort_ask", 0.9, 0.5, "llm"),           # easy to reply -> more replies
+    WeightPrior("low_effort_ask", 0.9, 0.5, "llm"),           # the ask genuinely being brief -> more replies
+    # PERFORMING easiness/benefit is off-putting on its own (mild main cost); the real damage is the
+    # interaction with a status-conscious skeptic below. This is the user-identified mechanism: a message
+    # that sells convenience reads as pushy AI outreach, not as helpful.
+    WeightPrior("convenience_selling", -0.6, 0.5, "llm"),
     WeightPrior("length_fit", 1.1, 0.5, "llm"),               # length_fit is already a [0,1] fit-quality
     WeightPrior("warmth", 0.5, 0.5, "llm"),
     WeightPrior("pushiness", -1.8, 0.6, "llm"),
     WeightPrior("credential_signaling", -0.35, 0.6, "llm"),   # mild main cost; the action is the interaction
+    # funnel levers in the additive model too (the funnel scorer models them conjunctively; the
+    # additive form keeps the legacy path directionally aware of the same gates)
+    WeightPrior("identity_legibility", 1.0, 0.5, "llm"),      # a stranger must know who/what/why
+    WeightPrior("claim_believability", 1.0, 0.5, "llm"),      # implausible-before-interesting kills replies
+    WeightPrior("cognitive_effort", -1.2, 0.5, "llm"),        # unpaid diligence is a cost, not a hook
+    WeightPrior("adversarial_framing", -0.9, 0.5, "llm"),     # debate bait from a stranger backfires
+    WeightPrior("next_step_clarity", 0.9, 0.5, "llm"),        # the reply must accomplish something obvious
 ]
 
 # INTERACTION effects: (general message lever × recipient_var), signed. This is where the recipient's
@@ -92,6 +107,11 @@ _INTERACTIONS: list[tuple[str, str, WeightPrior]] = [
     ("credibility_proof", "skepticism", WeightPrior("proof×skeptic", 1.3, 0.7, "llm")),
     # a real payoff for the responder matters more the higher their status (their time is scarce).
     ("responder_incentive", "status", WeightPrior("incent×status", 0.7, 0.6, "llm")),
+    # ...but PERFORMING that payoff (benefit-assurance) backfires with a status-conscious recipient:
+    # a person put off by status games is equally put off by salesy convenience-selling. The two
+    # negative interactions below are the mechanical form of "too frictionless -> pushy turn-off".
+    ("convenience_selling", "status_orientation", WeightPrior("conv×statusorient", -2.2, 0.8, "llm")),
+    ("convenience_selling", "skepticism", WeightPrior("conv×skeptic", -1.3, 0.7, "llm")),
     # a busy / low-attention recipient only engages when the ask is relevant, and rewards low-effort asks.
     ("relevance_fit", "attention_availability", WeightPrior("rel×attn", 0.6, 0.6, "llm")),
     ("low_effort_ask", "attention_availability", WeightPrior("effort×attn", 0.6, 0.6, "llm")),
@@ -99,6 +119,12 @@ _INTERACTIONS: list[tuple[str, str, WeightPrior]] = [
     ("personalization", "relationship_strength", WeightPrior("pers×rel", 0.6, 0.5, "llm")),
     # the higher a person's status, the more pushiness costs (they don't chase).
     ("pushiness", "status", WeightPrior("push×status", -1.0, 0.6, "llm")),
+    # debate-bait costs most from a STRANGER (relationship 0 -> centered value negative -> the
+    # negative product flips: implemented as adversarial × relationship POSITIVE interaction, so
+    # low relationship makes adversarial framing net-worse, an existing relationship excuses it)
+    ("adversarial_framing", "relationship_strength", WeightPrior("advers×rel", 0.8, 0.5, "llm")),
+    # a huge unexplained number hurts MORE with a skeptic (they discount unanchored claims hardest)
+    ("claim_believability", "skepticism", WeightPrior("believe×skeptic", 0.9, 0.5, "llm")),
     # an unsolicited-outreach-friendly recipient forgives a direct ask.
     ("ask_directness", "openness_to_outreach", WeightPrior("ask×open", 0.6, 0.5, "llm")),
     ("length_fit", "attention_availability", WeightPrior("len×attn", 0.5, 0.5, "llm")),

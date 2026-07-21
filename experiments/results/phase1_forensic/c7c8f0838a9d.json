@@ -1,0 +1,250 @@
+{
+ "question": "Will the campaign hashtag trend nationally within 24 hours of launch?",
+ "as_of": "2023-05-01",
+ "horizon": "2023-05-02",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "trend",
+   "not_trend"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "If the hashtag appears in the platform's national trending topics list for at least 15 consecutive minutes within 24 hours of launch, outcome is 'trend'; otherw"
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The campaign hashtag will trend nationally on a major social media platform within 24 hours of launch, defined as appearing in the platform's official trending topics list for at least 15 minutes.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 3,
+ "n_institutions": 1,
+ "n_populations": 1,
+ "n_latents": 5,
+ "sample_entities": [
+  "campaign_team",
+  "platform",
+  "hashtag"
+ ],
+ "sample_latents": [
+  {
+   "path": "platform.trending_algorithm.threshold",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.9
+  },
+  {
+   "path": "campaign_team.coordination_level",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "social_media_users.supporters.engagement_rate",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.7
+  },
+  {
+   "path": "social_media_users.opponents.engagement_rate",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.6
+  }
+ ],
+ "accepted_mechanisms": [
+  "poisson_arrival",
+  "generic_outcome_prior",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [
+  [
+   "simple_contagion_hazard",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "complex_contagion_hazard",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "engagement_momentum_persistence",
+   "no executable operator ('swm.world_model_v2.refere"
+  ],
+  [
+   "finite_population_saturation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "platform_ranking",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "platform_examination",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "attention_dynamics",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "memory_decay",
+   "no executable operator ('swm.world_model_v2.inform"
+  ],
+  [
+   "information_aging",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "exposure_response_hazard",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "mobilization",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "rare_event_arrival",
+   "no executable operator ('swm.world_model_v2.transi"
+  ]
+ ],
+ "experimental_mechanisms": [
+  "trending_threshold_activation"
+ ],
+ "mechanism_tiers": {
+  "initial_posting_and_amplification": 7,
+  "user_exposure_and_engagement": 7,
+  "viral_cascade_dynamics": 7,
+  "platform_trending_algorithm_activation": 7,
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "organic_grassroots",
+   "lean": "weak_yes",
+   "prior": 0.4
+  },
+  {
+   "id": "coordinated_astroturf",
+   "lean": "strong_yes",
+   "prior": 0.3
+  },
+  {
+   "id": "suppression_or_counter",
+   "lean": "strong_no",
+   "prior": 0.3
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "campaign_team",
+   "platform",
+   "hashtag",
+   "social_media_users",
+   "platform.trending_algorithm.threshold",
+   "campaign_team.coordination_level",
+   "social_media_users.supporters.engagement_rate",
+   "social_media_users.opponents.engagement_rate",
+   "social_media_users.neutral.engagement_rate"
+  ],
+  "marginalized_with_uncertainty": [],
+  "n_particles": 71
+ },
+ "omissions": [
+  {
+   "component": "detailed_hashtag_content",
+   "sensitivity": 0.2,
+   "reason": "negligible sensitivity because the specific wording is unknown but the outcome d"
+  },
+  {
+   "component": "cross_platform_spillover",
+   "sensitivity": 0.1,
+   "reason": "negligible sensitivity because the question specifies a single platform and 24-h"
+  },
+  {
+   "component": "long_term_memory_effects",
+   "sensitivity": 0.0,
+   "reason": "negligible sensitivity because the 24-hour horizon makes long-term memory decay "
+  }
+ ],
+ "world_provenance_statuses": {},
+ "n_deltas": 71,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "organic_grassroots": 0.3944,
+  "coordinated_astroturf": 0.2958,
+  "suppression_or_counter": 0.3099
+ },
+ "delta_log_sample": [
+  {
+   "at": 1682985599.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=weak_yes"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "trend": 0.5493,
+   "not_trend": 0.4507
+  },
+  "raw_probability": 0.5493,
+  "structural_disagreement": {
+   "organic_grassroots": 0.3944,
+   "coordinated_astroturf": 0.2958,
+   "suppression_or_counter": 0.3099
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 71,
+   "structural_model_uncertainty": 0.9924,
+   "structural_posterior": {
+    "organic_grassroots": 0.3944,
+    "coordinated_astroturf": 0.2958,
+    "suppression_or_counter": 0.3099
+   },
+   "state_parameter_uncertainty": 0.2509,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "omitted (negligible-sensitivity): detailed_hashtag_content",
+   "omitted (negligible-sensitivity): cross_platform_spillover",
+   "omitted (negligible-sensitivity): long_term_memory_effects",
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "f6aea04347e2"
+ },
+ "plan_hash": "f6aea04347e2",
+ "latency_s": 15.97
+}

@@ -1,0 +1,43 @@
+{
+  "full_suite": {
+    "command": "python -m pytest tests/ -q",
+    "result": "1813 passed, 1 skipped, 2 failed",
+    "failures": [
+      {"test": "tests/test_agent_engine.py::test_dataset_registry_is_valid_and_honest",
+       "cause": "data/dataset_registry.json absent from the repository",
+       "pre_existing": true, "verified_on_base_commit": "c8c0eca"},
+      {"test": "tests/test_state_world_model.py::test_predict_and_rollout_are_distinct",
+       "cause": "optional dependency fastapi not installed",
+       "pre_existing": true, "verified_on_base_commit": "c8c0eca"}
+    ]
+  },
+  "nap_enforcement_file": {
+    "file": "tests/test_numeric_reality_enforcement.py",
+    "covers": [
+      "static AST scan: no production reference to any quarantined numeric symbol",
+      "no module-level import of legacy_numeric_ablations anywhere in production",
+      "event_time source: no LEAN_BETA, no fallback_rate rung, no _calibrated_target ladder, no intention_factor, no lean shifts",
+      "no environment-variable door on the new quarantines (token only)",
+      "raising call-spies: default event-time execution never touches _beta_sample or legacy tables (posterior case resolves; no-mechanism case goes fully unresolved)",
+      "StructuralProcessPrior and NetworkDiffusion broad-prior draws suppressed by default with unresolved records",
+      "mutation invariance: every buried legacy constant x1000 -> byte-identical default output",
+      "fully-unresolved result: status=unresolved, no forecast, recommendation withheld, missing mechanism named",
+      "partially-resolved result: unresolved mass preserved un-normalized with bounds",
+      "numeric_causal_inputs manifest reaches the result naming consumed and rejected inputs",
+      "fitted_artifact_eligible: positive and negative gating including n-floor and transport verdict",
+      "unapproved source classes raise and are recorded; compute_safety can never alter the terminal",
+      "no capacity-cost / stance-watch numerics in qualitative_actor, fidelity, temporal_runtime sources"
+    ],
+    "result": "all passing"
+  },
+  "pr123_invariants": {
+    "files": ["tests/test_core_arch_invariants.py", "tests/test_core_arch_fixtures.py",
+              "tests/test_temporal_enforcement.py", "tests/test_no_abstention_contract.py"],
+    "status": "unchanged and passing (no ActorPolicyModel/UtilityInference on strict default; truncation on actor failure; generic-prior suppression)"
+  },
+  "rewritten_test_files": [
+    "tests/test_wmv2_event_time.py (provenance-gated event-time semantics, 48 tests across the three files)",
+    "tests/test_wmv2_world_dynamics.py (observational persistence, quarantine verdicts)",
+    "tests/test_wmv2_action_chain.py (qualitative stance/binding/mode-graph semantics)"
+  ]
+}

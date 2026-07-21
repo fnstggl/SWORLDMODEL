@@ -1,0 +1,1723 @@
+{
+ "bundle_id": "eb_f98f03",
+ "question": "Will the crowdfunding project reach its funding target before the deadline?",
+ "as_of": 1682899200.0,
+ "compiler_plan_hash": "9926a943bc5b",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_362bddf68e",
+   "claim_or_quantity": "reach_target if total_pledged >= funding_target at deadline, else miss_target",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "project",
+    "platform"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f0238b787d",
+   "claim_or_quantity": "value/context of project.funding_target",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "project.funding_target",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_b07933c217",
+   "claim_or_quantity": "value/context of project.quality",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "project.quality",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_36f8a1631e",
+   "claim_or_quantity": "value/context of backers.awareness",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "backers.awareness",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_7ddcc3bdd3",
+   "claim_or_quantity": "evidence discriminating structural hypothesis quality_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:quality_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_fc9d6b8474",
+   "claim_or_quantity": "evidence discriminating structural hypothesis social_cascade",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:social_cascade",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3dff0235e3",
+   "claim_or_quantity": "decision rules / process of platform",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "platform",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_362bddf68e",
+   "terms": "crowdfunding project funding target deadline project platform",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_f0238b787d",
+   "terms": "project funding target",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_b07933c217",
+   "terms": "project quality",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_362bddf68e",
+   "logical_query": "crowdfunding project funding target deadline project platform after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=crowdfunding+project+funding+target+deadline+project+platform+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783907806.8163574,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:56:47 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1pBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc97svXmITOND7fiqjknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCpyzjh\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "ef0301cc8d1465e488679f25e06ee7076d3949172f3f382224e304e8640e8ff0",
+   "n_bytes": 2357,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 1,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.424
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_f0238b787d",
+   "logical_query": "project funding target after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=project+funding+target+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783907807.2416158,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:56:47 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw1ZBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDcb_74iU2gRcbZixiVlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAoXE3DQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "452a48a5624073c984d23f6349d91a0444ae481088206061d32b89e2e564ff1e",
+   "n_bytes": 63244,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.591
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_b07933c217",
+   "logical_query": "project quality after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=project+quality+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783907807.8352404,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:56:48 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw05BiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8aD74iU2gQeX3s1hUlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAtyo3gA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "be37e7742f21c1f7fdbc09ab22e0c6abc83d3478f9d23d8a97b056cb59019f17",
+   "n_bytes": 76698,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.716
+  }
+ ],
+ "raw_content_refs": [
+  "452a48a5624073c984d23f6349d91a0444ae481088206061d32b89e2e564ff1e",
+  "be37e7742f21c1f7fdbc09ab22e0c6abc83d3478f9d23d8a97b056cb59019f17",
+  "ef0301cc8d1465e488679f25e06ee7076d3949172f3f382224e304e8640e8ff0"
+ ],
+ "documents": [
+  {
+   "id": "6e52106865cd2be4",
+   "source": "MuseumNext",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE9yZElONm4zODUxaHZ6c3FMSEJ6T3FVeUNfYVdFT2hRQkowcGRGVERuaU43clR6d1FGMkh1MTNaZFN5b3kxTmMxSGdmWHk1TEY5b3cyOEVNZzMxYndGODRrVTJPOVVMVVBRakxVR2NwZXhqaW9aREVDd29JMA?oc=5",
+   "title": "Successful Crowdfunding Strategies for Museums: Real-Life Case Studies - MuseumNext",
+   "text": "Successful Crowdfunding Strategies for Museums: Real-Life Case Studies - MuseumNext. Successful Crowdfunding Strategies for Museums: Real-Life Case Studies MuseumNext",
+   "content_hash": "a9747b9adf8840a9",
+   "raw_feed_hash": "ef0301cc8d1465e488679f25e06ee7076d3949172f3f382224e304e8640e8ff0",
+   "published_at": 1680418800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_362bddf68e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7dc54a10cb857fbb",
+   "source": "Door County Pulse",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPbGdOX21xOVh3bmZHemZqQW9uU2ZHelcwSHpiQ0NidGdfUHA3VDZQLWloRjAwSWVCSVg1Q1BDcjdJckh6SU5yX3Q2dHU3WGdFQzFkSUFJM2NQUDVYNmxScl9FT0pYVkF0MXFRWlVNWWNRcG9yT0xuYmxZTFh0N3BmNnJ5RFJ1el9LNmhNM0l5SQ?oc=5",
+   "title": "Stewardship Funding Targeted for Two Door County Projects - Door County Pulse",
+   "text": "Stewardship Funding Targeted for Two Door County Projects - Door County Pulse. Stewardship Funding Targeted for Two Door County Projects Door County Pulse",
+   "content_hash": "838a00264dc21680",
+   "raw_feed_hash": "452a48a5624073c984d23f6349d91a0444ae481088206061d32b89e2e564ff1e",
+   "published_at": 1682578800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_f0238b787d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3694a3cde0a1414d",
+   "source": "Legislative Analyst\u2019s Office (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5fUG11NmFKRTg4OWw3SnU1eDhpSXExRXZMazhYeXRaaDhOcFhoNHpTLVhFdUFKa3lKb2dBMG1uUGFHZXRaSXBMbk4zMFJmaGNTajNlZzR3?oc=5",
+   "title": "The 2023-24 Budget: California State University - Legislative Analyst\u2019s Office (.gov)",
+   "text": "The 2023-24 Budget: California State University - Legislative Analyst\u2019s Office (.gov). The 2023-24 Budget: California State University Legislative Analyst\u2019s Office (.gov)",
+   "content_hash": "81ef8f5bf5a79da4",
+   "raw_feed_hash": "452a48a5624073c984d23f6349d91a0444ae481088206061d32b89e2e564ff1e",
+   "published_at": 1675756800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_f0238b787d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "38c2bde8eda53dbe",
+   "source": "Brennan Center for Justice",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPN1BaVjV0TmdONm5sN0JydVRPWk1xcEhtT1FvenFucjBaeVduZV9DRTNHVS1ydjF1ZHppdmkxVVZUQV9jMXYxN0htMENIbVJCVkpLVUJTZ0g1Tm8xVlBFRTFhWDNpT1cwRlNEZFpZc195eFhYaXMyeXc2cjVmRXl1cDBTVlVTYXJ3VUVWTHozcXJJb2lJUXpxUWdnc01HN1hlRG9ieFpOeTJyaThZMEtPZl9zREJlVVRtVmpNOTN0WGNQakU?oc=5",
+   "title": "DHS \u2018Violence Prevention\u2019 Grants Continue to Harm Marginalized Communities - Brennan Center for Justice",
+   "text": "DHS \u2018Violence Prevention\u2019 Grants Continue to Harm Marginalized Communities - Brennan Center for Justice. DHS \u2018Violence Prevention\u2019 Grants Continue to Harm Marginalized Communities Brennan Center for Justice",
+   "content_hash": "0fbd726dd0e5c4b6",
+   "raw_feed_hash": "452a48a5624073c984d23f6349d91a0444ae481088206061d32b89e2e564ff1e",
+   "published_at": 1682492400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_f0238b787d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0208a8167d11c588",
+   "source": "GSA (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigAJBVV95cUxQZndOd2pKSlZEc0NZTEdDM3otckVZNjl3a2hoRFBJTmJxdVdXWFkxSjZkbS05U01hcnJRRkJvYVozbllidFd2VjZ0NlRYdUkzenNTb0FqcnRMNHRSc1VyNXZvY2pPckY5aFVtV1RNZkJWdUlzLXVXN0szR08zM29iYVdUU1ZBZnJBeGhjVDRrUF9QZ2F6QzM4M291dGJCeFdHcEdLcF95RzVrQy1uVXlyaGFoS2RlX0JTUk5IWEZzbUNSekNJSzRVYzB1M1hCVkdBaTRJUVFrbGNmUjQ2VGtFQWRLOTVRTWlDUTlfX0RsMzlJMVhBZHBxaWlaT01HZmxY?oc=5",
+   "title": "Technology Modernization Fund Announces Targeted Investments in Improving Customer Experiences for the Public - GSA (.gov)",
+   "text": "Technology Modernization Fund Announces Targeted Investments in Improving Customer Experiences for the Public - GSA (.gov). Technology Modernization Fund Announces Targeted Investments in Improving Customer Experiences for the Public GSA (.gov)",
+   "content_hash": "88edb0a11024dd54",
+   "raw_feed_hash": "452a48a5624073c984d23f6349d91a0444ae481088206061d32b89e2e564ff1e",
+   "published_at": 1671436800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_f0238b787d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "88eca68ed44e4cfc",
+   "source": "The Pew Charitable Trusts",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxPY2N5M2V3TnRadV91SVdvQkU1N2N0WHVJUnBTczdnU3RxckplTGhQZ1pxWGlzWm1rdkdKekxBZjV3Y19DVU1BenRIMlNkTUhGMFBycFRqUk5yOFpDZTZqSG5oRW41Y1ZjYUNWRlZFdl91YWFPQzdCZURyeVFsYzVub3hlRUdmSUlLaUw4ODJyYWxKQ25LbTZRQ19Ib1lIdFhPcmlwdHVOb0NWanktTnE5Q1lPazFkZ0k3WFd4MUl3SGt1V3lIUlk2TENIWGJuVFdycEdaSTVPaVFtSDRUN3R5ZVJBSEUyZw?oc=5",
+   "title": "What States Need to Know About Federal BEAD Funding for High-Speed Internet Expansion - The Pew Charitable Trusts",
+   "text": "What States Need to Know About Federal BEAD Funding for High-Speed Internet Expansion - The Pew Charitable Trusts. What States Need to Know About Federal BEAD Funding for High-Speed Internet Expansion The Pew Charitable Trusts",
+   "content_hash": "8483f61a9eae206f",
+   "raw_feed_hash": "452a48a5624073c984d23f6349d91a0444ae481088206061d32b89e2e564ff1e",
+   "published_at": 1673251200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_f0238b787d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "463a7ff956914c4d",
+   "source": "Queen City News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPbUVfWTFEWFJka0RXbkVod3pqVm5RV2szS2NLd2VMYTVPSzkyWF9hQkZZZUg5QWdtSllhQU5xbXI5dm1lNGJzWUVLU2V1Z3VtMXd6Rk9aU1RqR0d6ZUxvclJaMDc4c1BYMUNlTHVDNGQ4V05nYXBGdUFDQWNBa29FejFnekRSRGNxMUF5SEFqdHJKd1VEVHV4U0taV0dnZGdEUm5RXzg5cnp1NXhjU0J5Mm9vWm5mWUMtRVZVU0drUS1GUW5manliRy1LX25EN0x5SDBSZFZR?oc=5",
+   "title": "Mooresville connector project has target date for groundbreaking - Queen City News",
+   "text": "Mooresville connector project has target date for groundbreaking - Queen City News. Mooresville connector project has target date for groundbreaking Queen City News",
+   "content_hash": "61aac3c0619f38df",
+   "raw_feed_hash": "452a48a5624073c984d23f6349d91a0444ae481088206061d32b89e2e564ff1e",
+   "published_at": 1679900400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_f0238b787d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "261c63bb0b8caf74",
+   "source": "The Vermont Journal & The Shopper -",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPNl96Z2pkTFFuSmtXblRVLWdsWHBNQzRObDZXQXRTZHJidklWcFBwSnNhdEsxMTVCOTJVVUFscnRoN19MdEhSU0tMR0VmcWVmMm9PVTNCQV9ETGNjaVJHV09KV21LUXM5QzNQRlB1dXNBb29aU0g1S29Ga0VfMHAtMEl3UmRoQ1JsaWtfMGVvSkJyWUhHbUpj?oc=5",
+   "title": "Rockingham Town Hall roof targeted for solar project - The Vermont Journal & The Shopper -",
+   "text": "Rockingham Town Hall roof targeted for solar project - The Vermont Journal & The Shopper -. Rockingham Town Hall roof targeted for solar project The Vermont Journal & The Shopper -",
+   "content_hash": "16c0566a3455e4f4",
+   "raw_feed_hash": "452a48a5624073c984d23f6349d91a0444ae481088206061d32b89e2e564ff1e",
+   "published_at": 1679295600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_f0238b787d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "398408e965ba9670",
+   "source": "Pennsylvania Capital-Star",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOZnhWeDNlTENQZHBCUmV2Q1RzTXNZb1FyeGE0Q3lZb2dJR0E5bXRDZ1piTExTdnIya0lTcFZvaWN4R0o3anlESFNHd2N4aExOMkVNc3VFLWUwRDc2OHNiOGxQRWptV19xT1JMaXNFSUFzQWVwTHdBUkdubUVEYlg0OURQdHR2bGxxWjNJeXpDXzE1ODhrOVU2Q2oyWlBkSWdIQUx5cmhGQjFMUVpWN0t6cnI3d1JRMzlkZDdXa0xjNkkxN1NZX3FuUHZR?oc=5",
+   "title": "Pa. Rep. Dwight Evans earmarks more than $23M for Philly community projects - Pennsylvania Capital-Star",
+   "text": "Pa. Rep. Dwight Evans earmarks more than $23M for Philly community projects - Pennsylvania Capital-Star. Pa. Rep. Dwight Evans earmarks more than $23M for Philly community projects Pennsylvania Capital-Star",
+   "content_hash": "d45270de0d5fd983",
+   "raw_feed_hash": "452a48a5624073c984d23f6349d91a0444ae481088206061d32b89e2e564ff1e",
+   "published_at": 1682319600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_f0238b787d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "17eeb46515c54794",
+   "source": "Camden County, NJ",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOX3hHMG1fU1pkTmZMcUE2aWJLQTNZT05FNFhjTnhEaXRJR2MtV0REOHFLcUo4MU12WkZoWWhRMUwxck9kV2FVRmhhdF9TNkFJd1prdEZtc0V2Q3JFS2FialVnblFxSjZPYzRVeGtHQVhOeTM5SVVOcTlpWDZUb3Yxd3J6dzZJYjlhNG9Fc2tXZGdFNlZRckJZ?oc=5",
+   "title": "Historic Water Quality Project at Newton Lake Nears Completion - Camden County, NJ",
+   "text": "Historic Water Quality Project at Newton Lake Nears Completion - Camden County, NJ. Historic Water Quality Project at Newton Lake Nears Completion Camden County, NJ",
+   "content_hash": "1b1c0fcd4b1ccf7b",
+   "raw_feed_hash": "be37e7742f21c1f7fdbc09ab22e0c6abc83d3478f9d23d8a97b056cb59019f17",
+   "published_at": 1672905600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_b07933c217",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d1ec65cec887adc4",
+   "source": "coe.int",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNNFRqd1h0QTVVVVRDU0cwZUlWVmdCT0xjTjZ6cV9OX1VrR1g3X0t3NC1BZDJHZWNDVlAwS2xyNHhpTTlTd3ZxOEc5M1Z4dFhJd1ZEeTNyLTlQT2lEN3dMUms3VWpSN0FldVVOTm4wMHhPYkRpMnNsYzU0QnRnb1ZIWXhRSlFZNWlqcW9yMXV4WjFQRGNnY210TQ?oc=5",
+   "title": "New project \u201cQuality Education for All \u2013 North Macedonia\u201d - coe.int",
+   "text": "New project \u201cQuality Education for All \u2013 North Macedonia\u201d - coe.int. New project \u201cQuality Education for All \u2013 North Macedonia\u201d coe.int",
+   "content_hash": "7e88b2e4e2e5f5ba",
+   "raw_feed_hash": "be37e7742f21c1f7fdbc09ab22e0c6abc83d3478f9d23d8a97b056cb59019f17",
+   "published_at": 1676275200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_b07933c217",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4648bcd4889ecf85",
+   "source": "Sound Transit",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPTFRWMWxLWU16QldRWmN4NG5YcHMyd3lMcnVKQlRCZTAwM0h3Rl8yLVBPVFdCeTlISHoyeHl2d3kyalczTFJLLVlOY1RER0RuVXhvcjZJaTFQOWdhT2otdjBhWlg0UGRiTmhmZjM2eklDajZtWTZyRkJCbTZCQnllQS13?oc=5",
+   "title": "An update on Link projects in construction - Sound Transit",
+   "text": "An update on Link projects in construction - Sound Transit. An update on Link projects in construction Sound Transit",
+   "content_hash": "40ab0deccf4c3693",
+   "raw_feed_hash": "be37e7742f21c1f7fdbc09ab22e0c6abc83d3478f9d23d8a97b056cb59019f17",
+   "published_at": 1670486400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_b07933c217",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ae4dd23a1f579cd7",
+   "source": "U.S. Government Accountability Office (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1ZeHRqU2xfZlJzWG9DSnFaTmNDeC1IUjZfVnVEeGdfYmhxN3RtTTZoTFhmUW9kajcyN0NYNF9lR1h1MTRUczZSaGg4dWhkcVhOSmpCcA?oc=5",
+   "title": "Thrifty Food Plan: Better Planning and Accountability Could Help Ensure Quality of Future Reevaluations - U.S. Government Accountability Office (.gov)",
+   "text": "Thrifty Food Plan: Better Planning and Accountability Could Help Ensure Quality of Future Reevaluations - U.S. Government Accountability Office (.gov). Thrifty Food Plan: Better Planning and Accountability Could Help Ensure Quality of Future Reevaluations U.S. Government Accountability Office (.gov)",
+   "content_hash": "96e0de125726f229",
+   "raw_feed_hash": "be37e7742f21c1f7fdbc09ab22e0c6abc83d3478f9d23d8a97b056cb59019f17",
+   "published_at": 1671004800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_b07933c217",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7c7a379d81074a66",
+   "source": "Center for American Progress",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQOGlsY3Vab1JfTWt4b0tXZVVNZVlKQnhPdHdSeHppZXp1bTBHLTF3NDBzaGpmUFdxTVVLVFdPOUp4VjNRUU5WVXBpWngwQ3BzMnR1Y3hvbGRkcEJhdS1MQmFfOHB3VlVldGZYVjIwbTFaQjc2SndBUXl0VVBqUjhIcnFZczAwSHdEd1dlcy1xZnZlX3FqUUUwQW9EQkloeTlMNWZuU3RsTlg4N2N0WjNsdmdyY2JyOWExSGNaR3RKYw?oc=5",
+   "title": "How To Support Good Jobs and Workforce Equity on Federal Infrastructure Projects - Center for American Progress",
+   "text": "How To Support Good Jobs and Workforce Equity on Federal Infrastructure Projects - Center for American Progress. How To Support Good Jobs and Workforce Equity on Federal Infrastructure Projects Center for American Progress",
+   "content_hash": "e77b6c598c72de99",
+   "raw_feed_hash": "be37e7742f21c1f7fdbc09ab22e0c6abc83d3478f9d23d8a97b056cb59019f17",
+   "published_at": 1678089600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_b07933c217",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8f3d99dfbf9f7f06",
+   "source": "Oregon Public Broadcasting - OPB",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQYkpDWE9aeUdPMFAzbjZ6U1hiZndXeXhteWZKeGNkRUcxMHBDbmQ3eWVyWHJSV19NaTViNTAzRFdkbXFDNTdzMnNLbVZVVkV1V1JPZ3dhd1hCaGRrYzVTYV96ang0THRBcW5uRmlDY1lvQ1BSSmo3Znd0RkxTQzVTZVAwbVhNMzgwc0lVSXV2WHZmNDFYejdCQ0hxeHplRTRFUTR1VV9RLTZWdlBocWlCZlB1ZXczaGk1NDB4V1RSZlBTT1pxUFVvZA?oc=5",
+   "title": "Clackamas County rejects \u2018Project Turnkey\u2019 housing project a month after approving it - Oregon Public Broadcasting - OPB",
+   "text": "Clackamas County rejects \u2018Project Turnkey\u2019 housing project a month after approving it - Oregon Public Broadcasting - OPB. Clackamas County rejects \u2018Project Turnkey\u2019 housing project a month after approving it Oregon Public Broadcasting - OPB",
+   "content_hash": "95cf735f585abaa0",
+   "raw_feed_hash": "be37e7742f21c1f7fdbc09ab22e0c6abc83d3478f9d23d8a97b056cb59019f17",
+   "published_at": 1679468400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_b07933c217",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "58daff83c33cbffb",
+   "source": "The Ohio State University Wexner Medical Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPSkZZV3RUVXpndjJHa0M3WHpwRVB0azR0MzY0QTVqelN3YlFEU282N2VFVm43TW5LZkxTU2wzVE9YYmJhN3MyVl9raFRiSV9pZ2JTUVBkZ2JTRkdHeEFIakg1N0pDbE4wa0J2RW9udFo1NG1td1hqSWJKQkpMQ3RKUEdoN1FPWGxtOUtJQ1Zn?oc=5",
+   "title": "Quality Improvement Hub collaborative aims to enhance health care across Ohio - The Ohio State University Wexner Medical Center",
+   "text": "Quality Improvement Hub collaborative aims to enhance health care across Ohio - The Ohio State University Wexner Medical Center. Quality Improvement Hub collaborative aims to enhance health care across Ohio The Ohio State University Wexner Medical Center",
+   "content_hash": "11b5f5dc0bf7d504",
+   "raw_feed_hash": "be37e7742f21c1f7fdbc09ab22e0c6abc83d3478f9d23d8a97b056cb59019f17",
+   "published_at": 1675881928.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_b07933c217",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "dbc504e95567c133",
+   "source": "Cureus",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNZ3ExenYxTko5QXJXb3I0N3ZwOVN6enZpZTZzRzFlbi10MGxWOGNieEF4LVZrWGY2WUFXNkphZ2tCUXN4X2tQMUVlZHNVenUya3EwZ1BRbFdBSVBjQWZwR25xaElCTGpNQmZqV1d1WVJ2Y2gyc0lxNDBCamtFTjdjRDE1cG1ZUUZYWF9NZ2V1MlRUNFJBNmlBTDVZYnRBTWV2R005aDJ0ZHFiV09xb1RwTVdaZXdmYngtLTdzODJTc2dLelJIb2FV?oc=5",
+   "title": "Improving the Timeliness of Discharge Summary Communication: A Quality Improvement Project - Cureus",
+   "text": "Improving the Timeliness of Discharge Summary Communication: A Quality Improvement Project - Cureus. Improving the Timeliness of Discharge Summary Communication: A Quality Improvement Project Cureus",
+   "content_hash": "e5c7b494f545127c",
+   "raw_feed_hash": "be37e7742f21c1f7fdbc09ab22e0c6abc83d3478f9d23d8a97b056cb59019f17",
+   "published_at": 1671177600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_b07933c217",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "6e52106865cd2be4:c0",
+   "source_id": "6e52106865cd2be4",
+   "subject": "MuseumNext",
+   "predicate": "published",
+   "object": "article titled 'Successful Crowdfunding Strategies for Museums: Real-Life Case Studies'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Successful Crowdfunding Strategies for Museums: Real-Life Case Studies - MuseumNext",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680418800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "MuseumNext"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3e3ad1167e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_362bddf68e"
+   }
+  },
+  {
+   "claim_id": "7dc54a10cb857fbb:c0",
+   "source_id": "7dc54a10cb857fbb",
+   "subject": "Stewardship Funding",
+   "predicate": "targeted for",
+   "object": "Two Door County Projects",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Stewardship Funding Targeted for Two Door County Projects",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682578800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Stewardship Funding",
+    "Two Door County Projects"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0cd1cf89d2",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f0238b787d"
+   }
+  },
+  {
+   "claim_id": "17eeb46515c54794:c0",
+   "source_id": "17eeb46515c54794",
+   "subject": "Historic Water Quality Project at Newton Lake",
+   "predicate": "nears completion",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Historic Water Quality Project at Newton Lake Nears Completion",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672905600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Newton Lake",
+    "Camden County, NJ"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_39ac520c5b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_b07933c217"
+   }
+  },
+  {
+   "claim_id": "17eeb46515c54794:c1",
+   "source_id": "17eeb46515c54794",
+   "subject": "Historic Water Quality Project at Newton Lake",
+   "predicate": "is located in",
+   "object": "Camden County, NJ",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Camden County, NJ",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672905600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Camden County, NJ"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_39ac520c5b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_b07933c217"
+   }
+  },
+  {
+   "claim_id": "3694a3cde0a1414d:c0",
+   "source_id": "3694a3cde0a1414d",
+   "subject": "The 2023-24 Budget: California State University",
+   "predicate": "is published by",
+   "object": "Legislative Analyst\u2019s Office (.gov)",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "The 2023-24 Budget: California State University - Legislative Analyst\u2019s Office (.gov)",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675756800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "California State University",
+    "Legislative Analyst\u2019s Office"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_89ee20d933",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f0238b787d"
+   }
+  },
+  {
+   "claim_id": "d1ec65cec887adc4:c0",
+   "source_id": "d1ec65cec887adc4",
+   "subject": "New project \u201cQuality Education for All \u2013 North Macedonia\u201d",
+   "predicate": "is",
+   "object": "a new project",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "New project \u201cQuality Education for All \u2013 North Macedonia\u201d",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676275200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Quality Education for All \u2013 North Macedonia"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0ef70f9569",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_b07933c217"
+   }
+  },
+  {
+   "claim_id": "d1ec65cec887adc4:c1",
+   "source_id": "d1ec65cec887adc4",
+   "subject": "New project \u201cQuality Education for All \u2013 North Macedonia\u201d",
+   "predicate": "is associated with",
+   "object": "coe.int",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "New project \u201cQuality Education for All \u2013 North Macedonia\u201d - coe.int",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676275200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "coe.int"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0ef70f9569",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_b07933c217"
+   }
+  },
+  {
+   "claim_id": "38c2bde8eda53dbe:c0",
+   "source_id": "38c2bde8eda53dbe",
+   "subject": "DHS \u2018Violence Prevention\u2019 Grants",
+   "predicate": "continue to harm",
+   "object": "marginalized communities",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "DHS \u2018Violence Prevention\u2019 Grants Continue to Harm Marginalized Communities",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682492400.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "DHS",
+    "marginalized communities"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_00c7155c12",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f0238b787d"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "MuseumNext",
+   "normalized": "museumnext",
+   "candidates": [
+    {
+     "entity_id": "ent_f11489e398",
+     "canonical": "museumnext",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "MuseumNext"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Stewardship Funding",
+   "normalized": "stewardship funding",
+   "candidates": [
+    {
+     "entity_id": "ent_3b768fed30",
+     "canonical": "stewardship funding",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Stewardship Funding"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Two Door County Projects",
+   "normalized": "two door county projects",
+   "candidates": [
+    {
+     "entity_id": "ent_9942358ea8",
+     "canonical": "two door county projects",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Two Door County Projects"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Newton Lake",
+   "normalized": "newton lake",
+   "candidates": [
+    {
+     "entity_id": "ent_1769c4caae",
+     "canonical": "newton lake",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Newton Lake"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Camden County, NJ",
+   "normalized": "camden county nj",
+   "candidates": [
+    {
+     "entity_id": "ent_ca82caad37",
+     "canonical": "camden county nj",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Camden County, NJ",
+      "Camden County, NJ"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Camden County, NJ",
+   "normalized": "camden county nj",
+   "candidates": [
+    {
+     "entity_id": "ent_ca82caad37",
+     "canonical": "camden county nj",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Camden County, NJ",
+      "Camden County, NJ"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "California State University",
+   "normalized": "california state university",
+   "candidates": [
+    {
+     "entity_id": "ent_c688d703a4",
+     "canonical": "california state university",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "California State University"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Legislative Analyst\u2019s Office",
+   "normalized": "legislative analyst\u2019s office",
+   "candidates": [
+    {
+     "entity_id": "ent_579c47d687",
+     "canonical": "legislative analyst\u2019s office",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Legislative Analyst\u2019s Office"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Quality Education for All \u2013 North Macedonia",
+   "normalized": "quality education for all \u2013 north macedonia",
+   "candidates": [
+    {
+     "entity_id": "ent_2e7967c25d",
+     "canonical": "quality education for all \u2013 north macedonia",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Quality Education for All \u2013 North Macedonia"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "coe.int",
+   "normalized": "coe int",
+   "candidates": [
+    {
+     "entity_id": "ent_5575a49907",
+     "canonical": "coe int",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "coe.int"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "DHS",
+   "normalized": "dhs",
+   "candidates": [
+    {
+     "entity_id": "ent_a7eb79e48c",
+     "canonical": "dhs",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "DHS"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "marginalized communities",
+   "normalized": "marginalized communities",
+   "candidates": [
+    {
+     "entity_id": "ent_fc8197ede2",
+     "canonical": "marginalized communities",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "marginalized communities"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "6e52106865cd2be4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1680418800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680418800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7dc54a10cb857fbb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1682578800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682578800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3694a3cde0a1414d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1675756800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675756800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "38c2bde8eda53dbe": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1682492400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682492400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0208a8167d11c588": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1671436800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1671436800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "88eca68ed44e4cfc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1673251200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673251200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "463a7ff956914c4d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1679900400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679900400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "261c63bb0b8caf74": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1679295600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679295600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "398408e965ba9670": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1682319600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682319600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "17eeb46515c54794": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1672905600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672905600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d1ec65cec887adc4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1676275200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676275200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4648bcd4889ecf85": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1670486400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1670486400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ae4dd23a1f579cd7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1671004800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1671004800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7c7a379d81074a66": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678089600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678089600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8f3d99dfbf9f7f06": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1679468400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679468400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "58daff83c33cbffb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1675881928.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675881928.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "dbc504e95567c133": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1671177600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1671177600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_3e3ad1167e",
+   "member_ids": [
+    "6e52106865cd2be4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "MuseumNext",
+   "primary_source": "MuseumNext",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0cd1cf89d2",
+   "member_ids": [
+    "7dc54a10cb857fbb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Door County Pulse",
+   "primary_source": "Door County Pulse",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_89ee20d933",
+   "member_ids": [
+    "3694a3cde0a1414d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Legislative Analyst\u2019s Office (.gov)",
+   "primary_source": "Legislative Analyst\u2019s Office (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_00c7155c12",
+   "member_ids": [
+    "38c2bde8eda53dbe"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Brennan Center for Justice",
+   "primary_source": "Brennan Center for Justice",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1f7402a606",
+   "member_ids": [
+    "0208a8167d11c588"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "GSA (.gov)",
+   "primary_source": "GSA (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3852e32acb",
+   "member_ids": [
+    "88eca68ed44e4cfc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Pew Charitable Trusts",
+   "primary_source": "The Pew Charitable Trusts",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_cec4c67c42",
+   "member_ids": [
+    "463a7ff956914c4d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Queen City News",
+   "primary_source": "Queen City News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_21bb3fd4ff",
+   "member_ids": [
+    "261c63bb0b8caf74"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Vermont Journal & The Shopper -",
+   "primary_source": "The Vermont Journal & The Shopper -",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6c6f3b691b",
+   "member_ids": [
+    "398408e965ba9670"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Pennsylvania Capital-Star",
+   "primary_source": "Pennsylvania Capital-Star",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_39ac520c5b",
+   "member_ids": [
+    "17eeb46515c54794"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Camden County, NJ",
+   "primary_source": "Camden County, NJ",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0ef70f9569",
+   "member_ids": [
+    "d1ec65cec887adc4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "coe.int",
+   "primary_source": "coe.int",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8b9e15a98f",
+   "member_ids": [
+    "4648bcd4889ecf85"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Sound Transit",
+   "primary_source": "Sound Transit",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4efcc2698c",
+   "member_ids": [
+    "ae4dd23a1f579cd7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "U.S. Government Accountability Office (.gov)",
+   "primary_source": "U.S. Government Accountability Office (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1a68f4ef59",
+   "member_ids": [
+    "7c7a379d81074a66"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Center for American Progress",
+   "primary_source": "Center for American Progress",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_735e46d1dd",
+   "member_ids": [
+    "8f3d99dfbf9f7f06"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Oregon Public Broadcasting - OPB",
+   "primary_source": "Oregon Public Broadcasting - OPB",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fa4f6b6513",
+   "member_ids": [
+    "58daff83c33cbffb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Ohio State University Wexner Medical Center",
+   "primary_source": "The Ohio State University Wexner Medical Center",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3faf555e26",
+   "member_ids": [
+    "dbc504e95567c133"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Cureus",
+   "primary_source": "Cureus",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "6e52106865cd2be4:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680418800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "7dc54a10cb857fbb:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682578800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "17eeb46515c54794:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672905600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "17eeb46515c54794:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672905600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3694a3cde0a1414d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675756800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d1ec65cec887adc4:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676275200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d1ec65cec887adc4:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676275200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "38c2bde8eda53dbe:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682492400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "6e52106865cd2be4:c0",
+  "7dc54a10cb857fbb:c0",
+  "17eeb46515c54794:c0",
+  "17eeb46515c54794:c1",
+  "3694a3cde0a1414d:c0",
+  "d1ec65cec887adc4:c0",
+  "d1ec65cec887adc4:c1",
+  "38c2bde8eda53dbe:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_362bddf68e": {
+   "status": "fulfilled",
+   "n_claims": 1,
+   "n_included": 1
+  },
+  "req_f0238b787d": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_b07933c217": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_36f8a1631e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_7ddcc3bdd3": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_fc9d6b8474": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_3dff0235e3": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_36f8a1631e",
+  "req_7ddcc3bdd3",
+  "req_fc9d6b8474",
+  "req_3dff0235e3"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 17,
+  "n_contradictions": 0,
+  "n_documents": 17
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.385,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "18409e57ac9a9da5",
+ "bundle_hash": "18409e57ac9a9da5",
+ "_persisted_at": "2026-07-13T01:57:02Z"
+}

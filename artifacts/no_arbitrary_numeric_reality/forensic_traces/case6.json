@@ -1,0 +1,97 @@
+{
+  "case": "case6_no_defensible_mechanism",
+  "question": "Will the informal roommate agreement survive the year?",
+  "conversion_report": {
+    "contract": "binary_first_passage",
+    "scheduling": "provenance_gated_event_time",
+    "n_residual_processes": 0,
+    "n_absorbing_fact_events": 0,
+    "absorbing_institutions": [],
+    "residual_skipped_reason": "no evidence-updated posterior, no in-window institutional decision, no evidence-cited absorbing fact \u2014 the residual outcome mechanism is unresolved; family-rate and lean-Beta manufacturing are removed (\u00a7NAP)",
+    "posterior_calibrated": false,
+    "family_rate_rejected": {
+      "family": "generic",
+      "provenance": "fitted_family_prior(n=4)",
+      "value": 0.4333
+    },
+    "n_ungrounded_facts_unresolved": 0
+  },
+  "numeric_causal_inputs": {
+    "approved_and_consumed": [],
+    "approved_unused": [],
+    "rejected": [
+      {
+        "name": "family_fallback_rate",
+        "value": 0.4333,
+        "units": "probability",
+        "causal_role": "keyword-selected reference-class outcome rate",
+        "source_class": "keyword_family_rate",
+        "consumer": "convert_binary_to_event_time",
+        "evidence_id": "",
+        "fitted_on": {},
+        "architecture_compat": "",
+        "applicability": "",
+        "can_alter_terminal": true,
+        "production_eligible": false,
+        "rejection_reason": "family pack (generic, fitted_family_prior(n=4)) is a keyword reference class without held-out validation/transport eligibility \u2014 diagnostic only",
+        "consumed": false,
+        "n_occurrences": 1
+      },
+      {
+        "name": "lean_beta_target",
+        "value": null,
+        "units": "beta_params",
+        "causal_role": "qualitative lean \u2192 broad Beta outcome mass",
+        "source_class": "lean_beta",
+        "consumer": "convert_binary_to_event_time",
+        "evidence_id": "",
+        "fitted_on": {},
+        "architecture_compat": "",
+        "applicability": "",
+        "can_alter_terminal": true,
+        "production_eligible": false,
+        "rejection_reason": "broad-prior outcome manufacturing is removed from production (\u00a7NAP)",
+        "consumed": false,
+        "n_occurrences": 1
+      }
+    ],
+    "compute_safety_only": [],
+    "analysis_display_only": [],
+    "ablation_only": [],
+    "n_inputs": 2,
+    "n_rejected": 2
+  },
+  "branch_terminals": {
+    "resolved_yes": 0.0,
+    "resolved_no": 0.0,
+    "censored_by_real_horizon": 0.0,
+    "unresolved_mechanism": 1.0
+  },
+  "unresolved_share": 1.0,
+  "bounds": {
+    "yes": {
+      "min_supported": 0.0,
+      "max_possible": 1.0
+    },
+    "no": {
+      "min_supported": 0.0,
+      "max_possible": 1.0
+    }
+  },
+  "missing_mechanisms": [
+    {
+      "mechanism": "residual_outcome_process",
+      "why": "no evidence-updated posterior, no in-window institutional decision, no evidence-cited absorbing fact \u2014 the residual outcome mechanism is unresolved; family-rate and lean-Beta manufacturing are removed (\u00a7NAP)",
+      "missing": "evidence-updated posterior, scenario-generated resolving mechanism, or production-eligible fitted rate"
+    }
+  ],
+  "terminal_classification": "unresolved",
+  "recommendation_status": "withheld",
+  "raw_distribution": {},
+  "frequency_semantics": "simulated_scenario_frequency",
+  "notes": [
+    "no validated causal mechanism resolves the outcome: the result is 'Outcome unresolved under the current model'",
+    "the family pack and lean-Beta were REGISTERED AS REJECTED, never drawn",
+    "recommendations are withheld"
+  ]
+}

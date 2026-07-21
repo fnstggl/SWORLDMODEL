@@ -1,0 +1,114 @@
+{
+ "schema_version": "structural_ensemble.acceptance.v1",
+ "generated_by": "experiments/structural_ensemble_acceptance.py (executable checks)",
+ "all_gates_pass": true,
+ "n_gates": 21,
+ "gates": [
+  {
+   "gate": "structural_ensemble_is_the_default",
+   "pass": true,
+   "detail": "default simulate_world produced a structural ensemble with no enable flag"
+  },
+  {
+   "gate": "actual_independent_generation_calls_occurred",
+   "pass": true,
+   "detail": "4 independent calls, 4 distinct prompts, 4 actual backend invocations"
+  },
+  {
+   "gate": "default_target_is_approximately_four",
+   "pass": true,
+   "detail": "target=4, observed=4"
+  },
+  {
+   "gate": "candidate_count_adapts",
+   "pass": true,
+   "detail": "expanded to 5 candidates"
+  },
+  {
+   "gate": "independent_executable_plans_exist",
+   "pass": true,
+   "detail": "3 promoted models with 3 distinct schema hashes"
+  },
+  {
+   "gate": "adversarial_omission_search_runs",
+   "pass": true,
+   "detail": "critics executed: ['candidate_causal', 'cross_model_contrast', 'structural_omission']"
+  },
+  {
+   "gate": "conservative_deduplication_runs",
+   "pass": true,
+   "detail": "1 conservative merge(s) with full comparison records"
+  },
+  {
+   "gate": "every_plausible_model_receives_a_pilot",
+   "pass": true,
+   "detail": "3 pilots \u2265 8 particles each"
+  },
+  {
+   "gate": "promoted_models_receive_full_per_model_budgets",
+   "pass": true,
+   "detail": "m0_actor_relationship: 44/35; m1_institutional_procedural: 44/35; m2_resource_constraint: 44/35"
+  },
+  {
+   "gate": "no_final_budget_divided_across_models",
+   "pass": true,
+   "detail": "total particles 132 \u2265 35 \u00d7 3 models"
+  },
+  {
+   "gate": "pilot_computation_is_reused",
+   "pass": true,
+   "detail": "pilot prefix reused in 3/3 promoted models"
+  },
+  {
+   "gate": "all_production_routes_use_the_ensemble",
+   "pass": true,
+   "detail": "audit ok=True, unsanctioned=0"
+  },
+  {
+   "gate": "phase13_evaluates_across_models",
+   "pass": true,
+   "detail": "evaluated across 3 models; bare-plan guard active=True"
+  },
+  {
+   "gate": "per_model_outputs_are_preserved",
+   "pass": true,
+   "detail": "per-model distributions retained for 3 models"
+  },
+  {
+   "gate": "structural_sensitivity_is_reported",
+   "pass": true,
+   "detail": "classification=materially_structurally_sensitive"
+  },
+  {
+   "gate": "reversal_conditions_are_reported",
+   "pass": true,
+   "detail": "1 reversal condition(s)"
+  },
+  {
+   "gate": "cost_and_cache_manifests_are_complete",
+   "pass": true,
+   "detail": "manifest keys: ['cache_hits_by_stage', 'llm_calls_by_model', 'llm_calls_by_stage', 'pilot_particles_reused', 'single_model_equivalent_llm_calls', 'total_cache_hits', 'total_llm_calls']"
+  },
+  {
+   "gate": "no_numerical_actor_fallback_occurred",
+   "pass": true,
+   "detail": "fallbacks by model: {'m0_actor_relationship': 0, 'm1_institutional_procedural': 0, 'm2_resource_constraint': 0}"
+  },
+  {
+   "gate": "no_single_model_silent_fallback",
+   "pass": true,
+   "detail": "default mode=ensemble; missing backend -> execution_failed/unavailable_service"
+  },
+  {
+   "gate": "live_llm_generation_traces_exist",
+   "pass": true,
+   "detail": "1/1 live cases with \u22653 independent generation calls"
+  },
+  {
+   "gate": "full_test_suites_pass",
+   "pass": true,
+   "detail": "pytest exit=0: 1556 passed, 1 deselected, 1 warning in 345.83s (0:05:45) (one pre-existing environmental deselect: dataset registry file)"
+  }
+ ],
+ "wall_clock_s": 347.2
+}

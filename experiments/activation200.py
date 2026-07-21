@@ -1,0 +1,167 @@
+"""Part 10 — activation gates on the 200-question independent corpus, measured through the SUPERVISED
+canonical execution path (PhaseExecutionRecord statuses, not a separate accounting).
+
+Per question: real compiler → rule normalization → supervisor assess → activation synthesis →
+run_from_plan (deterministic, LLM-free rollout) → supervisor finalize → per-phase status; then matched
+ablations (same plan, same seed, common randomness; only the target phase's requirement forced off) for
+every executed phase.
+
+Gates (Part 10): recall(causally_active | required) ≥ 0.95 per phase; false execution ≤ 0.10;
+blocked-relevant ≤ 0.02; PhaseExecutionRecord coverage 100%; matched-ablation effect on ≥ 80% of relevant
+cases (terminal shift ≥ 0.02 or a StateDelta-trajectory change).
+"""
+from __future__ import annotations
+import argparse, copy, json, threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
+
+from experiments.activation_corpus_200 import QUESTIONS, PHASE_FLAGS
+
+OUT = Path("experiments/results/activation200")
+ART = OUT / "activation200.json"
+
+_FLAG_PHASE = {"p4": "phase4_actor_policy", "p6": "phase6_registry", "p7": "phase7_nonlinear",
+               "p9pop": "phase9_populations", "p9net": "phase9_networks",
+               "p10": "phase10_institutions", "p11": "phase11_recompilation"}
+ABL_EPS = 0.02
+_LOCK = threading.Lock()
+
+
+def _make_llm():
+    from swm.api.deepseek_backend import default_chat_fn
+    return default_chat_fn(system="Reply ONLY JSON.", max_tokens=2400, temperature=0.2)
+
+
+def _p_aff(res, plan):
+    dist = res.get("distribution") or {}
+    opts = list(plan.outcome_contract.options)
+    return float(dist.get(str(opts[0]) if opts else "True", 0.0) or 0.0)
+
+
+def _run_supervised(plan, seed=3, force_off=None):
+    """normalize → assess (with optional forced-off phase, matched-ablation arm) → synthesize → rollout →
+    finalize. Returns (records, p_affirmative, delta_traj_len)."""
+    from swm.world_model_v2.integration_completion import normalize_institution_rules
+    from swm.world_model_v2.activation_synthesis import phase_requirements, synthesize_activation
+    from swm.world_model_v2.materialize import run_from_plan
+    from swm.world_model_v2 import phase_supervision as PS
+    from swm.world_model_v2.pipeline import _operator_delta_census
+    from types import SimpleNamespace
+    normalize_institution_rules(plan)
+    req = phase_requirements(plan)
+    if force_off:
+        req[force_off] = {"required": False, "why": "matched ablation arm", "signal": False}
+    synthesize_activation(plan, req)
+    recs = PS.assess(plan, has_as_of=True, has_bundle=False)   # no evidence/obs on this harness → p2/3/11 no-op
+    if force_off:
+        recs[force_off].relevant = False
+        recs[force_off].execution_status = "no_op_causally_irrelevant"
+    res, branches = run_from_plan(plan, llm=None, seed=seed)
+    stub = SimpleNamespace(provenance={"operator_delta_census": _operator_delta_census(branches)})
+    out = PS.finalize(recs, plan, stub,
+                      phase_meta={k: {"executed": True} for k in
+                                  ("phase1_compiler", "phase2_evidence", "phase3_posterior",
+                                   "phase8_persistence", "phase11_recompilation")})
+    n_traj = sum(len(b.log) for b in branches)
+    return out["records"], _p_aff(res, plan), n_traj
+
+
+def _one(qrow, llm):
+    qid, q, as_of, horizon, domain, family, flags = qrow
+    from swm.world_model_v2.compiler import compile_world
+    rec = {"qid": qid, "domain": domain, "family": family, "required_labels": sorted(flags)}
+    try:
+        base = compile_world(q, llm=llm, evidence="", as_of=as_of, horizon=horizon, seed=0)
+        records, p_full, traj_full = _run_supervised(copy.deepcopy(base))
+        rec["phase_records"] = {ph: {"status": r.execution_status, "relevant": r.relevant,
+                                     "n_deltas": r.n_state_deltas,
+                                     "terminal_influence": r.terminal_influence}
+                                for ph, r in records.items()}
+        rec["p_full"] = round(p_full, 4)
+        abls = {}
+        for f, ph in _FLAG_PHASE.items():
+            if ph == "phase11_recompilation":
+                continue
+            if records[ph].execution_status == "causally_active":
+                _, p_abl, traj_abl = _run_supervised(copy.deepcopy(base), force_off=ph)
+                abls[f] = {"delta_terminal": round(abs(p_full - p_abl), 4),
+                           "delta_traj": abs(traj_full - traj_abl),
+                           "effect": abs(p_full - p_abl) >= ABL_EPS or abs(traj_full - traj_abl) > 0}
+        rec["ablations"] = abls
+    except Exception as e:  # noqa: BLE001
+        rec["error"] = f"{type(e).__name__}: {e}"[:160]
+    return rec
+
+
+def run(limit=None, workers=6):
+    OUT.mkdir(parents=True, exist_ok=True)
+    llm = _make_llm()
+    rows, done = [], set()
+    if ART.exists():
+        rows = [r for r in json.loads(ART.read_text()).get("rows", []) if not r.get("error")]
+        done = {r["qid"] for r in rows}
+    qs = [q for q in (QUESTIONS[:limit] if limit else QUESTIONS) if q[0] not in done]
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futs = {ex.submit(_one, q, llm): q[0] for q in qs}
+        for fut in as_completed(futs):
+            rec = fut.result()
+            with _LOCK:
+                rows.append(rec)
+                ART.write_text(json.dumps({"rows": rows}, indent=1))
+            st = rec.get("phase_records", {})
+            active = [k for k, v in st.items() if v["status"] == "causally_active"]
+            print(f"{rec['qid']:16s} req={','.join(rec['required_labels']) or '-':22s} "
+                  f"active={','.join(a.replace('phase', 'p') for a in active) or '-':40s} "
+                  f"err={rec.get('error', '')[:50]}", flush=True)
+    _aggregate(rows)
+
+
+def _aggregate(rows):
+    ok = [r for r in rows if not r.get("error")]
+    per = {}
+    for f, ph in _FLAG_PHASE.items():
+        req = [r for r in ok if f in r["required_labels"]]
+        notreq = [r for r in ok if f not in r["required_labels"]]
+        act = lambda r: r["phase_records"][ph]["status"] == "causally_active"       # noqa: E731
+        blocked = lambda r: r["phase_records"][ph]["status"].startswith("blocked")  # noqa: E731
+        tp = sum(1 for r in req if act(r))
+        fp = sum(1 for r in notreq if act(r))
+        blk = sum(1 for r in req if blocked(r))
+        abl = [r for r in req if r.get("ablations", {}).get(f)]
+        eff = sum(1 for r in abl if r["ablations"][f]["effect"])
+        per[f] = {"n_required": len(req), "recall": round(tp / len(req), 3) if req else None,
+                  "n_not_required": len(notreq),
+                  "false_execution": round(fp / len(notreq), 3) if notreq else None,
+                  "blocked_relevant_rate": round(blk / len(req), 3) if req else None,
+                  "n_ablated": len(abl),
+                  "ablation_effect_rate": round(eff / len(abl), 3) if abl else None}
+    coverage = all(len(r.get("phase_records", {})) == 11 for r in ok)
+    gates = {}
+    for f in per:
+        if f == "p11":
+            continue                                        # p11 is gated by natural triggers (separate)
+        p = per[f]
+        gates[f"recall_{f}_ge_0.95"] = (p["recall"] or 0) >= 0.95
+        gates[f"false_{f}_le_0.10"] = (p["false_execution"] if p["false_execution"] is not None else 1) <= 0.10
+        gates[f"blocked_{f}_le_0.02"] = (p["blocked_relevant_rate"] or 0) <= 0.02
+        gates[f"ablation_{f}_ge_0.80"] = (p["ablation_effect_rate"] or 0) >= 0.80
+    gates["phase_record_coverage_100"] = coverage
+    agg = {"n_scored": len(ok), "n_errors": len(rows) - len(ok), "per_phase": per, "gates": gates,
+           "gates_passed": sum(gates.values()), "gates_total": len(gates),
+           "all_pass": all(gates.values())}
+    payload = {"rows": rows, "aggregate": agg}
+    ART.write_text(json.dumps(payload, indent=1))
+    print("\nAGGREGATE:", json.dumps(agg["per_phase"], indent=1))
+    print("GATES:", json.dumps(gates, indent=1))
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--workers", type=int, default=6)
+    args = ap.parse_args()
+    run(limit=args.limit, workers=args.workers)
+
+
+if __name__ == "__main__":
+    main()

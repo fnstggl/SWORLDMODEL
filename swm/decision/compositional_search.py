@@ -53,8 +53,33 @@ _ASK = re.compile(r"\b(reply|respond|let me know|lmk|book (a )?time|grab (a )?ti
                   r"can (i|we)|would you|happy to send)\b", re.I)
 _LOW_EFFORT = re.compile(r"\b(reply ['\"]?yes|one word|yes/no|thumbs up|just say|no deck needed|"
                          r"two minutes|30 seconds|quick yes)\b", re.I)
+# convenience-SELLING: PERFORMING easiness / assuring a payoff / pre-chewing the reader's next step.
+# Distinct from _LOW_EFFORT (the ask genuinely being short). Lexical proxy for the register the LLM
+# encoder scores directly; kept in sync with semantic_critic._CONVENIENCE.
+_CONVENIENCE_SELL = re.compile(
+    r"\byou('| wi|'l)?ll (get|receive|have|walk away with)\b|\byou get (a|an|the)\b|"
+    r"\bno (follow[- ]?up|obligation|commitment|strings|pressure|need to (respond|reply))\b|"
+    r"\b(all|only) (it|this) takes is\b|\bzero (effort|commitment|risk)\b|"
+    r"\byou could (test|verify|check|try|confirm|run) (this|it|that|your)\b|"
+    r"\b(see|judge|test|try) (it |this )?for yourself\b|\bno (deck|call) (needed|required)\b|"
+    r"\brequired?: (none|nothing)\b|\bif (i'?m|i am) wrong,? (just )?(delete|ignore|archive)\b", re.I)
 _NUMBER = re.compile(r"\b\d+(\.\d+)?\s?(x|%|k|m|bn|billion|million|percent|cents?|ms| x faster)?\b", re.I)
 _QMARK = re.compile(r"\?")
+# ---- funnel-lever lexical proxies (the LLM encoder scores these semantically; these are fallback) --
+_IDENTITY_LEX = re.compile(r"\b(i'?m [A-Z][a-z]+|my name is|i am [A-Z][a-z]+|i'?m (a |an )?\d{2}[ -]"
+                           r"year[ -]old|i built|i'?m building|i am building|we built|i run|i started)", re.I)
+_NEXT_STEP_LEX = re.compile(r"(may i send|could i send|can i send|want me to send|should i send|"
+                            r"happy to send|would you (want|like|read)|can i share|one[- ]pag(e|er)|"
+                            r"memo|reply ['\"]?(yes|no))", re.I)
+_ADVERSARIAL_LEX = re.compile(r"(which (assumption|part|claim)|what('| i)s wrong|prove (me|it) wrong|"
+                              r"poke holes|find the flaw|is (that|this) (thesis )?wrong|tear (it|this) "
+                              r"apart|am i wrong)", re.I)
+_BIG_CLAIM_LEX = re.compile(r"\b\d{2,}(?:[,.]\d+)?\s?(%|percent)|\b\d+(?:\.\d+)?x\b", re.I)
+_PROVENANCE_LEX = re.compile(r"\b(replay|replays|trace|traces|backtest|benchmark|baseline|vs\.?|"
+                             r"versus|against|compared|production|pilot|public|method)\b", re.I)
+_EFFORT_ASK_LEX = re.compile(r"(which assumption|reconstruct|assess|evaluate|critique|review (the|my)|"
+                             r"what do you think about (the|my) (architecture|method|approach)|"
+                             r"thoughts on (the|my) (system|design|methodology))", re.I)
 
 
 def _sat(count: float, k: float = 1.5) -> float:
@@ -79,6 +104,20 @@ def encode_text_to_strategy(text: str, levers: list | None = None) -> dict:
     length_fit = math.exp(-((math.log1p(n) - math.log(42)) ** 2) / 1.6)
     clarity = min(1.0, 0.35 + 0.4 * (1.0 if _NUMBER.search(t) else 0.0)
                   + 0.25 * (1.0 if avg_sent <= 16 else 0.0))
+    # funnel levers (lexical proxies; the LLM encoder is the semantic scorer)
+    sents_list = sentences
+    head = " ".join(sents_list[:2]) if sents_list else t
+    identity = 1.0 if _IDENTITY_LEX.search(head) else (0.4 if _IDENTITY_LEX.search(t) else 0.0)
+    next_step = _sat(len(_NEXT_STEP_LEX.findall(t)), k=0.8)
+    adversarial = _sat(len(_ADVERSARIAL_LEX.findall(t)), k=0.7)
+    # believability: big claims are believable when anchored to provenance IN THE SAME SENTENCE
+    big_sents = [s for s in sents_list if _BIG_CLAIM_LEX.search(s)]
+    if big_sents:
+        anchored = sum(1 for s in big_sents if _PROVENANCE_LEX.search(s))
+        believability = 0.25 + 0.65 * (anchored / len(big_sents))
+    else:
+        believability = 0.7                          # no extraordinary claim -> nothing to disbelieve
+    cognitive = _sat(len(_EFFORT_ASK_LEX.findall(t)) + 1.2 * len(_ADVERSARIAL_LEX.findall(t)), k=1.0)
     out = {
         "personalization": personal,
         "relevance_fit": 0.4,                        # not lexically inferable — LLM encoder does this well
@@ -87,10 +126,16 @@ def encode_text_to_strategy(text: str, levers: list | None = None) -> dict:
         "responder_incentive": _sat(len(_INCENTIVE.findall(t)), k=1.0),
         "ask_directness": ask_directness,
         "low_effort_ask": _sat(len(_LOW_EFFORT.findall(t)) + 0.3 * len(_ASK.findall(t)), k=1.0),
+        "convenience_selling": _sat(len(_CONVENIENCE_SELL.findall(t)), k=1.0),
         "pushiness": pushy,
         "warmth": _sat(len(_WARMTH.findall(t)), k=1.2),
         "length_fit": length_fit,
         "credential_signaling": _sat(len(_CREDENTIAL.findall(t))),
+        "identity_legibility": identity,
+        "claim_believability": believability,
+        "cognitive_effort": cognitive,
+        "adversarial_framing": adversarial,
+        "next_step_clarity": next_step,
     }
     # situational levers: crude keyword overlap between the lever description and the text (fallback only)
     for lv in (levers or []):
@@ -144,6 +189,40 @@ SLOTS = ["opener", "hook", "thesis", "ask", "close"]
 
 def default_proposer(slot: str, spec_strategy: dict, context: dict, k: int = 8) -> list[str]:
     return list(SLOT_BANK.get(slot, [""]))[:k]
+
+
+def bank_proposer(sender_brief, recipient_label: str = ""):
+    """Offline proposer built from the ACTUAL SenderBrief instead of the fixture SLOT_BANK (which is a
+    deliberate Thiel/Beckett test scenario). Keeps the bank's good/bad contrast structure — the winner
+    must still be EARNED by the scorer — but every line derives from the caller's real facts, so
+    offline mode is not a hardcoded scenario."""
+    first = (recipient_label or "there").split()[0]
+    sender = getattr(sender_brief, "sender", "") or "I"
+    thesis = (getattr(sender_brief, "thesis", "") or "what I'm building").rstrip(".")
+    ask = (getattr(sender_brief, "ask", "") or "a one-line reaction").rstrip(".")
+    facts = [f.rstrip(".") for f in (getattr(sender_brief, "facts", []) or [])]
+    fact1 = facts[0] if facts else thesis
+    bank = {
+        "opener": [
+            f"{first}, {thesis}.",
+            f"{first},",
+            f"Dear {first}, I hope this email finds you well.",              # annoying (contrast)
+        ],
+        "hook": [f"{fact1}." if fact1 else "", ""],
+        "thesis": ([f"{f}." for f in facts[1:3]] or [f"{thesis}."]) + [
+            f"My startup is an exciting next-generation platform with huge potential.",  # slop (contrast)
+        ],
+        "ask": [
+            "Do you think that's wrong?",
+            "Is this a bad idea?",
+            f"Could we set up a 30-minute call at your earliest convenience?",  # pushy (contrast)
+        ],
+        "close": [sender, f"Thanks, {sender}.", ""],
+    }
+
+    def propose(slot: str, spec_strategy: dict, context: dict, k: int = 8) -> list[str]:
+        return list(bank.get(slot, [""]))[:k]
+    return propose
 
 
 def _spec_distance(strat: dict, spec_strategy: dict) -> float:
@@ -237,6 +316,13 @@ def _sent_overlap(a: str, b: str) -> bool:
     return a in b or b in a
 
 
+def _viable(slots: dict) -> bool:
+    """A repaired email is viable if it still has an opener, at least one substantive line
+    (hook or thesis), and an ask — so deletion-as-repair can never strip it to nothing."""
+    return bool(slots.get("opener")) and bool(slots.get("ask")) and \
+        bool(slots.get("thesis") or slots.get("hook"))
+
+
 def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy: dict, *,
                  proposer=default_proposer, critic, q: float = 0.2, rounds: int = 3,
                  spec_penalty: float = 0.15, critic_weight: float = 0.8,
@@ -250,7 +336,7 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
     encode = encode_fn or encode_text_to_strategy
     if rank_critic is None:
         from swm.decision.semantic_critic import SemanticCritic
-        rank_critic = SemanticCritic()          # cheap lexical — ranks replacements without LLM calls
+        rank_critic = SemanticCritic()          # fallback ranker; live callers pass the LLM critic here
     slots = dict(email.slots)
     text = _assemble(slots)
 
@@ -270,14 +356,23 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
                 continue
             # Candidate replacements. With a rewrite_fn (live LLM), the focused fix is a TARGETED REWRITE
             # of the flagged line fed the critic's reason — resampling fresh proposer options just returns
-            # the same slop register. Without it, fall back to fresh proposer candidates.
+            # the same slop register. Without it, fall back to fresh proposer candidates. DELETION is a
+            # first-class repair: optional slots may always drop; any slot flagged as redundant may drop
+            # (a restated statistic's best fix is usually removal, not paraphrase).
+            reasons = next((r for fs, r in reason_by_sent.items() if _sent_overlap(fs, chosen)), [])
             if rewrite_fn is not None:
-                reasons = next((r for fs, r in reason_by_sent.items() if _sent_overlap(fs, chosen)), [])
                 candidates = [rewrite_fn(chosen, reasons, spec_strategy)]
             else:
                 candidates = list(proposer(slot, spec_strategy, {"prefix": _prefix_before(slots, slot)}))
+            # DELETION is a first-class repair — a flagged line's best fix is often removal, not
+            # paraphrase (a rewrite of AI-slop tends to be more AI-slop). Offer "" for ANY flagged
+            # slot as long as dropping it leaves a VIABLE email (an opener, one substantive line, and
+            # the ask); optional slots (hook/close) may always drop.
+            if slot in ("hook", "close") or _viable({**slots, slot: ""}):
+                candidates = candidates + [""]
             # Rank lexicographically: (candidate cleanliness — fixes independent slop unmasked; then
-            # whole-trial quality — fixes redundancy; then strategy value). Cheap lexical critic ranks.
+            # whole-trial quality — fixes redundancy; then strategy value). rank_critic does the ranking:
+            # the LLM critic when live (message_pipeline passes it), else the lexical fallback.
             def rank(c):
                 trial = _assemble({**slots, slot: c})
                 cand_clean = rank_critic.critique(c).quality if c else 1.0
@@ -291,7 +386,67 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
         if not changed:
             break
 
+    # FINAL sentence-level prune: slot-level repair is too coarse when one slot holds a clean sentence
+    # AND slop (e.g. an 'ask' slot that became "You could test this yourself. Is that wrong?"). Drop the
+    # still-flagged SENTENCES directly from the assembled text, preserving the opener (first sentence)
+    # and at least one question (the ask). This is the catch-all that guarantees the gate's verdict and
+    # the returned text agree — a flagged line either gets rewritten, deleted, or pruned, never shipped.
+    text = _prune_flagged_sentences(text, critic)
+
     strat = encode(text)
     dist = scorer.score_dist(strat)
     return ConstructedEmail(text=text, strategy=strat, score=dist.lower_bound(q), mean=dist.mean,
                             lower_bound=dist.lower_bound(q), slots=slots, critique=critic.critique(text))
+
+
+def _prune_flagged_sentences(text: str, critic, max_passes: int = 3) -> str:
+    """Remove flagged sentences one at a time (most-flagged first) while keeping the email viable: the
+    first sentence (opener) stays, and at least one question (the ask) stays. Re-critique after each
+    removal so redundancy that clears once a duplicate is gone is not over-pruned.
+
+    A DETERMINISTIC near-duplicate-question dedup runs first (independent of any critic): two asks
+    with content-word Jaccard >= 0.6 keep only the earlier one — exp094's live winner shipped
+    'May I send you the one-page technical memo? May I send you the one-page memo?' past the LLM
+    judge, and a duplicated ask must never depend on a judge noticing it."""
+    import re
+
+    def sents(t):
+        return [s.strip() for s in re.split(r"(?<=[.!?])\s+", t.strip()) if s.strip()]
+
+    from swm.decision.semantic_critic import _content_words
+    ss = sents(text)
+    keep, seen_q = [], []
+    for s in ss:
+        if s.rstrip().rstrip("—–- ").endswith("?") or "?" in s:
+            w = _content_words(s)
+            if any(w and q and len(w & q) / len(w | q) >= 0.6 for q in seen_q):
+                continue                                   # later near-duplicate question dropped
+            seen_q.append(w)
+        keep.append(s)
+    if len(keep) < len(ss):
+        text = " ".join(keep)
+
+    for _ in range(max_passes):
+        ss = sents(text)
+        if len(ss) <= 2:
+            break
+        crit = critic.critique(text)
+        flagged = {f["sentence"].strip() for f in crit.flags()}
+        if not flagged:
+            break
+        # candidate removals: a flagged sentence that is neither the opener nor the LAST remaining question
+        questions = [i for i, s in enumerate(ss) if s.rstrip().endswith("?")]
+        removable = []
+        for i, s in enumerate(ss):
+            if s not in flagged:
+                continue
+            if i == 0:                                     # keep the opener slot (repair handled it)
+                continue
+            if s.rstrip().endswith("?") and len([q for q in questions if q != i]) == 0:
+                continue                                   # never remove the only question
+            removable.append(i)
+        if not removable:
+            break
+        drop = removable[0]                                # one per pass; re-critique to reassess
+        text = " ".join(s for i, s in enumerate(ss) if i != drop)
+    return text

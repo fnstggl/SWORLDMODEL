@@ -1,0 +1,141 @@
+{
+ "question": "Will the proposed merger between the two regional banks be completed?",
+ "as_of": "2023-05-01",
+ "horizon": "2023-12-31",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "completed",
+   "not_completed"
+  ],
+  "readout_var": "merger_completed",
+  "resolution_rule": "The merger is completed if all required regulatory approvals are granted, shareholder votes pass, and no material adverse event occurs by 2023-12-31."
+ },
+ "readout_repaired": false,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The merger completion depends on regulatory approvals, shareholder votes, and market conditions, with no grounded evidence provided.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 6,
+ "n_institutions": 6,
+ "n_populations": 3,
+ "n_latents": 3,
+ "sample_entities": [
+  "regional_bank_A",
+  "regional_bank_B",
+  "federal_reserve",
+  "doj_antitrust",
+  "fdic",
+  "state_banking_regulator"
+ ],
+ "sample_latents": [
+  {
+   "path": "regional_bank_A.fields.board_approval",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.9
+  },
+  {
+   "path": "regional_bank_B.fields.board_approval",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.9
+  },
+  {
+   "path": "shareholders_bank_A.segments.institutional_shareholders_A.differs_on.voting_preference",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.5
+  }
+ ],
+ "accepted_mechanisms": [
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [],
+ "experimental_mechanisms": [],
+ "mechanism_tiers": {
+  "outcome_resolution": 6
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 6,
+   "family": "generic_outcome_prior",
+   "why": "outcome resolved from a broad prior \u2014 no held-out-validated mechanism writes this readout on the general path (documented Phase-1 dependency)"
+  }
+ ],
+ "structural_hypotheses": [],
+ "fidelity_plan": {
+  "explicit": [
+   "regional_bank_A",
+   "regional_bank_B",
+   "federal_reserve",
+   "doj_antitrust",
+   "fdic",
+   "state_banking_regulator",
+   "shareholders_bank_A",
+   "shareholders_bank_B",
+   "regulators",
+   "regional_bank_A.fields.board_approval",
+   "regional_bank_B.fields.board_approval",
+   "shareholders_bank_A.segments.institutional_shareholders_A.differs_on.voting_preference"
+  ],
+  "marginalized_with_uncertainty": [],
+  "n_particles": 45
+ },
+ "omissions": [],
+ "world_provenance_statuses": {},
+ "n_deltas": 45,
+ "readout": "terminal_states",
+ "structural_posterior": null,
+ "delta_log_sample": [
+  {
+   "at": 1703980799.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=neutral"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "exploratory",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "not_completed": 0.5111,
+   "completed": 0.4889
+  },
+  "raw_probability": 0.4889,
+  "structural_disagreement": null,
+  "uncertainty_decomposition": {
+   "n_particles": 45,
+   "structural_model_uncertainty": 0.0,
+   "state_parameter_uncertainty": 0.2513,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "degraded: support grade exploratory; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "5d5ecb87d008"
+ },
+ "plan_hash": "5d5ecb87d008",
+ "latency_s": 14.28
+}

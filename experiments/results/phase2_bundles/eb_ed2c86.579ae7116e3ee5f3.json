@@ -1,0 +1,772 @@
+{
+ "bundle_id": "eb_ed2c86",
+ "question": "Will the primary go to a runoff?",
+ "as_of": 1682899200.0,
+ "compiler_plan_hash": "aa46f677cc48",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_ce89857f7e",
+   "claim_or_quantity": "If no candidate receives >50% of valid votes cast by the deadline, outcome is 'runoff'; otherwise 'no_runoff'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "election_authority",
+    "candidate_A",
+    "candidate_B",
+    "candidate_C"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_d4c8218a95",
+   "claim_or_quantity": "value/context of electorate.dem_lean.preference_distribution",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "electorate.dem_lean.preference_distribution",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_db7eeb78c0",
+   "claim_or_quantity": "value/context of electorate.rep_lean.preference_distribution",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "electorate.rep_lean.preference_distribution",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0ebb736875",
+   "claim_or_quantity": "value/context of electorate.turnout_propensity",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "electorate.turnout_propensity",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6b0172ac56",
+   "claim_or_quantity": "evidence discriminating structural hypothesis two_way_race",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:two_way_race",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0ac358a058",
+   "claim_or_quantity": "evidence discriminating structural hypothesis fragmented_field",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:fragmented_field",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f38b648df4",
+   "claim_or_quantity": "decision rules / process of election_authority",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "election_authority",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_ce89857f7e",
+   "terms": "primary runoff election authority candidate A candidate B",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_d4c8218a95",
+   "terms": "electorate dem lean preference distribution",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_db7eeb78c0",
+   "terms": "electorate rep lean preference distribution",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ce89857f7e",
+   "logical_query": "primary runoff election authority candidate A candidate B after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=primary+runoff+election+authority+candidate+A+candidate+B+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783908902.2360916,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:15:02 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmLw1JBiOFR1hiG54wxDKhDXAXEDELfePMc6GYhLFp1nbQLiLiCeAcSGCpdY7YH4cvol1iKJK6wNQPyp6garQPUN1m_FvmwsJUD81p_NNCSQzRmIt2gGswnxcCybcvESm8CJOdc_MCkpJ-UXxqfklxQXF-QkFmcUpxaVpRbFGxkYmRmYG5jpGZjEFxgAAOJTOx4\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d6a78893971963db423a2dd0208eb618d83861637a905149cd55bd6bb9d74f60",
+   "n_bytes": 5159,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 3,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.436
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_d4c8218a95",
+   "logical_query": "electorate dem lean preference distribution after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=electorate+dem+lean+preference+distribution+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783908902.6741707,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:15:03 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw1pBiSO44w5ACxJVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsXzKxUtsAguWNU9nVFJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAgkA2Yw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "ec5736d1de3335e173056c535061209247535e1eeffae8cda7b27cfb28f73aca",
+   "n_bytes": 1251,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.538
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_db7eeb78c0",
+   "logical_query": "electorate rep lean preference distribution after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=electorate+rep+lean+preference+distribution+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783908903.2142558,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:15:03 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmJw0JBiSO44w5ACxHVA3AjEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YR4OJZPuXiJTeDEzMPfmZSUk_IL41PyS4qLC3ISizOKU4vKUovijQyMzAzMDcz0DEziCwwAh_U6bQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a0c3d5864f8f7a1085a3a5ac9ba0e85794da79ba04c4911581918b15da77427e",
+   "n_bytes": 1251,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.467
+  }
+ ],
+ "raw_content_refs": [
+  "d6a78893971963db423a2dd0208eb618d83861637a905149cd55bd6bb9d74f60"
+ ],
+ "documents": [
+  {
+   "id": "cf30d5f2549ec46d",
+   "source": "FairVote",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE8zNFQ4UUwzNjRzUmtubmpFMHQwOHpLYVA0bmNPMWNFYWZXeU8tRFFoS1FOeHVERDJFRWtOZklOU1lPM191MTNfTzAtWHBOcGNqMVc2UmlHbWhMR0JTT3c?oc=5",
+   "title": "Defining the spoiler effect - FairVote",
+   "text": "Defining the spoiler effect - FairVote. Defining the spoiler effect FairVote",
+   "content_hash": "2f7f32c178073fdf",
+   "raw_feed_hash": "d6a78893971963db423a2dd0208eb618d83861637a905149cd55bd6bb9d74f60",
+   "published_at": 1674633600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ce89857f7e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "176a937bc91d0e7a",
+   "source": "WTTW",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQSDFyX2VtSzBFQlZjNmZOWnZ1UVg5VXdISTIyYUNpTko0aXNJZm1BeTl0TmV1MkRKWEFxWnRYRi14OGhqLWR3VXFKMVRJdk15LTBrQXFCcHpZMGpHWF81aFlwbW80YUxsMjFUUVFVRGYwc0dnMjNCc21MX0VqOS0tVnlGSGN4MF9rY1h2RkZ6ZUxjR2c?oc=5",
+   "title": "WTTW News Explains: Why Are Chicago Elections Nonpartisan? - WTTW",
+   "text": "WTTW News Explains: Why Are Chicago Elections Nonpartisan? - WTTW. WTTW News Explains: Why Are Chicago Elections Nonpartisan? WTTW",
+   "content_hash": "bc7ae8c076f9fd00",
+   "raw_feed_hash": "d6a78893971963db423a2dd0208eb618d83861637a905149cd55bd6bb9d74f60",
+   "published_at": 1675065600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ce89857f7e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "23e9e37f37094102",
+   "source": "The Hill",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNX3FvSUl6ZGFoZlJlSTd2SG5vVFhzX0NnOGN6ZGlCZFZROUlTUlpwcHE1VzVkd1pSUVg5VWVUZGp3LUY4ZzlnRXdLZGliTUF2Wm5lRXBOcWcwb2lSbjdDNmE3QV9WNk5EZUFVYzBLMXBlM0V2Z2wxaWhoMXRFLXlsbndaNVRSTGlNWkJybUtNSV9ENVdJRXhKV1ZpQm9LajkzLTNmOdIBqgFBVV95cUxOc2MyZnFRei1xYXJNZHByNUI3ODI5R2UxMHFWWkJoU3Z0MEpGZ1BQYlBrbVZJUFJPRU5CcnBTY042bDlrUnBPamJmcmNQeHR6cVhJdjdlbGVSbHY1Yno0b05laWVCeXl3d1YwLS1UY0N3RFhsclB1RFZmcTJzcmdZbmtWVFdFY3RfcTQ0aVFuN1MzSmxVLVBlN2hYQWJfcWlMd0ZCRjZLdjM5dw?oc=5",
+   "title": "AP WAS THERE: Uncovering Lyndon B Johnson\u2019s stolen election - The Hill",
+   "text": "AP WAS THERE: Uncovering Lyndon B Johnson\u2019s stolen election - The Hill. AP WAS THERE: Uncovering Lyndon B Johnson\u2019s stolen election The Hill",
+   "content_hash": "dbfd0ef4c18da0f4",
+   "raw_feed_hash": "d6a78893971963db423a2dd0208eb618d83861637a905149cd55bd6bb9d74f60",
+   "published_at": 1680246000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ce89857f7e",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "cf30d5f2549ec46d:c0",
+   "source_id": "cf30d5f2549ec46d",
+   "subject": "FairVote",
+   "predicate": "defines",
+   "object": "the spoiler effect",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Defining the spoiler effect - FairVote",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674633600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "FairVote"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e79bc8effa",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ce89857f7e"
+   }
+  },
+  {
+   "claim_id": "176a937bc91d0e7a:c0",
+   "source_id": "176a937bc91d0e7a",
+   "subject": "Chicago elections",
+   "predicate": "are",
+   "object": "nonpartisan",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Why Are Chicago Elections Nonpartisan?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675065600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Chicago"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e329a49771",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ce89857f7e"
+   }
+  },
+  {
+   "claim_id": "23e9e37f37094102:c0",
+   "source_id": "23e9e37f37094102",
+   "subject": "Lyndon B Johnson",
+   "predicate": "had",
+   "object": "stolen election",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "allegation",
+   "supporting_span": "Uncovering Lyndon B Johnson\u2019s stolen election",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680246000.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Lyndon B Johnson"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a774e9788a",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ce89857f7e"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "FairVote",
+   "normalized": "fairvote",
+   "candidates": [
+    {
+     "entity_id": "ent_dbe7bcad10",
+     "canonical": "fairvote",
+     "support": 0.8333,
+     "evidence_mentions": [
+      "FairVote"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Chicago",
+   "normalized": "chicago",
+   "candidates": [
+    {
+     "entity_id": "ent_1fff8c7be7",
+     "canonical": "chicago",
+     "support": 0.8333,
+     "evidence_mentions": [
+      "Chicago"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Lyndon B Johnson",
+   "normalized": "lyndon b johnson",
+   "candidates": [
+    {
+     "entity_id": "ent_7b4dcc2bb5",
+     "canonical": "lyndon b johnson",
+     "support": 0.8333,
+     "evidence_mentions": [
+      "Lyndon B Johnson"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "cf30d5f2549ec46d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1674633600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674633600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "176a937bc91d0e7a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1675065600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675065600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "23e9e37f37094102": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1680246000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680246000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_e79bc8effa",
+   "member_ids": [
+    "cf30d5f2549ec46d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "FairVote",
+   "primary_source": "FairVote",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e329a49771",
+   "member_ids": [
+    "176a937bc91d0e7a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WTTW",
+   "primary_source": "WTTW",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a774e9788a",
+   "member_ids": [
+    "23e9e37f37094102"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Hill",
+   "primary_source": "The Hill",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "cf30d5f2549ec46d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674633600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "176a937bc91d0e7a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675065600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "23e9e37f37094102:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680246000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "cf30d5f2549ec46d:c0",
+  "176a937bc91d0e7a:c0",
+  "23e9e37f37094102:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_ce89857f7e": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_d4c8218a95": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_db7eeb78c0": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_0ebb736875": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_6b0172ac56": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_0ac358a058": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f38b648df4": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_d4c8218a95",
+  "req_db7eeb78c0",
+  "req_0ebb736875",
+  "req_6b0172ac56",
+  "req_0ac358a058",
+  "req_f38b648df4"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 3,
+  "n_contradictions": 0,
+  "n_documents": 3
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 6.882,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "579ae7116e3ee5f3",
+ "bundle_hash": "579ae7116e3ee5f3",
+ "_persisted_at": "2026-07-13T02:15:11Z"
+}

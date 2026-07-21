@@ -1,0 +1,98 @@
+{
+ "generated_at": "2026-07-19T20:53:43Z",
+ "claims": "architecture-behavior differences only; NO accuracy superiority is claimed (held-out outcome evaluation not run here \u2014 \u00a739)",
+ "arms": {
+  "bounded_vs_oneshot": {
+   "one_shot_prompt": {
+    "llm_calls_by_stage": {
+     "attention": 0,
+     "interpretation": 0,
+     "search": 0,
+     "decision": 1,
+     "other": 0
+    },
+    "total_llm_calls": 1,
+    "decision_prompt_has_full_ledger": true,
+    "observations_missed_recorded": 0,
+    "working_memory_capacity": null,
+    "options_considered": null,
+    "selected": "approve"
+   },
+   "bounded_cognition": {
+    "llm_calls_by_stage": {
+     "attention": 1,
+     "interpretation": 1,
+     "search": 1,
+     "decision": 1,
+     "other": 0
+    },
+    "total_llm_calls": 4,
+    "decision_prompt_has_full_ledger": true,
+    "observations_missed_recorded": 1,
+    "working_memory_capacity": 5,
+    "options_considered": [
+     "approve",
+     "delay for one week"
+    ],
+    "selected": "approve"
+   },
+   "measured_difference": {
+    "extra_calls_for_bounded_cognition": 3,
+    "note": "accuracy-increasing additional work (\u00a740) \u2014 staged attention/interpretation/search calls; the decision call sees only surviving material"
+   }
+  },
+  "truncation_vs_numeric": {
+   "strict_default": {
+    "behavior": "branch_truncates",
+    "reason": "no_llm_backend",
+    "substitute_decision": null
+   },
+   "explicit_numeric_baseline": {
+    "behavior": "numeric_fallback_served",
+    "decision_source": "numeric_fallback",
+    "marked_excluded": true
+   },
+   "measured_difference": {
+    "psychology_switch_on_default_path": false,
+    "note": "the default branch STOPS; the numeric psychology exists only behind the explicit baseline marker"
+   }
+  },
+  "generic_prior_vs_under_modeled": {
+   "under_modeled_default": {
+    "terminal_written": false,
+    "suppressions_recorded": 1,
+    "delta_reasons": [
+     "generic_prior_suppressed_default",
+     "under_modeled_nonhuman_mechanism"
+    ]
+   },
+   "explicit_prior_baseline": {
+    "terminal_written": true,
+    "suppressions_recorded": 0,
+    "delta_reasons": [
+     "generic_fallback",
+     "lean=neutral"
+    ]
+   },
+   "measured_difference": {
+    "default_writes_terminal": false,
+    "note": "the default refuses the broad-prior terminal draw and records the missing mechanism; the explicit baseline arm still draws"
+   }
+  },
+  "outside_world_residual": {
+   "no_residual": {
+    "outside_events_scheduled": 0,
+    "queue_events": 0
+   },
+   "residual_process": {
+    "outside_events_scheduled": 5,
+    "queue_events": 5
+   },
+   "measured_difference": {
+    "events_only_with_residual": true,
+    "note": "the explicit-boundary world without a residual process never experiences outside shocks \u2014 the ablation the residual exists to close"
+   }
+  }
+ },
+ "runtime_s": 0.2
+}

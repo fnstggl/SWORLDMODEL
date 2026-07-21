@@ -103,6 +103,45 @@ _SPECS: list[VariableSpec] = [
                  default=0.3),
     VariableSpec("low_effort_ask", MESSAGE_FIT, "how easy/low-friction it is for them to respond",
                  default=0.4),
+    # the register axis the user's feedback isolated: PERFORMING easiness/benefit is DISTINCT from the
+    # ask genuinely being brief. A message that announces 'no follow-up required', pre-chews a
+    # 'you could test this yourself' step, or assures the reader what they'll get is convenience-
+    # selling — it reads as pushy/AI to a high-status skeptic even though it looks helpful.
+    VariableSpec("convenience_selling", MESSAGE_FIT,
+                 "how much the message PERFORMS easiness / assures the reader a payoff / pre-chews "
+                 "their next step ('no follow-up required', 'you could just test this yourself') — "
+                 "salesmanship dressed as politeness, distinct from the ask genuinely being short",
+                 default=0.2),
+    # ---- COLD-OUTREACH FUNNEL levers (the conjunctive gates a stranger's message must pass) ----
+    # A response is not an additive score: a busy stranger must UNDERSTAND who is writing and why,
+    # BELIEVE the claim, feel it is WORTH engaging, and see an EASY next step. Any gate failing
+    # kills the reply, however impressive the rest is. These levers feed the funnel stages.
+    VariableSpec("identity_legibility", MESSAGE_FIT,
+                 "within the first two sentences a stranger can tell WHO the sender is, WHAT they "
+                 "built/do, and WHY they are writing — introduction, not mid-conversation. Distinct "
+                 "from credential_signaling: 'I'm Beckett, 17, building Aurelius' is identity; "
+                 "'Princeton admit featured in the NYT' is credentials",
+                 default=0.3),
+    VariableSpec("claim_believability", MESSAGE_FIT,
+                 "an extraordinary claim carries enough provenance/context (baseline, method, scope) "
+                 "for a skeptic to believe it on first read; a bare huge number ('cut costs 84%') "
+                 "with no anchor scores LOW — implausible before it is interesting",
+                 default=0.5),
+    VariableSpec("cognitive_effort", MESSAGE_FIT,
+                 "how much unpaid mental work the requested reply demands: understanding an "
+                 "underexplained system, reconstructing an argument, formulating a critique. "
+                 "SEMANTIC effort — a formally one-line ask can still demand a whitepaper's thought",
+                 default=0.3),
+    VariableSpec("adversarial_framing", MESSAGE_FIT,
+                 "challenge/debate-bait framing toward the recipient ('prove me wrong', 'which "
+                 "assumption is wrong?') — reads as combat from a stranger, fine between peers "
+                 "who already respect each other",
+                 default=0.2),
+    VariableSpec("next_step_clarity", MESSAGE_FIT,
+                 "the reply's next step is explicit, trivially answerable (yes/no or one line), and "
+                 "its payoff is obvious — e.g. 'may I send you the one-page memo?' The recipient "
+                 "instantly knows what replying accomplishes",
+                 default=0.3),
     VariableSpec("warmth", MESSAGE_FIT, "warm, respectful, human tone (vs cold/transactional)", default=0.5),
     VariableSpec("credential_signaling", MESSAGE_FIT, "how much the message parades status/credentials",
                  default=0.3),

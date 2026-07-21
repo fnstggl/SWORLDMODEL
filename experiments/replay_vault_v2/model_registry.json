@@ -1,0 +1,15 @@
+{
+  "note": "Time-indexed model registry (Part 15 Arm A). An event enters Arm A only if a checkpoint with a documented knowledge cutoff BEFORE the event's forecast cutoff exists AND its weights are verifiable. Weight-hash verification is impossible for hosted API models, so Arm A eligibility below is graded, not asserted.",
+  "models": [
+    {
+      "model": "deepseek-chat (DeepSeek-V3 family, hosted API)",
+      "model_hash": "UNAVAILABLE — hosted API; weights not hash-verifiable",
+      "release_date": "2024-12-26 (V3); serving version updated by provider over time",
+      "documented_cutoff": "2024-07 (DeepSeek-V3 technical report pretraining data cutoff)",
+      "eligibility": "INELIGIBLE for strict Arm A: the served checkpoint mutates (V3->V3-0324->...) and no immutable hash exists, so 'documented training-data cutoff before event cutoff' cannot be PROVEN for the weights actually serving a given request. Recorded as the exact external blocker for Arm A.",
+      "inference_configuration": {"temperature": 0.2, "max_tokens": 2400}
+    }
+  ],
+  "arm_a_status": "BLOCKED_EXTERNAL: no verifiable pre-cutoff checkpoint is accessible from this environment (requires a pinned open-weights checkpoint, e.g. a dated Llama/Qwen release with published weights + hash, plus inference hardware). Until then only Arm B (causally blinded current model) is a clean arm, and the mandatory 2-clean-arms-per-cutoff requirement CANNOT be satisfied — the 800-forecast benchmark is therefore formally incomplete regardless of row count.",
+  "unblock_path": "pin an open-weights checkpoint with published hash + documented cutoff (e.g. released before 2024-03), host it, register {model, sha256, release_date, cutoff}, mark eligible events, regenerate Arm A rows."
+}

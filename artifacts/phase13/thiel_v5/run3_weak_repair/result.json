@@ -1,0 +1,84 @@
+{
+ "experiment": "exp095_thiel_reply_first",
+ "mode": "live",
+ "hypotheses_source": "thiel_v3 saved (same as exp092/094)",
+ "result": {
+  "report_type": "cold_outreach_slate",
+  "recipient": "Peter Thiel",
+  "winner_best_supported_among_tested": "reply_first_winner",
+  "within_noise_of_winner": [
+   "finalist_pre_polish"
+  ],
+  "hypothesis_fragility": {
+   "n_llm_calls": 162
+  },
+  "ranked": [
+   {
+    "arm": "reply_first_winner",
+    "text": "Peter,\n\nEveryone assumes AI hits a power wall. The real bottleneck is bad scheduling: we waste the power we already have.\n\nIn simulated replay of 1.5M public production requests, my system delivers +724% more SLA-safe goodput per dollar than the production scheduler.\n\nYou fund definite, contrarian theses about hidden constraints. This one is hiding in plain sight.\n\nI'm Beckett, 17, building Aurelius. It forecasts power constraints and ranks scheduling decisions by economic outcome before executing.\n\nI can send you the one-page technical memo.",
+    "persona": null,
+    "funnel_objective": null,
+    "funnel_interval80": null,
+    "stage_trace": null,
+    "contract": null,
+    "cold_read": null,
+    "critic": null,
+    "gates": {
+     "truth": true,
+     "language": false,
+     "language_score": 0.7,
+     "problems": [
+      {
+       "sentence": "In simulated replay of 1.5M public production requests, my system delivers +724% more SLA-safe goodput per dollar than t",
+       "problem": "Two large numbers (1.5M and +724%) compete for attention in one sentence, which a busy person would likely simplify or split."
+      },
+      {
+       "sentence": "You fund definite, contrarian theses about hidden constraints.",
+       "problem": "Slightly formal/constructed phrasing ('definite, contrarian theses') that reads more like a pitch deck than a quick note."
+      },
+      {
+       "sentence": "I'm Beckett, 17, building Aurelius.",
+       "problem": "Age disclosure feels like a deliberate credibility move, not something a busy peer would naturally type in a cold email."
+      }
+     ]
+    },
+    "origin": "S:surp>evid>rele>iden>requ -> Ssu-ev-re-id-re -> polished"
+   },
+   {
+    "arm": "finalist_pre_polish",
+    "text": "Peter,\n\nEveryone assumes AI hits a power wall. The real bottleneck is bad scheduling: we waste the power we already have.\n\nIn simulated replay of 1.5M public production requests, my system delivers +724% more SLA-safe goodput per dollar than the production scheduler.\n\nYou fund definite, contrarian theses about hidden constraints. This one is hiding in plain sight.\n\nI'm Beckett, 17, building Aurelius. It forecasts power constraints and ranks scheduling decisions by economic outcome before executing.\n\nI can send you the one-page technical memo.",
+    "persona": null,
+    "funnel_objective": null,
+    "funnel_interval80": null,
+    "stage_trace": null,
+    "contract": null,
+    "cold_read": null,
+    "critic": null,
+    "gates": {
+     "truth": true,
+     "language": false,
+     "language_score": 0.7,
+     "problems": [
+      {
+       "sentence": "In simulated replay of 1.5M public production requests, my system delivers +724% more SLA-safe goodput per dollar than t",
+       "problem": "Two large numbers (1.5M and +724%) compete for attention in one sentence, which a busy person would likely simplify or split."
+      },
+      {
+       "sentence": "You fund definite, contrarian theses about hidden constraints.",
+       "problem": "Slightly formal/constructed phrasing ('definite, contrarian theses') that reads more like a pitch deck than a quick note."
+      },
+      {
+       "sentence": "I'm Beckett, 17, building Aurelius.",
+       "problem": "Age disclosure feels like a deliberate signal, not something a busy peer would naturally type in a cold email."
+      }
+     ]
+    },
+    "origin": null
+   }
+  ],
+  "optimal_strategy_spec": null,
+  "honesty": "best-supported candidate under the current assumptions; no reliable distinction between finalists (uncalibrated evaluator \u2014 real outreach outcomes, not more simulation, would sharpen this)"
+ },
+ "n_raw_llm_calls": 180,
+ "wall_s": 412.3
+}

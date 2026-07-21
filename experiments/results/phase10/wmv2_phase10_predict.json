@@ -1,0 +1,111 @@
+{
+ "_meta": {
+  "harness": "experiments/wmv2_phase10_predict.py",
+  "note": "OUT-OF-SAMPLE forward prediction (train prior Congress \u2192 test later Congress) via the REAL Phase-3 posterior + institution engine, routed to a StateDelta. Kept SEPARATE from procedural reconstruction (Part #6)."
+ },
+ "predictive_path": {
+  "design": {
+   "train_congress": 117,
+   "test_congress": 118,
+   "out_of_sample": true,
+   "leakage_safe": true,
+   "note": "matter-type propensity fit on the PRIOR Congress; the TEST vote's own counts are never a model input (used only to score). Party composition is a durable pre-vote fact."
+  },
+  "n_test_scored": 682,
+  "n_unseen_matter_type": 5,
+  "train_global_base_rate": 0.786,
+  "test_base_rate_pass": 0.8284,
+  "M2_phase3_matter_type_propensity": {
+   "accuracy": 0.8284,
+   "brier": 0.1319,
+   "log_loss": 0.4048,
+   "note": "OUT-OF-SAMPLE probabilistic forecast; learns matter-type success propensity via the real Phase-3 Dirichlet posterior. Beats always-pass when \u0394acc>0 and beats base-rate Brier."
+  },
+  "M1_naive_partyline": {
+   "accuracy": 0.8211,
+   "note": "no training; majority caucus votes party-line through the real decision engine \u2014 a weak forecaster (party composition alone), kept as an honest reference."
+  },
+  "baselines": {
+   "always_pass_accuracy": 0.8284,
+   "predict_base_rate_brier": 0.1439,
+   "predict_base_rate_log_loss": 0.464
+  },
+  "lift": {
+   "M2_acc_minus_always_pass": 0.0,
+   "M2_brier_minus_base_rate_brier": -0.012,
+   "M1_acc_minus_always_pass": -0.0073
+  },
+  "by_matter_type": {
+   "majority": {
+    "n": 435,
+    "m2_acc": 0.772,
+    "m1_acc": 0.772,
+    "mean_pred_p": 0.719,
+    "empirical_pass": 0.772
+   },
+   "cloture_nomination_majority": {
+    "n": 210,
+    "m2_acc": 0.99,
+    "m1_acc": 0.99,
+    "mean_pred_p": 0.988,
+    "empirical_pass": 0.99
+   },
+   "cloture_legislation_3_5": {
+    "n": 31,
+    "m2_acc": 0.645,
+    "m1_acc": 0.355,
+    "mean_pred_p": 0.625,
+    "empirical_pass": 0.645
+   },
+   "override_2_3": {
+    "n": 5,
+    "m2_acc": 0.0,
+    "m1_acc": 1.0,
+    "mean_pred_p": 0.786,
+    "empirical_pass": 0.0
+   },
+   "treaty_2_3": {
+    "n": 1,
+    "m2_acc": 1.0,
+    "m1_acc": 0.0,
+    "mean_pred_p": 0.75,
+    "empirical_pass": 1.0
+   }
+  },
+  "fitted_propensity_train": {
+   "majority": {
+    "p_pass_mean": 0.719,
+    "n_train": 653,
+    "ess": 200.0
+   },
+   "cloture_nomination_majority": {
+    "p_pass_mean": 0.988,
+    "n_train": 243,
+    "ess": 200.0
+   },
+   "cloture_legislation_3_5": {
+    "p_pass_mean": 0.625,
+    "n_train": 46,
+    "ess": 200.0
+   },
+   "treaty_2_3": {
+    "p_pass_mean": 0.75,
+    "n_train": 2,
+    "ess": 200.0
+   }
+  },
+  "statedelta_wiring_proof": {
+   "matter_type": "cloture_legislation_3_5",
+   "predicted_p_pass": 0.625,
+   "synthesised_yea": 60,
+   "threshold": "supermajority:0.6/all_members",
+   "terminal_quantity": "passed",
+   "statedelta_changes": 2,
+   "routed_through_operator": true
+  }
+ },
+ "procedural_reconstruction_for_contrast": {
+  "procedural_reconstruction_accuracy": 0.9631,
+  "note": "uses REAL yea/nay counts \u2192 threshold engine (validates rule EXECUTION, NOT forecasting)"
+ }
+}

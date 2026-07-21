@@ -1,0 +1,21 @@
+{
+  "model_name": "DeepSeek-V4-Flash",
+  "provider": "DeepSeek (hosted API)",
+  "api_alias": "deepseek-v4-flash (verified live against api.deepseek.com/models and a chat call)",
+  "immutable_model_id": "open-weights reference: huggingface.co/deepseek-ai/DeepSeek-V4-Flash @ revision sha 60d8d70770c6776ff598c94bb586a859a38244f1 (repo created 2026-04-22; MIT license; safetensors)",
+  "release_time": "2026-04-24 (official DeepSeek API news post news260424; HF repo created 2026-04-22)",
+  "claimed_knowledge_cutoff": "NOT explicitly documented. Conservative upper bound used instead: training data necessarily predates the public release (2026-04-24).",
+  "source_for_claim": ["https://api-docs.deepseek.com/news/news260424/", "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"],
+  "downloadable_checkpoint_available": true,
+  "checkpoint_commit": "60d8d70770c6776ff598c94bb586a859a38244f1",
+  "weight_hashes": "addressable via the HF revision sha above (per-file LFS sha256 addressable at that revision); NOT re-hashed locally (284B params — no local inference capability)",
+  "tokenizer_hash": "addressable at the same HF revision",
+  "mutable_serving_risk": "PRESENT: the hosted alias is not proven byte-identical to the open checkpoint, and the provider may silently update serving weights (HF repo lastModified 2026-06-22 shows post-release repo activity). This is why the tier is B, not A.",
+  "selected_temporal_safety_tier": "TIER B — provider_attested_post_cutoff",
+  "exact_reason": "Tier A (immutable local checkpoint) requires inference on the pinned 284B open checkpoint; no GPU inference capability exists in this environment, so serving-weight identity cannot be enforced. Tier B is defensible because: (1) an exact API alias exists and is verified live; (2) the release date is documented by two official sources; (3) EVERY benchmark question is REQUIRED to have opened AFTER 2026-04-24, so even the strongest form of weight mutation cannot inject knowledge of outcomes that had not occurred at release — outcome leakage would additionally require post-release retraining on post-release events, which the leakage probes measure per row; (4) name-only/no-evidence probes remain mandatory on every row.",
+  "eligible_event_window": {"question_open_min": "2026-04-25", "resolution_max": "2026-07-10",
+    "ordering_rule": "model release S (2026-04-24) < question open Q <= forecast cutoff T < resolution R, proven per row from the market archive's server timestamps"},
+  "inference_configuration": {"model": "deepseek-v4-flash", "thinking": "disabled (recorded)",
+    "temperature": 0.2, "max_tokens": 2400},
+  "tier_a_unblock": "pin + host HF revision 60d8d707 on rented GPU infrastructure with hash-verified weights; re-run the same frozen benchmark"
+}

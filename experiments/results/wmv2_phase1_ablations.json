@@ -1,0 +1,88 @@
+{
+ "summary": {
+  "full_compiler": {
+   "n": 24,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "execution_failure_rate": 0.0,
+   "mean_dispersion": 0.996,
+   "mean_struct_entropy": 1.337
+  },
+  "no_fallback_hierarchy": {
+   "n": 24,
+   "forecast_rate": 0.0,
+   "complete_rate": 0.0,
+   "execution_failure_rate": 0.042,
+   "mean_dispersion": 0.0,
+   "mean_struct_entropy": 0.0
+  },
+  "no_readout_repair": {
+   "n": 24,
+   "forecast_rate": 0.042,
+   "complete_rate": 0.042,
+   "execution_failure_rate": 0.958,
+   "mean_dispersion": 0.041,
+   "mean_struct_entropy": 0.057
+  },
+  "no_structural_hyps": {
+   "n": 24,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "execution_failure_rate": 0.0,
+   "mean_dispersion": 0.999,
+   "mean_struct_entropy": 0.0
+  },
+  "no_sensitivity_margin": {
+   "n": 24,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "execution_failure_rate": 0.0,
+   "mean_dispersion": 0.996,
+   "mean_struct_entropy": 1.337
+  }
+ },
+ "contributions_vs_full": {
+  "no_fallback_hierarchy": {
+   "forecast_rate_drop": 1.0,
+   "complete_rate_drop": 1.0,
+   "execution_failure_increase": 0.042,
+   "dispersion_change": -0.996,
+   "struct_entropy_change": -1.337
+  },
+  "no_readout_repair": {
+   "forecast_rate_drop": 0.958,
+   "complete_rate_drop": 0.958,
+   "execution_failure_increase": 0.958,
+   "dispersion_change": -0.955,
+   "struct_entropy_change": -1.28
+  },
+  "no_structural_hyps": {
+   "forecast_rate_drop": 0.0,
+   "complete_rate_drop": 0.0,
+   "execution_failure_increase": 0.0,
+   "dispersion_change": 0.003,
+   "struct_entropy_change": -1.337
+  },
+  "no_sensitivity_margin": {
+   "forecast_rate_drop": 0.0,
+   "complete_rate_drop": 0.0,
+   "execution_failure_increase": 0.0,
+   "dispersion_change": 0.0,
+   "struct_entropy_change": 0.0
+  }
+ },
+ "interpretation": {
+  "no_fallback_hierarchy": "expected: forecast/complete rate COLLAPSES \u2014 the fallback resolver is what guarantees every coherent question forecasts (core no-abstention lever).",
+  "no_readout_repair": "expected: execution_failure INCREASES on questions whose LLM readout was unbindable \u2014 repair is what guarantees the terminal reads out.",
+  "no_structural_hyps": "expected: structural entropy \u2192 0 and dispersion narrows \u2014 the component that represents structural uncertainty as competing particles.",
+  "no_sensitivity_margin": "expected: negligible forecast change \u2014 fidelity planning affects compute allocation, not whether a forecast is produced."
+ },
+ "_meta": {
+  "k_questions": 24,
+  "llm_calls": 18,
+  "est_cost_usd": 0.0417,
+  "model": "deepseek-chat",
+  "runtime_s": 291.8,
+  "note": "each question compiled ONCE; ablations are plan transforms (no extra LLM calls)"
+ }
+}

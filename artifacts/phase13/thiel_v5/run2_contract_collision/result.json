@@ -1,0 +1,75 @@
+{
+ "experiment": "exp095_thiel_reply_first",
+ "mode": "live",
+ "hypotheses_source": "thiel_v3 saved (same as exp092/094)",
+ "result": {
+  "report_type": "cold_outreach_slate",
+  "recipient": "Peter Thiel",
+  "winner_best_supported_among_tested": "reply_first_winner",
+  "within_noise_of_winner": [
+   "finalist_pre_polish"
+  ],
+  "hypothesis_fragility": {
+   "n_llm_calls": 94
+  },
+  "ranked": [
+   {
+    "arm": "reply_first_winner",
+    "text": "Peter,\n\nI'm 17, starting Princeton this fall, and I built Aurelius (runaurelius.com). The real problem in AI infrastructure isn't power\u2014it's that schedulers optimize the next placement, but nobody plans the fleet's trajectory over time. In a simulated replay of ~1.5M public production requests, Aurelius cut GPU-hours by 84%. If that holds up, worth a 10-minute read on the memo?\n\nBeckett",
+    "persona": null,
+    "funnel_objective": null,
+    "funnel_interval80": null,
+    "stage_trace": null,
+    "contract": null,
+    "cold_read": null,
+    "critic": null,
+    "gates": {
+     "truth": true,
+     "language": true,
+     "language_score": 0.95,
+     "problems": []
+    },
+    "origin": "plain_baseline -> Sid-su-ev-re -> polished+lang_repair"
+   },
+   {
+    "arm": "finalist_pre_polish",
+    "text": "Peter, I'm Beckett: 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure. AI infrastructure has a planning problem disguised as a power problem: schedulers optimize the next placement, but nothing chooses the fleet's best trajectory over time. So far: +724% average SLA-safe goodput per dollar vs the production scheduler, in simulated replay of ~1.5M requests of public production traces. May I send you the one-page memo? Beckett",
+    "persona": null,
+    "funnel_objective": null,
+    "funnel_interval80": null,
+    "stage_trace": null,
+    "contract": null,
+    "cold_read": null,
+    "critic": null,
+    "gates": {
+     "truth": true,
+     "language": false,
+     "language_score": 0.35,
+     "problems": [
+      {
+       "sentence": "I'm Beckett: 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchest",
+       "problem": "Formal-bot register: self-introduction with age and school feels like a r\u00e9sum\u00e9 header, not a quick peer-to-peer note."
+      },
+      {
+       "sentence": "AI infrastructure has a planning problem disguised as a power problem: schedulers optimize the next placement, but nothi",
+       "problem": "Unglossed jargon compound ('constraint-aware orchestration', 'SLA-safe goodput per dollar') forces the reader to decode; a busy peer would s"
+      },
+      {
+       "sentence": "So far: +724% average SLA-safe goodput per dollar vs the production scheduler, in simulated replay of ~1.5M requests of ",
+       "problem": "More than one big number competing for attention (724%, 1.5M) in a single sentence; a busy person would pick one headline stat."
+      },
+      {
+       "sentence": "May I send you the one-page memo?",
+       "problem": "Performed politeness/assistant-speak: 'May I send you' is ceremonious and stiff; a busy peer would say 'Want the one-pager?' or 'Here's the "
+      }
+     ]
+    },
+    "origin": null
+   }
+  ],
+  "optimal_strategy_spec": null,
+  "honesty": "best-supported candidate under the current assumptions; no reliable distinction between finalists (uncalibrated evaluator \u2014 real outreach outcomes, not more simulation, would sharpen this)"
+ },
+ "n_raw_llm_calls": 109,
+ "wall_s": 269.3
+}

@@ -1,0 +1,182 @@
+{
+ "question": "Will the incumbent mayor win re-election in the upcoming city vote?",
+ "as_of": "2023-09-01",
+ "horizon": "2023-11-07",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "incumbent_wins",
+   "incumbent_loses"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "If the incumbent receives more than 50% of valid votes cast (or the highest share in a multi-candidate race, depending on local rules), then incumbent_wins; els"
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The incumbent mayor seeks re-election in a citywide vote on 2023-11-07, with the outcome determined by the share of valid votes cast for the incumbent versus the strongest challenger, given the electorate, campaign dynamics, and institutional rules.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 3,
+ "n_institutions": 1,
+ "n_populations": 1,
+ "n_latents": 11,
+ "sample_entities": [
+  "incumbent_mayor",
+  "challenger_1",
+  "challenger_2"
+ ],
+ "sample_latents": [
+  {
+   "path": "incumbent_mayor.scandal_severity",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.6
+  },
+  {
+   "path": "city_electorate.partisan_lean",
+   "candidates": {
+    "mean": 0.0,
+    "sd": 0.5,
+    "lo": -1.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "city_electorate.issue_priorities",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.7
+  },
+  {
+   "path": "challenger_1.quality",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.7
+  }
+ ],
+ "accepted_mechanisms": [
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [],
+ "experimental_mechanisms": [],
+ "mechanism_tiers": {
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "outcome resolved from a broad prior \u2014 no held-out-validated mechanism writes this readout on the general path (documented Phase-1 dependency)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "incumbent_advantage",
+   "lean": "weak_yes",
+   "prior": 0.5
+  },
+  {
+   "id": "anti_incumbent_wave",
+   "lean": "weak_no",
+   "prior": 0.3
+  },
+  {
+   "id": "competitive_three_way",
+   "lean": "weak_yes",
+   "prior": 0.2
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "incumbent_mayor",
+   "challenger_1",
+   "challenger_2",
+   "city_electorate",
+   "city_election_commission",
+   "incumbent_mayor.scandal_severity",
+   "city_electorate.partisan_lean",
+   "city_electorate.issue_priorities",
+   "challenger_1.quality",
+   "challenger_2.quality",
+   "campaign_effectiveness_incumbent",
+   "campaign_effectiveness_challenger_1",
+   "campaign_effectiveness_challenger_2",
+   "voter_turnout_mobilization_effect"
+  ],
+  "marginalized_with_uncertainty": [
+   "external_economic_shock",
+   "external_natural_disaster"
+  ],
+  "n_particles": 80
+ },
+ "omissions": [],
+ "world_provenance_statuses": {},
+ "n_deltas": 80,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "incumbent_advantage": 0.5,
+  "anti_incumbent_wave": 0.3,
+  "competitive_three_way": 0.2
+ },
+ "delta_log_sample": [
+  {
+   "at": 1699315199.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=weak_yes"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "incumbent_wins": 0.55,
+   "incumbent_loses": 0.45
+  },
+  "raw_probability": 0.55,
+  "structural_disagreement": {
+   "incumbent_advantage": 0.5,
+   "anti_incumbent_wave": 0.3,
+   "competitive_three_way": 0.2
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 80,
+   "structural_model_uncertainty": 0.9372,
+   "structural_posterior": {
+    "incumbent_advantage": 0.5,
+    "anti_incumbent_wave": 0.3,
+    "competitive_three_way": 0.2
+   },
+   "state_parameter_uncertainty": 0.2405,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "8b91ea74c55d"
+ },
+ "plan_hash": "8b91ea74c55d",
+ "latency_s": 16.54
+}

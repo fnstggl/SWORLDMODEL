@@ -1,0 +1,548 @@
+{
+ "_meta": {
+  "harness": "experiments/wmv2_phase6_selection_eval.py",
+  "note": "measures mechanism-selection COVERAGE/routing, NOT outcome accuracy",
+  "n_processes": 22
+ },
+ "ablations": {
+  "names_only_registry": {
+   "tier_1_4": {
+    "n": 0,
+    "pct": 0.0
+   },
+   "tier_5": {
+    "n": 0,
+    "pct": 0.0
+   },
+   "tier_6_7": {
+    "n": 22,
+    "pct": 100.0
+   },
+   "valid_selection_pct": 0.0
+  },
+  "before_phase6_scenario_winner_real_statuses_only": {
+   "tier_1_4": {
+    "n": 22,
+    "pct": 100.0
+   },
+   "tier_5": {
+    "n": 0,
+    "pct": 0.0
+   },
+   "tier_6_7": {
+    "n": 0,
+    "pct": 0.0
+   },
+   "valid_selection_pct": 22.7
+  },
+  "after_phase6_no_applicability": {
+   "tier_1_4": {
+    "n": 20,
+    "pct": 90.9
+   },
+   "tier_5": {
+    "n": 0,
+    "pct": 0.0
+   },
+   "tier_6_7": {
+    "n": 2,
+    "pct": 9.1
+   },
+   "valid_selection_pct": 100.0
+  },
+  "after_phase6_full": {
+   "tier_1_4": {
+    "n": 19,
+    "pct": 86.4
+   },
+   "tier_5": {
+    "n": 0,
+    "pct": 0.0
+   },
+   "tier_6_7": {
+    "n": 3,
+    "pct": 13.6
+   },
+   "valid_selection_pct": 100.0
+  }
+ },
+ "per_scenario": [
+  {
+   "category": "individual_choice",
+   "scenario": {
+    "domain": "economic_game",
+    "population_kind": "lab"
+   },
+   "processes": [
+    "actor_selects_typed_action",
+    "offer_response"
+   ],
+   "before": [
+    {
+     "process": "actor_selects_typed_action",
+     "family": "social_preference_population",
+     "tier": 2,
+     "valid_selection": true
+    },
+    {
+     "process": "offer_response",
+     "family": "social_preference_population",
+     "tier": 2,
+     "valid_selection": true
+    }
+   ],
+   "after": [
+    {
+     "process": "actor_selects_typed_action",
+     "family": "social_preference_population",
+     "tier": 2,
+     "status": "production_eligible",
+     "valid_selection": true
+    },
+    {
+     "process": "offer_response",
+     "family": "social_preference_population",
+     "tier": 2,
+     "status": "production_eligible",
+     "valid_selection": true
+    }
+   ]
+  },
+  {
+   "category": "trust_relationship",
+   "scenario": {
+    "domain": "trust_game",
+    "population_kind": "lab"
+   },
+   "processes": [
+    "trust_change_after_interaction",
+    "reputation_update"
+   ],
+   "before": [
+    {
+     "process": "trust_change_after_interaction",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    },
+    {
+     "process": "reputation_update",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    }
+   ],
+   "after": [
+    {
+     "process": "trust_change_after_interaction",
+     "family": "trust_game_transfer",
+     "tier": 4,
+     "status": "domain_restricted",
+     "valid_selection": true
+    },
+    {
+     "process": "reputation_update",
+     "family": "reputation_updating",
+     "tier": 4,
+     "status": "domain_restricted",
+     "valid_selection": true
+    }
+   ]
+  },
+  {
+   "category": "bargaining",
+   "scenario": {
+    "domain": "economic_game",
+    "population_kind": "lab"
+   },
+   "processes": [
+    "offer_response",
+    "bargaining_split"
+   ],
+   "before": [
+    {
+     "process": "offer_response",
+     "family": "social_preference_population",
+     "tier": 2,
+     "valid_selection": true
+    },
+    {
+     "process": "bargaining_split",
+     "family": "social_preference_population",
+     "tier": 2,
+     "valid_selection": false
+    }
+   ],
+   "after": [
+    {
+     "process": "offer_response",
+     "family": "social_preference_population",
+     "tier": 2,
+     "status": "production_eligible",
+     "valid_selection": true
+    },
+    {
+     "process": "bargaining_split",
+     "family": "ultimatum_offer_response",
+     "tier": 4,
+     "status": "domain_restricted",
+     "valid_selection": true
+    }
+   ]
+  },
+  {
+   "category": "participation",
+   "scenario": {
+    "domain": "election",
+    "population_kind": "registered_voters"
+   },
+   "processes": [
+    "participation_after_mobilization",
+    "turnout"
+   ],
+   "before": [
+    {
+     "process": "participation_after_mobilization",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    },
+    {
+     "process": "turnout",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    }
+   ],
+   "after": [
+    {
+     "process": "participation_after_mobilization",
+     "family": "social_pressure_turnout",
+     "tier": 4,
+     "status": "domain_restricted",
+     "valid_selection": true
+    },
+    {
+     "process": "turnout",
+     "family": "social_pressure_turnout",
+     "tier": 4,
+     "status": "domain_restricted",
+     "valid_selection": true
+    }
+   ]
+  },
+  {
+   "category": "participation_donation",
+   "scenario": {
+    "domain": "fundraising"
+   },
+   "processes": [
+    "donation_after_ask"
+   ],
+   "before": [
+    {
+     "process": "donation_after_ask",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    }
+   ],
+   "after": [
+    {
+     "process": "donation_after_ask",
+     "family": "matching_donation_response",
+     "tier": 4,
+     "status": "domain_restricted",
+     "valid_selection": true
+    }
+   ]
+  },
+  {
+   "category": "opinion_belief",
+   "scenario": {
+    "domain": "social_media",
+    "available_state": [
+     "network",
+     "entities"
+    ]
+   },
+   "processes": [
+    "belief_update_after_message",
+    "opinion_convergence"
+   ],
+   "before": [
+    {
+     "process": "belief_update_after_message",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    },
+    {
+     "process": "opinion_convergence",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    }
+   ],
+   "after": [
+    {
+     "process": "belief_update_after_message",
+     "family": "persuasion_minimal_effects",
+     "tier": 4,
+     "status": "research_encoded",
+     "valid_selection": true
+    },
+    {
+     "process": "opinion_convergence",
+     "family": "generic_outcome_prior",
+     "tier": 6,
+     "status": null,
+     "valid_selection": true
+    }
+   ]
+  },
+  {
+   "category": "diffusion",
+   "scenario": {
+    "domain": "social_media_diffusion",
+    "population_kind": "online_social",
+    "available_state": [
+     "network"
+    ]
+   },
+   "processes": [
+    "adoption_after_repeated_exposure",
+    "diffusion_timing",
+    "cascade_saturation"
+   ],
+   "before": [
+    {
+     "process": "adoption_after_repeated_exposure",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    },
+    {
+     "process": "diffusion_timing",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    },
+    {
+     "process": "cascade_saturation",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    }
+   ],
+   "after": [
+    {
+     "process": "adoption_after_repeated_exposure",
+     "family": "exposure_response_hazard",
+     "tier": 2,
+     "status": "locally_validated",
+     "valid_selection": true
+    },
+    {
+     "process": "diffusion_timing",
+     "family": "exposure_response_hazard",
+     "tier": 2,
+     "status": "locally_validated",
+     "valid_selection": true
+    },
+    {
+     "process": "cascade_saturation",
+     "family": "generic_outcome_prior",
+     "tier": 6,
+     "status": null,
+     "valid_selection": true
+    }
+   ]
+  },
+  {
+   "category": "platform_attention",
+   "scenario": {
+    "domain": "content_ab_test",
+    "available_state": [
+     "populations"
+    ]
+   },
+   "processes": [
+    "content_response",
+    "attention_after_exposure"
+   ],
+   "before": [
+    {
+     "process": "content_response",
+     "family": "content_response_click",
+     "tier": 2,
+     "valid_selection": true
+    },
+    {
+     "process": "attention_after_exposure",
+     "family": "content_response_click",
+     "tier": 2,
+     "valid_selection": true
+    }
+   ],
+   "after": [
+    {
+     "process": "content_response",
+     "family": "content_response_click",
+     "tier": 2,
+     "status": "production_eligible",
+     "valid_selection": true
+    },
+    {
+     "process": "attention_after_exposure",
+     "family": "content_response_click",
+     "tier": 2,
+     "status": "production_eligible",
+     "valid_selection": true
+    }
+   ]
+  },
+  {
+   "category": "network",
+   "scenario": {
+    "domain": "labor_market",
+    "available_state": [
+     "network"
+    ]
+   },
+   "processes": [
+    "network_edge_change",
+    "network_targeting"
+   ],
+   "before": [
+    {
+     "process": "network_edge_change",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    },
+    {
+     "process": "network_targeting",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    }
+   ],
+   "after": [
+    {
+     "process": "network_edge_change",
+     "family": "weak_tie_transmission",
+     "tier": 4,
+     "status": "research_encoded",
+     "valid_selection": true
+    },
+    {
+     "process": "network_targeting",
+     "family": "network_targeting_seeding",
+     "tier": 4,
+     "status": "research_encoded",
+     "valid_selection": true
+    }
+   ]
+  },
+  {
+   "category": "institutional",
+   "scenario": {
+    "domain": "legislation",
+    "institutional": true,
+    "available_state": [
+     "institutions"
+    ]
+   },
+   "processes": [
+    "institutional_threshold_decision"
+   ],
+   "before": [
+    {
+     "process": "institutional_threshold_decision",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    }
+   ],
+   "after": [
+    {
+     "process": "institutional_threshold_decision",
+     "family": "generic_outcome_prior",
+     "tier": 6,
+     "status": null,
+     "valid_selection": true
+    }
+   ]
+  },
+  {
+   "category": "product_launch",
+   "scenario": {
+    "domain": "product_launch",
+    "available_state": [
+     "quantities"
+    ]
+   },
+   "processes": [
+    "cascade_saturation",
+    "adoption_after_repeated_exposure"
+   ],
+   "before": [
+    {
+     "process": "cascade_saturation",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    },
+    {
+     "process": "adoption_after_repeated_exposure",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    }
+   ],
+   "after": [
+    {
+     "process": "cascade_saturation",
+     "family": "bass_diffusion",
+     "tier": 4,
+     "status": "domain_restricted",
+     "valid_selection": true
+    },
+    {
+     "process": "adoption_after_repeated_exposure",
+     "family": "bass_diffusion",
+     "tier": 4,
+     "status": "domain_restricted",
+     "valid_selection": true
+    }
+   ]
+  },
+  {
+   "category": "persuasion",
+   "scenario": {
+    "domain": "political_persuasion"
+   },
+   "processes": [
+    "persuasion_success"
+   ],
+   "before": [
+    {
+     "process": "persuasion_success",
+     "family": "engagement_momentum_persistence",
+     "tier": 3,
+     "valid_selection": false
+    }
+   ],
+   "after": [
+    {
+     "process": "persuasion_success",
+     "family": "persuasion_minimal_effects",
+     "tier": 4,
+     "status": "research_encoded",
+     "valid_selection": true
+    }
+   ]
+  }
+ ]
+}

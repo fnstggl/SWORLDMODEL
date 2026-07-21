@@ -1,0 +1,98 @@
+{
+ "_meta": {
+  "n_preserved_negatives": 7,
+  "note": "append-only; never deleted (Hawkes, telco transfer, BehaviorBench PG, StackExchange/CMV nulls preserved)"
+ },
+ "failures": [
+  {
+   "family": "argument_persuasion_success",
+   "kind": "held_out",
+   "dataset": "CMV",
+   "split": "test 20% (disjoint), seed 13",
+   "metric": "Brier",
+   "value": 0.21993,
+   "baseline": "base-rate",
+   "baseline_value": 0.22381,
+   "ci95": [
+    -0.009533,
+    0.001343
+   ],
+   "note": "NULL: surface features barely differ from base rate (preserved; small persuasion effects)"
+  },
+  {
+   "family": "attrition_dropout_hazard",
+   "kind": "transfer",
+   "dataset": "IBM Telco churn",
+   "split": "fit=month-to-month contract, test=one/two-year contract (contract excluded)",
+   "metric": "Brier_vs_target_base",
+   "value": 0.07122,
+   "baseline": "target-subpop base rate",
+   "baseline_value": 0.06319,
+   "ci95": [
+    0.003956,
+    0.011754
+   ],
+   "note": "NEGATIVE TRANSFER preserved: month-to-month hazard does NOT beat the long-contract subpopulation base rate (blocks production)"
+  },
+  {
+   "family": "hawkes_self_excitation",
+   "kind": "held_out",
+   "dataset": "SNAP higgs activity stream",
+   "split": "held-out 24-72h counts",
+   "metric": "MAE_per_bin",
+   "value": 1098.9,
+   "baseline": "Poisson base rate",
+   "baseline_value": 973.0,
+   "ci95": [],
+   "note": "FAILED: Hawkes MAE 1098.9 > Poisson 973.0 \u2014 the fit underpredicted the burst (preserved negative result)"
+  },
+  {
+   "family": "hawkes_self_excitation",
+   "kind": "quarantine",
+   "dataset": "",
+   "split": "",
+   "metric": "status",
+   "value": null,
+   "note": "held-out count forecast FAILED to beat Poisson on the Higgs stream; preserved"
+  },
+  {
+   "family": "response_occurrence_hazard",
+   "kind": "held_out",
+   "dataset": "StackExchange",
+   "split": "test 20% (disjoint), seed 13",
+   "metric": "Brier",
+   "value": 0.24883,
+   "baseline": "base-rate",
+   "baseline_value": 0.24579,
+   "ci95": [
+    -0.000995,
+    0.006763
+   ],
+   "note": "NULL: surface features do NOT beat base rate on held-out (preserved)"
+  },
+  {
+   "family": "simple_contagion_hazard",
+   "kind": "ablation",
+   "dataset": "SNAP higgs-twitter",
+   "split": "test n=4000",
+   "metric": "Brier",
+   "value": null,
+   "baseline": "log-linear hazard",
+   "baseline_value": null,
+   "ci95": [],
+   "note": "Hill beat linear but log-linear won validation selection"
+  },
+  {
+   "family": "social_preference_population",
+   "kind": "held_out",
+   "dataset": "BehaviorBench moblab",
+   "split": "test 50%, 7 games",
+   "metric": "mean_W1_norm",
+   "value": 0.0988,
+   "baseline": "train histogram (A1)",
+   "baseline_value": 0.0376,
+   "ci95": [],
+   "note": "beats raw LLM (0.185) + elicitation (0.123) but LOSES to per-game histogram (0.038) and hand-crafted V2 (0.058) in-distribution"
+  }
+ ]
+}

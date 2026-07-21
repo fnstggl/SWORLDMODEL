@@ -1,0 +1,85 @@
+{
+ "schema_version": "phase2-source-adapters-1.0",
+ "generated_note": "each adapter has real request construction, response retrieval, raw persistence, and an explicit status; live categories are verified in the target runtime",
+ "adapters": [
+  {
+   "connector_id": "google_news_rss",
+   "category": "news_historical_discovery",
+   "module": "swm.world_model_v2.evidence_connectors:GoogleNewsRSSConnector",
+   "live_verified": true,
+   "requires": "none (keyless)",
+   "paired_dates_required": true,
+   "raw_persisted": true,
+   "temporal_basis": "claimed feed pubDate (unverified) \u2014 verified downstream",
+   "status": "production"
+  },
+  {
+   "connector_id": "web_page",
+   "category": "general_web",
+   "module": "swm.world_model_v2.evidence_connectors_more:WebPageConnector",
+   "live_verified": true,
+   "requires": "none",
+   "raw_persisted": true,
+   "temporal_basis": "page metadata/HTTP; verified downstream",
+   "status": "production"
+  },
+  {
+   "connector_id": "wikipedia_revision",
+   "category": "entity_background",
+   "module": "swm.world_model_v2.evidence_connectors_more:WikipediaConnector",
+   "live_verified": true,
+   "requires": "none",
+   "raw_persisted": true,
+   "temporal_basis": "server-side revision timestamp (VERIFIED)",
+   "status": "production"
+  },
+  {
+   "connector_id": "user_provided",
+   "category": "user_documents",
+   "module": "swm.world_model_v2.evidence_connectors_more:UserDocumentConnector",
+   "live_verified": true,
+   "requires": "user input",
+   "raw_persisted": true,
+   "temporal_basis": "user-supplied; visibility private by default",
+   "status": "production"
+  },
+  {
+   "connector_id": "dataset",
+   "category": "structured_local_dataset",
+   "module": "swm.world_model_v2.evidence_connectors_more:LocalDatasetConnector",
+   "live_verified": true,
+   "requires": "local file",
+   "raw_persisted": true,
+   "temporal_basis": "dataset vintage",
+   "status": "production"
+  },
+  {
+   "connector_id": "prior_world_state",
+   "category": "prior_artifacts",
+   "module": "swm.world_model_v2.evidence_connectors_more:PriorArtifactConnector",
+   "live_verified": true,
+   "requires": "prior bundle/world file",
+   "raw_persisted": true,
+   "temporal_basis": "prior bundle as_of",
+   "status": "production"
+  },
+  {
+   "connector_id": "gdelt_doc",
+   "category": "news_historical_discovery_alt",
+   "module": "swm.retrieval.asof_news:asof_headlines",
+   "live_verified": false,
+   "requires": "none",
+   "raw_persisted": false,
+   "temporal_basis": "GDELT seendate",
+   "status": "available_rate_limited"
+  }
+ ],
+ "verified_temporal_signals": [
+  {
+   "signal": "archive_org_wayback",
+   "module": "swm.world_model_v2.evidence_temporal:TemporalVerifier",
+   "live_verified": true,
+   "role": "independent server-side proof of prior existence"
+  }
+ ]
+}

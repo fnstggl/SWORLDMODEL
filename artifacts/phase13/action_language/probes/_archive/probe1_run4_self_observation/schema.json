@@ -1,0 +1,446 @@
+{
+ "schema_id": "schema_9284aa1239281160",
+ "version": "1",
+ "question": "Will Mara Voss's scheduling copilot reach a committed public launch or at least three signed design partners by mid-September 2025?",
+ "prediction_timestamp": 1752800000.0,
+ "horizon": 1757984000.0,
+ "entity_types": {
+  "person": {
+   "fields": {
+    "name": "str",
+    "role": "str"
+   }
+  },
+  "company": {
+   "fields": {
+    "name": "str",
+    "industry": "str"
+   }
+  },
+  "scheduling_copilot_product": {
+   "fields": {
+    "product_name": "str",
+    "development_status": "str",
+    "launch_status": "str"
+   }
+  },
+  "design_partner_agreement": {
+   "fields": {
+    "partner_company": "id",
+    "signed_date": "time",
+    "scope": "str"
+   }
+  },
+  "board_meeting": {
+   "fields": {
+    "meeting_date": "time",
+    "agenda_items": "list"
+   }
+  },
+  "pilot_report": {
+   "fields": {
+    "company": "id",
+    "submitted_date": "time",
+    "result": "str"
+   }
+  },
+  "launch_spend_request": {
+   "fields": {
+    "amount": "float",
+    "requested_by": "id",
+    "status": "str"
+   }
+  }
+ },
+ "fact_types": {
+  "pilot_result_fact": {
+   "fields": {
+    "pilot_report_id": "id",
+    "result_value": "str"
+   }
+  },
+  "board_decision_fact": {
+   "fields": {
+    "board_meeting_id": "id",
+    "decision": "str",
+    "vote_count_yes": "int",
+    "vote_count_no": "int"
+   }
+  },
+  "design_partner_signed_fact": {
+   "fields": {
+    "agreement_id": "id",
+    "signed": "bool"
+   }
+  },
+  "launch_commitment_fact": {
+   "fields": {
+    "product_id": "id",
+    "public_launch_committed": "bool",
+    "commitment_date": "time"
+   }
+  }
+ },
+ "relation_types": {
+  "founder_of": {
+   "fields": {
+    "person_id": "id",
+    "company_id": "id"
+   }
+  },
+  "seed_investor_of": {
+   "fields": {
+    "person_id": "id",
+    "company_id": "id"
+   }
+  },
+  "board_member_of": {
+   "fields": {
+    "person_id": "id",
+    "board_id": "id"
+   }
+  },
+  "pilot_decision_maker_for": {
+   "fields": {
+    "person_id": "id",
+    "company_id": "id"
+   }
+  },
+  "design_partner_of": {
+   "fields": {
+    "agreement_id": "id",
+    "company_id": "id",
+    "product_id": "id"
+   }
+  },
+  "launch_spend_requires_approval": {
+   "fields": {
+    "board_id": "id",
+    "threshold_amount": "float"
+   }
+  }
+ },
+ "semantic_event_types": {
+  "pilot_report_submitted": {
+   "fields": {
+    "pilot_report_id": "id",
+    "company_id": "id",
+    "result": "str",
+    "timestamp": "time"
+   }
+  },
+  "board_meeting_held": {
+   "fields": {
+    "board_meeting_id": "id",
+    "board_id": "id",
+    "timestamp": "time"
+   }
+  },
+  "board_vote_cast": {
+   "fields": {
+    "board_meeting_id": "id",
+    "voter_id": "id",
+    "vote": "str"
+   }
+  },
+  "design_partner_signed": {
+   "fields": {
+    "agreement_id": "id",
+    "partner_company_id": "id",
+    "timestamp": "time"
+   }
+  },
+  "public_launch_committed": {
+   "fields": {
+    "product_id": "id",
+    "timestamp": "time"
+   }
+  },
+  "launch_spend_request_submitted": {
+   "fields": {
+    "request_id": "id",
+    "amount": "float",
+    "timestamp": "time"
+   }
+  },
+  "unmodeled_actor_action": {
+   "description": "schema-scoped scaffolding: an actor action whose semantics could not be compiled; exact content preserved; counted as a fallback",
+   "fields": {
+    "action_name": "str",
+    "content": "str",
+    "target": "str"
+   },
+   "typical_visibility": "participants",
+   "scaffolding": true
+  }
+ },
+ "process_definitions": {
+  "pilot_evaluation_process": {
+   "states": [
+    "pilot_ongoing",
+    "pilot_report_due",
+    "pilot_results_received",
+    "pilot_expansion_decided"
+   ],
+   "transitions": [
+    {
+     "from": "pilot_ongoing",
+     "to": "pilot_report_due",
+     "trigger": "time_elapsed_3_weeks"
+    },
+    {
+     "from": "pilot_report_due",
+     "to": "pilot_results_received",
+     "trigger": "pilot_report_submitted"
+    },
+    {
+     "from": "pilot_results_received",
+     "to": "pilot_expansion_decided",
+     "trigger": "decision_by_devon_reyes"
+    }
+   ]
+  },
+  "board_approval_process": {
+   "states": [
+    "no_request",
+    "request_submitted",
+    "board_meeting_scheduled",
+    "board_vote_taken",
+    "decision_reached"
+   ],
+   "transitions": [
+    {
+     "from": "no_request",
+     "to": "request_submitted",
+     "trigger": "launch_spend_request_submitted"
+    },
+    {
+     "from": "request_submitted",
+     "to": "board_meeting_scheduled",
+     "trigger": "board_chair_schedules_meeting"
+    },
+    {
+     "from": "board_meeting_scheduled",
+     "to": "board_vote_taken",
+     "trigger": "board_meeting_held"
+    },
+    {
+     "from": "board_vote_taken",
+     "to": "decision_reached",
+     "trigger": "board_vote_cast"
+    }
+   ]
+  },
+  "design_partner_acquisition_process": {
+   "states": [
+    "prospecting",
+    "negotiation",
+    "signed",
+    "onboarded"
+   ],
+   "transitions": [
+    {
+     "from": "prospecting",
+     "to": "negotiation",
+     "trigger": "mara_voss_proposes_terms"
+    },
+    {
+     "from": "negotiation",
+     "to": "signed",
+     "trigger": "design_partner_signed"
+    },
+    {
+     "from": "signed",
+     "to": "onboarded",
+     "trigger": "integration_complete"
+    }
+   ]
+  }
+ },
+ "institutional_definitions": {
+  "seed_investor_board": {
+   "members": [
+    "priya_shah",
+    "mara_voss",
+    "third_member_unknown"
+   ],
+   "decision_holders": [
+    "priya_shah",
+    "mara_voss",
+    "third_member_unknown"
+   ],
+   "decision_record_type": "board_decision_fact",
+   "aggregation_arithmetic": {
+    "kind": "majority",
+    "threshold": 2
+   },
+   "evidence": "3-seat board stated in evidence; priya_shah chairs; mara_voss is founder/CEO; third member not named",
+   "assumed": true,
+   "aggregation": {
+    "kind": "majority"
+   }
+  }
+ },
+ "physical_constraints": {
+  "launch_spend_threshold": {
+   "rule": "Any launch spend exceeding 50k requires board approval via seed_investor_board",
+   "evidence": "Runway: 40k discretionary without board approval",
+   "unresolved": true
+  },
+  "pilot_timeline": {
+   "rule": "Calder Logistics pilot results expected in ~3 weeks from prediction time (2025-07-18), i.e., around 2025-08-08",
+   "evidence": "The pilot reports results in ~3 weeks",
+   "unresolved": true
+  }
+ },
+ "resource_definitions": {
+  "discretionary_launch_budget": {
+   "type": "financial",
+   "current_amount": 40000.0,
+   "currency": "USD",
+   "owner": "mara_voss",
+   "constraints": "Cannot exceed 50k without board approval"
+  },
+  "calder_logistics_pilot": {
+   "type": "operational",
+   "status": "ongoing",
+   "decision_maker": "devon_reyes",
+   "expected_completion": "2025-08-08"
+  }
+ },
+ "information_rules": {
+  "board_decision_visibility": {
+   "rule": "Board decisions are recorded in board_decision_fact and visible to all board members",
+   "evidence": "Standard governance practice; assumed"
+  },
+  "pilot_result_visibility": {
+   "rule": "Pilot results are known to mara_voss and devon_reyes upon submission",
+   "evidence": "Devon Reyes runs the enterprise pilot"
+  },
+  "design_partner_signing_visibility": {
+   "rule": "Signed design partner agreements are recorded and visible to mara_voss",
+   "evidence": "Founder/CEO would track partnerships"
+  }
+ },
+ "actor_roles": {
+  "mara_voss": {
+   "role": "founder_and_ceo",
+   "why_consequential": "Controls product launch decisions, initiates design partner negotiations, can submit launch spend requests up to 40k without board approval",
+   "affordances": [
+    "submit_launch_spend_request(amount <= 40000)",
+    "propose_design_partner_terms(company_id)",
+    "schedule_board_meeting",
+    "commit_public_launch()"
+   ]
+  },
+  "devon_reyes": {
+   "role": "enterprise_pilot_decision_maker",
+   "why_consequential": "Decides whether Calder Logistics expands pilot or becomes design partner; controls pilot result interpretation",
+   "affordances": [
+    "submit_pilot_report(result)",
+    "decide_pilot_expansion(decision)",
+    "sign_design_partner_agreement()"
+   ]
+  },
+  "priya_shah": {
+   "role": "lead_seed_investor_and_board_chair",
+   "why_consequential": "Chairs board that must approve launch spend over 50k; can call board meetings and cast deciding vote",
+   "affordances": [
+    "schedule_board_meeting()",
+    "cast_board_vote(vote)",
+    "approve_or_deny_launch_spend_request(request_id)"
+   ]
+  }
+ },
+ "outcome_predicates": [
+  {
+   "predicate_id": "public_launch_committed_by_mid_sept",
+   "record_type": "launch_commitment_fact",
+   "field": "public_launch_committed",
+   "op": "eq",
+   "value": true,
+   "option_true": "Mara Voss's scheduling copilot reaches a committed public launch by mid-September 2025",
+   "option_false": "No committed public launch by mid-September 2025"
+  },
+  {
+   "predicate_id": "three_or_more_design_partners_signed",
+   "record_type": "design_partner_signed_fact",
+   "field": "signed",
+   "op": "exists",
+   "value": true,
+   "option_true": "At least three signed design partners by mid-September 2025",
+   "option_false": "Fewer than three signed design partners by mid-September 2025"
+  }
+ ],
+ "unresolved_mechanisms": [
+  "Identity and voting behavior of the third board member (not named in evidence)",
+  "Whether devon_reyes will decide to expand the pilot or become a design partner",
+  "Whether mara_voss will seek board approval for launch spend over 50k or keep spend under 40k",
+  "Whether any other companies beyond Calder Logistics are being pursued as design partners",
+  "launch_spend_threshold",
+  "pilot_timeline"
+ ],
+ "evidence_basis": [],
+ "assumptions": [
+  "The third board member exists and will participate in votes (assumed from '3-seat board')",
+  "Mid-September 2025 means on or before 2025-09-16",
+  "A 'committed public launch' means a formal announcement or board-approved launch plan, not just internal readiness",
+  "Design partners must have signed agreements, not just verbal commitments",
+  "The pilot report will be submitted on time (~3 weeks from prediction date)"
+ ],
+ "provenance": {
+  "kind": "scenario.semantic.model.v1",
+  "compiler": "llm",
+  "compiled_at": 1752800000.0,
+  "auto_repairs": [
+   "constraint 'launch_spend_threshold' labeled unresolved (no executable rule)",
+   "constraint 'pilot_timeline' labeled unresolved (no executable rule)",
+   "institution 'seed_investor_board' aggregation defaulted to majority (none declared; labeled assumed)"
+  ],
+  "critic": {
+   "missing_decisive_elements": [
+    "No entity type for 'funding runway' or 'cash balance' \u2014 critical for whether Mara can even afford a launch without board approval",
+    "No entity type for 'competitor product' or 'market event' \u2014 external timing pressures could force or block launch",
+    "No entity type for 'technical milestone' (e.g., API stability, security audit) \u2014 product may not be launch-ready regardless of business decisions",
+    "No entity type for 'regulatory approval' or 'data privacy compliance' \u2014 scheduling copilot likely handles sensitive calendar data",
+    "No entity type for 'third board member' \u2014 the unknown member's identity and incentives are a black box that could swing any vote"
+   ],
+   "relabeled_progress_bars": [
+    "\"pilot_ongoing\" should be \"pilot_unknown_outcome\" \u2014 no evidence that time alone produces a report",
+    "\"board_approval_process\" states imply linear progression but board could reject request at any stage or never schedule meeting",
+    "\"design_partner_acquisition_process\" assumes Mara proposes terms \u2014 but partners may approach her or terms may be rejected",
+    "\"pilot_expansion_decided\" is a single binary state but expansion could be partial, conditional, or delayed"
+   ],
+   "hidden_answer_risks": [
+    "Mara can commit public launch unilaterally (affordance) but model doesn't capture whether she would risk reputation without board funding",
+    "Devon Reyes's decision to expand pilot is treated as a single trigger \u2014 but could be contingent on unseen internal Calder politics",
+    "Board vote aggregation assumes majority of 3, but if third member is absent or abstains, threshold may not be met",
+    "Launch spend request under 40k bypasses board \u2014 but model doesn't specify whether 40k is enough for a public launch"
+   ],
+   "direct_human_reaction_encodings": [
+    "No encoding for Mara Voss's personal risk tolerance or timeline pressure from investors",
+    "No encoding for Priya Shah's private doubts or conflicts of interest as both investor and board chair",
+    "No encoding for Devon Reyes's career incentives \u2014 promoting a failed pilot could hurt their reputation",
+    "No encoding for 'third board member' having a hidden agenda or relationship with a competitor"
+   ],
+   "public_posture_vs_private_reality_conflations": [
+    "\"public_launch_committed\" is treated as a factual event \u2014 but a commitment could be a PR stunt with no real product readiness",
+    "\"design_partner_signed\" is binary \u2014 but a signed agreement could be a non-binding letter of intent, not a real partnership",
+    "\"pilot_result_fact\" has no field for 'confidence' or 'data quality' \u2014 a positive result could be cherry-picked or fabricated",
+    "Board decisions are recorded as facts but no mechanism captures informal vetoes or 'pocket vetoes' by the chair"
+   ],
+   "outcome_predicate_matches_question": true,
+   "missing_nonhuman_mechanisms": [
+    "No mechanism for software bugs or security breaches that could derail launch regardless of business decisions",
+    "No mechanism for macroeconomic shifts (e.g., SaaS spending freeze) that could kill design partner interest",
+    "No mechanism for viral social media backlash or competitor sabotage",
+    "No mechanism for natural disasters or key personnel illness (e.g., Mara gets hospitalized)"
+   ],
+   "verdict": "needs_extension"
+  },
+  "frozen_at": 1752800000.0,
+  "content_hash": "34b711b58cc7d9e5"
+ },
+ "frozen": true,
+ "ancestry": []
+}

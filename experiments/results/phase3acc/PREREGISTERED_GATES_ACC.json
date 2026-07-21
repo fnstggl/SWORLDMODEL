@@ -1,0 +1,28 @@
+{
+  "_purpose": "Part-4 acceptance gates for the adequately-powered locked test, PRE-REGISTERED and committed BEFORE the 93-question locked capture was scored. Repair/fit params are frozen in accuracy_params.json at this same commit. Not changed after seeing results.",
+  "primary_production_arm": "selector",
+  "gated_comparisons": {
+    "selector_vs_phase2": "the production selector vs Phase-2 (the incumbent default)",
+    "causal_vs_generic": "scenario-specific causal-latent arm must beat or properly match the generic posterior"
+  },
+  "gates": {
+    "G1_brier_lower_than_phase2": "selector paired mean Brier vs Phase-2 <= 0",
+    "G2_logloss_lower_than_phase2": "selector paired mean log-loss vs Phase-2 <= 0",
+    "G3_one_primary_CI_favorable": "at least one of {Brier, log-loss} paired 95% bootstrap CI (selector vs Phase-2) lies entirely below 0",
+    "G4_no_significant_regression": "neither primary metric's paired 95% CI lies entirely above 0",
+    "G5_ece_not_materially_worse": "selector ECE <= Phase-2 ECE + 0.05",
+    "G6_catastrophic_rate_not_worse": "fraction of questions where |selector - outcome| > 0.5 is <= that of Phase-2 (+0.02 tolerance)",
+    "G7_no_severe_domain_regression": "no domain with n>=4 has selector Brier worse than Phase-2 by > 0.10",
+    "G8_causal_beats_or_matches_generic": "causal arm paired log-loss vs the raw generic posterior <= +0.02 (matches or beats)",
+    "G9_reproducible": "fixed-input arms reproduce exactly (posterior hash stable; offline arms deterministic)"
+  },
+  "verdict_rule": {
+    "phase3_accuracy_validated": "G1-G5 hold AND G3 holds AND n_completed >= 75 (adequately powered)",
+    "improves_but_underpowered": "G1-G5 hold AND G3 holds but n_completed < 75",
+    "inconclusive": "G4 holds but G3 does not",
+    "regresses": "a primary paired 95% CI lies entirely above 0"
+  },
+  "production_eligibility_rule": "Production-eligible ONLY IF verdict == phase3_accuracy_validated (adequately powered AND gates pass). Otherwise Phase-2 remains the production default and the selector safely returns Phase-2 where Phase-3 lacks demonstrated support.",
+  "power_target": "n_completed >= 75 locked questions for adequate power.",
+  "frozen_fit_summary": "fitted hierarchical observation model (per-evidence-class partial-pooled weights) fit on 12 dev-train questions; causal-latent arm Platt-recalibrated (fixes conjunction bias), struct-blend 0.3; production selector = fitted_gated (use the fitted generic rate when >=3 non-neutral effective observations, else Phase-2). All fit on the frozen 23-question DEV set; locked corpus untouched during fitting."
+}

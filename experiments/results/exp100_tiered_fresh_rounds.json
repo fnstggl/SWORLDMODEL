@@ -1,0 +1,3728 @@
+{
+ "n": 43,
+ "report": {
+  "n": 43,
+  "arms": {
+   "base_rate": {
+    "arm": "base_rate",
+    "n": 43,
+    "n_abstain": 0,
+    "brier": 0.2036,
+    "logloss": 0.5814,
+    "direction": 0.674,
+    "ece": 0.0157,
+    "brier_cal": 0.2073,
+    "logloss_cal": 0.5941,
+    "T": 1.0,
+    "decision_value": 0.625,
+    "n_bets": 16
+   },
+   "grounded_1shot": {
+    "arm": "grounded_1shot",
+    "n": 41,
+    "n_abstain": 2,
+    "brier": 0.2318,
+    "logloss": 0.7357,
+    "direction": 0.683,
+    "ece": 0.2144,
+    "brier_cal": 0.2143,
+    "logloss_cal": 0.6233,
+    "T": 2.6,
+    "decision_value": 0.405,
+    "n_bets": 37
+   },
+   "full": {
+    "arm": "full",
+    "n": 40,
+    "n_abstain": 3,
+    "brier": 0.2099,
+    "logloss": 0.603,
+    "direction": 0.625,
+    "ece": 0.177,
+    "brier_cal": 0.2132,
+    "logloss_cal": 0.6108,
+    "T": 0.9,
+    "decision_value": 0.5,
+    "n_bets": 28
+   },
+   "grounded_ens": {
+    "arm": "grounded_ens",
+    "n": 17,
+    "n_abstain": 26,
+    "brier": 0.2303,
+    "logloss": 0.7858,
+    "direction": 0.706,
+    "ece": 0.2691,
+    "brier_cal": 0.2489,
+    "logloss_cal": 0.7959,
+    "T": 2.6,
+    "decision_value": 0.467,
+    "n_bets": 15
+   },
+   "generic_panel": {
+    "arm": "generic_panel",
+    "n": 10,
+    "n_abstain": 33,
+    "brier": 0.2901,
+    "logloss": 0.9599,
+    "direction": 0.6,
+    "ece": 0.3067,
+    "brier_cal": 0.2579,
+    "logloss_cal": 0.7231,
+    "T": 3.5,
+    "decision_value": 0.2,
+    "n_bets": 10
+   },
+   "indep_stake": {
+    "arm": "indep_stake",
+    "n": 10,
+    "n_abstain": 33,
+    "brier": 0.2128,
+    "logloss": 0.6633,
+    "direction": 0.7,
+    "ece": 0.21,
+    "brier_cal": 0.2487,
+    "logloss_cal": 0.8446,
+    "T": 2.0,
+    "decision_value": 0.4,
+    "n_bets": 10
+   },
+   "interact_stake": {
+    "arm": "interact_stake",
+    "n": 10,
+    "n_abstain": 33,
+    "brier": 0.192,
+    "logloss": 0.5266,
+    "direction": 0.7,
+    "ece": 0.2684,
+    "brier_cal": 0.1948,
+    "logloss_cal": 0.5494,
+    "T": 1.35,
+    "decision_value": 0.333,
+    "n_bets": 9
+   },
+   "persistent": {
+    "arm": "persistent",
+    "n": 9,
+    "n_abstain": 34,
+    "brier": 0.2205,
+    "logloss": 0.7508,
+    "direction": 0.667,
+    "ece": 0.2289,
+    "brier_cal": 0.2081,
+    "logloss_cal": 0.6116,
+    "T": 2.6,
+    "decision_value": 0.5,
+    "n_bets": 8
+   },
+   "time_evolving": {
+    "arm": "time_evolving",
+    "n": 10,
+    "n_abstain": 33,
+    "brier": 0.2347,
+    "logloss": 0.7753,
+    "direction": 0.6,
+    "ece": 0.239,
+    "brier_cal": 0.2411,
+    "logloss_cal": 0.7929,
+    "T": 2.6,
+    "decision_value": 0.333,
+    "n_bets": 9
+   },
+   "parametric": {
+    "arm": "parametric",
+    "n": 0,
+    "n_abstain": 43,
+    "brier": null,
+    "logloss": null,
+    "direction": null,
+    "ece": null,
+    "brier_cal": null,
+    "logloss_cal": null,
+    "T": null,
+    "decision_value": null,
+    "n_bets": 0
+   },
+   "experimental": {
+    "arm": "experimental",
+    "n": 0,
+    "n_abstain": 43,
+    "brier": null,
+    "logloss": null,
+    "direction": null,
+    "ece": null,
+    "brier_cal": null,
+    "logloss_cal": null,
+    "T": null,
+    "decision_value": null,
+    "n_bets": 0
+   }
+  },
+  "marginals": [
+   {
+    "hi": "grounded_1shot",
+    "lo": "base_rate",
+    "n_pairs": 41,
+    "mean_brier_diff": 0.02671,
+    "ci95": [
+     -0.06328,
+     0.11981
+    ],
+    "hi_better": false,
+    "p_perm": 0.5737,
+    "hi_wins_rows": 0.561,
+    "isolates": "grounding value (grounded 1-shot \u2212 base rate)"
+   },
+   {
+    "hi": "grounded_ens",
+    "lo": "grounded_1shot",
+    "n_pairs": 17,
+    "mean_brier_diff": 0.00809,
+    "ci95": [
+     -0.00407,
+     0.02328
+    ],
+    "hi_better": false,
+    "p_perm": 0.2694,
+    "hi_wins_rows": 0.353,
+    "isolates": "ensembling value (call-matched ensemble \u2212 1-shot)"
+   },
+   {
+    "hi": "generic_panel",
+    "lo": "grounded_ens",
+    "n_pairs": 10,
+    "mean_brier_diff": 0.02169,
+    "ci95": [
+     -0.0047,
+     0.06627
+    ],
+    "hi_better": false,
+    "p_perm": 0.4628,
+    "hi_wins_rows": 0.3,
+    "isolates": "forecaster-lens value (panel \u2212 plain ensemble)"
+   },
+   {
+    "hi": "indep_stake",
+    "lo": "generic_panel",
+    "n_pairs": 10,
+    "mean_brier_diff": -0.07738,
+    "ci95": [
+     -0.2423,
+     0.03269
+    ],
+    "hi_better": true,
+    "p_perm": 0.5042,
+    "hi_wins_rows": 0.7,
+    "isolates": "stakeholder-modeling value (stakeholders \u2212 forecaster lenses)"
+   },
+   {
+    "hi": "interact_stake",
+    "lo": "indep_stake",
+    "n_pairs": 10,
+    "mean_brier_diff": -0.02075,
+    "ci95": [
+     -0.11934,
+     0.09706
+    ],
+    "hi_better": true,
+    "p_perm": 0.7326,
+    "hi_wins_rows": 0.8,
+    "isolates": "interaction value (interacting \u2212 independent stakeholders)"
+   },
+   {
+    "hi": "full",
+    "lo": "grounded_1shot",
+    "n_pairs": 40,
+    "mean_brier_diff": -0.0274,
+    "ci95": [
+     -0.10038,
+     0.04074
+    ],
+    "hi_better": true,
+    "p_perm": 0.4608,
+    "hi_wins_rows": 0.3,
+    "isolates": "WHOLE-STACK value (production \u2212 grounded 1-shot)"
+   }
+  ],
+  "spend": {
+   "base_rate": {
+    "mean_calls": 0.0,
+    "mean_cost_usd": 0.0,
+    "mean_seconds": 0.0
+   },
+   "grounded_1shot": {
+    "mean_calls": 1.0,
+    "mean_cost_usd": 0.00019,
+    "mean_seconds": 1.0
+   },
+   "full": {
+    "mean_calls": 10.0,
+    "mean_cost_usd": 0.0,
+    "mean_seconds": 0.0
+   },
+   "grounded_ens": {
+    "mean_calls": 10.0,
+    "mean_cost_usd": 0.00182,
+    "mean_seconds": 10.0
+   },
+   "generic_panel": {
+    "mean_calls": 10.0,
+    "mean_cost_usd": 0.00304,
+    "mean_seconds": 22.9
+   },
+   "indep_stake": {
+    "mean_calls": 12.0,
+    "mean_cost_usd": 0.00461,
+    "mean_seconds": 32.0
+   },
+   "interact_stake": {
+    "mean_calls": 38.6,
+    "mean_cost_usd": 0.01323,
+    "mean_seconds": 88.0
+   },
+   "persistent": {
+    "mean_calls": 44.2,
+    "mean_cost_usd": 0.01552,
+    "mean_seconds": 103.2
+   },
+   "time_evolving": {
+    "mean_calls": 69.2,
+    "mean_cost_usd": 0.02378,
+    "mean_seconds": 155.6
+   }
+  }
+ },
+ "runs": [
+  {
+   "_meta": {
+    "evidence_hash": "771da5404722d656",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2025-11-23",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 4201,
+     "tokens_out": 1887,
+     "seconds": 18.1,
+     "cost_usd": 0.00321
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.167,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.25,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 798,
+     "tokens_out": 2,
+     "seconds": 1.0,
+     "cost_usd": 0.000218
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.3894,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "If Trump wins the election will the inflation rate in 2025 be below 2.5% (Current 2.5%)?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "ef51fec10c443885",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2025-11-23",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2299,
+     "tokens_out": 789,
+     "seconds": 8.59,
+     "cost_usd": 0.001489
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.167,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.85,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 574,
+     "tokens_out": 2,
+     "seconds": 0.9,
+     "cost_usd": 0.000157
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.6747,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.8671683102714095,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 5740,
+     "tokens_out": 20,
+     "seconds": 10.26,
+     "cost_usd": 0.001572
+    },
+    "note": ""
+   },
+   "generic_panel": {
+    "p": 0.8937986643707452,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 7668,
+     "tokens_out": 740,
+     "seconds": 21.79,
+     "cost_usd": 0.002884
+    },
+    "note": ""
+   },
+   "indep_stake": {
+    "p": 0.6597,
+    "spend": {
+     "calls": 5,
+     "tokens_in": 4199,
+     "tokens_out": 632,
+     "seconds": 11.98,
+     "cost_usd": 0.001829
+    },
+    "note": ""
+   },
+   "interact_stake": {
+    "p": 0.8706,
+    "spend": {
+     "calls": 14,
+     "tokens_in": 11393,
+     "tokens_out": 1243,
+     "seconds": 28.19,
+     "cost_usd": 0.004443
+    },
+    "note": ""
+   },
+   "persistent": {
+    "p": 0.9209,
+    "spend": {
+     "calls": 14,
+     "tokens_in": 11903,
+     "tokens_out": 1329,
+     "seconds": 30.05,
+     "cost_usd": 0.004676
+    },
+    "note": ""
+   },
+   "time_evolving": {
+    "p": 0.9037,
+    "spend": {
+     "calls": 27,
+     "tokens_in": 23550,
+     "tokens_out": 2299,
+     "seconds": 55.0,
+     "cost_usd": 0.008887
+    },
+    "note": ""
+   },
+   "parametric": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "experimental": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "NOT BUILT \u2014 graph/OASIS/TRIBE (B10); see Parts H/I"
+   },
+   "outcome": 1.0,
+   "question": "\u00bfSer\u00e1 la pel\u00edcula con mayor recaudaci\u00f3n mundial en 2025 parte de una franquicia?",
+   "tier": 3
+  },
+  {
+   "_meta": {
+    "evidence_hash": "0eb6e214f6e8250b",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2025-11-23",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2117,
+     "tokens_out": 1431,
+     "seconds": 13.28,
+     "cost_usd": 0.002146
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.167,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.35,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 987,
+     "tokens_out": 2,
+     "seconds": 1.03,
+     "cost_usd": 0.000269
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.3685,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will the European \u201cCoalition of the Willing\u201d deploy forces to Ukraine in 2025?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "11dc6424fd94816d",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2025-11-23",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 4396,
+     "tokens_out": 1893,
+     "seconds": 19.58,
+     "cost_usd": 0.003269
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.167,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.02,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 678,
+     "tokens_out": 2,
+     "seconds": 0.99,
+     "cost_usd": 0.000185
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.2881,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.025068090893929525,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 6780,
+     "tokens_out": 20,
+     "seconds": 10.24,
+     "cost_usd": 0.001853
+    },
+    "note": ""
+   },
+   "generic_panel": {
+    "p": 0.11095323662716833,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 8702,
+     "tokens_out": 695,
+     "seconds": 23.75,
+     "cost_usd": 0.003114
+    },
+    "note": ""
+   },
+   "indep_stake": {
+    "p": 0.087,
+    "spend": {
+     "calls": 21,
+     "tokens_in": 19342,
+     "tokens_out": 2513,
+     "seconds": 61.08,
+     "cost_usd": 0.007987
+    },
+    "note": ""
+   },
+   "interact_stake": {
+    "p": 0.0494,
+    "spend": {
+     "calls": 79,
+     "tokens_in": 75844,
+     "tokens_out": 6505,
+     "seconds": 188.72,
+     "cost_usd": 0.027633
+    },
+    "note": ""
+   },
+   "persistent": {
+    "p": 0.0514,
+    "spend": {
+     "calls": 79,
+     "tokens_in": 74137,
+     "tokens_out": 6415,
+     "seconds": 187.23,
+     "cost_usd": 0.027073
+    },
+    "note": ""
+   },
+   "time_evolving": {
+    "p": 0.0689,
+    "spend": {
+     "calls": 30,
+     "tokens_in": 27722,
+     "tokens_out": 2886,
+     "seconds": 76.46,
+     "cost_usd": 0.01066
+    },
+    "note": ""
+   },
+   "parametric": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "experimental": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "NOT BUILT \u2014 graph/OASIS/TRIBE (B10); see Parts H/I"
+   },
+   "outcome": 0.0,
+   "question": "Will Henri Bontenbal become the next Prime Minister of the Netherlands?",
+   "tier": 3
+  },
+  {
+   "_meta": {
+    "evidence_hash": "85ac5066a4ecf4cf",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2025-11-23",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 4406,
+     "tokens_out": 1478,
+     "seconds": 14.65,
+     "cost_usd": 0.002815
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.167,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.08,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 557,
+     "tokens_out": 2,
+     "seconds": 0.94,
+     "cost_usd": 0.000153
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.3417,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will Kelly Loeffler be the first to leave the Trump Cabinet in 2025?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "f9323e08ceee70e0",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2025-11-23",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2080,
+     "tokens_out": 1122,
+     "seconds": 10.37,
+     "cost_usd": 0.001796
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.167,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.05,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 794,
+     "tokens_out": 2,
+     "seconds": 1.26,
+     "cost_usd": 0.000217
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.2036,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.057524150697341465,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 7940,
+     "tokens_out": 20,
+     "seconds": 10.1,
+     "cost_usd": 0.002166
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Israel x Iran ceasefire broken by December 31?",
+   "tier": 2
+  },
+  {
+   "_meta": {
+    "evidence_hash": "e8eaba1e8bcfebe8",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2025-12-21",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 2589,
+     "tokens_out": 977,
+     "seconds": 11.12,
+     "cost_usd": 0.001774
+    },
+    "abstain": true,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.0,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "full_calls_reported": 0,
+   "full": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "generic_panel": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "indep_stake": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "interact_stake": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "persistent": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "time_evolving": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "parametric": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "experimental": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "NOT BUILT \u2014 graph/OASIS/TRIBE (B10); see Parts H/I"
+   },
+   "outcome": 0.0,
+   "question": "At the end of 2025, will any of GiveWell's top charities perform mass deworming as their p",
+   "tier": 3
+  },
+  {
+   "_meta": {
+    "evidence_hash": "b0ec5166393599b9",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2025-12-21",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2178,
+     "tokens_out": 1302,
+     "seconds": 14.23,
+     "cost_usd": 0.00202
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.0,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.12,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 750,
+     "tokens_out": 2,
+     "seconds": 0.89,
+     "cost_usd": 0.000205
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.2335,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.10646157413368791,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 7500,
+     "tokens_out": 20,
+     "seconds": 9.83,
+     "cost_usd": 0.002047
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will Trump's approval rating hit 40% in 2025?",
+   "tier": 2
+  },
+  {
+   "_meta": {
+    "evidence_hash": "5f93023312ef2b83",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2025-12-21",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 3312,
+     "tokens_out": 1150,
+     "seconds": 13.05,
+     "cost_usd": 0.002159
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.0,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.02,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 428,
+     "tokens_out": 2,
+     "seconds": 1.03,
+     "cost_usd": 0.000118
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.2383,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will Raul Perestrello win the 2026 Portugal presidential election?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "b435df5cac657524",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2025-12-21",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 4211,
+     "tokens_out": 1161,
+     "seconds": 12.53,
+     "cost_usd": 0.002414
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.0,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.5,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 498,
+     "tokens_out": 2,
+     "seconds": 1.11,
+     "cost_usd": 0.000137
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.4428,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will the weekly dollar amount of loans made under the primary credit lending program by th",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "0673b7d17c785cc0",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-01-04",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 1653,
+     "tokens_out": 820,
+     "seconds": 8.25,
+     "cost_usd": 0.001348
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.286,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.01,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 541,
+     "tokens_out": 2,
+     "seconds": 1.0,
+     "cost_usd": 0.000148
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.1865,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will Orlando Cruz win the 2026 Portugal presidential election?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "ff81793c67c119d3",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-01-04",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 3436,
+     "tokens_out": 1327,
+     "seconds": 12.89,
+     "cost_usd": 0.002387
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.286,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.001,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 532,
+     "tokens_out": 3,
+     "seconds": 1.05,
+     "cost_usd": 0.000147
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.1865,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.019885253741562324,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 5320,
+     "tokens_out": 22,
+     "seconds": 9.31,
+     "cost_usd": 0.001461
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will Jos\u00e9 Cardoso win the 2026 Portugal presidential election?",
+   "tier": 2
+  },
+  {
+   "_meta": {
+    "evidence_hash": "38eaba867c4fcd2a",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-01-04",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 3869,
+     "tokens_out": 1400,
+     "seconds": 13.14,
+     "cost_usd": 0.002585
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.286,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.02,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 543,
+     "tokens_out": 2,
+     "seconds": 0.86,
+     "cost_usd": 0.000149
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.2215,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.01998011104580129,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 5430,
+     "tokens_out": 20,
+     "seconds": 10.32,
+     "cost_usd": 0.001488
+    },
+    "note": ""
+   },
+   "generic_panel": {
+    "p": 0.04417246021221738,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 7352,
+     "tokens_out": 586,
+     "seconds": 20.0,
+     "cost_usd": 0.00263
+    },
+    "note": ""
+   },
+   "indep_stake": {
+    "p": 0.0316,
+    "spend": {
+     "calls": 6,
+     "tokens_in": 4894,
+     "tokens_out": 594,
+     "seconds": 13.96,
+     "cost_usd": 0.001975
+    },
+    "note": ""
+   },
+   "interact_stake": {
+    "p": 0.0256,
+    "spend": {
+     "calls": 18,
+     "tokens_in": 14966,
+     "tokens_out": 1448,
+     "seconds": 39.01,
+     "cost_usd": 0.005634
+    },
+    "note": ""
+   },
+   "persistent": {
+    "p": 0.0347,
+    "spend": {
+     "calls": 67,
+     "tokens_in": 56704,
+     "tokens_out": 5715,
+     "seconds": 163.62,
+     "cost_usd": 0.021597
+    },
+    "note": ""
+   },
+   "time_evolving": {
+    "p": 0.0279,
+    "spend": {
+     "calls": 70,
+     "tokens_in": 61589,
+     "tokens_out": 5203,
+     "seconds": 168.34,
+     "cost_usd": 0.022352
+    },
+    "note": ""
+   },
+   "parametric": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "experimental": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "NOT BUILT \u2014 graph/OASIS/TRIBE (B10); see Parts H/I"
+   },
+   "outcome": 0.0,
+   "question": "Will Sarah Knafo win the Paris mayor election?",
+   "tier": 3
+  },
+  {
+   "_meta": {
+    "evidence_hash": "d1a5eb2eb7e6f113",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-01-04",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 1951,
+     "tokens_out": 1203,
+     "seconds": 13.17,
+     "cost_usd": 0.00185
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.286,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.12,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 857,
+     "tokens_out": 2,
+     "seconds": 0.9,
+     "cost_usd": 0.000234
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.3467,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Russia x Ukraine ceasefire by March 31, 2026?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "aad20ffb63acfae5",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-01-04",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 1799,
+     "tokens_out": 1042,
+     "seconds": 9.72,
+     "cost_usd": 0.001632
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.286,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.05,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 707,
+     "tokens_out": 2,
+     "seconds": 1.0,
+     "cost_usd": 0.000193
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.5288,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.04568703511008494,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 7070,
+     "tokens_out": 20,
+     "seconds": 9.91,
+     "cost_usd": 0.001931
+    },
+    "note": ""
+   },
+   "generic_panel": {
+    "p": 0.05376360130088012,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 8998,
+     "tokens_out": 703,
+     "seconds": 22.55,
+     "cost_usd": 0.003203
+    },
+    "note": ""
+   },
+   "indep_stake": {
+    "p": 0.6637,
+    "spend": {
+     "calls": 16,
+     "tokens_in": 15437,
+     "tokens_out": 2141,
+     "seconds": 42.99,
+     "cost_usd": 0.006523
+    },
+    "note": ""
+   },
+   "interact_stake": {
+    "p": 0.703,
+    "spend": {
+     "calls": 40,
+     "tokens_in": 39721,
+     "tokens_out": 3659,
+     "seconds": 91.65,
+     "cost_usd": 0.01475
+    },
+    "note": ""
+   },
+   "persistent": {
+    "p": 0.6399,
+    "spend": {
+     "calls": 52,
+     "tokens_in": 51550,
+     "tokens_out": 4746,
+     "seconds": 124.41,
+     "cost_usd": 0.019139
+    },
+    "note": ""
+   },
+   "time_evolving": {
+    "p": 0.6077,
+    "spend": {
+     "calls": 93,
+     "tokens_in": 93877,
+     "tokens_out": 7738,
+     "seconds": 221.64,
+     "cost_usd": 0.033859
+    },
+    "note": ""
+   },
+   "parametric": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "experimental": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "NOT BUILT \u2014 graph/OASIS/TRIBE (B10); see Parts H/I"
+   },
+   "outcome": 1.0,
+   "question": "Israel x Iran ceasefire broken by June 30, 2026?",
+   "tier": 3
+  },
+  {
+   "_meta": {
+    "evidence_hash": "a541412859f457ba",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-01-04",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 1764,
+     "tokens_out": 1213,
+     "seconds": 12.78,
+     "cost_usd": 0.001811
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.286,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.72,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 829,
+     "tokens_out": 2,
+     "seconds": 0.9,
+     "cost_usd": 0.000226
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.5084,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.7498873588834262,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 8290,
+     "tokens_out": 20,
+     "seconds": 9.79,
+     "cost_usd": 0.00226
+    },
+    "note": ""
+   },
+   "outcome": 1.0,
+   "question": "Israel x Iran ceasefire broken by March 31, 2026?",
+   "tier": 2
+  },
+  {
+   "_meta": {
+    "evidence_hash": "41ac691e0470003e",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-02-01",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 1982,
+     "tokens_out": 859,
+     "seconds": 10.27,
+     "cost_usd": 0.00148
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.5,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.12,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 651,
+     "tokens_out": 2,
+     "seconds": 1.0,
+     "cost_usd": 0.000178
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.1881,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.1633943493756316,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 6510,
+     "tokens_out": 20,
+     "seconds": 10.0,
+     "cost_usd": 0.00178
+    },
+    "note": ""
+   },
+   "generic_panel": {
+    "p": 0.18620497890813226,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 8438,
+     "tokens_out": 734,
+     "seconds": 22.9,
+     "cost_usd": 0.003086
+    },
+    "note": ""
+   },
+   "indep_stake": {
+    "p": 0.2986,
+    "spend": {
+     "calls": 7,
+     "tokens_in": 6919,
+     "tokens_out": 903,
+     "seconds": 19.81,
+     "cost_usd": 0.002861
+    },
+    "note": ""
+   },
+   "interact_stake": {
+    "p": 0.1067,
+    "spend": {
+     "calls": 22,
+     "tokens_in": 21731,
+     "tokens_out": 2010,
+     "seconds": 49.84,
+     "cost_usd": 0.008078
+    },
+    "note": ""
+   },
+   "persistent": {
+    "p": 0.2351,
+    "spend": {
+     "calls": 22,
+     "tokens_in": 22190,
+     "tokens_out": 1934,
+     "seconds": 49.89,
+     "cost_usd": 0.008119
+    },
+    "note": ""
+   },
+   "time_evolving": {
+    "p": 0.0619,
+    "spend": {
+     "calls": 33,
+     "tokens_in": 33137,
+     "tokens_out": 2656,
+     "seconds": 66.93,
+     "cost_usd": 0.011869
+    },
+    "note": ""
+   },
+   "parametric": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "experimental": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "NOT BUILT \u2014 graph/OASIS/TRIBE (B10); see Parts H/I"
+   },
+   "outcome": 0.0,
+   "question": "Will the discount rate for the Federal Reserve's primary credit discount window program ha",
+   "tier": 3
+  },
+  {
+   "_meta": {
+    "evidence_hash": "71d88d74e54a66ba",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-01",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2071,
+     "tokens_out": 1218,
+     "seconds": 12.02,
+     "cost_usd": 0.001899
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.462,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.35,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 958,
+     "tokens_out": 2,
+     "seconds": 0.87,
+     "cost_usd": 0.000261
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.5073,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will Viktor Orban remain Hungary's prime minister after the 2026 elections?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "e2437a4bba9459f9",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-01",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 4240,
+     "tokens_out": 1774,
+     "seconds": 17.32,
+     "cost_usd": 0.003096
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.462,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.15,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 690,
+     "tokens_out": 2,
+     "seconds": 0.83,
+     "cost_usd": 0.000189
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.2638,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 1.0,
+   "question": "Will the Scottish Labour Party be the second largest party in Holyrood after the next elec",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "d1cd2bcb96d27bf2",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-01",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2031,
+     "tokens_out": 838,
+     "seconds": 8.69,
+     "cost_usd": 0.00147
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.462,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.65,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 584,
+     "tokens_out": 2,
+     "seconds": 0.97,
+     "cost_usd": 0.00016
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.5706,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will the ceasefire between the U.S. and Yemen\u2019s Houthis mediated by Oman be broken before ",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "ef253d32a406af49",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-01",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 4617,
+     "tokens_out": 2258,
+     "seconds": 25.27,
+     "cost_usd": 0.00373
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.462,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.45,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 835,
+     "tokens_out": 2,
+     "seconds": 0.99,
+     "cost_usd": 0.000228
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.5626,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.45000000000000007,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 8350,
+     "tokens_out": 20,
+     "seconds": 10.02,
+     "cost_usd": 0.002276
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "If Viktor Orb\u00e1n leads a party in the 2026 Hungarian Election, will he become Prime Ministe",
+   "tier": 2
+  },
+  {
+   "_meta": {
+    "evidence_hash": "418568828c04e6db",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-01",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2196,
+     "tokens_out": 1256,
+     "seconds": 14.64,
+     "cost_usd": 0.001975
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.462,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.15,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 852,
+     "tokens_out": 2,
+     "seconds": 0.89,
+     "cost_usd": 0.000232
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.6253,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.24750784745092425,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 8520,
+     "tokens_out": 20,
+     "seconds": 10.29,
+     "cost_usd": 0.002322
+    },
+    "note": ""
+   },
+   "generic_panel": {
+    "p": 0.26265620332290357,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 10448,
+     "tokens_out": 724,
+     "seconds": 26.17,
+     "cost_usd": 0.003617
+    },
+    "note": ""
+   },
+   "indep_stake": {
+    "p": 0.3692,
+    "spend": {
+     "calls": 9,
+     "tokens_in": 10217,
+     "tokens_out": 1125,
+     "seconds": 25.1,
+     "cost_usd": 0.003996
+    },
+    "note": ""
+   },
+   "interact_stake": {
+    "p": 0.7341,
+    "spend": {
+     "calls": 32,
+     "tokens_in": 36600,
+     "tokens_out": 2568,
+     "seconds": 78.01,
+     "cost_usd": 0.012707
+    },
+    "note": ""
+   },
+   "persistent": {
+    "p": 0.5484,
+    "spend": {
+     "calls": 40,
+     "tokens_in": 46298,
+     "tokens_out": 3519,
+     "seconds": 101.07,
+     "cost_usd": 0.016371
+    },
+    "note": ""
+   },
+   "time_evolving": {
+    "p": 0.6932,
+    "spend": {
+     "calls": 102,
+     "tokens_in": 121018,
+     "tokens_out": 8718,
+     "seconds": 250.89,
+     "cost_usd": 0.042265
+    },
+    "note": ""
+   },
+   "parametric": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "experimental": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "NOT BUILT \u2014 graph/OASIS/TRIBE (B10); see Parts H/I"
+   },
+   "outcome": 0.0,
+   "question": "Will the U.S. Congress still be operating under a continuing resolution (CR) on March 15, ",
+   "tier": 3
+  },
+  {
+   "_meta": {
+    "evidence_hash": "77d68abf2ac41e60",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-01",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 1860,
+     "tokens_out": 762,
+     "seconds": 8.39,
+     "cost_usd": 0.00134
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.462,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.85,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 475,
+     "tokens_out": 2,
+     "seconds": 1.36,
+     "cost_usd": 0.00013
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.7238,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 1.0,
+   "question": "Will Denis Sassour Nguesso win the 2026 Presidential election in the Republic of the Congo",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "b0842b43aa08da60",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-01",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2287,
+     "tokens_out": 1066,
+     "seconds": 12.32,
+     "cost_usd": 0.00179
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.462,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.82,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 688,
+     "tokens_out": 2,
+     "seconds": 0.95,
+     "cost_usd": 0.000188
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.6141,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 1.0,
+   "question": "Will Delcy Rodr\u00edguez be President of Venezuela on 30 April 2026?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "dd585efbb62334ae",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-01",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2052,
+     "tokens_out": 1098,
+     "seconds": 12.64,
+     "cost_usd": 0.001762
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.462,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.12,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 761,
+     "tokens_out": 2,
+     "seconds": 1.01,
+     "cost_usd": 0.000208
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.3057,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 1.0,
+   "question": "Russia x Ukraine ceasefire by end of 2026?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "530d4be14d7ba48c",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-01",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 3121,
+     "tokens_out": 1253,
+     "seconds": 14.82,
+     "cost_usd": 0.002221
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.462,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.12,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 441,
+     "tokens_out": 2,
+     "seconds": 1.01,
+     "cost_usd": 0.000121
+    },
+    "note": ""
+   },
+   "full_calls_reported": 0,
+   "full": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will CD win the most seats in the 2026 Colombian Chamber of Representatives election?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "0368546d5f452217",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-01",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 4411,
+     "tokens_out": 2054,
+     "seconds": 21.87,
+     "cost_usd": 0.00345
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.462,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.35,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 792,
+     "tokens_out": 2,
+     "seconds": 0.94,
+     "cost_usd": 0.000216
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.3707,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 1.0,
+   "question": "Will the next Prime Minister of Hungary be P\u00e9ter Magyar?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "9db681301e8dfe34",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-01",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 4170,
+     "tokens_out": 1982,
+     "seconds": 20.61,
+     "cost_usd": 0.003306
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.462,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.0,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 733,
+     "tokens_out": 2,
+     "seconds": 0.98,
+     "cost_usd": 0.0002
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.5674,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.019607843137254912,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 7330,
+     "tokens_out": 20,
+     "seconds": 9.93,
+     "cost_usd": 0.002001
+    },
+    "note": ""
+   },
+   "generic_panel": {
+    "p": 0.03,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 9258,
+     "tokens_out": 585,
+     "seconds": 22.46,
+     "cost_usd": 0.003143
+    },
+    "note": ""
+   },
+   "indep_stake": {
+    "p": 0.0566,
+    "spend": {
+     "calls": 6,
+     "tokens_in": 5891,
+     "tokens_out": 831,
+     "seconds": 17.19,
+     "cost_usd": 0.002505
+    },
+    "note": ""
+   },
+   "interact_stake": {
+    "p": 0.2328,
+    "spend": {
+     "calls": 18,
+     "tokens_in": 17069,
+     "tokens_out": 1487,
+     "seconds": 39.36,
+     "cost_usd": 0.006244
+    },
+    "note": ""
+   },
+   "persistent": {
+    "p": 0.0247,
+    "spend": {
+     "calls": 18,
+     "tokens_in": 16964,
+     "tokens_out": 1400,
+     "seconds": 35.19,
+     "cost_usd": 0.00612
+    },
+    "note": ""
+   },
+   "time_evolving": {
+    "p": 0.0197,
+    "spend": {
+     "calls": 35,
+     "tokens_in": 33284,
+     "tokens_out": 2499,
+     "seconds": 66.87,
+     "cost_usd": 0.011736
+    },
+    "note": ""
+   },
+   "parametric": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "experimental": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "NOT BUILT \u2014 graph/OASIS/TRIBE (B10); see Parts H/I"
+   },
+   "outcome": 1.0,
+   "question": "Will Ken Paxton win the 2026 Texas Republican Primary?",
+   "tier": 3
+  },
+  {
+   "_meta": {
+    "evidence_hash": "2c05b59bfccdcdbb",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-01",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2242,
+     "tokens_out": 995,
+     "seconds": 9.99,
+     "cost_usd": 0.0017
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.462,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.72,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 693,
+     "tokens_out": 2,
+     "seconds": 0.98,
+     "cost_usd": 0.000189
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.563,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will Jasmine Crockett be the Democratic nominee for Senate in Texas?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "fb88d8bac4b7e5d5",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-29",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2022,
+     "tokens_out": 877,
+     "seconds": 9.03,
+     "cost_usd": 0.001511
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.545,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.02,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 492,
+     "tokens_out": 2,
+     "seconds": 0.86,
+     "cost_usd": 0.000135
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.1987,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will the United States officially withdraw from NATO by March 31, 2026?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "ed0dfe4de6149467",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-29",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 3967,
+     "tokens_out": 2250,
+     "seconds": 20.86,
+     "cost_usd": 0.003546
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.545,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.55,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 783,
+     "tokens_out": 2,
+     "seconds": 0.95,
+     "cost_usd": 0.000214
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.5627,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.55,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 7830,
+     "tokens_out": 20,
+     "seconds": 9.73,
+     "cost_usd": 0.002136
+    },
+    "note": ""
+   },
+   "generic_panel": {
+    "p": 0.7187332551136637,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 9758,
+     "tokens_out": 657,
+     "seconds": 23.12,
+     "cost_usd": 0.003357
+    },
+    "note": ""
+   },
+   "indep_stake": {
+    "p": 0.6135,
+    "spend": {
+     "calls": 17,
+     "tokens_in": 18480,
+     "tokens_out": 2210,
+     "seconds": 46.36,
+     "cost_usd": 0.007421
+    },
+    "note": ""
+   },
+   "interact_stake": {
+    "p": 0.7012,
+    "spend": {
+     "calls": 53,
+     "tokens_in": 58750,
+     "tokens_out": 4682,
+     "seconds": 124.03,
+     "cost_usd": 0.021013
+    },
+    "note": ""
+   },
+   "persistent": {
+    "p": 0.7307,
+    "spend": {
+     "calls": 53,
+     "tokens_in": 57994,
+     "tokens_out": 4521,
+     "seconds": 118.62,
+     "cost_usd": 0.020631
+    },
+    "note": ""
+   },
+   "time_evolving": {
+    "p": 0.5871,
+    "spend": {
+     "calls": 66,
+     "tokens_in": 73683,
+     "tokens_out": 5527,
+     "seconds": 144.46,
+     "cost_usd": 0.025974
+    },
+    "note": ""
+   },
+   "parametric": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "experimental": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "NOT BUILT \u2014 graph/OASIS/TRIBE (B10); see Parts H/I"
+   },
+   "outcome": 0.0,
+   "question": "Will Orban (Fidesz) win the Hungarian Election on April 12th?",
+   "tier": 3
+  },
+  {
+   "_meta": {
+    "evidence_hash": "efd0670a622b3ed8",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-29",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 4595,
+     "tokens_out": 2284,
+     "seconds": 20.3,
+     "cost_usd": 0.003753
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.545,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.03,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 1052,
+     "tokens_out": 2,
+     "seconds": 0.96,
+     "cost_usd": 0.000286
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.258,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 1.0,
+   "question": "Will any political party or coalition acquire a supermajority in the 2026 Hungarian parlia",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "47161987f1e93bc0",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-29",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 3881,
+     "tokens_out": 1444,
+     "seconds": 14.23,
+     "cost_usd": 0.002636
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.545,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.45,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 510,
+     "tokens_out": 2,
+     "seconds": 0.99,
+     "cost_usd": 0.00014
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.406,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.3692663407933005,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 5100,
+     "tokens_out": 20,
+     "seconds": 10.25,
+     "cost_usd": 0.001399
+    },
+    "note": ""
+   },
+   "generic_panel": {
+    "p": 0.35798276818382757,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 7028,
+     "tokens_out": 724,
+     "seconds": 23.59,
+     "cost_usd": 0.002694
+    },
+    "note": ""
+   },
+   "indep_stake": {
+    "p": 0.3712,
+    "spend": {
+     "calls": 16,
+     "tokens_in": 11130,
+     "tokens_out": 1858,
+     "seconds": 37.43,
+     "cost_usd": 0.005049
+    },
+    "note": ""
+   },
+   "interact_stake": {
+    "p": 0.5762,
+    "spend": {
+     "calls": 53,
+     "tokens_in": 36850,
+     "tokens_out": 4600,
+     "seconds": 116.13,
+     "cost_usd": 0.01501
+    },
+    "note": ""
+   },
+   "persistent": {
+    "p": null,
+    "spend": {
+     "calls": 16,
+     "tokens_in": 11073,
+     "tokens_out": 1991,
+     "seconds": 41.47,
+     "cost_usd": 0.00518
+    },
+    "note": "error:<urlopen error [Errno 104] Connection reset by peer>"
+   },
+   "time_evolving": {
+    "p": 0.3778,
+    "spend": {
+     "calls": 126,
+     "tokens_in": 97864,
+     "tokens_out": 9174,
+     "seconds": 266.27,
+     "cost_usd": 0.036515
+    },
+    "note": ""
+   },
+   "parametric": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "experimental": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "NOT BUILT \u2014 graph/OASIS/TRIBE (B10); see Parts H/I"
+   },
+   "outcome": 1.0,
+   "question": "Will Keiko Fujimori advance to the runoff in the 2026 Peruvian presidential election?",
+   "tier": 3
+  },
+  {
+   "_meta": {
+    "evidence_hash": "98780c5b182d4a98",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-29",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2030,
+     "tokens_out": 1336,
+     "seconds": 12.15,
+     "cost_usd": 0.002018
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.545,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.08,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 966,
+     "tokens_out": 2,
+     "seconds": 0.93,
+     "cost_usd": 0.000263
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.313,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 1.0,
+   "question": "Will the US and Iran agree to a ceasefire before May 2026?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "24430e17d7db77ce",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-03-29",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 4443,
+     "tokens_out": 1498,
+     "seconds": 13.76,
+     "cost_usd": 0.002847
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.545,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.65,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 503,
+     "tokens_out": 2,
+     "seconds": 0.89,
+     "cost_usd": 0.000138
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.412,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.6213380320069839,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 5030,
+     "tokens_out": 20,
+     "seconds": 10.1,
+     "cost_usd": 0.00138
+    },
+    "note": ""
+   },
+   "outcome": 1.0,
+   "question": "Will Vivek Ramaswamy win the 2026 Ohio Governor Republican primary election?",
+   "tier": 2
+  },
+  {
+   "_meta": {
+    "evidence_hash": "d6563f83a1d231ab",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-04-26",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2166,
+     "tokens_out": 1068,
+     "seconds": 9.05,
+     "cost_usd": 0.00176
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.412,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.02,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 772,
+     "tokens_out": 2,
+     "seconds": 1.02,
+     "cost_usd": 0.000211
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.1865,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will Musk pay the salaries of TSA agents during shutdown?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "48b103418cc3958f",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-04-26",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 4155,
+     "tokens_out": 2551,
+     "seconds": 24.27,
+     "cost_usd": 0.003928
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.412,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.12,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 985,
+     "tokens_out": 2,
+     "seconds": 1.01,
+     "cost_usd": 0.000268
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.2954,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will pro-independence parties win a majority of seats at the 2026 Welsh election?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "253e765a12346423",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-04-26",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 4548,
+     "tokens_out": 1699,
+     "seconds": 14.99,
+     "cost_usd": 0.003097
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.412,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.12,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 545,
+     "tokens_out": 2,
+     "seconds": 0.87,
+     "cost_usd": 0.000149
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.2742,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.10194525801586334,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 5450,
+     "tokens_out": 20,
+     "seconds": 10.1,
+     "cost_usd": 0.001494
+    },
+    "note": ""
+   },
+   "outcome": 1.0,
+   "question": "Will Rachel Anderson be the Democratic nominee for Senate in West Virginia?",
+   "tier": 2
+  },
+  {
+   "_meta": {
+    "evidence_hash": "65e416cf115e0324",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-04-26",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 3400,
+     "tokens_out": 1344,
+     "seconds": 11.78,
+     "cost_usd": 0.002396
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.412,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.02,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 458,
+     "tokens_out": 2,
+     "seconds": 1.01,
+     "cost_usd": 0.000126
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.1865,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will Thunder Parley advance from the 2026 California Governor primary election?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "48a745eab3d1bcd3",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-04-26",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2067,
+     "tokens_out": 1198,
+     "seconds": 11.05,
+     "cost_usd": 0.001876
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.412,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.82,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 763,
+     "tokens_out": 2,
+     "seconds": 1.01,
+     "cost_usd": 0.000208
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.6522,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 1.0,
+   "question": "Will Scottish National Party win the most seats in the 2026 Scottish Parliament election?",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "1ad36d8fca9e92e2",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-04-26",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2177,
+     "tokens_out": 751,
+     "seconds": 7.58,
+     "cost_usd": 0.001414
+    },
+    "abstain": false,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.412,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.12,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 495,
+     "tokens_out": 2,
+     "seconds": 0.95,
+     "cost_usd": 0.000136
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.2387,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": 0.07451345971311159,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 4950,
+     "tokens_out": 20,
+     "seconds": 9.57,
+     "cost_usd": 0.001359
+    },
+    "note": ""
+   },
+   "generic_panel": {
+    "p": 0.08426885062758324,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 6878,
+     "tokens_out": 732,
+     "seconds": 22.25,
+     "cost_usd": 0.002662
+    },
+    "note": ""
+   },
+   "indep_stake": {
+    "p": 0.0535,
+    "spend": {
+     "calls": 17,
+     "tokens_in": 12381,
+     "tokens_out": 2371,
+     "seconds": 44.24,
+     "cost_usd": 0.005951
+    },
+    "note": ""
+   },
+   "interact_stake": {
+    "p": 0.0433,
+    "spend": {
+     "calls": 57,
+     "tokens_in": 41372,
+     "tokens_out": 5119,
+     "seconds": 125.02,
+     "cost_usd": 0.016801
+    },
+    "note": ""
+   },
+   "persistent": {
+    "p": 0.0622,
+    "spend": {
+     "calls": 53,
+     "tokens_in": 39712,
+     "tokens_out": 4783,
+     "seconds": 118.53,
+     "cost_usd": 0.015984
+    },
+    "note": ""
+   },
+   "time_evolving": {
+    "p": 0.0379,
+    "spend": {
+     "calls": 110,
+     "tokens_in": 88246,
+     "tokens_out": 9003,
+     "seconds": 238.79,
+     "cost_usd": 0.03373
+    },
+    "note": ""
+   },
+   "parametric": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "experimental": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "NOT BUILT \u2014 graph/OASIS/TRIBE (B10); see Parts H/I"
+   },
+   "outcome": 0.0,
+   "question": "Miguel D\u00edaz-Canel out as President of Cuba by June 30?",
+   "tier": 3
+  },
+  {
+   "_meta": {
+    "evidence_hash": "9561c05d38349b22",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-04-26",
+    "grounding_spend": {
+     "calls": 2,
+     "tokens_in": 2107,
+     "tokens_out": 804,
+     "seconds": 7.37,
+     "cost_usd": 0.001453
+    },
+    "abstain": false
+   },
+   "base_rate": {
+    "p": 0.412,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": 0.62,
+    "spend": {
+     "calls": 1,
+     "tokens_in": 513,
+     "tokens_out": 2,
+     "seconds": 1.02,
+     "cost_usd": 0.000141
+    },
+    "note": ""
+   },
+   "full_calls_reported": 10,
+   "full": {
+    "p": 0.5797,
+    "spend": {
+     "calls": 10,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "outcome": 0.0,
+   "question": "Will Chong Won-oh win the 2026 Seoul Mayoral Election",
+   "tier": 1
+  },
+  {
+   "_meta": {
+    "evidence_hash": "c3e2863fabb6b4b7",
+    "commit": "aa4165b",
+    "model": "deepseek-chat",
+    "as_of": "2026-04-26",
+    "grounding_spend": {
+     "calls": 4,
+     "tokens_in": 2872,
+     "tokens_out": 1168,
+     "seconds": 11.23,
+     "cost_usd": 0.00206
+    },
+    "abstain": true,
+    "ensemble_n": 10
+   },
+   "base_rate": {
+    "p": 0.412,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "class base rate"
+   },
+   "grounded_1shot": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "full_calls_reported": 0,
+   "full": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "grounded_ens": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "generic_panel": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "indep_stake": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "interact_stake": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "persistent": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "time_evolving": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "parametric": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": ""
+   },
+   "experimental": {
+    "p": null,
+    "spend": {
+     "calls": 0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "seconds": 0.0,
+     "cost_usd": 0.0
+    },
+    "note": "NOT BUILT \u2014 graph/OASIS/TRIBE (B10); see Parts H/I"
+   },
+   "outcome": 1.0,
+   "question": "Will Woo Sang-ho win the 2026 Gangwon Province gubernatorial election?",
+   "tier": 3
+  }
+ ]
+}

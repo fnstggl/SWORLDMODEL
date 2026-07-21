@@ -1,0 +1,87 @@
+{
+ "engagement_task_ablations": {
+  "A21_full": {
+   "brier": 0.08966,
+   "delta_vs_full": 0.0,
+   "changes_execution": true
+  },
+  "A1_no_history": {
+   "brier": 0.10125,
+   "delta_vs_full": 0.01159,
+   "changes_execution": true
+  },
+  "A2_last_event_only": {
+   "brier": 0.09654,
+   "delta_vs_full": 0.00688,
+   "changes_execution": true
+  },
+  "A5_no_persistent_latent": {
+   "brier": 0.16092,
+   "delta_vs_full": 0.07126,
+   "changes_execution": true
+  },
+  "A4_perfect_memory_no_decay": {
+   "brier": 0.09879,
+   "delta_vs_full": 0.00913,
+   "changes_execution": true
+  },
+  "A9_no_person_specific": {
+   "brier": 0.10677,
+   "delta_vs_full": 0.01711,
+   "changes_execution": true
+  },
+  "A8_no_hierarchical_shrinkage": {
+   "brier": 0.08967,
+   "delta_vs_full": 1e-05,
+   "changes_execution": true
+  },
+  "A18_truncated_window_k3": {
+   "brier": 0.09245,
+   "delta_vs_full": 0.00278,
+   "changes_execution": true
+  },
+  "_n": 7290,
+  "_ornamental_arms": []
+ },
+ "cross_family_causal_checks": {
+  "trust": {
+   "full_history_mean": 0.3659,
+   "no_history_mean": 0.5,
+   "delta": -0.1341,
+   "changes_execution": true
+  },
+  "institutional_stage": {
+   "via_appeal_path": [
+    "open",
+    "review",
+    "open",
+    "review"
+   ],
+   "direct_path": [
+    "open",
+    "review"
+   ],
+   "path_dependent": true,
+   "changes_execution": true
+  },
+  "resource_level": {
+   "spent_history_mean": 5.351,
+   "no_history_mean": 10.0,
+   "changes_execution": true
+  }
+ },
+ "performance": {
+  "n_events": 5000,
+  "n_actors": 50,
+  "ingest_throughput_events_per_s": 77467,
+  "replay_latency_s": 0.1669,
+  "replay_per_actor_ms": 3.339,
+  "checkpoint_size_bytes": 2697990,
+  "checkpoint_save_s": 0.1152,
+  "checkpoint_restore_s": 0.0244,
+  "n_restored": 50,
+  "deterministic_replay_parity": true,
+  "integrity_ok": true
+ },
+ "note": "engagement ablations report held-out Brier deltas through the shared world; cross-family checks verify removing that family's history changes materialized state; an ablation that changes nothing is flagged ornamental"
+}

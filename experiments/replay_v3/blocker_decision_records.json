@@ -1,0 +1,49 @@
+{
+  "records": [
+    {
+      "blocker_id": "B1_no_immutable_inference",
+      "blocked_requirement": "Tier A immutable post-snapshot model inference",
+      "root_cause": "DeepSeek-V4-Flash open weights exist (HF rev 60d8d707) but are 284B params; no GPU inference capability in this environment; hosted alias not proven byte-identical to the checkpoint",
+      "internal_or_external": "external (compute)",
+      "invariant_at_risk": "model cannot use resolved outcomes through an unacknowledged path",
+      "alternatives": [
+        {"name": "Tier A rented-GPU hosting of pinned checkpoint", "verdict": "infeasible here (no provisioning path from this environment); recorded as unblock path"},
+        {"name": "Tier B provider-attested alias + post-release question opening + blinding + probes", "verdict": "SELECTED: even mutated serving weights cannot contain outcomes of events that had not occurred at release unless retrained on them post-release — which the per-row probes measure"},
+        {"name": "Tier C blinding alone on pre-release events", "verdict": "weaker (model may know pre-release events outright); not needed given post-release corpus"}
+      ],
+      "selected": "Tier B + blinding + six probes (belt and braces)",
+      "validity": "temporal ordering S<Q<=T<R proven per row from archive server timestamps; leakage actively measured, not assumed",
+      "residual_limitation": "serving-weight mutation risk (measured)",
+      "continue": true
+    },
+    {
+      "blocker_id": "B2_candidate_pool_size",
+      "blocked_requirement": ">=300 eligible candidate worlds",
+      "root_cause": "the post-snapshot window is only 2026-04-25..2026-07-12; Polymarket contains ~99-200 events that opened AND resolved inside it with >=12d lifetime and real volume; Kalshi and Metaculus APIs are unreachable through this environment's proxy (000/403)",
+      "internal_or_external": "external (window length + source access)",
+      "invariant_at_risk": "statistical power / representativeness (not leakage)",
+      "alternatives": [
+        {"name": "extend window backward before release", "verdict": "REJECTED: violates post-snapshot ordering (invariant 3)"},
+        {"name": "add Kalshi/Metaculus", "verdict": "blocked by proxy (000/403) — recorded; unblock = allowlist those hosts"},
+        {"name": "widen frozen Polymarket rules (volume>=1000, lifetime>=12d, R<=2026-07-12)", "verdict": "SELECTED: preserves every leakage invariant; adds smaller-volume real events; pool size recorded honestly"}
+      ],
+      "selected": "widened frozen Polymarket rules; pool recorded; if pool < 100 worlds the benchmark reports the exact shortfall rather than substituting ineligible events",
+      "validity": "selection rules re-frozen BEFORE any forecast exists; no model performance seen",
+      "residual_limitation": "if eligible pool < 300, power target unmet; reported",
+      "continue": true
+    },
+    {
+      "blocker_id": "B3_os_isolation",
+      "blocked_requirement": "container/OS-level network isolation for the forecaster",
+      "root_cause": "single-container environment; LLM API is a required network dependency; no per-process egress policy control",
+      "internal_or_external": "external (infrastructure)",
+      "alternatives": [
+        {"name": "unshare -n network namespace", "verdict": "REJECTED: kills the required LLM API access"},
+        {"name": "pre-frozen capsules + no retrieval code path + sealed store guard + freeze hashes", "verdict": "SELECTED: the runtime consumes prebuilt_bundle (no retrieval call sites on the replay path); resolution isolation is code-enforced; hashes detect tampering"}
+      ],
+      "selected": "process-level isolation, honestly labeled PARTIAL on every row",
+      "residual_limitation": "a hostile forecaster process could fetch the internet; nothing in the code does",
+      "continue": true
+    }
+  ]
+}

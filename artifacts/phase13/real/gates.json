@@ -1,0 +1,79 @@
+{
+ "n_tasks": 102,
+ "n_ok": 99,
+ "n_excluded": 3,
+ "randomized_bucket_mean_lift": -0.04441,
+ "randomized_bucket_lift_ci95_clustered": [
+  -0.08229,
+  -0.01176
+ ],
+ "randomized_bucket_ci_n_clusters": 5,
+ "lift_by_bucket": {
+  "randomized": {
+   "mean_lift": -0.04441,
+   "ci95_clustered": [
+    -0.08229,
+    -0.01176
+   ],
+   "n_clusters": 5,
+   "n_tasks": 50
+  },
+  "bandit": {
+   "mean_lift": 0.0044,
+   "ci95_clustered": [
+    0.00311,
+    0.00575
+   ],
+   "n_clusters": 17,
+   "n_tasks": 17
+  },
+  "quasi": {
+   "mean_lift": 559.97604,
+   "ci95_clustered": [
+    -58.94991,
+    1995.22254
+   ],
+   "n_clusters": 5,
+   "n_tasks": 16
+  },
+  "sequential": {
+   "mean_lift": 2.26627,
+   "ci95_clustered": [
+    -0.30809,
+    4.67256
+   ],
+   "n_clusters": 16,
+   "n_tasks": 16
+  }
+ },
+ "share_v2_beats_random": 0.6465,
+ "share_v2_beats_noaction": 0.7778,
+ "share_v2_beats_predictive_max": 0.7313,
+ "share_v2_beats_uplift_simple": 0.7015,
+ "sequential_beats_greedy_share": 0.6875,
+ "bandit_ope_recovers_oracle_share": 1.0,
+ "quasi_design_vs_naive_median_gap": 1.08438,
+ "quasi_design_flips_naive_sign_share": 0.25,
+ "policy_value_calibration_mae": 0.00194,
+ "n_calibration_points": 50,
+ "excluded_reasons": [
+  {
+   "task_id": "quasi_jtrain_00",
+   "reason": "design estimand not computable on this slice"
+  },
+  {
+   "task_id": "quasi_jtrain_01",
+   "reason": "design estimand not computable on this slice"
+  },
+  {
+   "task_id": "quasi_jtrain_02",
+   "reason": "design estimand not computable on this slice"
+  }
+ ],
+ "wall_s": 37.8,
+ "splits_run": [
+  "calibration",
+  "development",
+  "validation"
+ ]
+}

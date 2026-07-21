@@ -1,0 +1,1895 @@
+{
+ "bundle_id": "eb_dae2ad",
+ "question": "Will the amendment to the housing bill be adopted?",
+ "as_of": 1683676800.0,
+ "compiler_plan_hash": "53316e68718a",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_4aa28334ae",
+   "claim_or_quantity": "majority_rule",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-10",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "legislative_body",
+    "bill_sponsor",
+    "committee_chair"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_b9ca631118",
+   "claim_or_quantity": "value/context of legislators.undecided.voting_lean",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "legislators.undecided.voting_lean",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-10",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_987579b057",
+   "claim_or_quantity": "value/context of legislators.majority_party.party_discipline",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "legislators.majority_party.party_discipline",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-10",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f014590fa9",
+   "claim_or_quantity": "value/context of legislators.minority_party.cross_party_support",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "legislators.minority_party.cross_party_support",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-10",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_818936b74a",
+   "claim_or_quantity": "evidence discriminating structural hypothesis party_line_vote",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:party_line_vote",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-10",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_45ea374960",
+   "claim_or_quantity": "evidence discriminating structural hypothesis bipartisan_support",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:bipartisan_support",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-10",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_227ce19ba1",
+   "claim_or_quantity": "decision rules / process of legislative_body",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "legislative_body",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-10",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_4aa28334ae",
+   "terms": "amendment housing bill adopted legislative body bill sponsor committee chair",
+   "after": "2022-12-11",
+   "before": "2023-05-10",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_b9ca631118",
+   "terms": "legislators undecided voting lean",
+   "after": "2022-12-11",
+   "before": "2023-05-10",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_987579b057",
+   "terms": "legislators majority party discipline",
+   "after": "2022-12-11",
+   "before": "2023-05-10",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_4aa28334ae",
+   "logical_query": "amendment housing bill adopted legislative body bill sponsor committee chair after:2022-12-11 before:2023-05-10",
+   "wire_url": "https://news.google.com/rss/search?q=amendment+housing+bill+adopted+legislative+body+bill+sponsor+committee+chair+after%3A2022-12-11+before%3A2023-05-10&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-11",
+   "before_date": "2023-05-10",
+   "retrieved_at": 1783906815.899044,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:40:16 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1pBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcDS0XL7EJfJgwYz6TknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCTGThi\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "c096f35d202e44a6339f0845e03989e92184bcdb0d61cfb832d9c0f7bada8a85",
+   "n_bytes": 28422,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.644
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_b9ca631118",
+   "logical_query": "legislators undecided voting lean after:2022-12-11 before:2023-05-10",
+   "wire_url": "https://news.google.com/rss/search?q=legislators+undecided+voting+lean+after%3A2022-12-11+before%3A2023-05-10&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-11",
+   "before_date": "2023-05-10",
+   "retrieved_at": 1783906816.5452905,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:40:17 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII0JBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcjS0XL7EJ7Pg-3VFJOSm_MD4lv6S4uCAnsTijOLWoLLUo3sjAyMzA3MBMz8AkvsAAAGcrOD0\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "f11686f1d897065362dd17c063af61a9181d2901c695ab8ab4a46cc7059d9bcd",
+   "n_bytes": 3371,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.509
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_987579b057",
+   "logical_query": "legislators majority party discipline after:2022-12-11 before:2023-05-10",
+   "wire_url": "https://news.google.com/rss/search?q=legislators+majority+party+discipline+after%3A2022-12-11+before%3A2023-05-10&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-11",
+   "before_date": "2023-05-10",
+   "retrieved_at": 1783906817.0554821,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:40:17 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw1ZBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD0dhy8RKbwI71n88xKSkn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAn703BQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "dfe1dcce86995b29a7881b02325d80e96a06aebb28324b52383cdc67e6df4a13",
+   "n_bytes": 9372,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 6,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.569
+  }
+ ],
+ "raw_content_refs": [
+  "c096f35d202e44a6339f0845e03989e92184bcdb0d61cfb832d9c0f7bada8a85",
+  "dfe1dcce86995b29a7881b02325d80e96a06aebb28324b52383cdc67e6df4a13",
+  "f11686f1d897065362dd17c063af61a9181d2901c695ab8ab4a46cc7059d9bcd"
+ ],
+ "documents": [
+  {
+   "id": "fb3239cab9262265",
+   "source": "Spotlight PA",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQSkNkLUIxTnB6Q0lHcFF1MUZaTmgwQ3FmbFdyUE5MTndiUUtVVXljR25xaW9KdEp1WFd6cFJUYUlVOURaWi1mcjZ0WU9NMUFwT29CV09BbnA1VWFJZkxuMG5KemNaRjVpVmVTS0NhTjhDWW9oSEh1Vm5RcGE1VTIxWXFSTWN6VndhWEZ5dUFMRUtlaUFJQUZmOS1Rdw?oc=5",
+   "title": "Guide to proposed changes in the Pa. Constitution - Spotlight PA",
+   "text": "Guide to proposed changes in the Pa. Constitution - Spotlight PA. Guide to proposed changes in the Pa. Constitution Spotlight PA",
+   "content_hash": "4932be777b2b64c2",
+   "raw_feed_hash": "c096f35d202e44a6339f0845e03989e92184bcdb0d61cfb832d9c0f7bada8a85",
+   "published_at": 1682665200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_4aa28334ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f1fb231a3077d48e",
+   "source": "Montana Free Press",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQUmpsSGNfUTN4YmpnMVZkdVpQNkN6QXpnNkxBSmlJWW9YWFlSQUxZU25UOUtaQnl4azJLSmpyZ2xyQ3hkaHdBRGdUTjB3TFJSMzd1WXNZQ25lYk9YM3FoV1lRclphTTJiNXg5VVBwYVBraFhsN2NYbkhvUVFWUHdkRTY0SlRBdUFfbEFmbkhZRmxnWEU?oc=5",
+   "title": "The Senate\u2019s infrastructure spending spree - Montana Free Press",
+   "text": "The Senate\u2019s infrastructure spending spree - Montana Free Press. The Senate\u2019s infrastructure spending spree Montana Free Press",
+   "content_hash": "e52d0f8d2e56f869",
+   "raw_feed_hash": "c096f35d202e44a6339f0845e03989e92184bcdb0d61cfb832d9c0f7bada8a85",
+   "published_at": 1682319600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_4aa28334ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a7dba39ecaca2ffd",
+   "source": "Colorado Newsline",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOYnI4WURrNkdOM3dCVkVJVTJ0N013RDNVMUg0cy00VnN0eFVWM01wLUhCSkh5RWlKNVlLVWI3OURnb0JBRnpieXZyYVJGNkxsU3JFUkhlSW5WRzl1VGtfdVVJQ2JYWmVmWEcxZjR4UWEwekh6dWEzMDc0Y2lrNmJ6U2xzdFA5QVpRNFBlSzVzX0VxUGlQczgxZzFVQ2tFTTN3b1d5QlVMTHlsTC1sNFV0N1d2R1A3Q25VLWxWMTY1VQ?oc=5",
+   "title": "Proposed parents\u2019 bill of rights constitutional amendment dies in Colorado Legislature - Colorado Newsline",
+   "text": "Proposed parents\u2019 bill of rights constitutional amendment dies in Colorado Legislature - Colorado Newsline. Proposed parents\u2019 bill of rights constitutional amendment dies in Colorado Legislature Colorado Newsline",
+   "content_hash": "ef9985efc16353d9",
+   "raw_feed_hash": "c096f35d202e44a6339f0845e03989e92184bcdb0d61cfb832d9c0f7bada8a85",
+   "published_at": 1683183600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_4aa28334ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "67bb3b07da15e8b1",
+   "source": "Maryland Matters",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPb0VzNzhqRGhLdklJbzM1bDFVYzEwVFdwUzljakdlZmN1N3JlNVprZnZqTlZLYXAta3Y2dWNrT0tSTHBPYmloZDFEaFJZci1uREZsa2c0dzRtMXlLNzZ0UTVGVWJ0NjRFRUJqQ3FFbG5XY1hfcTI2Sko3M0RPXzZXb3c0ZS1TNmRBV2pydFdtUWZldnliMFdtUE5iakI5TW1XRWVIS2xYS0M3VlpzUXd4NXdxRlJXNG1jLWJzYjN2SHZ2dEhTeXE0bnQxNzZabkJXZEQ4Rk5hYlRmQWN2ZlBOR3NB?oc=5",
+   "title": "General Assembly passes bill to prohibit carrying guns in sensitive areas like preschools and polling places - Maryland Matters",
+   "text": "General Assembly passes bill to prohibit carrying guns in sensitive areas like preschools and polling places - Maryland Matters. General Assembly passes bill to prohibit carrying guns in sensitive areas like preschools and polling places Maryland Matters",
+   "content_hash": "503541346b544407",
+   "raw_feed_hash": "c096f35d202e44a6339f0845e03989e92184bcdb0d61cfb832d9c0f7bada8a85",
+   "published_at": 1681196400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_4aa28334ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5d6d702fa285a61d",
+   "source": "Arkansas Advocate",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQWkdQWEdoQkJFakVNWlV6M3JMZV9ZNXZSb3kzYl9wYjBIZzU2X2lPYU9JMndhUnh4OXcydTRPRG1LcmZvelR4d3o4ck1yb19ONl9oWHJiWDNYLURSLWRQTHFXQzEtbzNXZmZob2lrOHlCNUJzU2dWWkpuZnFuWXBlOXBSb1BhOTJNX3BoZHNHdHNISFpHOG1FektnNnA0VTRRa190eUNoSmVsei1WY3NXWEJVV283SlFXVFJHVEVlSDZYbTYyWUdMbE9lUQ?oc=5",
+   "title": "Arkansas bill to remove work permit requirement for children under 16 goes to Sanders' desk - Arkansas Advocate",
+   "text": "Arkansas bill to remove work permit requirement for children under 16 goes to Sanders' desk - Arkansas Advocate. Arkansas bill to remove work permit requirement for children under 16 goes to Sanders' desk Arkansas Advocate",
+   "content_hash": "89dfb21076bf96a6",
+   "raw_feed_hash": "c096f35d202e44a6339f0845e03989e92184bcdb0d61cfb832d9c0f7bada8a85",
+   "published_at": 1677744000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_4aa28334ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e72bf99495921907",
+   "source": "The State Journal-Register",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNaUR5SUZ3cF9hcDhkQ1g5UDlNWVhRcS1rbGJPZDBJWHRXa1pod1J0dWU1WERoRWxoV1BtQXl2VDRES3FFdV9oZTg1Rl85S3pUTXE5aUtUT2s4djFCZ3pHWkdhU1l5LU5USUVIZFVLUXJVWFhFOWVfek9HREpQV2VtZ21PZmFJc0U2RC1GSVRwTDNBNmtCbm5OMTNqTGdOYkZhdWRud0o4c1ZWdnF5di1EMWNhY0JFNWFiblh5T19pTFRUYUs1NFpodFoxcGVPNXBtM0E?oc=5",
+   "title": "March madness in the General Assembly: Hundreds of bills pass House, Senate - The State Journal-Register",
+   "text": "March madness in the General Assembly: Hundreds of bills pass House, Senate - The State Journal-Register. March madness in the General Assembly: Hundreds of bills pass House, Senate The State Journal-Register",
+   "content_hash": "6eab20987aedc531",
+   "raw_feed_hash": "c096f35d202e44a6339f0845e03989e92184bcdb0d61cfb832d9c0f7bada8a85",
+   "published_at": 1679727600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_4aa28334ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3ad90c56f4116011",
+   "source": "Virginia Mercury",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPV1pneXhMN1FxZExGSGR4MXVvSWl4UmpGN1dSUkRMbjNVT2JwQzR3YldZaE1nbTlFY2xJZXRPNXNPOWMtRW1iRnlNQ3hqcURrdWZtMUQ5cEFsbkNoYWtCMVB6UzlyNHJoMTV6WndmaDZjTGRDRk5oNTgyb3dkMF81b2xndmo2VUFOZnZuYWo4MlFOOThKVF9CcmluQy1YX3kwX0tpVHZNeDhUamQ5MTVzc0oySGhxUQ?oc=5",
+   "title": "GOP bill establishing a federal parental bill of rights passed in U.S. House - Virginia Mercury",
+   "text": "GOP bill establishing a federal parental bill of rights passed in U.S. House - Virginia Mercury. GOP bill establishing a federal parental bill of rights passed in U.S. House Virginia Mercury",
+   "content_hash": "dafce61950a249af",
+   "raw_feed_hash": "c096f35d202e44a6339f0845e03989e92184bcdb0d61cfb832d9c0f7bada8a85",
+   "published_at": 1679900400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_4aa28334ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "07f116cf5414bd23",
+   "source": "EdNC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNVjF2c1pnX3FXTm83ckhGUEl4ejRQN3laMS1kSUJjMTVuZXBVMmFSYTNtX2UyZFRvWEI5c2pPMTU4VmFWY3RNc29MdVlQVl9ETEJsdGs0TXdNQTVrTWEyWFFNdFQwODJYUjBIMkY5Qzl0TmV2SzljTUw5Wm5QX2pXVzgwdGt3NTBaVFpURDFVRUxtbFIwdHc?oc=5",
+   "title": "Anti-critical race theory bill taken up by House education committee again - EdNC",
+   "text": "Anti-critical race theory bill taken up by House education committee again - EdNC. Anti-critical race theory bill taken up by House education committee again EdNC",
+   "content_hash": "2e8232be5c78d96b",
+   "raw_feed_hash": "c096f35d202e44a6339f0845e03989e92184bcdb0d61cfb832d9c0f7bada8a85",
+   "published_at": 1678777200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_4aa28334ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "715e53ccdb161339",
+   "source": "Mackinac Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBselpzYVgxUDlRamhVb1pXZS1jRXkzckIzZzFMNVFMaW52RjAxcml4QTdRa0ZfdjdhcHZ3MnNxT01OZmwzSmJTQjRONzh6ekZLNkN6NG9Wd2EwTndzTWlPWjd3SVg4eGhaOFBkdmQ4RHlZdV8tY3hlVUE2NA?oc=5",
+   "title": "Polls on Michigan\u2019s Right-to-Work Law - Mackinac Center",
+   "text": "Polls on Michigan\u2019s Right-to-Work Law - Mackinac Center. Polls on Michigan\u2019s Right-to-Work Law Mackinac Center",
+   "content_hash": "bf7759a4b62cf137",
+   "raw_feed_hash": "f11686f1d897065362dd17c063af61a9181d2901c695ab8ab4a46cc7059d9bcd",
+   "published_at": 1679468400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_b9ca631118",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0d15aaeca166695c",
+   "source": "270toWin.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQVWJGbEMtWFFEZERmSDNiT2VjQl85VFBXWFQ2WWNCb3JEZGM3NDl0emJ0enVXVkZuUWdfUDJHd0xmWFQxUVhJQzFGQWVpVWE0bFFMdjRPdlRBTEFjNHVCWVlKWkxFWERBMlMwdmEteWlZZ0dvQllGd1czcjdkZm1KQXp3N1E1NFRUVGxUVjFzVERzalk?oc=5",
+   "title": "The 2024 U.S. House Interactive Map is Live - 270toWin.com",
+   "text": "The 2024 U.S. House Interactive Map is Live - 270toWin.com. The 2024 U.S. House Interactive Map is Live 270toWin.com",
+   "content_hash": "81e93afdc086270c",
+   "raw_feed_hash": "f11686f1d897065362dd17c063af61a9181d2901c695ab8ab4a46cc7059d9bcd",
+   "published_at": 1672214400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_b9ca631118",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8b5fa10f96b9fa4a",
+   "source": "UVA Batten",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQS2tWRnN1clR5S3lSaG1rNkROakhLNmpNM1hJTzdUcWp4OEluZlYtdGtzSklSU293NVRUdW03bS05a3Vpa2I2TTRDd0UwQXVrc3pEVkNyb0V2OGlXTktjTFZ3RGdXSzNDanFhZlNGZEVuUzh3TExid2xMam1idm1tSng3NDkyakFiTUdOSDU3MzJiR3h4dk82VGcyYlRjTnBfT1pSMFBXYUs?oc=5",
+   "title": "Highlights from the New 117th Congress Legislative Effectiveness Scores - UVA Batten",
+   "text": "Highlights from the New 117th Congress Legislative Effectiveness Scores - UVA Batten. Highlights from the New 117th Congress Legislative Effectiveness Scores UVA Batten",
+   "content_hash": "36a5ef4e4b219adc",
+   "raw_feed_hash": "dfe1dcce86995b29a7881b02325d80e96a06aebb28324b52383cdc67e6df4a13",
+   "published_at": 1679295600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_987579b057",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3834b6ced0010bc0",
+   "source": "The Morning Call",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOeGdyZ1lXN2thUWJxQ29maHdiMkJlajUzcm4zNGRpUTdKYU1WVFpLX0FYdVlycUkyeWxQR0NpVWFPaVFOekl5U01oWG9jdnpJUmRHNUFycktwYklUR1FLY1FtZ01tZjIzWXUtcnNSSmhKT3pEeTRNdmJqUEpfZUxHRlFnUm4zZXJrMXJ1N3IwT3c3RDNyUGp4cnpIN2ZvVERkaWZKYVNGLXRSU1hjaGNESmJwRU1odw?oc=5",
+   "title": "Commentary by state Rep. Joshua Siegel: How to fix the broken political system in Harrisburg and Washington - The Morning Call",
+   "text": "Commentary by state Rep. Joshua Siegel: How to fix the broken political system in Harrisburg and Washington - The Morning Call. Commentary by state Rep. Joshua Siegel: How to fix the broken political system in Harrisburg and Washington The Morning Call",
+   "content_hash": "b8ab2d82ac5ff5ee",
+   "raw_feed_hash": "dfe1dcce86995b29a7881b02325d80e96a06aebb28324b52383cdc67e6df4a13",
+   "published_at": 1675324800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_987579b057",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a85e8f8247f36a4c",
+   "source": "Politico",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQd1pncURURTVham5WU29wcnVkbW51NDMwQ3hwdGpORzlMTWNNS2ZBdkF5LTdWcVl3X3Q5TUZRSUY2RTRZT3JmR2M0TUY5Z0E0RzdlVThiT01nWlU0T3RKdkl3TlhQLTB5MjNGV3AyX1l0ZDBtb0dFenNwMm1ZT0FpcU5BVUxJN0d4WGJsZ2pyRXlPS2I4?oc=5",
+   "title": "Judge rejects Zooey Zephyr\u2019s effort to return to Montana House - Politico",
+   "text": "Judge rejects Zooey Zephyr\u2019s effort to return to Montana House - Politico. Judge rejects Zooey Zephyr\u2019s effort to return to Montana House Politico",
+   "content_hash": "0b7733ae7c47aaf4",
+   "raw_feed_hash": "dfe1dcce86995b29a7881b02325d80e96a06aebb28324b52383cdc67e6df4a13",
+   "published_at": 1683010800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_987579b057",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2d30fb03887a6a7b",
+   "source": "EL PA\u00cdS English",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOZFUtd0llZnNVbjdub1FBYkQ3OVc5X2N6MlRZeUk2YnR6TVpLX08tampsRnVoWTJkS3UzMHlzSmZfZjJkbVkxTWpuZTB2b1RVZDNTLVRUZ0FDVVFWWTZFYXpBZ2Q1bmJlN1E5WjVUcjlucmpqZllSUHZwYVhVVmc4dFNYMlNjeGVibXJHM1hlNFYtd09RanhCTU11dWZVcnZtWlRpMUVHdC1Md9IBvgFBVV95cUxPa0oxWWRqbnRTMEI4RTNPV1NJSjF2aFR1QmVFSE1FbjR0U1RJNHpfemxWY3VVUEdleWlTSVo2azROcHFONVpPQTJjazM4LU83bi1mY21BMUlwTmt1WFQyQVNqSE9kR0cwSVg3TV91NWZLOUQtTXdDNzdyQ2RvMjJLZk04ZlNkVUVibVBDV3o0VFhIVTdHejgzWkxReHNtNG9GV0F3Snc5bzkyUUVmWktPNldBMnJ4alZtYkhhOEdR?oc=5",
+   "title": "Xi Jinping awarded third term as China\u2019s president - EL PA\u00cdS English",
+   "text": "Xi Jinping awarded third term as China\u2019s president - EL PA\u00cdS English. Xi Jinping awarded third term as China\u2019s president EL PA\u00cdS English",
+   "content_hash": "a2f9da17d66a9dcf",
+   "raw_feed_hash": "dfe1dcce86995b29a7881b02325d80e96a06aebb28324b52383cdc67e6df4a13",
+   "published_at": 1678435200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_987579b057",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "797a16d2404c92ba",
+   "source": "The Constitution Society",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE00Ymx5cHB1UndEenNMZnVHeGpCclV1TFh6UVlWREpVNFphb0JkdmV0Y19Xckt2aVEyX1FSNGFCNUR4cjRKNUxXTC1wYk4zM3d0NHF6SEpIUTFabkJ6?oc=5",
+   "title": "A fair comparison? Israel\u2019s reforms and the UK - The Constitution Society",
+   "text": "A fair comparison? Israel\u2019s reforms and the UK - The Constitution Society. A fair comparison? Israel\u2019s reforms and the UK The Constitution Society",
+   "content_hash": "0d2cab604dac8598",
+   "raw_feed_hash": "dfe1dcce86995b29a7881b02325d80e96a06aebb28324b52383cdc67e6df4a13",
+   "published_at": 1677744000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_987579b057",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "298c0d1b48f4cabe",
+   "source": "The Dharma Dispatch",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQcEFKaFN1SnZObC1GSG5VeElDcTdnaEVhd3FuSXMxWkp4YVZBblRDVEwweTVSRVNxX1RMVEI3S0RwWE5LeHFVM2ZEaWFQRWo0QUZNQ3FPUWdzNkRQc3RxN204LU1GZFNBZlEyUEpmR3plTEJDZ045d2RlVUtTSHhOcUZmY0NOWEp4RlctZGsxVnZZNnpsUExWUFctVmFDbDNVaHpNVWRyY0Z2SjRWbkE0SWY5YjM2ZEk?oc=5",
+   "title": "How the Post-Independence Congress Stifled Freedom of Expression Within its Own Party - The Dharma Dispatch",
+   "text": "How the Post-Independence Congress Stifled Freedom of Expression Within its Own Party - The Dharma Dispatch. How the Post-Independence Congress Stifled Freedom of Expression Within its Own Party The Dharma Dispatch",
+   "content_hash": "6359a435be7b333a",
+   "raw_feed_hash": "dfe1dcce86995b29a7881b02325d80e96a06aebb28324b52383cdc67e6df4a13",
+   "published_at": 1680764400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_987579b057",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "fb3239cab9262265:c0",
+   "source_id": "fb3239cab9262265",
+   "subject": "Guide to proposed changes in the Pa. Constitution",
+   "predicate": "is",
+   "object": "a guide",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Guide to proposed changes in the Pa. Constitution - Spotlight PA",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682665200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Guide to proposed changes in the Pa. Constitution",
+    "Spotlight PA"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7d8e98f9a0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4aa28334ae"
+   }
+  },
+  {
+   "claim_id": "fb3239cab9262265:c1",
+   "source_id": "fb3239cab9262265",
+   "subject": "Guide to proposed changes in the Pa. Constitution",
+   "predicate": "is published by",
+   "object": "Spotlight PA",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Guide to proposed changes in the Pa. Constitution - Spotlight PA",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682665200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Guide to proposed changes in the Pa. Constitution",
+    "Spotlight PA"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7d8e98f9a0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4aa28334ae"
+   }
+  },
+  {
+   "claim_id": "715e53ccdb161339:c0",
+   "source_id": "715e53ccdb161339",
+   "subject": "Polls on Michigan\u2019s Right-to-Work Law",
+   "predicate": "are associated with",
+   "object": "Mackinac Center",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Polls on Michigan\u2019s Right-to-Work Law - Mackinac Center",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679468400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Mackinac Center"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_2a93050ad8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_b9ca631118"
+   }
+  },
+  {
+   "claim_id": "8b5fa10f96b9fa4a:c0",
+   "source_id": "8b5fa10f96b9fa4a",
+   "subject": "New 117th Congress Legislative Effectiveness Scores",
+   "predicate": "are from",
+   "object": "UVA Batten",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Highlights from the New 117th Congress Legislative Effectiveness Scores - UVA Batten",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679295600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "New 117th Congress Legislative Effectiveness Scores",
+    "UVA Batten"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_caeb4c099e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_987579b057"
+   }
+  },
+  {
+   "claim_id": "f1fb231a3077d48e:c0",
+   "source_id": "f1fb231a3077d48e",
+   "subject": "The Senate",
+   "predicate": "is engaged in",
+   "object": "infrastructure spending spree",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Senate\u2019s infrastructure spending spree",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682319600.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Senate"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d4c62310d4",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4aa28334ae"
+   }
+  },
+  {
+   "claim_id": "0d15aaeca166695c:c0",
+   "source_id": "0d15aaeca166695c",
+   "subject": "2024 U.S. House Interactive Map",
+   "predicate": "is live",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The 2024 U.S. House Interactive Map is Live - 270toWin.com",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672214400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "2024 U.S. House Interactive Map",
+    "270toWin.com"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_abd6844491",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_b9ca631118"
+   }
+  },
+  {
+   "claim_id": "0d15aaeca166695c:c1",
+   "source_id": "0d15aaeca166695c",
+   "subject": "2024 U.S. House Interactive Map",
+   "predicate": "is live",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The 2024 U.S. House Interactive Map is Live 270toWin.com",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672214400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "2024 U.S. House Interactive Map",
+    "270toWin.com"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_abd6844491",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_b9ca631118"
+   }
+  },
+  {
+   "claim_id": "3834b6ced0010bc0:c0",
+   "source_id": "3834b6ced0010bc0",
+   "subject": "Commentary",
+   "predicate": "authored by",
+   "object": "state Rep. Joshua Siegel",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Commentary by state Rep. Joshua Siegel: How to fix the broken political system in Harrisburg and Washington - The Morning Call",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675324800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "state Rep. Joshua Siegel",
+    "The Morning Call"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9100772354",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_987579b057"
+   }
+  },
+  {
+   "claim_id": "3834b6ced0010bc0:c1",
+   "source_id": "3834b6ced0010bc0",
+   "subject": "Commentary",
+   "predicate": "has title",
+   "object": "How to fix the broken political system in Harrisburg and Washington",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Commentary by state Rep. Joshua Siegel: How to fix the broken political system in Harrisburg and Washington - The Morning Call",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675324800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "state Rep. Joshua Siegel",
+    "The Morning Call"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9100772354",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_987579b057"
+   }
+  },
+  {
+   "claim_id": "3834b6ced0010bc0:c2",
+   "source_id": "3834b6ced0010bc0",
+   "subject": "Commentary",
+   "predicate": "published by",
+   "object": "The Morning Call",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Commentary by state Rep. Joshua Siegel: How to fix the broken political system in Harrisburg and Washington - The Morning Call",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675324800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "state Rep. Joshua Siegel",
+    "The Morning Call"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9100772354",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_987579b057"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Guide to proposed changes in the Pa. Constitution",
+   "normalized": "guide to proposed changes in pa constitution",
+   "candidates": [
+    {
+     "entity_id": "ent_56419fb9e5",
+     "canonical": "guide to proposed changes in pa constitution",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Guide to proposed changes in the Pa. Constitution",
+      "Guide to proposed changes in the Pa. Constitution"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Spotlight PA",
+   "normalized": "spotlight pa",
+   "candidates": [
+    {
+     "entity_id": "ent_7b705dc292",
+     "canonical": "spotlight pa",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Spotlight PA",
+      "Spotlight PA"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Guide to proposed changes in the Pa. Constitution",
+   "normalized": "guide to proposed changes in pa constitution",
+   "candidates": [
+    {
+     "entity_id": "ent_56419fb9e5",
+     "canonical": "guide to proposed changes in pa constitution",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Guide to proposed changes in the Pa. Constitution",
+      "Guide to proposed changes in the Pa. Constitution"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Spotlight PA",
+   "normalized": "spotlight pa",
+   "candidates": [
+    {
+     "entity_id": "ent_7b705dc292",
+     "canonical": "spotlight pa",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Spotlight PA",
+      "Spotlight PA"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Mackinac Center",
+   "normalized": "mackinac center",
+   "candidates": [
+    {
+     "entity_id": "ent_d744acc280",
+     "canonical": "mackinac center",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Mackinac Center"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "New 117th Congress Legislative Effectiveness Scores",
+   "normalized": "new 117th congress legislative effectiveness scores",
+   "candidates": [
+    {
+     "entity_id": "ent_bc2dbdb0d2",
+     "canonical": "new 117th congress legislative effectiveness scores",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "New 117th Congress Legislative Effectiveness Scores"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "UVA Batten",
+   "normalized": "uva batten",
+   "candidates": [
+    {
+     "entity_id": "ent_5fb3792346",
+     "canonical": "uva batten",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "UVA Batten"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Senate",
+   "normalized": "senate",
+   "candidates": [
+    {
+     "entity_id": "ent_c81927b569",
+     "canonical": "senate",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "The Senate"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "2024 U.S. House Interactive Map",
+   "normalized": "2024 u s house interactive map",
+   "candidates": [
+    {
+     "entity_id": "ent_1342b2dfb8",
+     "canonical": "2024 u s house interactive map",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "2024 U.S. House Interactive Map",
+      "2024 U.S. House Interactive Map"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "270toWin.com",
+   "normalized": "270towin com",
+   "candidates": [
+    {
+     "entity_id": "ent_d548b26790",
+     "canonical": "270towin com",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "270toWin.com",
+      "270toWin.com"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "2024 U.S. House Interactive Map",
+   "normalized": "2024 u s house interactive map",
+   "candidates": [
+    {
+     "entity_id": "ent_1342b2dfb8",
+     "canonical": "2024 u s house interactive map",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "2024 U.S. House Interactive Map",
+      "2024 U.S. House Interactive Map"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "270toWin.com",
+   "normalized": "270towin com",
+   "candidates": [
+    {
+     "entity_id": "ent_d548b26790",
+     "canonical": "270towin com",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "270toWin.com",
+      "270toWin.com"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "state Rep. Joshua Siegel",
+   "normalized": "state joshua siegel",
+   "candidates": [
+    {
+     "entity_id": "ent_5908cc98aa",
+     "canonical": "state joshua siegel",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "state Rep. Joshua Siegel",
+      "state Rep. Joshua Siegel",
+      "state Rep. Joshua Siegel"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Morning Call",
+   "normalized": "morning call",
+   "candidates": [
+    {
+     "entity_id": "ent_077c367982",
+     "canonical": "morning call",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "The Morning Call",
+      "The Morning Call",
+      "The Morning Call"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "state Rep. Joshua Siegel",
+   "normalized": "state joshua siegel",
+   "candidates": [
+    {
+     "entity_id": "ent_5908cc98aa",
+     "canonical": "state joshua siegel",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "state Rep. Joshua Siegel",
+      "state Rep. Joshua Siegel",
+      "state Rep. Joshua Siegel"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Morning Call",
+   "normalized": "morning call",
+   "candidates": [
+    {
+     "entity_id": "ent_077c367982",
+     "canonical": "morning call",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "The Morning Call",
+      "The Morning Call",
+      "The Morning Call"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "state Rep. Joshua Siegel",
+   "normalized": "state joshua siegel",
+   "candidates": [
+    {
+     "entity_id": "ent_5908cc98aa",
+     "canonical": "state joshua siegel",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "state Rep. Joshua Siegel",
+      "state Rep. Joshua Siegel",
+      "state Rep. Joshua Siegel"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Morning Call",
+   "normalized": "morning call",
+   "candidates": [
+    {
+     "entity_id": "ent_077c367982",
+     "canonical": "morning call",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "The Morning Call",
+      "The Morning Call",
+      "The Morning Call"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "fb3239cab9262265": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1682665200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682665200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f1fb231a3077d48e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1682319600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682319600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a7dba39ecaca2ffd": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1683183600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683183600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "67bb3b07da15e8b1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1681196400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681196400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "5d6d702fa285a61d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1677744000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677744000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e72bf99495921907": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1679727600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679727600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3ad90c56f4116011": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1679900400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679900400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "07f116cf5414bd23": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1678777200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678777200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "715e53ccdb161339": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1679468400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679468400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0d15aaeca166695c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1672214400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672214400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8b5fa10f96b9fa4a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1679295600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679295600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3834b6ced0010bc0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1675324800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675324800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a85e8f8247f36a4c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1683010800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683010800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2d30fb03887a6a7b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1678435200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678435200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "797a16d2404c92ba": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1677744000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677744000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "298c0d1b48f4cabe": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1683676800.0,
+   "claimed_pubdate_ts": 1680764400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680764400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_7d8e98f9a0",
+   "member_ids": [
+    "fb3239cab9262265"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Spotlight PA",
+   "primary_source": "Spotlight PA",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d4c62310d4",
+   "member_ids": [
+    "f1fb231a3077d48e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Montana Free Press",
+   "primary_source": "Montana Free Press",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a4caf4d734",
+   "member_ids": [
+    "a7dba39ecaca2ffd"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Colorado Newsline",
+   "primary_source": "Colorado Newsline",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c3bb0c67a4",
+   "member_ids": [
+    "67bb3b07da15e8b1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Maryland Matters",
+   "primary_source": "Maryland Matters",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d4f419b859",
+   "member_ids": [
+    "5d6d702fa285a61d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Arkansas Advocate",
+   "primary_source": "Arkansas Advocate",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_54351237b0",
+   "member_ids": [
+    "e72bf99495921907"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The State Journal-Register",
+   "primary_source": "The State Journal-Register",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_23a5eeb6b8",
+   "member_ids": [
+    "3ad90c56f4116011"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Virginia Mercury",
+   "primary_source": "Virginia Mercury",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_46d2fc01c1",
+   "member_ids": [
+    "07f116cf5414bd23"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "EdNC",
+   "primary_source": "EdNC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2a93050ad8",
+   "member_ids": [
+    "715e53ccdb161339"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Mackinac Center",
+   "primary_source": "Mackinac Center",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_abd6844491",
+   "member_ids": [
+    "0d15aaeca166695c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "270toWin.com",
+   "primary_source": "270toWin.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_caeb4c099e",
+   "member_ids": [
+    "8b5fa10f96b9fa4a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "UVA Batten",
+   "primary_source": "UVA Batten",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9100772354",
+   "member_ids": [
+    "3834b6ced0010bc0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Morning Call",
+   "primary_source": "The Morning Call",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_664ffc2086",
+   "member_ids": [
+    "a85e8f8247f36a4c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Politico",
+   "primary_source": "Politico",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5f3c576913",
+   "member_ids": [
+    "2d30fb03887a6a7b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "EL PA\u00cdS English",
+   "primary_source": "EL PA\u00cdS English",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_002fe606c9",
+   "member_ids": [
+    "797a16d2404c92ba"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Constitution Society",
+   "primary_source": "The Constitution Society",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3e9fd67b89",
+   "member_ids": [
+    "298c0d1b48f4cabe"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Dharma Dispatch",
+   "primary_source": "The Dharma Dispatch",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "fb3239cab9262265:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682665200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "fb3239cab9262265:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682665200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "715e53ccdb161339:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679468400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8b5fa10f96b9fa4a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679295600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f1fb231a3077d48e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682319600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0d15aaeca166695c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672214400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0d15aaeca166695c:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672214400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3834b6ced0010bc0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675324800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3834b6ced0010bc0:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675324800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3834b6ced0010bc0:c2",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675324800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "fb3239cab9262265:c0",
+  "fb3239cab9262265:c1",
+  "715e53ccdb161339:c0",
+  "8b5fa10f96b9fa4a:c0",
+  "f1fb231a3077d48e:c0",
+  "0d15aaeca166695c:c0",
+  "0d15aaeca166695c:c1",
+  "3834b6ced0010bc0:c0",
+  "3834b6ced0010bc0:c1",
+  "3834b6ced0010bc0:c2"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_4aa28334ae": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_b9ca631118": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_987579b057": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_f014590fa9": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_818936b74a": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_45ea374960": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_227ce19ba1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_f014590fa9",
+  "req_818936b74a",
+  "req_45ea374960",
+  "req_227ce19ba1"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 16.607,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "4bbd449ceb37a610",
+ "bundle_hash": "4bbd449ceb37a610",
+ "_persisted_at": "2026-07-13T01:40:35Z"
+}

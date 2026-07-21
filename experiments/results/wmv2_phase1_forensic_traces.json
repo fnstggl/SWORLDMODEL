@@ -1,0 +1,3820 @@
+{
+ "_meta": {
+  "n": 16,
+  "llm_calls": 11,
+  "est_cost_usd": 0.0267,
+  "runtime_s": 183.7
+ },
+ "traces": {
+  "messaging": {
+   "question": "Will my manager reply to the budget-approval email I sent this morning by end of week?",
+   "as_of": "2023-05-01",
+   "horizon": "2023-05-08",
+   "outcome_contract": {
+    "family": "response_occurrence",
+    "options": [
+     "reply",
+     "no_reply"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "A reply is defined as any email response from the manager to the sender's budget-approval email, received by 2023-05-08 23:59:59 local time."
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The manager will either reply or not by end of week; the outcome is whether a reply occurs.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 2,
+   "n_institutions": 1,
+   "n_populations": 0,
+   "n_latents": 4,
+   "sample_entities": [
+    "manager",
+    "sender"
+   ],
+   "sample_latents": [
+    {
+     "path": "manager.attention_to_email",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 1.0
+    },
+    {
+     "path": "manager.decision_style",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "manager.email_reading_habit",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "sender.relationship_with_manager",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.6
+    }
+   ],
+   "accepted_mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "poisson_arrival",
+    "generic_outcome_prior",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "observation_exposure",
+     "no executable operator ('swm.world_model_v2.transi"
+    ]
+   ],
+   "experimental_mechanisms": [
+    "email_reading_attention_allocation"
+   ],
+   "mechanism_tiers": {
+    "manager reads email": 7,
+    "manager decides to reply": 7,
+    "manager sends reply": 7,
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "default_attention",
+     "lean": "neutral",
+     "prior": 0.5
+    },
+    {
+     "id": "delayed_attention",
+     "lean": "weak_no",
+     "prior": 0.3
+    },
+    {
+     "id": "delegation",
+     "lean": "weak_no",
+     "prior": 0.2
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "manager",
+     "sender",
+     "company",
+     "manager.attention_to_email",
+     "manager.decision_style",
+     "manager.email_reading_habit",
+     "sender.relationship_with_manager"
+    ],
+    "marginalized_with_uncertainty": [],
+    "n_particles": 66
+   },
+   "omissions": [
+    {
+     "component": "other employees' emails to manager",
+     "sensitivity": 0.2,
+     "reason": "negligible sensitivity because the question is about a specific email; general v"
+    },
+    {
+     "component": "content of budget email",
+     "sensitivity": 0.1,
+     "reason": "negligible sensitivity because no evidence provided; decision style latent cover"
+    }
+   ],
+   "world_provenance_statuses": {},
+   "n_deltas": 66,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "default_attention": 0.5,
+    "delayed_attention": 0.303,
+    "delegation": 0.197
+   },
+   "delta_log_sample": [
+    {
+     "at": 1683503999.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=neutral"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "no_reply": 0.5303,
+     "reply": 0.4697
+    },
+    "raw_probability": 0.4697,
+    "structural_disagreement": {
+     "default_attention": 0.5,
+     "delayed_attention": 0.303,
+     "delegation": 0.197
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 66,
+     "structural_model_uncertainty": 0.9361,
+     "structural_posterior": {
+      "default_attention": 0.5,
+      "delayed_attention": 0.303,
+      "delegation": 0.197
+     },
+     "state_parameter_uncertainty": 0.2512,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "omitted (negligible-sensitivity): other employees' emails to manager",
+     "omitted (negligible-sensitivity): content of budget email",
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "2d03cd221578"
+   },
+   "plan_hash": "2d03cd221578",
+   "latency_s": 10.85
+  },
+  "negotiation": {
+   "question": "Will the buyer accept our counteroffer of $4.2M for the office building?",
+   "as_of": "2023-04-01",
+   "horizon": "2023-05-01",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "accept",
+     "reject"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "The buyer communicates acceptance of the $4.2M counteroffer by 2023-05-01."
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The buyer's acceptance of the $4.2M counteroffer depends on their reservation price, outside options, negotiation dynamics, and the institutional context of the transaction.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 2,
+   "n_institutions": 1,
+   "n_populations": 1,
+   "n_latents": 6,
+   "sample_entities": [
+    "buyer",
+    "seller"
+   ],
+   "sample_latents": [
+    {
+     "path": "buyer.reservation_price",
+     "candidates": {
+      "mean": 4000000.0,
+      "sd": 500000.0,
+      "lo": 3000000.0,
+      "hi": 5000000.0
+     },
+     "sensitivity": 1.0
+    },
+    {
+     "path": "seller.reservation_price",
+     "candidates": {
+      "mean": 4000000.0,
+      "sd": 250000.0,
+      "lo": 3500000.0,
+      "hi": 4500000.0
+     },
+     "sensitivity": 1.0
+    },
+    {
+     "path": "buyer.outside_options",
+     "candidates": {
+      "mean": 5.0,
+      "sd": 2.5,
+      "lo": 0.0,
+      "hi": 10.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "buyer.patience",
+     "candidates": {
+      "mean": 0.9,
+      "sd": 0.04999999999999999,
+      "lo": 0.8,
+      "hi": 1.0
+     },
+     "sensitivity": 0.5
+    }
+   ],
+   "accepted_mechanisms": [
+    "agent_decision",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "bargaining_rubinstein",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "belief_update_exposure",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "negotiation_concession",
+     "no executable operator ('swm.world_model_v2.regist"
+    ]
+   ],
+   "experimental_mechanisms": [
+    "property_valuation_model"
+   ],
+   "mechanism_tiers": {
+    "buyer_reservation_price_formation": 7,
+    "seller_reservation_price_formation": 7,
+    "bargaining_process": 7,
+    "outside_option_evolution": 7,
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "buyer_has_lower_reservation",
+     "lean": "strong_no",
+     "prior": 0.3
+    },
+    {
+     "id": "buyer_has_higher_reservation",
+     "lean": "strong_yes",
+     "prior": 0.3
+    },
+    {
+     "id": "bargaining_equilibrium",
+     "lean": "neutral",
+     "prior": 0.4
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "buyer",
+     "seller",
+     "commercial_real_estate_market",
+     "real_estate_transaction_framework",
+     "buyer.reservation_price",
+     "seller.reservation_price",
+     "buyer.outside_options",
+     "buyer.patience",
+     "seller.patience",
+     "market_price_trend"
+    ],
+    "marginalized_with_uncertainty": [],
+    "n_particles": 76
+   },
+   "omissions": [
+    {
+     "component": "financing_approval",
+     "sensitivity": 0.1,
+     "reason": "Negligible sensitivity because no evidence of financing contingency; assumed cas"
+    },
+    {
+     "component": "regulatory_approvals",
+     "sensitivity": 0.1,
+     "reason": "Negligible sensitivity because no evidence of zoning or permit issues within the"
+    }
+   ],
+   "world_provenance_statuses": {},
+   "n_deltas": 76,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "buyer_has_lower_reservation": 0.3026,
+    "buyer_has_higher_reservation": 0.3026,
+    "bargaining_equilibrium": 0.3947
+   },
+   "delta_log_sample": [
+    {
+     "at": 1682899199.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=strong_no"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "reject": 0.5,
+     "accept": 0.5
+    },
+    "raw_probability": 0.5,
+    "structural_disagreement": {
+     "buyer_has_lower_reservation": 0.3026,
+     "buyer_has_higher_reservation": 0.3026,
+     "bargaining_equilibrium": 0.3947
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 76,
+     "structural_model_uncertainty": 0.9925,
+     "structural_posterior": {
+      "buyer_has_lower_reservation": 0.3026,
+      "buyer_has_higher_reservation": 0.3026,
+      "bargaining_equilibrium": 0.3947
+     },
+     "state_parameter_uncertainty": 0.2474,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "omitted (negligible-sensitivity): financing_approval",
+     "omitted (negligible-sensitivity): regulatory_approvals",
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "f35562fb6cdd"
+   },
+   "plan_hash": "f35562fb6cdd",
+   "latency_s": 12.28
+  },
+  "organizational_decision": {
+   "question": "Will the engineering VP approve the request to hire two more backend engineers this quarter?",
+   "as_of": "2023-07-01",
+   "horizon": "2023-09-30",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "approve",
+     "reject"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "The VP's final decision as recorded in the company's hiring system or official communication by 2023-09-30."
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The engineering VP will decide whether to approve hiring two backend engineers this quarter, influenced by organizational priorities, resource constraints, and the VP's own decision-making process.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 4,
+   "n_institutions": 2,
+   "n_populations": 2,
+   "n_latents": 6,
+   "sample_entities": [
+    "engineering_vp",
+    "ceo",
+    "cto",
+    "hr_head"
+   ],
+   "sample_latents": [
+    {
+     "path": "engineering_vp.risk_tolerance",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.7
+    },
+    {
+     "path": "engineering_vp.priority_engineering_projects",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "ceo.strategic_priorities",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.6
+    },
+    {
+     "path": "cto.technical_strategy",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.5
+    }
+   ],
+   "accepted_mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "relationship_update",
+    "resource_update",
+    "background_dynamics",
+    "generic_outcome_prior",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [],
+   "experimental_mechanisms": [
+    "organizational_decision_making"
+   ],
+   "mechanism_tiers": {
+    "VP's decision process considering budget, priorities, and advice": 7,
+    "Budget review and allocation": 7,
+    "Potential turnover events affecting workload": 7,
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "budget_constraint_driven",
+     "lean": "weak_yes",
+     "prior": 0.4
+    },
+    {
+     "id": "strategic_priority_driven",
+     "lean": "weak_yes",
+     "prior": 0.4
+    },
+    {
+     "id": "risk_averse_vp",
+     "lean": "weak_no",
+     "prior": 0.2
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "engineering_vp",
+     "ceo",
+     "cto",
+     "engineering_team",
+     "company_leadership",
+     "company_hiring_policy",
+     "quarterly_budget_review",
+     "engineering_vp.risk_tolerance",
+     "engineering_vp.priority_engineering_projects",
+     "ceo.strategic_priorities",
+     "cto.technical_strategy",
+     "engineering_team.backend_engineers.morale",
+     "engineering_team.backend_engineers.turnover_risk"
+    ],
+    "marginalized_with_uncertainty": [
+     "hr_head"
+    ],
+    "n_particles": 76
+   },
+   "omissions": [
+    {
+     "component": "company stock price",
+     "sensitivity": 0.1,
+     "reason": "negligible sensitivity because VP's hiring decision is unlikely to be materially"
+    },
+    {
+     "component": "external market conditions for engineers",
+     "sensitivity": 0.1,
+     "reason": "negligible sensitivity because the decision is internal and not directly driven "
+    }
+   ],
+   "world_provenance_statuses": {},
+   "n_deltas": 237,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "budget_constraint_driven": 0.3947,
+    "strategic_priority_driven": 0.3947,
+    "risk_averse_vp": 0.2105
+   },
+   "delta_log_sample": [
+    {
+     "at": 1689379200.0,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1696031999.0,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1696031999.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=weak_yes"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "approve": 0.6053,
+     "reject": 0.3947
+    },
+    "raw_probability": 0.6053,
+    "structural_disagreement": {
+     "budget_constraint_driven": 0.3947,
+     "strategic_priority_driven": 0.3947,
+     "risk_averse_vp": 0.2105
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 76,
+     "structural_model_uncertainty": 0.9666,
+     "structural_posterior": {
+      "budget_constraint_driven": 0.3947,
+      "strategic_priority_driven": 0.3947,
+      "risk_averse_vp": 0.2105
+     },
+     "state_parameter_uncertainty": 0.2474,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "omitted (negligible-sensitivity): company stock price",
+     "omitted (negligible-sensitivity): external market conditions for engineers",
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "94f55d735f6b"
+   },
+   "plan_hash": "94f55d735f6b",
+   "latency_s": 15.98
+  },
+  "election": {
+   "question": "Will the incumbent mayor win re-election in the upcoming city vote?",
+   "as_of": "2023-09-01",
+   "horizon": "2023-11-07",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "incumbent_wins",
+     "incumbent_loses"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "If the incumbent receives more than 50% of valid votes cast (or the highest share in a multi-candidate race, depending on local rules), then incumbent_wins; els"
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The incumbent mayor seeks re-election in a citywide vote on 2023-11-07, with the outcome determined by the share of valid votes cast for the incumbent versus the strongest challenger, given the electorate, campaign dynamics, and institutional rules.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 3,
+   "n_institutions": 1,
+   "n_populations": 1,
+   "n_latents": 11,
+   "sample_entities": [
+    "incumbent_mayor",
+    "challenger_1",
+    "challenger_2"
+   ],
+   "sample_latents": [
+    {
+     "path": "incumbent_mayor.scandal_severity",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.6
+    },
+    {
+     "path": "city_electorate.partisan_lean",
+     "candidates": {
+      "mean": 0.0,
+      "sd": 0.5,
+      "lo": -1.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "city_electorate.issue_priorities",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.7
+    },
+    {
+     "path": "challenger_1.quality",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.7
+    }
+   ],
+   "accepted_mechanisms": [
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [],
+   "experimental_mechanisms": [],
+   "mechanism_tiers": {
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "outcome resolved from a broad prior \u2014 no held-out-validated mechanism writes this readout on the general path (documented Phase-1 dependency)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "incumbent_advantage",
+     "lean": "weak_yes",
+     "prior": 0.5
+    },
+    {
+     "id": "anti_incumbent_wave",
+     "lean": "weak_no",
+     "prior": 0.3
+    },
+    {
+     "id": "competitive_three_way",
+     "lean": "weak_yes",
+     "prior": 0.2
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "incumbent_mayor",
+     "challenger_1",
+     "challenger_2",
+     "city_electorate",
+     "city_election_commission",
+     "incumbent_mayor.scandal_severity",
+     "city_electorate.partisan_lean",
+     "city_electorate.issue_priorities",
+     "challenger_1.quality",
+     "challenger_2.quality",
+     "campaign_effectiveness_incumbent",
+     "campaign_effectiveness_challenger_1",
+     "campaign_effectiveness_challenger_2",
+     "voter_turnout_mobilization_effect"
+    ],
+    "marginalized_with_uncertainty": [
+     "external_economic_shock",
+     "external_natural_disaster"
+    ],
+    "n_particles": 80
+   },
+   "omissions": [],
+   "world_provenance_statuses": {},
+   "n_deltas": 80,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "incumbent_advantage": 0.5,
+    "anti_incumbent_wave": 0.3,
+    "competitive_three_way": 0.2
+   },
+   "delta_log_sample": [
+    {
+     "at": 1699315199.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=weak_yes"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "incumbent_wins": 0.55,
+     "incumbent_loses": 0.45
+    },
+    "raw_probability": 0.55,
+    "structural_disagreement": {
+     "incumbent_advantage": 0.5,
+     "anti_incumbent_wave": 0.3,
+     "competitive_three_way": 0.2
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 80,
+     "structural_model_uncertainty": 0.9372,
+     "structural_posterior": {
+      "incumbent_advantage": 0.5,
+      "anti_incumbent_wave": 0.3,
+      "competitive_three_way": 0.2
+     },
+     "state_parameter_uncertainty": 0.2405,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "8b91ea74c55d"
+   },
+   "plan_hash": "8b91ea74c55d",
+   "latency_s": 16.54
+  },
+  "legislation": {
+   "question": "Will the infrastructure bill pass the Senate before the recess?",
+   "as_of": "2023-06-01",
+   "horizon": "2023-08-01",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "pass",
+     "fail"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "The bill is considered passed if it receives a majority of votes in the Senate (or 60 votes if cloture is required) before the recess date."
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The infrastructure bill's passage through the Senate before the recess depends on the interplay of leadership agenda control, whip counts, undecided senators' leanings, and potential procedural hurdles.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 3,
+   "n_institutions": 1,
+   "n_populations": 3,
+   "n_latents": 4,
+   "sample_entities": [
+    "Senate_Majority_Leader",
+    "Senate_Minority_Leader",
+    "President"
+   ],
+   "sample_latents": [
+    {
+     "path": "Senate_Democrats.segments.Dem_moderates.swing_lean",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.09999999999999999,
+      "lo": 0.3,
+      "hi": 0.7
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "Senate_Republicans.segments.GOP_moderates.bipartisan_tendency",
+     "candidates": {
+      "mean": 0.3,
+      "sd": 0.1,
+      "lo": 0.1,
+      "hi": 0.5
+     },
+     "sensitivity": 0.7
+    },
+    {
+     "path": "Senate.undecided_count",
+     "candidates": {
+      "mean": 12.5,
+      "sd": 3.75,
+      "lo": 5.0,
+      "hi": 20.0
+     },
+     "sensitivity": 0.9
+    },
+    {
+     "path": "Senate.filibuster_probability",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.15000000000000002,
+      "lo": 0.2,
+      "hi": 0.8
+     },
+     "sensitivity": 0.8
+    }
+   ],
+   "accepted_mechanisms": [
+    "poisson_arrival",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "institutional_vote",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "whipcount_binomial",
+     "no executable operator ('')"
+    ],
+    [
+     "agenda_stage_control",
+     "no executable operator ('swm.world_model_v2.instit"
+    ],
+    [
+     "bargaining_rubinstein",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "coalition_formation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "belief_update_exposure",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "quantal_response_choice",
+     "no executable operator ('swm.world_model_v2.policy"
+    ]
+   ],
+   "experimental_mechanisms": [
+    "filibuster_decision",
+    "amendment_process"
+   ],
+   "mechanism_tiers": {
+    "whip_count_evolution": 7,
+    "undecided_lean_formation": 7,
+    "filibuster_decision": 7,
+    "cloture_vote": 7,
+    "final_passage_vote": 7,
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "leadership_control",
+     "lean": "weak_yes",
+     "prior": 0.4
+    },
+    {
+     "id": "bipartisan_compromise",
+     "lean": "weak_yes",
+     "prior": 0.3
+    },
+    {
+     "id": "filibuster_block",
+     "lean": "weak_no",
+     "prior": 0.3
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "Senate_Majority_Leader",
+     "Senate_Minority_Leader",
+     "President",
+     "Senate_Democrats",
+     "Senate_Republicans",
+     "Senate_Independents",
+     "Senate",
+     "Senate_Democrats.segments.Dem_moderates.swing_lean",
+     "Senate_Republicans.segments.GOP_moderates.bipartisan_tendency",
+     "Senate.undecided_count",
+     "Senate.filibuster_probability"
+    ],
+    "marginalized_with_uncertainty": [],
+    "n_particles": 66
+   },
+   "omissions": [
+    {
+     "component": "public_opinion_polls",
+     "sensitivity": 0.2,
+     "reason": "negligible sensitivity because senators are not directly bound by polls in this "
+    },
+    {
+     "component": "campaign_finance_contributions",
+     "sensitivity": 0.1,
+     "reason": "negligible sensitivity because no major fundraising events are scheduled before "
+    }
+   ],
+   "world_provenance_statuses": {},
+   "n_deltas": 66,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "leadership_control": 0.3939,
+    "bipartisan_compromise": 0.303,
+    "filibuster_block": 0.303
+   },
+   "delta_log_sample": [
+    {
+     "at": 1690847999.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=weak_yes"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "pass": 0.5303,
+     "fail": 0.4697
+    },
+    "raw_probability": 0.5303,
+    "structural_disagreement": {
+     "leadership_control": 0.3939,
+     "bipartisan_compromise": 0.303,
+     "filibuster_block": 0.303
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 66,
+     "structural_model_uncertainty": 0.9927,
+     "structural_posterior": {
+      "leadership_control": 0.3939,
+      "bipartisan_compromise": 0.303,
+      "filibuster_block": 0.303
+     },
+     "state_parameter_uncertainty": 0.2512,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "omitted (negligible-sensitivity): public_opinion_polls",
+     "omitted (negligible-sensitivity): campaign_finance_contributions",
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "1bf93c8a7066"
+   },
+   "plan_hash": "1bf93c8a7066",
+   "latency_s": 16.86
+  },
+  "acquisition": {
+   "question": "Will the proposed merger between the two regional banks be completed?",
+   "as_of": "2023-05-01",
+   "horizon": "2023-12-31",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "completed",
+     "not_completed"
+    ],
+    "readout_var": "merger_completed",
+    "resolution_rule": "The merger is completed if all required regulatory approvals are granted, shareholder votes pass, and no material adverse event occurs by 2023-12-31."
+   },
+   "readout_repaired": false,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The merger completion depends on regulatory approvals, shareholder votes, and market conditions, with no grounded evidence provided.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 6,
+   "n_institutions": 6,
+   "n_populations": 3,
+   "n_latents": 3,
+   "sample_entities": [
+    "regional_bank_A",
+    "regional_bank_B",
+    "federal_reserve",
+    "doj_antitrust",
+    "fdic",
+    "state_banking_regulator"
+   ],
+   "sample_latents": [
+    {
+     "path": "regional_bank_A.fields.board_approval",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.9
+    },
+    {
+     "path": "regional_bank_B.fields.board_approval",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.9
+    },
+    {
+     "path": "shareholders_bank_A.segments.institutional_shareholders_A.differs_on.voting_preference",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.5
+    }
+   ],
+   "accepted_mechanisms": [
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [],
+   "experimental_mechanisms": [],
+   "mechanism_tiers": {
+    "outcome_resolution": 6
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 6,
+     "family": "generic_outcome_prior",
+     "why": "outcome resolved from a broad prior \u2014 no held-out-validated mechanism writes this readout on the general path (documented Phase-1 dependency)"
+    }
+   ],
+   "structural_hypotheses": [],
+   "fidelity_plan": {
+    "explicit": [
+     "regional_bank_A",
+     "regional_bank_B",
+     "federal_reserve",
+     "doj_antitrust",
+     "fdic",
+     "state_banking_regulator",
+     "shareholders_bank_A",
+     "shareholders_bank_B",
+     "regulators",
+     "regional_bank_A.fields.board_approval",
+     "regional_bank_B.fields.board_approval",
+     "shareholders_bank_A.segments.institutional_shareholders_A.differs_on.voting_preference"
+    ],
+    "marginalized_with_uncertainty": [],
+    "n_particles": 45
+   },
+   "omissions": [],
+   "world_provenance_statuses": {},
+   "n_deltas": 45,
+   "readout": "terminal_states",
+   "structural_posterior": null,
+   "delta_log_sample": [
+    {
+     "at": 1703980799.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=neutral"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "exploratory",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "not_completed": 0.5111,
+     "completed": 0.4889
+    },
+    "raw_probability": 0.4889,
+    "structural_disagreement": null,
+    "uncertainty_decomposition": {
+     "n_particles": 45,
+     "structural_model_uncertainty": 0.0,
+     "state_parameter_uncertainty": 0.2513,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "degraded: support grade exploratory; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "5d5ecb87d008"
+   },
+   "plan_hash": "5d5ecb87d008",
+   "latency_s": 14.28
+  },
+  "product_launch": {
+   "question": "Will the new smartphone model launch on the announced date?",
+   "as_of": "2023-08-01",
+   "horizon": "2023-10-01",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "yes",
+     "no"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "The outcome is 'yes' if the smartphone model is available for purchase or delivery to customers on the announced date; 'no' otherwise, including delays, cancell"
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The question asks whether the new smartphone model will be released to the public on the date that was previously announced by the manufacturer.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 4,
+   "n_institutions": 3,
+   "n_populations": 2,
+   "n_latents": 4,
+   "sample_entities": [
+    "manufacturer_company",
+    "supplier_chipset",
+    "regulatory_body",
+    "retail_partner"
+   ],
+   "sample_latents": [
+    {
+     "path": "manufacturer_company.production_status",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.9
+    },
+    {
+     "path": "manufacturer_company.supply_chain_health",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.9
+    },
+    {
+     "path": "manufacturer_company.regulatory_approval_status",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.7
+    },
+    {
+     "path": "manufacturing_workforce.labor_dispute_risk",
+     "candidates": {
+      "mean": 0.15,
+      "sd": 0.075,
+      "lo": 0.0,
+      "hi": 0.3
+     },
+     "sensitivity": 0.6
+    }
+   ],
+   "accepted_mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "resource_update",
+    "poisson_arrival",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "institutional_vote",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "agenda_stage_control",
+     "no executable operator ('swm.world_model_v2.instit"
+    ],
+    [
+     "bernoulli_detection",
+     "no executable operator ('swm.world_model_v2.observ"
+    ],
+    [
+     "rare_event_arrival",
+     "no executable operator ('swm.world_model_v2.transi"
+    ]
+   ],
+   "experimental_mechanisms": [
+    "production_throughput",
+    "supply_chain_delay_propagation"
+   ],
+   "mechanism_tiers": {
+    "production_completion": 7,
+    "regulatory_certification": 7,
+    "supply": 7,
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "baseline_on_time",
+     "lean": "strong_yes",
+     "prior": 0.5
+    },
+    {
+     "id": "supply_chain_disruption",
+     "lean": "strong_no",
+     "prior": 0.3
+    },
+    {
+     "id": "regulatory_hold",
+     "lean": "strong_no",
+     "prior": 0.1
+    },
+    {
+     "id": "strategic_delay",
+     "lean": "weak_no",
+     "prior": 0.1
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "manufacturer_company",
+     "supplier_chipset",
+     "regulatory_body",
+     "retail_partner",
+     "manufacturing_workforce",
+     "manufacturer_company.production_status",
+     "manufacturer_company.supply_chain_health",
+     "manufacturer_company.regulatory_approval_status",
+     "manufacturing_workforce.labor_dispute_risk"
+    ],
+    "marginalized_with_uncertainty": [
+     "consumer_base"
+    ],
+    "n_particles": 74
+   },
+   "omissions": [],
+   "world_provenance_statuses": {},
+   "n_deltas": 74,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "baseline_on_time": 0.5,
+    "supply_chain_disruption": 0.2973,
+    "regulatory_hold": 0.0946,
+    "strategic_delay": 0.1081
+   },
+   "delta_log_sample": [
+    {
+     "at": 1696118399.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=strong_yes"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "yes": 0.5,
+     "no": 0.5
+    },
+    "raw_probability": 0.5,
+    "structural_disagreement": {
+     "baseline_on_time": 0.5,
+     "supply_chain_disruption": 0.2973,
+     "regulatory_hold": 0.0946,
+     "strategic_delay": 0.1081
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 74,
+     "structural_model_uncertainty": 0.8445,
+     "structural_posterior": {
+      "baseline_on_time": 0.5,
+      "supply_chain_disruption": 0.2973,
+      "regulatory_hold": 0.0946,
+      "strategic_delay": 0.1081
+     },
+     "state_parameter_uncertainty": 0.2514,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "e13a524bcec5"
+   },
+   "plan_hash": "e13a524bcec5",
+   "latency_s": 16.52
+  },
+  "social_media_diffusion": {
+   "question": "Will the campaign hashtag trend nationally within 24 hours of launch?",
+   "as_of": "2023-05-01",
+   "horizon": "2023-05-02",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "trend",
+     "not_trend"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "If the hashtag appears in the platform's national trending topics list for at least 15 consecutive minutes within 24 hours of launch, outcome is 'trend'; otherw"
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The campaign hashtag will trend nationally on a major social media platform within 24 hours of launch, defined as appearing in the platform's official trending topics list for at least 15 minutes.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 3,
+   "n_institutions": 1,
+   "n_populations": 1,
+   "n_latents": 5,
+   "sample_entities": [
+    "campaign_team",
+    "platform",
+    "hashtag"
+   ],
+   "sample_latents": [
+    {
+     "path": "platform.trending_algorithm.threshold",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.9
+    },
+    {
+     "path": "campaign_team.coordination_level",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "social_media_users.supporters.engagement_rate",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.7
+    },
+    {
+     "path": "social_media_users.opponents.engagement_rate",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.6
+    }
+   ],
+   "accepted_mechanisms": [
+    "poisson_arrival",
+    "generic_outcome_prior",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "simple_contagion_hazard",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "complex_contagion_hazard",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "engagement_momentum_persistence",
+     "no executable operator ('swm.world_model_v2.refere"
+    ],
+    [
+     "finite_population_saturation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "platform_ranking",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "platform_examination",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "attention_dynamics",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "memory_decay",
+     "no executable operator ('swm.world_model_v2.inform"
+    ],
+    [
+     "information_aging",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "exposure_response_hazard",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "mobilization",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "rare_event_arrival",
+     "no executable operator ('swm.world_model_v2.transi"
+    ]
+   ],
+   "experimental_mechanisms": [
+    "trending_threshold_activation"
+   ],
+   "mechanism_tiers": {
+    "initial_posting_and_amplification": 7,
+    "user_exposure_and_engagement": 7,
+    "viral_cascade_dynamics": 7,
+    "platform_trending_algorithm_activation": 7,
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "organic_grassroots",
+     "lean": "weak_yes",
+     "prior": 0.4
+    },
+    {
+     "id": "coordinated_astroturf",
+     "lean": "strong_yes",
+     "prior": 0.3
+    },
+    {
+     "id": "suppression_or_counter",
+     "lean": "strong_no",
+     "prior": 0.3
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "campaign_team",
+     "platform",
+     "hashtag",
+     "social_media_users",
+     "platform.trending_algorithm.threshold",
+     "campaign_team.coordination_level",
+     "social_media_users.supporters.engagement_rate",
+     "social_media_users.opponents.engagement_rate",
+     "social_media_users.neutral.engagement_rate"
+    ],
+    "marginalized_with_uncertainty": [],
+    "n_particles": 71
+   },
+   "omissions": [
+    {
+     "component": "detailed_hashtag_content",
+     "sensitivity": 0.2,
+     "reason": "negligible sensitivity because the specific wording is unknown but the outcome d"
+    },
+    {
+     "component": "cross_platform_spillover",
+     "sensitivity": 0.1,
+     "reason": "negligible sensitivity because the question specifies a single platform and 24-h"
+    },
+    {
+     "component": "long_term_memory_effects",
+     "sensitivity": 0.0,
+     "reason": "negligible sensitivity because the 24-hour horizon makes long-term memory decay "
+    }
+   ],
+   "world_provenance_statuses": {},
+   "n_deltas": 71,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "organic_grassroots": 0.3944,
+    "coordinated_astroturf": 0.2958,
+    "suppression_or_counter": 0.3099
+   },
+   "delta_log_sample": [
+    {
+     "at": 1682985599.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=weak_yes"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "trend": 0.5493,
+     "not_trend": 0.4507
+    },
+    "raw_probability": 0.5493,
+    "structural_disagreement": {
+     "organic_grassroots": 0.3944,
+     "coordinated_astroturf": 0.2958,
+     "suppression_or_counter": 0.3099
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 71,
+     "structural_model_uncertainty": 0.9924,
+     "structural_posterior": {
+      "organic_grassroots": 0.3944,
+      "coordinated_astroturf": 0.2958,
+      "suppression_or_counter": 0.3099
+     },
+     "state_parameter_uncertainty": 0.2509,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "omitted (negligible-sensitivity): detailed_hashtag_content",
+     "omitted (negligible-sensitivity): cross_platform_spillover",
+     "omitted (negligible-sensitivity): long_term_memory_effects",
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "f6aea04347e2"
+   },
+   "plan_hash": "f6aea04347e2",
+   "latency_s": 15.97
+  },
+  "protest": {
+   "question": "Will the planned climate march draw more than 10,000 participants?",
+   "as_of": "2023-09-01",
+   "horizon": "2023-09-20",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "yes",
+     "no"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "If the total number of distinct participants physically present at the march exceeds 10,000, outcome is 'yes'; otherwise 'no'."
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The question asks whether the planned climate march will attract more than 10,000 participants, interpreted as the total number of distinct individuals physically attending the march on the scheduled date.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 5,
+   "n_institutions": 3,
+   "n_populations": 2,
+   "n_latents": 5,
+   "sample_entities": [
+    "march_organizer",
+    "city_government",
+    "police_department",
+    "media_outlets",
+    "counter_protest_groups"
+   ],
+   "sample_latents": [
+    {
+     "path": "potential_participants.core_activists.mobilization_likelihood",
+     "candidates": {
+      "mean": 0.7,
+      "sd": 0.1,
+      "lo": 0.5,
+      "hi": 0.9
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "potential_participants.sympathizers.mobilization_likelihood",
+     "candidates": {
+      "mean": 0.25,
+      "sd": 0.07500000000000001,
+      "lo": 0.1,
+      "hi": 0.4
+     },
+     "sensitivity": 0.7
+    },
+    {
+     "path": "potential_participants.general_public.awareness",
+     "candidates": {
+      "mean": 0.175,
+      "sd": 0.0625,
+      "lo": 0.05,
+      "hi": 0.3
+     },
+     "sensitivity": 0.6
+    },
+    {
+     "path": "weather_forecast_rain_probability",
+     "candidates": {
+      "mean": 0.25,
+      "sd": 0.125,
+      "lo": 0.0,
+      "hi": 0.5
+     },
+     "sensitivity": 0.5
+    }
+   ],
+   "accepted_mechanisms": [
+    "poisson_arrival",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "mobilization",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "exposure_response_hazard",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "belief_update_exposure",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "attention_dynamics",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "memory_decay",
+     "no executable operator ('swm.world_model_v2.inform"
+    ],
+    [
+     "simple_contagion_hazard",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "threshold_adoption",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "finite_population_saturation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "rare_event_arrival",
+     "no executable operator ('swm.world_model_v2.transi"
+    ]
+   ],
+   "experimental_mechanisms": [
+    "weather_impact_on_turnout"
+   ],
+   "mechanism_tiers": {
+    "organizer_mobilization": 7,
+    "media_attention_spread": 7,
+    "participant_decision_to_attend": 7,
+    "weather_impact": 7,
+    "counter_protest_mobilization": 7,
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "high_mobilization",
+     "lean": "strong_yes",
+     "prior": 0.3
+    },
+    {
+     "id": "low_mobilization",
+     "lean": "strong_no",
+     "prior": 0.5
+    },
+    {
+     "id": "counter_protest_effect",
+     "lean": "weak_yes",
+     "prior": 0.2
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "march_organizer",
+     "city_government",
+     "police_department",
+     "media_outlets",
+     "counter_protest_groups",
+     "potential_participants",
+     "potential_participants.core_activists.mobilization_likelihood",
+     "potential_participants.sympathizers.mobilization_likelihood",
+     "potential_participants.general_public.awareness",
+     "weather_forecast_rain_probability",
+     "city_government.permit_status"
+    ],
+    "marginalized_with_uncertainty": [
+     "counter_protesters"
+    ],
+    "n_particles": 71
+   },
+   "omissions": [
+    {
+     "component": "national_politics",
+     "sensitivity": 0.1,
+     "reason": "negligible sensitivity because local march is unlikely to be swayed by national-"
+    },
+    {
+     "component": "celebrity_endorsements",
+     "sensitivity": 0.05,
+     "reason": "negligible sensitivity because no evidence of planned endorsements"
+    }
+   ],
+   "world_provenance_statuses": {},
+   "n_deltas": 71,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "high_mobilization": 0.2958,
+    "low_mobilization": 0.507,
+    "counter_protest_effect": 0.1972
+   },
+   "delta_log_sample": [
+    {
+     "at": 1695167999.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=strong_yes"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "no": 0.5775,
+     "yes": 0.4225
+    },
+    "raw_probability": 0.4225,
+    "structural_disagreement": {
+     "high_mobilization": 0.2958,
+     "low_mobilization": 0.507,
+     "counter_protest_effect": 0.1972
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 71,
+     "structural_model_uncertainty": 0.9329,
+     "structural_posterior": {
+      "high_mobilization": 0.2958,
+      "low_mobilization": 0.507,
+      "counter_protest_effect": 0.1972
+     },
+     "state_parameter_uncertainty": 0.2508,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "omitted (negligible-sensitivity): national_politics",
+     "omitted (negligible-sensitivity): celebrity_endorsements",
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "8a8f3746168a"
+   },
+   "plan_hash": "8a8f3746168a",
+   "latency_s": 17.45
+  },
+  "strike": {
+   "question": "Will the transit strike be resolved before Monday's commute?",
+   "as_of": "2023-07-14",
+   "horizon": "2023-07-17",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "resolved",
+     "not_resolved"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "resolved if and only if a binding agreement is reached and service is restored before 2023-07-17 08:00 local time; otherwise not_resolved"
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "Will the transit strike be resolved such that normal commute service resumes by Monday morning, 2023-07-17?",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 4,
+   "n_institutions": 2,
+   "n_populations": 2,
+   "n_latents": 6,
+   "sample_entities": [
+    "transit_authority",
+    "union_leadership",
+    "mayor",
+    "mediator"
+   ],
+   "sample_latents": [
+    {
+     "path": "union_leadership.hardline_stance",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "transit_authority.financial_reserves",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.7
+    },
+    {
+     "path": "mayor.intervention_willingness",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.6
+    },
+    {
+     "path": "mediator.effectiveness",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.5
+    }
+   ],
+   "accepted_mechanisms": [
+    "poisson_arrival",
+    "generic_outcome_prior",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "bargaining_rubinstein",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "belief_update_exposure",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "relationship_update_bounded",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "institutional_vote",
+     "no executable operator ('swm.world_model_v2.transi"
+    ]
+   ],
+   "experimental_mechanisms": [
+    "strike_negotiation_dynamics"
+   ],
+   "mechanism_tiers": {
+    "bargaining between transit authority and union": 7,
+    "mediation facilitation": 7,
+    "public pressure influence": 7,
+    "deadline-driven decision making": 7,
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "rapid_resolution",
+     "lean": "weak_yes",
+     "prior": 0.3
+    },
+    {
+     "id": "deadlock_extension",
+     "lean": "strong_no",
+     "prior": 0.5
+    },
+    {
+     "id": "mayoral_intervention",
+     "lean": "weak_yes",
+     "prior": 0.2
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "transit_authority",
+     "union_leadership",
+     "mayor",
+     "mediator",
+     "striking_workers",
+     "commuters",
+     "mediation_board",
+     "union_leadership.hardline_stance",
+     "transit_authority.financial_reserves",
+     "mayor.intervention_willingness",
+     "mediator.effectiveness",
+     "striking_workers.hardliners.wage_demand",
+     "striking_workers.moderates.wage_demand"
+    ],
+    "marginalized_with_uncertainty": [],
+    "n_particles": 76
+   },
+   "omissions": [
+    {
+     "component": "individual commuter mode choice details",
+     "sensitivity": 0.2,
+     "reason": "negligible sensitivity because outcome depends only on strike resolution, not on"
+    },
+    {
+     "component": "detailed financial markets impact",
+     "sensitivity": 0.1,
+     "reason": "negligible sensitivity because question is about strike resolution, not economic"
+    }
+   ],
+   "world_provenance_statuses": {},
+   "n_deltas": 76,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "rapid_resolution": 0.3026,
+    "deadlock_extension": 0.5,
+    "mayoral_intervention": 0.1974
+   },
+   "delta_log_sample": [
+    {
+     "at": 1689551999.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=weak_yes"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "not_resolved": 0.6053,
+     "resolved": 0.3947
+    },
+    "raw_probability": 0.3947,
+    "structural_disagreement": {
+     "rapid_resolution": 0.3026,
+     "deadlock_extension": 0.5,
+     "mayoral_intervention": 0.1974
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 76,
+     "structural_model_uncertainty": 0.9362,
+     "structural_posterior": {
+      "rapid_resolution": 0.3026,
+      "deadlock_extension": 0.5,
+      "mayoral_intervention": 0.1974
+     },
+     "state_parameter_uncertainty": 0.2474,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "omitted (negligible-sensitivity): individual commuter mode choice details",
+     "omitted (negligible-sensitivity): detailed financial markets impact",
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "21dd43e979dd"
+   },
+   "plan_hash": "21dd43e979dd",
+   "latency_s": 17.29
+  },
+  "court_ruling": {
+   "question": "Will the appeals court uphold the lower court's ruling in the antitrust case?",
+   "as_of": "2023-05-01",
+   "horizon": "2023-10-01",
+   "outcome_contract": {
+    "family": "categorical",
+    "options": [
+     "affirm",
+     "reverse",
+     "remand"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "The outcome is the actual decision rendered by the appeals court as of the horizon date."
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The appeals court will either affirm, reverse, or remand the lower court's ruling in the antitrust case.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 4,
+   "n_institutions": 2,
+   "n_populations": 2,
+   "n_latents": 5,
+   "sample_entities": [
+    "appeals_court",
+    "lower_court",
+    "plaintiff",
+    "defendant"
+   ],
+   "sample_latents": [
+    {
+     "path": "appeals_court.ideological_lean",
+     "candidates": {
+      "mean": 0.0,
+      "sd": 0.5,
+      "lo": -1.0,
+      "hi": 1.0
+     },
+     "sensitivity": 1.0
+    },
+    {
+     "path": "lower_court.legal_error",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 1.0
+    },
+    {
+     "path": "plaintiff.legal_quality",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.6
+    },
+    {
+     "path": "defendant.legal_quality",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.6
+    }
+   ],
+   "accepted_mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "background_dynamics",
+    "generic_outcome_prior",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "institutional_vote",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "rare_event_arrival",
+     "no executable operator ('swm.world_model_v2.transi"
+    ]
+   ],
+   "experimental_mechanisms": [
+    "appellate_decision_making"
+   ],
+   "mechanism_tiers": {
+    "panel composition and ideology": 7,
+    "legal argument evaluation": 7,
+    "precedent interpretation": 7,
+    "deliberation and voting": 7,
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "ideological_decision",
+     "lean": "neutral",
+     "prior": 0.4
+    },
+    {
+     "id": "legal_merit",
+     "lean": "neutral",
+     "prior": 0.4
+    },
+    {
+     "id": "external_pressure",
+     "lean": "neutral",
+     "prior": 0.2
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "appeals_court",
+     "lower_court",
+     "plaintiff",
+     "defendant",
+     "judges_pool",
+     "legal_community",
+     "appeals_court.ideological_lean",
+     "lower_court.legal_error",
+     "plaintiff.legal_quality",
+     "defendant.legal_quality",
+     "public_opinion_pressure"
+    ],
+    "marginalized_with_uncertainty": [],
+    "n_particles": 71
+   },
+   "omissions": [
+    {
+     "component": "detailed economic impact of ruling",
+     "sensitivity": 0.1,
+     "reason": "negligible sensitivity because outcome is binary legal decision, not economic ef"
+    },
+    {
+     "component": "media coverage specifics",
+     "sensitivity": 0.2,
+     "reason": "negligible sensitivity because direct influence on judges is minimal in typical "
+    }
+   ],
+   "world_provenance_statuses": {},
+   "n_deltas": 226,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "ideological_decision": 0.3944,
+    "legal_merit": 0.3944,
+    "external_pressure": 0.2113
+   },
+   "delta_log_sample": [
+    {
+     "at": 1693526400.0,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1696118399.0,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1696118399.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=neutral"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "reverse": 0.4507,
+     "affirm": 0.2958,
+     "remand": 0.2535
+    },
+    "raw_probability": 0.2958,
+    "structural_disagreement": {
+     "ideological_decision": 0.3944,
+     "legal_merit": 0.3944,
+     "external_pressure": 0.2113
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 71,
+     "structural_model_uncertainty": 0.967,
+     "structural_posterior": {
+      "ideological_decision": 0.3944,
+      "legal_merit": 0.3944,
+      "external_pressure": 0.2113
+     },
+     "state_parameter_uncertainty": 0.2508,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "omitted (negligible-sensitivity): detailed economic impact of ruling",
+     "omitted (negligible-sensitivity): media coverage specifics",
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "556a7dbad6fc"
+   },
+   "plan_hash": "556a7dbad6fc",
+   "latency_s": 15.57
+  },
+  "fundraising": {
+   "question": "Will the startup close its Series B round within the quarter?",
+   "as_of": "2023-06-01",
+   "horizon": "2023-09-30",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "closed",
+     "not_closed"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "closed if the startup receives a binding term sheet and funds are transferred by 2023-09-30, else not_closed"
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The startup's ability to close a Series B round within the quarter depends on investor decisions, market conditions, and the startup's performance, all of which are uncertain without evidence.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 3,
+   "n_institutions": 2,
+   "n_populations": 1,
+   "n_latents": 8,
+   "sample_entities": [
+    "startup",
+    "lead_investor",
+    "syndicate_members"
+   ],
+   "sample_latents": [
+    {
+     "path": "startup.valuation_ask",
+     "candidates": {
+      "mean": 55000000.0,
+      "sd": 22500000.0,
+      "lo": 10000000.0,
+      "hi": 100000000.0
+     },
+     "sensitivity": 0.9
+    },
+    {
+     "path": "startup.revenue_run_rate",
+     "candidates": {
+      "mean": 25000000.0,
+      "sd": 12500000.0,
+      "lo": 0.0,
+      "hi": 50000000.0
+     },
+     "sensitivity": 0.9
+    },
+    {
+     "path": "startup.burn_rate",
+     "candidates": {
+      "mean": 2550000.0,
+      "sd": 1225000.0,
+      "lo": 100000.0,
+      "hi": 5000000.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "startup.cash_on_hand",
+     "candidates": {
+      "mean": 10250000.0,
+      "sd": 4875000.0,
+      "lo": 500000.0,
+      "hi": 20000000.0
+     },
+     "sensitivity": 0.8
+    }
+   ],
+   "accepted_mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "relationship_update",
+    "resource_update",
+    "background_dynamics",
+    "generic_outcome_prior",
+    "poisson_arrival",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "rare_event_arrival",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "quantal_response_choice",
+     "no executable operator ('swm.world_model_v2.policy"
+    ],
+    [
+     "donation_response",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "negotiation_concession",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "trust_formation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "trust_violation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "trust_repair",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "bargaining_rubinstein",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "belief_learning",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "belief_update_exposure",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "observation_exposure",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "information_interpretation",
+     "no executable operator ('swm.world_model_v2.actor_"
+    ],
+    [
+     "information_aging",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "memory_decay",
+     "no executable operator ('swm.world_model_v2.inform"
+    ],
+    [
+     "attention_allocation",
+     "no executable operator ('swm.world_model_v2.actor_"
+    ],
+    [
+     "attention_dynamics",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "engagement_momentum_persistence",
+     "no executable operator ('swm.world_model_v2.refere"
+    ],
+    [
+     "mobilization",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "network_rewiring",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "reciprocity",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "relationship_strength_inference",
+     "no executable operator ('swm.world_model_v2.actor_"
+    ],
+    [
+     "relationship_update_bounded",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "resource_depletion",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "social_preference_population",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "norm_compliance",
+     "no executable operator ('swm.world_model_v2.actor_"
+    ],
+    [
+     "habit_formation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "reinforcement_learning",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "experience_weighted_attraction",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "hierarchical_rate_shrinkage",
+     "no executable operator ('swm.world_model_v2.infere"
+    ],
+    [
+     "susceptibility_frailty",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "finite_population_saturation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "complex_contagion_hazard",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "simple_contagion_hazard",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "threshold_adoption",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "bounded_confidence",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "degroot_influence",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "coalition_formation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "institutional_vote",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "voting_turnout",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "poll_error_aggregation",
+     "no executable operator ('')"
+    ],
+    [
+     "whipcount_binomial",
+     "no executable operator ('')"
+    ],
+    [
+     "agenda_stage_control",
+     "no executable operator ('swm.world_model_v2.instit"
+    ],
+    [
+     "bernoulli_detection",
+     "no executable operator ('swm.world_model_v2.observ"
+    ],
+    [
+     "gaussian_measurement",
+     "no executable operator ('swm.world_model_v2.observ"
+    ],
+    [
+     "platform_examination",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "platform_ranking",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "exposure_response_hazard",
+     "no executable operator ('swm.world_model_v2.regist"
+    ]
+   ],
+   "experimental_mechanisms": [
+    "investment_committee_decision",
+    "term_sheet_negotiation"
+   ],
+   "mechanism_tiers": {
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "strong_lead_investor",
+     "lean": "weak_yes",
+     "prior": 0.3
+    },
+    {
+     "id": "valuation_gap",
+     "lean": "weak_no",
+     "prior": 0.3
+    },
+    {
+     "id": "market_downturn",
+     "lean": "strong_no",
+     "prior": 0.2
+    },
+    {
+     "id": "existing_backers_support",
+     "lean": "weak_yes",
+     "prior": 0.2
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "startup",
+     "lead_investor",
+     "syndicate_members",
+     "potential_investors",
+     "board_of_directors",
+     "market_conditions",
+     "startup.valuation_ask",
+     "startup.revenue_run_rate",
+     "startup.burn_rate",
+     "startup.cash_on_hand",
+     "lead_investor.due_diligence_status",
+     "lead_investor.decision_timeline",
+     "market_sentiment_index",
+     "interest_rate"
+    ],
+    "marginalized_with_uncertainty": [],
+    "n_particles": 80
+   },
+   "omissions": [],
+   "world_provenance_statuses": {},
+   "n_deltas": 561,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "strong_lead_investor": 0.3,
+    "valuation_gap": 0.3,
+    "market_downturn": 0.2,
+    "existing_backers_support": 0.2
+   },
+   "delta_log_sample": [
+    {
+     "at": 1688720907.7183197,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1689450250.687319,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1691706077.940838,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1692063489.2164218,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1696031999.0,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1696031999.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=weak_yes"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "not_closed": 0.55,
+     "closed": 0.45
+    },
+    "raw_probability": 0.45,
+    "structural_disagreement": {
+     "strong_lead_investor": 0.3,
+     "valuation_gap": 0.3,
+     "market_downturn": 0.2,
+     "existing_backers_support": 0.2
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 80,
+     "structural_model_uncertainty": 0.9855,
+     "structural_posterior": {
+      "strong_lead_investor": 0.3,
+      "valuation_gap": 0.3,
+      "market_downturn": 0.2,
+      "existing_backers_support": 0.2
+     },
+     "state_parameter_uncertainty": 0.2388,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "76ce112ac5ce"
+   },
+   "plan_hash": "76ce112ac5ce",
+   "latency_s": 17.07
+  },
+  "coalition": {
+   "question": "Will the three parties form a governing coalition after the election?",
+   "as_of": "2023-09-01",
+   "horizon": "2023-11-01",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "coalition_formed",
+     "no_coalition"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "coalition_formed if all three parties formally agree to govern together and secure a majority in the legislature by 2023-11-01; otherwise no_coalition."
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The three parties will form a governing coalition if and only if they can agree on a policy platform and allocate ministerial positions such that each party's utility from joining exceeds its utility from remaining outside, given the election outcome and institutional rules.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 3,
+   "n_institutions": 2,
+   "n_populations": 1,
+   "n_latents": 10,
+   "sample_entities": [
+    "party_A_leader",
+    "party_B_leader",
+    "party_C_leader"
+   ],
+   "sample_latents": [
+    {
+     "path": "party_A_leader.ideology",
+     "candidates": {
+      "mean": 0.0,
+      "sd": 0.5,
+      "lo": -1.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "party_B_leader.ideology",
+     "candidates": {
+      "mean": 0.0,
+      "sd": 0.5,
+      "lo": -1.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "party_C_leader.ideology",
+     "candidates": {
+      "mean": 0.0,
+      "sd": 0.5,
+      "lo": -1.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "party_A_leader.risk_aversion",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.6
+    }
+   ],
+   "accepted_mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "relationship_update",
+    "resource_update",
+    "background_dynamics",
+    "generic_outcome_prior",
+    "poisson_arrival",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "institutional_vote",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "poll_error_aggregation",
+     "no executable operator ('')"
+    ],
+    [
+     "whipcount_binomial",
+     "no executable operator ('')"
+    ],
+    [
+     "agenda_stage_control",
+     "no executable operator ('swm.world_model_v2.instit"
+    ],
+    [
+     "attention_allocation",
+     "no executable operator ('swm.world_model_v2.actor_"
+    ],
+    [
+     "attention_dynamics",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "bargaining_rubinstein",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "belief_learning",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "belief_update_exposure",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "bernoulli_detection",
+     "no executable operator ('swm.world_model_v2.observ"
+    ],
+    [
+     "bounded_confidence",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "coalition_formation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "complex_contagion_hazard",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "degroot_influence",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "donation_response",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "engagement_momentum_persistence",
+     "no executable operator ('swm.world_model_v2.refere"
+    ],
+    [
+     "experience_weighted_attraction",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "exposure_response_hazard",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "finite_population_saturation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "gaussian_measurement",
+     "no executable operator ('swm.world_model_v2.observ"
+    ],
+    [
+     "habit_formation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "hierarchical_rate_shrinkage",
+     "no executable operator ('swm.world_model_v2.infere"
+    ],
+    [
+     "information_aging",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "information_interpretation",
+     "no executable operator ('swm.world_model_v2.actor_"
+    ],
+    [
+     "latent_expressed_opinion",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "memory_decay",
+     "no executable operator ('swm.world_model_v2.inform"
+    ],
+    [
+     "mobilization",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "negotiation_concession",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "network_rewiring",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "norm_compliance",
+     "no executable operator ('swm.world_model_v2.actor_"
+    ],
+    [
+     "observation_exposure",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "platform_examination",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "platform_ranking",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "quantal_response_choice",
+     "no executable operator ('swm.world_model_v2.policy"
+    ],
+    [
+     "rare_event_arrival",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "reciprocity",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "reinforcement_learning",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "relationship_strength_inference",
+     "no executable operator ('swm.world_model_v2.actor_"
+    ],
+    [
+     "relationship_update_bounded",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "resource_depletion",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "simple_contagion_hazard",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "social_preference_population",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "susceptibility_frailty",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "threshold_adoption",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "trust_formation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "trust_repair",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "trust_violation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "voting_turnout",
+     "no executable operator ('swm.world_model_v2.regist"
+    ]
+   ],
+   "experimental_mechanisms": [],
+   "mechanism_tiers": {
+    "election_outcome_determination": 7,
+    "post_election_negotiation": 7,
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "ideological_proximity",
+     "lean": "neutral",
+     "prior": 0.5
+    },
+    {
+     "id": "office_seeking",
+     "lean": "weak_yes",
+     "prior": 0.3
+    },
+    {
+     "id": "electoral_punishment",
+     "lean": "weak_no",
+     "prior": 0.2
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "party_A_leader",
+     "party_B_leader",
+     "party_C_leader",
+     "electorate",
+     "parliament",
+     "electoral_commission",
+     "party_A_leader.ideology",
+     "party_B_leader.ideology",
+     "party_C_leader.ideology",
+     "party_A_leader.risk_aversion",
+     "party_B_leader.risk_aversion",
+     "party_C_leader.risk_aversion",
+     "party_A_leader.office_motivation",
+     "party_B_leader.office_motivation",
+     "party_C_leader.office_motivation",
+     "electorate.undecided_lean"
+    ],
+    "marginalized_with_uncertainty": [],
+    "n_particles": 80
+   },
+   "omissions": [],
+   "world_provenance_statuses": {},
+   "n_deltas": 242,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "ideological_proximity": 0.5,
+    "office_seeking": 0.3,
+    "electoral_punishment": 0.2
+   },
+   "delta_log_sample": [
+    {
+     "at": 1697328000.0,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1698796799.0,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1698796799.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=neutral"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "no_coalition": 0.525,
+     "coalition_formed": 0.475
+    },
+    "raw_probability": 0.475,
+    "structural_disagreement": {
+     "ideological_proximity": 0.5,
+     "office_seeking": 0.3,
+     "electoral_punishment": 0.2
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 80,
+     "structural_model_uncertainty": 0.9372,
+     "structural_posterior": {
+      "ideological_proximity": 0.5,
+      "office_seeking": 0.3,
+      "electoral_punishment": 0.2
+     },
+     "state_parameter_uncertainty": 0.2409,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "e8b9ed6ca3b3"
+   },
+   "plan_hash": "e8b9ed6ca3b3",
+   "latency_s": 14.95
+  },
+  "market": {
+   "question": "Will the stock rise more than 5% the day after the earnings call?",
+   "as_of": "2023-07-25",
+   "horizon": "2023-07-27",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "rise_more_than_5%",
+     "rise_5%_or_less_or_fall"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "If the closing price of the stock on 2023-07-27 is more than 5% higher than the closing price on 2023-07-25, then 'rise_more_than_5%'; else 'rise_5%_or_less_or_"
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The stock price change on the day after the earnings call is determined by the market's reaction to the earnings surprise relative to consensus expectations, mediated by investor sentiment, institutional trading, and information flow.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 3,
+   "n_institutions": 2,
+   "n_populations": 3,
+   "n_latents": 4,
+   "sample_entities": [
+    "company_issuing_stock",
+    "ceo",
+    "cfo"
+   ],
+   "sample_latents": [
+    {
+     "path": "company_issuing_stock.earnings_actual_eps",
+     "candidates": {
+      "mean": 0.0,
+      "sd": 5.0,
+      "lo": -10.0,
+      "hi": 10.0
+     },
+     "sensitivity": 1.0
+    },
+    {
+     "path": "company_issuing_stock.guidance",
+     "candidates": {
+      "mean": 0.0,
+      "sd": 2.5,
+      "lo": -5.0,
+      "hi": 5.0
+     },
+     "sensitivity": 0.9
+    },
+    {
+     "path": "investors.sentiment",
+     "candidates": {
+      "mean": 0.0,
+      "sd": 0.5,
+      "lo": -1.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "analysts.reaction",
+     "candidates": {
+      "mean": 0.0,
+      "sd": 1.5,
+      "lo": -3.0,
+      "hi": 3.0
+     },
+     "sensitivity": 0.7
+    }
+   ],
+   "accepted_mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "background_dynamics",
+    "generic_outcome_prior",
+    "resource_update",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "attention_allocation",
+     "no executable operator ('swm.world_model_v2.actor_"
+    ],
+    [
+     "attention_dynamics",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "information_interpretation",
+     "no executable operator ('swm.world_model_v2.actor_"
+    ],
+    [
+     "observation_exposure",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "quantal_response_choice",
+     "no executable operator ('swm.world_model_v2.policy"
+    ]
+   ],
+   "experimental_mechanisms": [
+    "price_discovery",
+    "earnings_surprise_calculation"
+   ],
+   "mechanism_tiers": {
+    "earnings_surprise_determination": 7,
+    "investor_attention_allocation": 7,
+    "belief_update_from_earnings": 7,
+    "trading_decision": 7,
+    "price_impact_of_trades": 7,
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "efficient_market",
+     "lean": "neutral",
+     "prior": 0.3
+    },
+    {
+     "id": "behavioral_overreaction",
+     "lean": "weak_yes",
+     "prior": 0.4
+    },
+    {
+     "id": "information_cascade",
+     "lean": "weak_yes",
+     "prior": 0.3
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "company_issuing_stock",
+     "ceo",
+     "cfo",
+     "investors",
+     "analysts",
+     "media",
+     "company_issuing_stock.earnings_actual_eps",
+     "company_issuing_stock.guidance",
+     "investors.sentiment",
+     "analysts.reaction"
+    ],
+    "marginalized_with_uncertainty": [
+     "stock_exchange",
+     "sec"
+    ],
+    "n_particles": 66
+   },
+   "omissions": [
+    {
+     "component": "macroeconomic_indicators",
+     "sensitivity": 0.1,
+     "reason": "negligible sensitivity because horizon is 2 days and no evidence of macro shock"
+    },
+    {
+     "component": "political_events",
+     "sensitivity": 0.05,
+     "reason": "negligible sensitivity because no scheduled political events in window"
+    }
+   ],
+   "world_provenance_statuses": {},
+   "n_deltas": 132,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "efficient_market": 0.303,
+    "behavioral_overreaction": 0.3939,
+    "information_cascade": 0.303
+   },
+   "delta_log_sample": [
+    {
+     "at": 1690389000.0,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1690415999.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=neutral"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "rise_more_than_5%": 0.5455,
+     "rise_5%_or_less_or_fall": 0.4545
+    },
+    "raw_probability": 0.5455,
+    "structural_disagreement": {
+     "efficient_market": 0.303,
+     "behavioral_overreaction": 0.3939,
+     "information_cascade": 0.303
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 66,
+     "structural_model_uncertainty": 0.9927,
+     "structural_posterior": {
+      "efficient_market": 0.303,
+      "behavioral_overreaction": 0.3939,
+      "information_cascade": 0.303
+     },
+     "state_parameter_uncertainty": 0.2512,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "omitted (negligible-sensitivity): macroeconomic_indicators",
+     "omitted (negligible-sensitivity): political_events",
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "fd005b7d21e0"
+   },
+   "plan_hash": "fd005b7d21e0",
+   "latency_s": 17.21
+  },
+  "reputation_crisis": {
+   "question": "Will the company's CEO resign within a month of the scandal breaking?",
+   "as_of": "2023-05-01",
+   "horizon": "2023-06-01",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "resign",
+     "not_resign"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "If the CEO has publicly announced resignation or been removed from the position by 2023-06-01, outcome is 'resign'; otherwise 'not_resign'."
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The CEO's resignation within one month of the scandal breaking is a rare event driven by board pressure, personal cost-benefit, and institutional norms, with high uncertainty due to no grounded evidence.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 2,
+   "n_institutions": 2,
+   "n_populations": 5,
+   "n_latents": 10,
+   "sample_entities": [
+    "ceo",
+    "company"
+   ],
+   "sample_latents": [
+    {
+     "path": "ceo.personal_reputation_cost",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.9
+    },
+    {
+     "path": "ceo.legal_risk",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "ceo.severance_package",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.7
+    },
+    {
+     "path": "board_members.independence",
+     "candidates": {
+      "mean": 0.55,
+      "sd": 0.175,
+      "lo": 0.2,
+      "hi": 0.9
+     },
+     "sensitivity": 0.8
+    }
+   ],
+   "accepted_mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "relationship_update",
+    "resource_update",
+    "background_dynamics",
+    "generic_outcome_prior",
+    "poisson_arrival",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "institutional_vote",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "rare_event_arrival",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "norm_compliance",
+     "no executable operator ('swm.world_model_v2.actor_"
+    ],
+    [
+     "quantal_response_choice",
+     "no executable operator ('swm.world_model_v2.policy"
+    ],
+    [
+     "trust_violation",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "trust_repair",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "mobilization",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "attention_dynamics",
+     "no executable operator ('swm.world_model_v2.transi"
+    ],
+    [
+     "memory_decay",
+     "no executable operator ('swm.world_model_v2.inform"
+    ]
+   ],
+   "experimental_mechanisms": [
+    "board_deliberation_dynamics",
+    "reputation_damage_function"
+   ],
+   "mechanism_tiers": {
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "board_driven",
+     "lean": "weak_yes",
+     "prior": 0.4
+    },
+    {
+     "id": "ceo_voluntary",
+     "lean": "weak_yes",
+     "prior": 0.3
+    },
+    {
+     "id": "no_resignation",
+     "lean": "weak_no",
+     "prior": 0.3
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "ceo",
+     "company",
+     "board_members",
+     "employees",
+     "shareholders",
+     "media_outlets",
+     "regulators",
+     "board",
+     "company_governance",
+     "ceo.personal_reputation_cost",
+     "ceo.legal_risk",
+     "ceo.severance_package",
+     "board_members.independence",
+     "board_members.alignment_with_ceo",
+     "company.scandal_severity",
+     "company.governance_quality",
+     "media_outlets.coverage_intensity",
+     "shareholders.activism_likelihood",
+     "regulators.investigation_scope"
+    ],
+    "marginalized_with_uncertainty": [],
+    "n_particles": 80
+   },
+   "omissions": [],
+   "world_provenance_statuses": {},
+   "n_deltas": 323,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "board_driven": 0.4,
+    "ceo_voluntary": 0.3,
+    "no_resignation": 0.3
+   },
+   "delta_log_sample": [
+    {
+     "at": 1683842192.315496,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1684060995.2061958,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1685577599.0,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1685577599.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=weak_yes"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "resign": 0.5375,
+     "not_resign": 0.4625
+    },
+    "raw_probability": 0.5375,
+    "structural_disagreement": {
+     "board_driven": 0.4,
+     "ceo_voluntary": 0.3,
+     "no_resignation": 0.3
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 80,
+     "structural_model_uncertainty": 0.9912,
+     "structural_posterior": {
+      "board_driven": 0.4,
+      "ceo_voluntary": 0.3,
+      "no_resignation": 0.3
+     },
+     "state_parameter_uncertainty": 0.2409,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "b6697fe85191"
+   },
+   "plan_hash": "b6697fe85191",
+   "latency_s": 19.34
+  },
+  "best_action": {
+   "question": "Should we send the discount offer now or wait until the customer's renewal date to maximize retention?",
+   "as_of": "2023-06-01",
+   "horizon": "2023-07-01",
+   "outcome_contract": {
+    "family": "binary",
+    "options": [
+     "renew",
+     "not_renew"
+    ],
+    "readout_var": "outcome",
+    "resolution_rule": "The outcome is resolved by a generic_outcome_prior per customer segment, with lean toward renewal depending on timing and discount sensitivity."
+   },
+   "readout_repaired": true,
+   "outcome_lean": "neutral",
+   "interpretations": [
+    {
+     "id": "primary",
+     "reading": "The decision is whether sending a discount offer now versus at the customer's renewal date maximizes retention, measured as the probability the customer renews.",
+     "weight": 1.0
+    }
+   ],
+   "n_entities": 2,
+   "n_institutions": 1,
+   "n_populations": 1,
+   "n_latents": 3,
+   "sample_entities": [
+    "customer",
+    "company"
+   ],
+   "sample_latents": [
+    {
+     "path": "customer.discount_sensitivity",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.9
+    },
+    {
+     "path": "customer.attention_to_offer",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.8
+    },
+    {
+     "path": "customer.current_satisfaction",
+     "candidates": {
+      "mean": 0.5,
+      "sd": 0.25,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "sensitivity": 0.7
+    }
+   ],
+   "accepted_mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "resource_update",
+    "background_dynamics",
+    "generic_outcome_prior",
+    "generic_outcome_prior"
+   ],
+   "rejected_mechanisms": [
+    [
+     "exposure_response_hazard",
+     "no executable operator ('swm.world_model_v2.regist"
+    ],
+    [
+     "memory_decay",
+     "no executable operator ('swm.world_model_v2.inform"
+    ],
+    [
+     "quantal_response_choice",
+     "no executable operator ('swm.world_model_v2.policy"
+    ]
+   ],
+   "experimental_mechanisms": [
+    "discount_effect_on_renewal"
+   ],
+   "mechanism_tiers": {
+    "customer_decision_to_renew": 7,
+    "discount_offer_impact_on_decision": 7,
+    "timing_effect_on_attention_and_salience": 7,
+    "outcome_resolution": 7
+   },
+   "fallbacks_used": [
+    {
+     "process": "outcome_resolution",
+     "tier": 7,
+     "family": "generic_outcome_prior",
+     "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+    }
+   ],
+   "structural_hypotheses": [
+    {
+     "id": "timing_irrelevant",
+     "lean": "neutral",
+     "prior": 0.2
+    },
+    {
+     "id": "now_better",
+     "lean": "weak_yes",
+     "prior": 0.4
+    },
+    {
+     "id": "renewal_better",
+     "lean": "weak_yes",
+     "prior": 0.4
+    }
+   ],
+   "fidelity_plan": {
+    "explicit": [
+     "customer",
+     "company",
+     "customer_segments",
+     "customer.discount_sensitivity",
+     "customer.attention_to_offer",
+     "customer.current_satisfaction"
+    ],
+    "marginalized_with_uncertainty": [],
+    "n_particles": 61
+   },
+   "omissions": [
+    {
+     "component": "competitor offers",
+     "sensitivity": 0.1,
+     "reason": "negligible sensitivity because no evidence of competitor activity in this scenar"
+    },
+    {
+     "component": "customer demographics",
+     "sensitivity": 0.1,
+     "reason": "negligible sensitivity because no evidence that demographics materially change d"
+    }
+   ],
+   "world_provenance_statuses": {},
+   "n_deltas": 272,
+   "readout": "terminal_states",
+   "structural_posterior": {
+    "timing_irrelevant": 0.1967,
+    "now_better": 0.3934,
+    "renewal_better": 0.4098
+   },
+   "delta_log_sample": [
+    {
+     "at": 1686787200.0,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1688169599.0,
+     "event": "background_tick",
+     "operator": "background_dynamics",
+     "reasons": []
+    },
+    {
+     "at": 1688169599.0,
+     "event": "resolve_outcome",
+     "operator": "generic_outcome_prior",
+     "reasons": [
+      "generic_fallback",
+      "lean=neutral"
+     ]
+    }
+   ],
+   "SIMULATION_RESULT": {
+    "simulation_status": "completed_with_degradation",
+    "support_grade": "highly_speculative",
+    "recommendation_status": "not_requested",
+    "raw_distribution": {
+     "renew": 0.541,
+     "not_renew": 0.459
+    },
+    "raw_probability": 0.541,
+    "structural_disagreement": {
+     "timing_irrelevant": 0.1967,
+     "now_better": 0.3934,
+     "renewal_better": 0.4098
+    },
+    "uncertainty_decomposition": {
+     "n_particles": 61,
+     "structural_model_uncertainty": 0.958,
+     "structural_posterior": {
+      "timing_irrelevant": 0.1967,
+      "now_better": 0.3934,
+      "renewal_better": 0.4098
+     },
+     "state_parameter_uncertainty": 0.2427,
+     "evidence_uncertainty": 0.5
+    },
+    "limitations": [
+     "omitted (negligible-sensitivity): competitor offers",
+     "omitted (negligible-sensitivity): customer demographics",
+     "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+    ],
+    "plan_hash": "d04d912f30d2"
+   },
+   "plan_hash": "d04d912f30d2",
+   "latency_s": 15.37
+  }
+ }
+}

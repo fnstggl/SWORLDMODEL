@@ -1,0 +1,81 @@
+[case1 ran in 891s]
+
+==============================================================================
+CASE 1 (personal communication) — ROUTE + STRUCTURAL FRAMES
+==============================================================================
+route: individual_reaction_ensemble  mode: ensemble  status: completed
+  frame m0_actor_relationship [promoted]: Dana’s reaction is determined by her perception of the message as either a strategic move to pressure her into a decisio
+        prediction: {"reply_later@you": 0.75, "reply_now@you": 0.25}
+  frame m1_institutional_procedural [promoted]: Dana's reaction is determined by the formal escalation procedure for after-hours technical messages and the authority ch
+        prediction: {"no_reply_until_morning[private]": 0.25, "reply_later@you": 0.25, "reply_now@you": 0.5}
+  frame m2_resource_constraint [promoted]: Dana’s reaction is determined by her current cognitive and emotional capacity (depleted after a long workday) and the op
+        prediction: {"reply_later@you": 0.5, "reply_now@you": 0.5}
+  frame m3_information_distribution [promoted]: Dana's reaction is determined by the information she has already received through shared project channels and her curren
+        prediction: {"reply_later@you": 0.5, "reply_now@you": 0.5}
+  frame m4_adversarial_alternative [promoted]: Dana's reaction is determined by her pre-existing emotional valence toward you (e.g., unspoken resentment, romantic inte
+        prediction: {"delay_reply[multi_part]@you": 0.25, "reply_later@you": 0.25, "reply_now@you": 0.5}
+  frame m5_adversarial_alternative [promoted]: Dana's reaction is determined by whether she is currently in a social context (e.g., with friends, family, or partner) t
+        prediction: {"reply_later@you": 0.75, "reply_now@you": 0.25}
+
+==============================================================================
+CASE 1 — TEMPORAL DELIVERY/ATTENTION + PER-SAMPLE ACTOR DECISIONS (per frame)
+==============================================================================
+  frame m0_actor_relationship: temporal_summary="delivery\u2192attention\u2192decision (\u00a725)"
+    [7d8b893e5beb6b5d75a47374] state=read_but_deferred src=persistent_qualitative_llm resp='reply_later'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [8f5a77d7e410b04aff0faa24] state=read_but_deferred src=persistent_qualitative_llm resp='reply_later'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [78dea116606cbee1c375b27a] state=read_but_deferred src=persistent_qualitative_llm resp='reply_later'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [1ad9df743da511aff59d3559] state=responded src=persistent_qualitative_llm resp='reply_now'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+  frame m1_institutional_procedural: temporal_summary="delivery\u2192attention\u2192decision (\u00a725)"
+    [7d8b893e5beb6b5d75a47374] state=read_but_deferred src=persistent_qualitative_llm resp='no_reply_until_morning'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [8f5a77d7e410b04aff0faa24] state=responded src=persistent_qualitative_llm resp='reply_now'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [78dea116606cbee1c375b27a] state=read_but_deferred src=persistent_qualitative_llm resp='reply_later'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [1ad9df743da511aff59d3559] state=responded src=persistent_qualitative_llm resp='reply_now'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+  frame m2_resource_constraint: temporal_summary="delivery\u2192attention\u2192decision (\u00a725)"
+    [7d8b893e5beb6b5d75a47374] state=responded src=persistent_qualitative_llm resp='reply_now'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [8f5a77d7e410b04aff0faa24] state=responded src=persistent_qualitative_llm resp='reply_now'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [78dea116606cbee1c375b27a] state=read_but_deferred src=persistent_qualitative_llm resp='reply_later'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [1ad9df743da511aff59d3559] state=read_but_deferred src=persistent_qualitative_llm resp='reply_later'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+  frame m3_information_distribution: temporal_summary="delivery\u2192attention\u2192decision (\u00a725)"
+    [7d8b893e5beb6b5d75a47374] state=responded src=persistent_qualitative_llm resp='reply_now'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [8f5a77d7e410b04aff0faa24] state=responded src=persistent_qualitative_llm resp='reply_now'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [78dea116606cbee1c375b27a] state=read_but_deferred src=persistent_qualitative_llm resp='reply_later'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [1ad9df743da511aff59d3559] state=read_but_deferred src=persistent_qualitative_llm resp='reply_later'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+  frame m4_adversarial_alternative: temporal_summary="delivery\u2192attention\u2192decision (\u00a725)"
+    [7d8b893e5beb6b5d75a47374] state=read_but_deferred src=persistent_qualitative_llm resp='reply_later'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [8f5a77d7e410b04aff0faa24] state=responded src=persistent_qualitative_llm resp='reply_now'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [78dea116606cbee1c375b27a] state=read_but_deferred src=persistent_qualitative_llm resp='delay_reply'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [1ad9df743da511aff59d3559] state=responded src=persistent_qualitative_llm resp='reply_now'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+  frame m5_adversarial_alternative: temporal_summary="delivery\u2192attention\u2192decision (\u00a725)"
+    [7d8b893e5beb6b5d75a47374] state=responded src=persistent_qualitative_llm resp='reply_now'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [8f5a77d7e410b04aff0faa24] state=read_but_deferred src=persistent_qualitative_llm resp='reply_later'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [78dea116606cbee1c375b27a] state=read_but_deferred src=persistent_qualitative_llm resp='reply_later'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+    [1ad9df743da511aff59d3559] state=read_but_deferred src=persistent_qualitative_llm resp='reply_later'
+        delivery=unmodeled_channel_broad_band notice=unmodeled_attention_broad_band
+mixture distribution: {"delay_reply[multi_part]@you": 0.0417, "no_reply_until_morning[private]": 0.0417, "reply_later@you": 0.5, "reply_now@you": 0.4167}
+structural sensitivity: {"classification": "materially_structurally_sensitive", "max_spread": 0.5, "per_option_spread": {"delay_reply[multi_part]@you": 0.25, "no_reply_until_morning[private]": 0.25, "reply_later@you": 0.5, "reply_now@you": 0.25
+[saved artifacts/combined_runtime_forensics/case1_personal_communication.json]
+
+DONE

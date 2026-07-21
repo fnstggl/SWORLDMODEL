@@ -1,0 +1,488 @@
+"""Phase 8 — the universal persistence entry + shared-world execution + causal-ablation harness.
+
+Two shared-world paths, both through the EXISTING architecture (never a bypass longitudinal predictor):
+
+  1. ``simulate_with_persistence(question, as_of, horizon, ...)`` — the universal path: compile → build the
+     WorldState → ingest real history into the event log → replay the sequential filters → materialize the
+     posteriors into WorldState fields → run the standard rollout (with the persistence operators enabled)
+     → terminal readout. Persistent state reaches execution through the same ``materialize`` / ``rollout``
+     machinery every other phase uses.
+
+  2. ``materialize_and_decide(world, actor_id, posteriors, candidate_actions, ...)`` — the actor-decision
+     path: materialize persistent posteriors into WorldState, build the ACTOR VIEW with the real
+     ``ActorViewBuilder``, and run the real ``ActorPolicyModel`` so persistent state changes the calibrated
+     action distribution. This is the "full shared-world longitudinal execution" arm the validation grades.
+
+``run_history_ablation`` runs any of the above twice — full history vs removed/altered — and reports whether
+execution actually changed (materialized field, actor view, action distribution, terminal readout). A
+component whose ablation changes nothing is flagged ornamental (the anti-scaffolding gate).
+"""
+from __future__ import annotations
+
+import time as _time
+from dataclasses import dataclass, field
+
+from swm.world_model_v2.phase8_materialize import build_persistent_view, materialize_persistent_state
+from swm.world_model_v2.phase8_persistence import (PersistentStateKey, logit, persistent_features_for_policy,
+                                                   sigmoid)
+
+
+@dataclass
+class PersistenceContext:
+    """Bundles the durable event log + store + optional episodic memory for one scenario, so the pipeline
+    and the experiments share one persistence surface."""
+    store: object                            # phase8_service.PersistentStore
+    memory_store: object = None              # swm.memory.EpisodicStore (optional)
+    actor_map: dict = field(default_factory=dict)
+
+
+# ------------------------------------------------------------------ shared-world actor-decision path
+def materialize_and_decide(world, actor_id, posteriors, *, candidate_actions, policy_model=None,
+                           observed_events=None, seed=0, decision=None):
+    """Materialize persistent posteriors into ``world``, build the actor view with the REAL
+    ``ActorViewBuilder``, and run the REAL ``ActorPolicyModel`` — returning (action_posterior, deltas,
+    view). Persistent state reaches the policy exactly through the fields the view projects
+    (policy_state / past_actions / relationships / beliefs), so removing history changes the action
+    distribution. No LLM, no minted numbers."""
+    from swm.world_model_v2.phase4_policy import (ActionSpaceBuilder, ActorPolicyModel, ActorViewBuilder,
+                                                  FeasibilityEngine)
+    deltas = materialize_persistent_state(world, posteriors, actor_map={})
+    views = ActorViewBuilder()
+    view = views.build(world, actor_id, observed_events=observed_events)
+    dec = {"candidate_actions": candidate_actions, **(decision or {})}
+    actions = ActionSpaceBuilder().build(None, world, view, decision=dec)
+    feas = FeasibilityEngine()
+    feasibility = [[feas.classify(a, view, world) for a in actions]]
+    model = policy_model or ActorPolicyModel(parameter_pack=persistence_policy_pack())
+    posterior = model.decide([view], actions, feasibility, seed=seed)
+    return posterior, deltas, view
+
+
+def persistence_policy_pack() -> dict:
+    """A policy parameter pack that makes the reinforcement/habit families dominant, so the materialized
+    engagement latent (``latent_state[phase4_policy_value:engage]``) and action history DRIVE the action
+    distribution. All weights are labeled structural priors, not fitted claims — the empirical calibration
+    lives in the readout temperature fitted on TRAIN (never minted, never on test)."""
+    from swm.world_model_v2.phase4_policy import ActorPolicyModel
+    pack = ActorPolicyModel._broad_pack()
+    pack = dict(pack)
+    pack["pack_id"] = "phase8:persistence-reinforcement:1.0"
+    pack["support_grade"] = "transfer_supported"
+    pack["policy_family_weights"] = {"reinforcement_learning": 0.6, "habit": 0.25, "random_utility": 0.15}
+    pack["precision"] = 1.0
+    pack["habit_strength"] = 0.3
+    return pack
+
+
+def engagement_readout(world, actor_id, *, temperature=1.0, floor=1e-4):
+    """Terminal readout: P(this actor engages) = the materialized engagement-propensity field, optionally
+    temperature-calibrated (a single scalar fitted on TRAIN). Reads the WorldState field the Phase-8 filter
+    materialized — the number is produced by a sequential filter over ingested history, not by an LLM or a
+    bypass regressor. This is the shared-world terminal projection for the persistence-engagement task."""
+    from swm.world_model_v2.state import StateField
+    ent = world.entities.get(actor_id)
+    if ent is None:
+        return 0.5
+    latent = ent.get("latent_state") or {}
+    sf = latent.get("phase4_policy_value:engage") if isinstance(latent, dict) else None
+    p = float(sf.value) if isinstance(sf, StateField) and isinstance(sf.value, (int, float)) else 0.5
+    p = min(1 - floor, max(floor, p))
+    if temperature != 1.0:
+        p = sigmoid(temperature * logit(p))
+    return p
+
+
+# ------------------------------------------------------------------ causal ablation harness (Part 17)
+def run_history_ablation(build_and_execute, *, ablations=("full", "no_history", "last_event_only")):
+    """Run ``build_and_execute(mode)`` for each ablation mode and report whether execution changed. The
+    callable returns a dict with any of: {materialized_value, action_probabilities, terminal, view_hash}.
+    Returns per-mode outputs plus a causal-relevance verdict (did removing history change execution?)."""
+    out = {}
+    for mode in ablations:
+        out[mode] = build_and_execute(mode)
+    base = out.get("full", {})
+
+    def _delta(other):
+        d = {}
+        if "materialized_value" in base and "materialized_value" in other:
+            d["materialized_value_delta"] = round(float(base["materialized_value"])
+                                                  - float(other["materialized_value"]), 6)
+        if "terminal" in base and "terminal" in other:
+            d["terminal_delta"] = round(float(base["terminal"]) - float(other["terminal"]), 6)
+        if "action_probabilities" in base and "action_probabilities" in other:
+            keys = set(base["action_probabilities"]) | set(other["action_probabilities"])
+            d["action_prob_l1"] = round(sum(abs(base["action_probabilities"].get(k, 0.0)
+                                                - other["action_probabilities"].get(k, 0.0)) for k in keys), 6)
+        if "view_hash" in base and "view_hash" in other:
+            d["view_changed"] = base["view_hash"] != other["view_hash"]
+        return d
+
+    diffs = {mode: _delta(out[mode]) for mode in out if mode != "full"}
+    changed = any(any(abs(v) > 1e-9 if isinstance(v, (int, float)) else bool(v) for v in d.values())
+                  for d in diffs.values())
+    return {"modes": out, "diffs": diffs, "history_changes_execution": changed,
+            "verdict": ("history is causally consumed — removing it changes execution"
+                        if changed else "ORNAMENTAL: removing history does not change execution")}
+
+
+# ------------------------------------------------------------------ THE canonical persistence-aware run
+def prepare_persistence_run(question, plan, *, llm=None, context=None, actor_history=None,
+                            family_ids=None, n_particles=None) -> dict:
+    """Stage 1 of the canonical persistence-aware run: identity/checkpoint/history ingestion (ONCE),
+    world materialization, operator instantiation and run construction. Returns a handle consumed by
+    `run_persistence_slice` + `finalize_persistence_run`. Splitting the funnel here is what makes
+    structural-ensemble pilots PROGRESSIVE: the same handle rolls a pilot slice, promotion is decided,
+    and the extension slice continues on the identical prepared world/operators — history is never
+    re-ingested and the checkpoint commits once, at finalize."""
+    from swm.world_model_v2.materialize import (_bind_scenario_schema, build_world,
+                                                check_readout_binding, operators_from_plan,
+                                                queue_builder_from_plan)
+    from swm.world_model_v2.init_state import InitialStateModel
+    from swm.world_model_v2.rollout import WorldModelV2Run
+    from swm.world_model_v2.phase8_runtime import (family_runtime_manifest, select_families,
+                                                   support_grade_effect)
+    base = build_world(plan, evidence_hash=(plan.provenance or {}).get("evidence_bundle_hash", ""))
+    # generated mode (the default) binds THIS plan's scenario schema + causal mechanisms onto
+    # the base world — the persistence funnel is the ordinary simulate_world terminal path, so
+    # the causal boundary must be live here, not only in run_from_plan
+    _bind_scenario_schema(plan, base, llm)
+    family_ids = list(family_ids or ["engagement_propensity"])
+    meta = {"materialized": 0, "history_events": 0, "checkpoint_loaded": False,
+            "checkpoint_committed": False, "families_selected": [], "families_blocked": []}
+    materialized, family_manifests = [], []
+    prior_watermark = ""
+
+    if context is not None and actor_history:
+        from swm.world_model_v2.phase8_events import PersistentEvent
+        # 1) resolve scenario/actor identity + load prior checkpoint watermark
+        scenario = context.store.scenario_id
+        prior_cp = None
+        try:
+            prior_cp = context.store.load_latest_checkpoint(base.clock.as_of)
+        except Exception:
+            prior_cp = None
+        if prior_cp is not None:
+            meta["checkpoint_loaded"] = True
+            prior_watermark = prior_cp.event_watermark
+        # 2) ingest new leakage-safe history (observed_time ≤ as_of enforced by the log's query)
+        for eid, events in actor_history.items():
+            for ev in events:
+                context.store.log.append(PersistentEvent(
+                    world_id=base.world_id, scenario_id=scenario,
+                    event_type=ev.get("event_type", "passive_exposure"),
+                    event_time=float(ev.get("event_time", 0.0)), actor_ids=(eid,),
+                    observed_time=float(ev.get("observed_time", ev.get("event_time", 0.0))),
+                    outcome=ev.get("outcome")))
+                meta["history_events"] += 1
+        # 3) SELECT causally-relevant families (block only quarantined/incompatible)
+        selections = select_families(family_ids)
+        selected_ids = [s.variable_id for s in selections if s.selected]
+        meta["families_selected"] = selected_ids
+        meta["families_blocked"] = [s.variable_id for s in selections if not s.selected]
+        # 4) replay filters → posteriors, for the selected families over the present actors
+        keys = [PersistentStateKey(base.world_id, scenario, "actor", eid, vid)
+                for eid in actor_history for vid in selected_ids
+                if get_persistent_variable_scope(vid) == "actor"]
+        posteriors = context.store.replay(base.clock.as_of, variable_keys=keys) if keys else {}
+        posteriors = {k: v for k, v in posteriors.items() if v.key.entity_id in base.entities}
+        # 5) materialize into the base world
+        materialized = materialize_persistent_state(base, list(posteriors.values()))
+        meta["materialized"] = len(materialized)
+        # 6) expose actor-visible memory (leakage-safe recall) into entity.memory
+        _expose_actor_memory(base, context, actor_history, base.clock.as_of)
+        # 7) family manifests + support-grade effect
+        by_var = {}
+        for p in posteriors.values():
+            by_var.setdefault(p.variable_id, p)
+        for s in selections:
+            family_manifests.append(family_runtime_manifest(
+                s.variable_id, posterior=by_var.get(s.variable_id)))
+        load_bearing = [s.variable_id for s in selections if s.selected and by_var.get(s.variable_id)]
+        grade_effect = support_grade_effect(plan.support_grade, selections, load_bearing_ids=load_bearing)
+        meta["support_grade_effect"] = grade_effect
+
+    check_readout_binding(plan, base)
+    # parity with run_from_plan (the persistence funnel must not silently lose capabilities): the
+    # evidence-updated posterior reaches the resolver events, experimental mechanisms EXECUTE labeled
+    # (run-everything principle), and competing structural hypotheses stratify the particles
+    # (index-keyed, so progressive pilot/extension slices see a stable assignment).
+    from swm.world_model_v2.materialize import _inject_posterior_rate, ensure_outcome_pathway
+    _inject_posterior_rate(plan)
+    ops, op_rejections = operators_from_plan(plan, llm=llm, allow_experimental=True)
+    # ROLLOUT-VIABILITY INVARIANT: rejections are never discarded silently, and the plan must retain an
+    # outcome-capable (event, operator) pair — repaired in place otherwise (the silent-empty-rollout fix).
+    outcome_pathway = ensure_outcome_pathway(plan, ops, op_rejections)
+    import swm.world_model_v2.phase8_transitions as _p8t
+    ops = ops + [_p8t.PersistenceUpdateOperator(), _p8t.MemoryConsolidationOperator()]
+    init = InitialStateModel(base_world=base, latents=list(plan.latents))
+    npart = n_particles or plan.compute_plan.get("n_particles", 30)
+    queue_builder = queue_builder_from_plan(plan)
+    hyps = list(getattr(plan, "structural_hypotheses", []) or [])
+    stratification = None
+    if len(hyps) > 1:
+        queue_builder, stratification = _stratified_queue_builder(plan, hyps, queue_builder, npart)
+    run = WorldModelV2Run(initial=init, queue_builder=queue_builder,
+                          operators=ops, contract=plan.outcome_contract, n_particles=npart)
+    return {"question": question, "plan": plan, "base": base, "ops": ops, "run": run,
+            "n_particles": npart, "meta": meta, "family_manifests": family_manifests,
+            "materialized": materialized, "prior_watermark": prior_watermark,
+            "context": context, "actor_history": actor_history,
+            "outcome_pathway": outcome_pathway, "stratification": stratification}
+
+
+def _stratified_queue_builder(plan, hyps, inner_builder, total):
+    """HYPOTHESIS STRATIFICATION for the staged persistence funnel (parity with run_from_plan's
+    `_run_with_hypotheses`): competing structural hypotheses stratify the particles, each carrying a
+    lean the generic resolver reads, so competing structures produce genuinely different terminal
+    outcomes. Assignment is a pure function of the particle INDEX (same allocation law: Phase-3
+    structural-posterior weights when attached, else compiler priors; largest stratum absorbs the
+    remainder), so a pilot slice [0,p) plus an extension [p,n) sees exactly the assignment a direct
+    [0,n) roll would. Returns (queue_builder, stratification_meta)."""
+    struct_post = getattr(plan, "structural_posterior", None) or {}
+
+    def _weight(h):
+        hid = str(h.get("id", "H"))
+        if struct_post and hid in struct_post:
+            return max(0.0, float(struct_post[hid]))
+        return max(0.0, float(h.get("prior", 1.0) or 1.0))
+
+    z = sum(_weight(h) for h in hyps) or 1.0
+    alloc, assigned = [], 0
+    for i, h in enumerate(hyps):
+        k = max(1, round(total * _weight(h) / z)) if i < len(hyps) - 1 else max(0, total - assigned)
+        alloc.append(max(0, k))
+        assigned += alloc[-1]
+    default_lean = (plan.provenance or {}).get("outcome_lean", "neutral")
+    by_index = []
+    for h, k in zip(hyps, alloc):
+        lean = str(h.get("lean") or h.get("outcome_lean") or default_lean)
+        by_index.extend([(str(h.get("id", "H")), lean)] * k)
+
+    def builder(world):
+        q = inner_builder(world)
+        idx = int(getattr(world, "particle_index", 0) or 0)
+        hid, lean = by_index[idx % len(by_index)] if by_index else ("H", default_lean)
+        world.uncertainty_meta.setdefault("model", {})["hypothesis"] = hid
+        world.uncertainty_meta["hypothesis_lean"] = lean       # picked up by the resolve_outcome event
+        for ev in q.events:
+            if ev.etype == "resolve_outcome":
+                ev.payload["lean"] = lean
+        return q
+
+    meta = {"strata": {str(h.get("id", "H")): k for h, k in zip(hyps, alloc)},
+            "source": "phase3_evidence_posterior" if struct_post else "compiler_prior"}
+    return builder, meta
+
+
+def run_persistence_slice(handle: dict, *, seed: int = 0, n_total: int = None, start: int = 0,
+                          stop: int = None, particle_scope=None) -> list:
+    """Stage 2: roll a deterministic index-keyed particle slice on the prepared run. Appendable — pilot
+    [0,p) then [p,n) equals a direct [0,n) roll (same per-index worlds and exogenous seeds)."""
+    return handle["run"].run_particle_range(seed=seed, n_total=n_total, start=start, stop=stop,
+                                            particle_scope=particle_scope)
+
+
+def finalize_persistence_run(handle: dict, branches: list, *, intervention="", t0=None, seed=0,
+                             calibrator=None, cal_key=""):
+    """Stage 3: terminal projection over ALL accumulated branches (pilot prefix + extension), result
+    contract assembly, degradation surfacing, single checkpoint commit, provenance stamps."""
+    from swm.world_model_v2.pipeline import result_from_run
+    from swm.world_model_v2.materialize import attach_actor_decision_distributions
+    t0 = t0 if t0 is not None else _time.time()
+    question, plan, base = handle["question"], handle["plan"], handle["base"]
+    context, actor_history = handle["context"], handle["actor_history"]
+    meta, family_manifests = handle["meta"], handle["family_manifests"]
+    materialized, prior_watermark = handle["materialized"], handle["prior_watermark"]
+    result = handle["run"].project(branches)
+    result["omissions"] = list(getattr(base, "omissions", []))
+    if handle.get("stratification"):
+        # hypothesis-stratified run: report realized structural mass (parity with
+        # materialize._run_with_hypotheses — same provenance keys, computed over ALL branches)
+        struct_post = getattr(plan, "structural_posterior", None) or {}
+        realized = {}
+        for b in branches:
+            hid = b.world.uncertainty_meta.get("model", {}).get("hypothesis", "H")
+            realized[hid] = realized.get(hid, 0.0) + 1.0 / max(1, len(branches))
+        result["structural_realized_mass"] = {k: round(v, 4) for k, v in realized.items()}
+        if struct_post:
+            result["structural_posterior"] = {k: round(float(v), 4) for k, v in struct_post.items()}
+            result["structural_source"] = "phase3_evidence_posterior"
+            result["structural_note"] = ("competing structures weighted by the LIKELIHOOD-UPDATED "
+                                         "structural posterior (Phase 3); strata allocated by "
+                                         "posterior mass")
+        else:
+            result["structural_posterior"] = result["structural_realized_mass"]
+            result["structural_source"] = "compiler_prior"
+            result["structural_note"] = ("priors materialized as competing particles; NOT "
+                                         "evidence-reweighted (no Phase-3 posterior attached)")
+    attach_actor_decision_distributions(handle["ops"], result)
+    # causal-boundary honesty (#119): a plan whose scenario schema / mechanism model failed to
+    # compile is structurally under-modeled — surfaced on the result, never a silent fixed-v1
+    for _k in ("scenario_schema_error", "mechanism_model_error"):
+        _err = (plan.provenance or {}).get(_k)
+        if _err:
+            _rep = result.setdefault("consequence_report", {})
+            _rep["structurally_under_modeled"] = True
+            _rep[_k] = _err
+            if _k == "scenario_schema_error":
+                _rep["degraded"] = True
+    res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
+                          calibrator=calibrator, cal_key=cal_key)
+    outcome_pathway = handle.get("outcome_pathway") or {}
+    res.provenance = {**(res.provenance or {}),
+                      "actor_policy_report": result.get("actor_policy_report", {}),
+                      "consequence_report": result.get("consequence_report", {}),
+                      "outcome_pathway": outcome_pathway}
+    if outcome_pathway.get("repaired"):
+        res.limitations = (list(res.limitations or [])
+                           + [f"outcome-pathway repaired before rollout: {outcome_pathway['repairs']}"])
+    if result.get("actor_decision_distributions"):
+        res.provenance = {**(res.provenance or {}),
+                          "actor_decision_distributions": result["actor_decision_distributions"],
+                          "actor_policy_mode": result.get("actor_policy_mode", "")}
+    if result.get("cognition_records_sample"):
+        res.provenance = {**(res.provenance or {}),
+                          "cognition_records_sample": result["cognition_records_sample"]}
+    _surface_actor_policy_degradation(res, result.get("actor_policy_report", {}))
+    _surface_consequence_degradation(res, result.get("consequence_report", {}))
+
+    # 8) persist feedback + commit a new versioned checkpoint (advance lineage) + attach support effect
+    if context is not None and actor_history:
+        try:
+            new_cp = context.store.checkpoint(base.clock.as_of,
+                                              variable_keys=[PersistentStateKey(base.world_id,
+                                                             context.store.scenario_id, "actor", eid,
+                                                             "engagement_propensity")
+                                                             for eid in actor_history])
+            if getattr(context.store.log, "backend", None) is not None:
+                context.store.commit_checkpoint(new_cp)
+                meta["checkpoint_committed"] = True
+            meta["checkpoint_watermark"] = new_cp.event_watermark
+            meta["prior_watermark"] = prior_watermark
+            meta["lineage_advanced"] = new_cp.event_watermark != prior_watermark
+        except Exception as e:  # noqa: BLE001 — checkpoint commit is best-effort; the log stays the truth
+            meta["checkpoint_error"] = str(e)[:120]
+        eff = meta.get("support_grade_effect", {})
+        if eff.get("support_grade") and eff["support_grade"] != res.support_grade:
+            res.support_grade = eff["support_grade"]           # experimental load-bearing family lowers grade
+            res.limitations = list(res.limitations) + list(eff.get("limitations", []))
+    res.provenance = {**(res.provenance or {}), "phase8": meta,
+                      "phase8_family_manifests": family_manifests[:12],
+                      "persistent_deltas": [d.as_dict() for d in materialized][:10]}
+    return res, {"plan_hash": plan.plan_hash(), "materialized": materialized, "persistence_meta": meta,
+                 "family_manifests": family_manifests}
+
+
+def run_with_persistence(question, plan, *, llm=None, context=None, actor_history=None, family_ids=None,
+                         intervention="", t0=None, n_particles=None, seed=0, calibrator=None, cal_key=""):
+    """The single canonical persistence-aware run, shared by ``pipeline.simulate(persistence=…)`` and the
+    compatibility wrapper ``simulate_with_persistence``. Given a compiled ``plan``, it:
+
+      resolve identity → load prior checkpoint + watermark → ingest leakage-safe new history → replay
+      sequential filters → SELECT causally-relevant families (block only quarantined/incompatible) →
+      materialize into WorldState → expose actor-visible memory → rollout (persistence operators enabled) →
+      persist feedback → commit a new versioned checkpoint → attach lineage/versions/support/limitations.
+
+    No-abstention preserved. When no history/checkpoint exists it runs the ordinary path with broad priors.
+    Implemented as prepare → slice → finalize (see the stage functions above) so the structural-ensemble
+    runtime can run PROGRESSIVE pilot/full particle stages through this same canonical funnel."""
+    t0 = t0 if t0 is not None else _time.time()
+    handle = prepare_persistence_run(question, plan, llm=llm, context=context,
+                                     actor_history=actor_history, family_ids=family_ids,
+                                     n_particles=n_particles)
+    branches = run_persistence_slice(handle, seed=seed)
+    return finalize_persistence_run(handle, branches, intervention=intervention, t0=t0, seed=seed,
+                                    calibrator=calibrator, cal_key=cal_key)
+
+
+def _surface_actor_policy_degradation(res, report: dict) -> None:
+    """A degraded actor-policy run (requested LLM cognition, served numeric due to a defect or
+    a missing backend under an explicit LLM-mode request) must be visible on the result's face:
+    a limitation line always; a support-grade cap when the degradation was a construction
+    DEFECT rather than an honest no-backend capability statement."""
+    if not isinstance(report, dict) or not report:
+        return
+    warning = report.get("warning")
+    if warning:
+        res.limitations = list(res.limitations) + [f"actor_policy: {warning}"[:220]]
+    if report.get("degraded") and res.support_grade in ("empirically_supported",
+                                                        "transfer_supported"):
+        res.support_grade = "exploratory"
+
+
+def _surface_consequence_degradation(res, report: dict) -> None:
+    """A structurally under-modeled consequence run (no scenario schema, or no mechanism
+    model — external effects could not be processed; attempts preserved, unresolved marked)
+    caps the support grade and lands in limitations. It never silently reads as a complete
+    execution."""
+    if not isinstance(report, dict) or not report:
+        return
+    if report.get("structurally_under_modeled"):
+        why = report.get("scenario_schema_error") or report.get("mechanism_model_error") \
+            or "mechanism model missing or incomplete"
+        res.limitations = list(res.limitations) + [
+            f"causal_boundary: structurally under-modeled — {str(why)[:150]}; attempts "
+            f"preserved, external effects unresolved (fixed-v1 NOT served)"]
+        if res.support_grade in ("empirically_supported", "transfer_supported"):
+            res.support_grade = "exploratory"
+    unresolved = int(report.get("mechanism_unresolved", 0) or 0)
+    if unresolved:
+        res.limitations = list(res.limitations) + [
+            f"causal_boundary: {unresolved} mechanism transition(s) honestly unresolved "
+            f"(success never assumed)"]
+
+
+def get_persistent_variable_scope(vid: str) -> str:
+    from swm.world_model_v2.phase8_persistence import get_persistent_variable
+    try:
+        return get_persistent_variable(vid).scope
+    except KeyError:
+        return "actor"
+
+
+def _expose_actor_memory(world, context, actor_history, as_of):
+    """Materialize ONLY actor-recallable memories into each actor's ``memory`` field (leakage-safe). The
+    omniscient event log keeps everything; the actor gets a probabilistic, recency/salience-weighted subset
+    via the episodic store — never perfect recall (Part 8)."""
+    from swm.world_model_v2.state import F
+    store = getattr(context, "memory_store", None)
+    for eid in actor_history:
+        if eid not in world.entities:
+            continue
+        recalled = []
+        if store is not None and hasattr(store, "retrieve"):
+            try:
+                hits = store.retrieve(eid, "", as_of=as_of, k=8)
+                recalled = [{"at": getattr(h.get("episode"), "timestamp", as_of),
+                             "text": getattr(h.get("episode"), "text", ""),
+                             "salience": round(h.get("score", 0.5), 3), "recalled": True}
+                            for h in hits]
+            except Exception:
+                recalled = []
+        if recalled:
+            world.entities[eid].set("memory", F(recalled, status="derived", method="phase8_actor_recall",
+                                                updated_at=as_of))
+
+
+# ------------------------------------------------------------------ compatibility wrapper (compiles first)
+def simulate_with_persistence(question: str, *, llm=None, as_of: str, horizon: str, context=None,
+                              actor_history=None, family_ids=None, intervention: str = "", seed: int = 0,
+                              n_particles=None):
+    """Compatibility wrapper preserved as an internal API: compiles the question then delegates to the
+    canonical ``run_with_persistence``. Production callers should prefer ``pipeline.simulate(persistence=…)``
+    — there is now ONE canonical execution path (this just compiles first)."""
+    from swm.world_model_v2.compiler import compile_world
+    from swm.world_model_v2.result import (ClarificationRequired, CompilerExecutionError, SimulationResult)
+    t0 = _time.time()
+    try:
+        plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
+                             intervention=intervention, seed=seed)
+    except ClarificationRequired as e:
+        return SimulationResult(question=question, simulation_status="clarification_required",
+                                clarification_reason=str(e)[:200], latency_s=round(_time.time() - t0, 3)), {}
+    except CompilerExecutionError as e:
+        return SimulationResult(question=question, simulation_status="execution_failed",
+                                failure_taxonomy=e.taxonomy, latency_s=round(_time.time() - t0, 3)), {}
+    return run_with_persistence(question, plan, llm=llm, context=context, actor_history=actor_history,
+                                family_ids=family_ids, intervention=intervention, t0=t0,
+                                n_particles=n_particles, seed=seed)

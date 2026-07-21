@@ -1,0 +1,1670 @@
+{
+ "bundle_id": "eb_56e490",
+ "question": "Will the brand recover its pre-crisis social sentiment within a quarter?",
+ "as_of": 1685577600.0,
+ "compiler_plan_hash": "13f733a224ed",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_de096f5e63",
+   "claim_or_quantity": "The outcome is the average daily sentiment score over the last 7 days of the quarter, normalized to the pre-crisis baseline (1.0 = baseline, <1.0 = below, >1.0 = above). Recovery is defined as reaching at least 0.95 of baseline.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "brand"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8fc4cf9c11",
+   "claim_or_quantity": "value/context of brand.current_sentiment",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "brand.current_sentiment",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_580befe5e2",
+   "claim_or_quantity": "value/context of brand.pre_crisis_sentiment_baseline",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "brand.pre_crisis_sentiment_baseline",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5805170147",
+   "claim_or_quantity": "value/context of brand.crisis_severity",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "brand.crisis_severity",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8f394a07f1",
+   "claim_or_quantity": "evidence discriminating structural hypothesis rapid_recovery",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:rapid_recovery",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a8151c7809",
+   "claim_or_quantity": "evidence discriminating structural hypothesis slow_recovery",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:slow_recovery",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_47181506f2",
+   "claim_or_quantity": "decision rules / process of social_media_platforms",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "social_media_platforms",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0083b13b5c",
+   "claim_or_quantity": "decision rules / process of news_media",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "news_media",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_de096f5e63",
+   "terms": "brand recover pre crisis social sentiment brand",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_8fc4cf9c11",
+   "terms": "brand current sentiment",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_580befe5e2",
+   "terms": "brand pre crisis sentiment baseline",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_de096f5e63",
+   "logical_query": "brand recover pre crisis social sentiment brand after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=brand+recover+pre+crisis+social+sentiment+brand+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908093.7989132,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:01:34 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII0pBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc_3ovXmIT-HHq42wmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwDNbjmQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "ce41bafd09fa5c934bb726a10a9d3237a82c153e3710a9b5393a569f3806a5d8",
+   "n_bytes": 1259,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.703
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_8fc4cf9c11",
+   "logical_query": "brand current sentiment after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=brand+current+sentiment+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908094.5032902,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:01:35 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII1JBiSO44w5AKxBVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTN8b_34iU2gRUbL1spKSflF8an5JcUFxfkJBZnFKcWlaUWxRsZGJkZmBuY6RmYxBcYAABv4DbG\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a16de107beba0f5ba9ce469a7475bb88e3a831328132cf43ab032769b61a10df",
+   "n_bytes": 22115,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.553
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_580befe5e2",
+   "logical_query": "brand pre crisis sentiment baseline after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=brand+pre+crisis+sentiment+baseline+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908095.057596,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:01:35 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII1JBiSO44w5AKxBVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8b_34iU2gQnXb6xnUlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAr5w3UQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d286d82a64b0841358a471686f85370cfdd9b6acfa187ec91c161767299727c1",
+   "n_bytes": 1235,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.484
+  }
+ ],
+ "raw_content_refs": [
+  "a16de107beba0f5ba9ce469a7475bb88e3a831328132cf43ab032769b61a10df"
+ ],
+ "documents": [
+  {
+   "id": "2e15e1ea6f0b68f5",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxQV0J5clM1eWxIUjlrSjQzUWg3VDVYSy1CWFBrUFYwZmZJUDR4eUREZVZaVG0yc1J4MEJUMVBkWjlfN0RSakZCT0V1YS1uNGdRaXZ1R1pJQmgtbkV2ZVVaSUl2RURkUWRFSjdhemhPUFZMNnc1LWhkVl9KUy1reUFReTU4aWhJVzB6cWsyUlZScVVZU0c4YXdQVmttWUw3Qk41Mk9ILXNtSFZCcExub0NDN0NxN2lfV2p5bU9xRU9DVmRRaHJfYURmRXNuQ1hPSS1UNmFXOUNKYXBSdw?oc=5",
+   "title": "Consumers care about sustainability\u2014and back it up with their wallets - McKinsey & Company",
+   "text": "Consumers care about sustainability\u2014and back it up with their wallets - McKinsey & Company. Consumers care about sustainability\u2014and back it up with their wallets McKinsey & Company",
+   "content_hash": "14478edeced1b694",
+   "raw_feed_hash": "a16de107beba0f5ba9ce469a7475bb88e3a831328132cf43ab032769b61a10df",
+   "published_at": 1675670400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_8fc4cf9c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b69fdc12bf211bc7",
+   "source": "YouGov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE12UGpsQXNyQ3hFN1Y4Yl9IcFFtX0RsWlRaNnJ5X29XbW5QZm8tcl9qaWh6eGxtek5zdFFGTVh2aUlmbG5qUVl3VzUydkF6aTZvdXBNbUZBMVlLMmlXZW1QTk1zaHUyUEpsSE9oa1BuRUoyNzJHVkhFMTgxZWY?oc=5",
+   "title": "US: AriZona Iced Tea, Pinterest, Cinnamon Toast Crunch feature in Biggest Brand Movers (May 2023) - YouGov",
+   "text": "US: AriZona Iced Tea, Pinterest, Cinnamon Toast Crunch feature in Biggest Brand Movers (May 2023) - YouGov. US: AriZona Iced Tea, Pinterest, Cinnamon Toast Crunch feature in Biggest Brand Movers (May 2023) YouGov",
+   "content_hash": "ea4e7f9f2d88a478",
+   "raw_feed_hash": "a16de107beba0f5ba9ce469a7475bb88e3a831328132cf43ab032769b61a10df",
+   "published_at": 1685084400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_8fc4cf9c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0e75bf6f8aa0c91f",
+   "source": "Sprout Social",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBzUTIyeDNkVHJvakZiWkVMYjg2TWxZN2h3aU9RbHdWNndWM2w1OU9IeG9zTG5IZ0M4R0ZXYll6R25xdS1Bdk96VFFSTEdqY1lfM1JWamVjTF81VDNXQjdrQlRKOG5yTEc5a1A1UkhSc3NudTMtM3ZZNXRWQ0ZUQQ?oc=5",
+   "title": "Sprout Social Acquires Repustate - Sprout Social",
+   "text": "Sprout Social Acquires Repustate - Sprout Social. Sprout Social Acquires Repustate Sprout Social",
+   "content_hash": "c1f45122596d170a",
+   "raw_feed_hash": "a16de107beba0f5ba9ce469a7475bb88e3a831328132cf43ab032769b61a10df",
+   "published_at": 1674115200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_8fc4cf9c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9b108f304d0d3fba",
+   "source": "PYMNTS.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQczlzbTFPemdZN2pEYVBLSlBrOXJRUDh3RGduMEFBRlV4TUlhcnN6MzZ5ZnNCUW5aVmFkNEVyREdDWXZGTmdlb2RJd3VQdEJmZTBuTUZZZ1ZCT0xYbmFqZWtPYUVWdS1McHg5OVA5blNkTVU5dnZHV2E2VGxvMHA0Z3FTY0p5alRQekhka2FIRzdabDJVOTNSMmRhcWJnMmE3UzNzVEJvbTRmUjd6b0I3UzBEbEhGcmNFOXlIQnoxUHE?oc=5",
+   "title": "40% of Retail Shoppers Have Switched to Cheaper Merchants to Save Money, Study Finds - PYMNTS.com",
+   "text": "40% of Retail Shoppers Have Switched to Cheaper Merchants to Save Money, Study Finds - PYMNTS.com. 40% of Retail Shoppers Have Switched to Cheaper Merchants to Save Money, Study Finds PYMNTS.com",
+   "content_hash": "5c2649a2df20aaff",
+   "raw_feed_hash": "a16de107beba0f5ba9ce469a7475bb88e3a831328132cf43ab032769b61a10df",
+   "published_at": 1683270000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_8fc4cf9c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e819b422ddd62bcd",
+   "source": "Brand Finance",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPWlZ6aGxTOElUNWlvOXoteHdLNE1uTENBd2VtUWtNbXZQZHlDbFhRYkVHaFVnc2dfVlZ1YzE3Zk5jSFZ1LWhRVVBkWkV5bnhPMjY0ZFoyZG95WGRuYnEwN0I3YjVWQ25KMHQ3andJZXVpYk9QdmN5MDR4ajU1TzFWaldoY0Zpbl9UNjEySWxTQVliaXNTZHZfbkhpbnZhWFFpOUE?oc=5",
+   "title": "Measuring Reputational Risk through Brand Evaluation and Valuation - Brand Finance",
+   "text": "Measuring Reputational Risk through Brand Evaluation and Valuation - Brand Finance. Measuring Reputational Risk through Brand Evaluation and Valuation Brand Finance",
+   "content_hash": "cb3cd27a1b6e0178",
+   "raw_feed_hash": "a16de107beba0f5ba9ce469a7475bb88e3a831328132cf43ab032769b61a10df",
+   "published_at": 1679641200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_8fc4cf9c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "80dacbf644695ed1",
+   "source": "CNBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQbWNXU25FVGhTRG4waDVrUkQ3WGhrTWo0MldzQktSam1YRmQzNVB1cWdVTnN4bF96c3RjU1lxdHg5NVhFbWpRYnpVZk9wLUZWN3h4eFVDNlVKaXFiaW5JN2FWRWd6c1lQYjlUV3R4QVRPSFdueFVQdE1uZWNKU2piS1JjRnJZdlp6Rk9SQmJvNk5IQ015NHNLRC0ydXI2UdIBowFBVV95cUxNOURpXy16R2dZVHhEQW1VU2J0dzFMc3k3QXV5ZmQ1RGxac0xCdkhia0Y4dFU0SjFHX3NNdWtRS0x1cEFlNXdjVGttaXhRck1VamJEc3pMU2tFWmJCSzdJRnB5VUxiQ0FKTFZUVGhUUmVLcEhOWlhUMUp6aFNrV2VzdG1IUnFWRnNXb0N4Mko0Nnp3ZGJLTzhYLUdhTDc4TGVEcWZJ?oc=5",
+   "title": "Wall Street\u2019s frozen IPO market is thawing as companies take advantage of stock rally - CNBC",
+   "text": "Wall Street\u2019s frozen IPO market is thawing as companies take advantage of stock rally - CNBC. Wall Street\u2019s frozen IPO market is thawing as companies take advantage of stock rally CNBC",
+   "content_hash": "2c56b9660bd140bb",
+   "raw_feed_hash": "a16de107beba0f5ba9ce469a7475bb88e3a831328132cf43ab032769b61a10df",
+   "published_at": 1675929600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_8fc4cf9c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "60be80f1620751ec",
+   "source": "FSR magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNNFZkOEtVaUU5RTZkZGdzZkJnRFJpLVVvaGUxMHhqTHBCT3VwV3FZdVdoRUxaLWVTdXdHNkU4bzhGbXE0ZWtDN2RRa3VIVTFHcnJnVWJ4RUFLRUFSQW9tUHFBZkl4U2RwMU9oSGpleC1vWVdkeXZLbnlHUXNBQ01RRw?oc=5",
+   "title": "Denny\u2019s Rethinks Remodel Program - FSR magazine",
+   "text": "Denny\u2019s Rethinks Remodel Program - FSR magazine. Denny\u2019s Rethinks Remodel Program FSR magazine",
+   "content_hash": "ce2652a9893a405b",
+   "raw_feed_hash": "a16de107beba0f5ba9ce469a7475bb88e3a831328132cf43ab032769b61a10df",
+   "published_at": 1676448000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_8fc4cf9c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3b5e0c3052050210",
+   "source": "NextShark",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1rQmNqNU1ld2JOajlTRmh6Ti1lM053bkVDWF92N0RvcTNaWDVrX3JCdVRnVkRuS3o2YnpJTHRPcE9PeDk5UmR3VGl4Y2NqRnFTQk5tMHRNRXN3Y1EyOGhn?oc=5",
+   "title": "Shoichiro Toyoda, who brought Toyota to the US amid anti-Japanese sentiment, dies at 97 - NextShark",
+   "text": "Shoichiro Toyoda, who brought Toyota to the US amid anti-Japanese sentiment, dies at 97 - NextShark. Shoichiro Toyoda, who brought Toyota to the US amid anti-Japanese sentiment, dies at 97 NextShark",
+   "content_hash": "34c29726c45fe6f2",
+   "raw_feed_hash": "a16de107beba0f5ba9ce469a7475bb88e3a831328132cf43ab032769b61a10df",
+   "published_at": 1676620800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_8fc4cf9c11",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "2e15e1ea6f0b68f5:c0",
+   "source_id": "2e15e1ea6f0b68f5",
+   "subject": "Consumers",
+   "predicate": "care about",
+   "object": "sustainability",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Consumers care about sustainability\u2014and back it up with their wallets",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675670400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Consumers",
+    "sustainability"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c5cae9fd0e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8fc4cf9c11"
+   }
+  },
+  {
+   "claim_id": "2e15e1ea6f0b68f5:c1",
+   "source_id": "2e15e1ea6f0b68f5",
+   "subject": "Consumers",
+   "predicate": "back up with their wallets",
+   "object": "sustainability",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Consumers care about sustainability\u2014and back it up with their wallets",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675670400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Consumers",
+    "sustainability"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c5cae9fd0e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8fc4cf9c11"
+   }
+  },
+  {
+   "claim_id": "b69fdc12bf211bc7:c0",
+   "source_id": "b69fdc12bf211bc7",
+   "subject": "AriZona Iced Tea",
+   "predicate": "feature in",
+   "object": "Biggest Brand Movers (May 2023) - YouGov",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "US: AriZona Iced Tea, Pinterest, Cinnamon Toast Crunch feature in Biggest Brand Movers (May 2023) - YouGov",
+   "span_verified": true,
+   "event_time": "May 2023",
+   "publication_time": 1685084400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "AriZona Iced Tea",
+    "Biggest Brand Movers",
+    "YouGov"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_11be350d9c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8fc4cf9c11"
+   }
+  },
+  {
+   "claim_id": "b69fdc12bf211bc7:c1",
+   "source_id": "b69fdc12bf211bc7",
+   "subject": "Pinterest",
+   "predicate": "feature in",
+   "object": "Biggest Brand Movers (May 2023) - YouGov",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "US: AriZona Iced Tea, Pinterest, Cinnamon Toast Crunch feature in Biggest Brand Movers (May 2023) - YouGov",
+   "span_verified": true,
+   "event_time": "May 2023",
+   "publication_time": 1685084400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Pinterest",
+    "Biggest Brand Movers",
+    "YouGov"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_11be350d9c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8fc4cf9c11"
+   }
+  },
+  {
+   "claim_id": "b69fdc12bf211bc7:c2",
+   "source_id": "b69fdc12bf211bc7",
+   "subject": "Cinnamon Toast Crunch",
+   "predicate": "feature in",
+   "object": "Biggest Brand Movers (May 2023) - YouGov",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "US: AriZona Iced Tea, Pinterest, Cinnamon Toast Crunch feature in Biggest Brand Movers (May 2023) - YouGov",
+   "span_verified": true,
+   "event_time": "May 2023",
+   "publication_time": 1685084400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Cinnamon Toast Crunch",
+    "Biggest Brand Movers",
+    "YouGov"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_11be350d9c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8fc4cf9c11"
+   }
+  },
+  {
+   "claim_id": "0e75bf6f8aa0c91f:c0",
+   "source_id": "0e75bf6f8aa0c91f",
+   "subject": "Sprout Social",
+   "predicate": "acquires",
+   "object": "Repustate",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Sprout Social Acquires Repustate",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674115200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Sprout Social",
+    "Repustate"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3f9e6ad874",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8fc4cf9c11"
+   }
+  },
+  {
+   "claim_id": "9b108f304d0d3fba:c0",
+   "source_id": "9b108f304d0d3fba",
+   "subject": "40% of Retail Shoppers",
+   "predicate": "have switched to",
+   "object": "cheaper merchants to save money",
+   "value": "40",
+   "units": "percent",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "40% of Retail Shoppers Have Switched to Cheaper Merchants to Save Money, Study Finds",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683270000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "retail shoppers",
+    "cheaper merchants"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ad7413e4a1",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8fc4cf9c11"
+   }
+  },
+  {
+   "claim_id": "e819b422ddd62bcd:c0",
+   "source_id": "e819b422ddd62bcd",
+   "subject": "Brand Finance",
+   "predicate": "measures",
+   "object": "reputational risk through brand evaluation and valuation",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Measuring Reputational Risk through Brand Evaluation and Valuation - Brand Finance",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679641200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Brand Finance"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6feb2d5a71",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8fc4cf9c11"
+   }
+  },
+  {
+   "claim_id": "80dacbf644695ed1:c0",
+   "source_id": "80dacbf644695ed1",
+   "subject": "Wall Street\u2019s frozen IPO market",
+   "predicate": "is thawing",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Wall Street\u2019s frozen IPO market is thawing",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675929600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Wall Street",
+    "IPO market"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c4a746f464",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8fc4cf9c11"
+   }
+  },
+  {
+   "claim_id": "80dacbf644695ed1:c1",
+   "source_id": "80dacbf644695ed1",
+   "subject": "companies",
+   "predicate": "take advantage of",
+   "object": "stock rally",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "companies take advantage of stock rally",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675929600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "companies",
+    "stock rally"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c4a746f464",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8fc4cf9c11"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Consumers",
+   "normalized": "consumers",
+   "candidates": [
+    {
+     "entity_id": "ent_44f6713822",
+     "canonical": "consumers",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Consumers",
+      "Consumers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "sustainability",
+   "normalized": "sustainability",
+   "candidates": [
+    {
+     "entity_id": "ent_86b38fdd14",
+     "canonical": "sustainability",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "sustainability",
+      "sustainability"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Consumers",
+   "normalized": "consumers",
+   "candidates": [
+    {
+     "entity_id": "ent_44f6713822",
+     "canonical": "consumers",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Consumers",
+      "Consumers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "sustainability",
+   "normalized": "sustainability",
+   "candidates": [
+    {
+     "entity_id": "ent_86b38fdd14",
+     "canonical": "sustainability",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "sustainability",
+      "sustainability"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "AriZona Iced Tea",
+   "normalized": "arizona iced tea",
+   "candidates": [
+    {
+     "entity_id": "ent_d9a420c4ce",
+     "canonical": "arizona iced tea",
+     "support": 0.5455,
+     "evidence_mentions": [
+      "AriZona Iced Tea"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Biggest Brand Movers",
+   "normalized": "biggest brand movers",
+   "candidates": [
+    {
+     "entity_id": "ent_d4be5b2676",
+     "canonical": "biggest brand movers",
+     "support": 0.6364,
+     "evidence_mentions": [
+      "Biggest Brand Movers",
+      "Biggest Brand Movers",
+      "Biggest Brand Movers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "YouGov",
+   "normalized": "yougov",
+   "candidates": [
+    {
+     "entity_id": "ent_fefd9cf523",
+     "canonical": "yougov",
+     "support": 0.6364,
+     "evidence_mentions": [
+      "YouGov",
+      "YouGov",
+      "YouGov"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Pinterest",
+   "normalized": "pinterest",
+   "candidates": [
+    {
+     "entity_id": "ent_ea273f4e5b",
+     "canonical": "pinterest",
+     "support": 0.5455,
+     "evidence_mentions": [
+      "Pinterest"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Biggest Brand Movers",
+   "normalized": "biggest brand movers",
+   "candidates": [
+    {
+     "entity_id": "ent_d4be5b2676",
+     "canonical": "biggest brand movers",
+     "support": 0.6364,
+     "evidence_mentions": [
+      "Biggest Brand Movers",
+      "Biggest Brand Movers",
+      "Biggest Brand Movers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "YouGov",
+   "normalized": "yougov",
+   "candidates": [
+    {
+     "entity_id": "ent_fefd9cf523",
+     "canonical": "yougov",
+     "support": 0.6364,
+     "evidence_mentions": [
+      "YouGov",
+      "YouGov",
+      "YouGov"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Cinnamon Toast Crunch",
+   "normalized": "cinnamon toast crunch",
+   "candidates": [
+    {
+     "entity_id": "ent_cce780f21d",
+     "canonical": "cinnamon toast crunch",
+     "support": 0.5455,
+     "evidence_mentions": [
+      "Cinnamon Toast Crunch"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Biggest Brand Movers",
+   "normalized": "biggest brand movers",
+   "candidates": [
+    {
+     "entity_id": "ent_d4be5b2676",
+     "canonical": "biggest brand movers",
+     "support": 0.6364,
+     "evidence_mentions": [
+      "Biggest Brand Movers",
+      "Biggest Brand Movers",
+      "Biggest Brand Movers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "YouGov",
+   "normalized": "yougov",
+   "candidates": [
+    {
+     "entity_id": "ent_fefd9cf523",
+     "canonical": "yougov",
+     "support": 0.6364,
+     "evidence_mentions": [
+      "YouGov",
+      "YouGov",
+      "YouGov"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Sprout Social",
+   "normalized": "sprout social",
+   "candidates": [
+    {
+     "entity_id": "ent_1517e8f4b8",
+     "canonical": "sprout social",
+     "support": 0.5455,
+     "evidence_mentions": [
+      "Sprout Social"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Repustate",
+   "normalized": "repustate",
+   "candidates": [
+    {
+     "entity_id": "ent_27d2f20462",
+     "canonical": "repustate",
+     "support": 0.5455,
+     "evidence_mentions": [
+      "Repustate"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "retail shoppers",
+   "normalized": "retail shoppers",
+   "candidates": [
+    {
+     "entity_id": "ent_66432a3655",
+     "canonical": "retail shoppers",
+     "support": 0.5455,
+     "evidence_mentions": [
+      "retail shoppers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "cheaper merchants",
+   "normalized": "cheaper merchants",
+   "candidates": [
+    {
+     "entity_id": "ent_b9177aa227",
+     "canonical": "cheaper merchants",
+     "support": 0.5455,
+     "evidence_mentions": [
+      "cheaper merchants"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Brand Finance",
+   "normalized": "brand finance",
+   "candidates": [
+    {
+     "entity_id": "ent_762cbc0905",
+     "canonical": "brand finance",
+     "support": 0.5455,
+     "evidence_mentions": [
+      "Brand Finance"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Wall Street",
+   "normalized": "wall street",
+   "candidates": [
+    {
+     "entity_id": "ent_4d8f889275",
+     "canonical": "wall street",
+     "support": 0.5455,
+     "evidence_mentions": [
+      "Wall Street"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "IPO market",
+   "normalized": "ipo market",
+   "candidates": [
+    {
+     "entity_id": "ent_b73bc938ae",
+     "canonical": "ipo market",
+     "support": 0.5455,
+     "evidence_mentions": [
+      "IPO market"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "companies",
+   "normalized": "companies",
+   "candidates": [
+    {
+     "entity_id": "ent_aed46479ee",
+     "canonical": "companies",
+     "support": 0.5455,
+     "evidence_mentions": [
+      "companies"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "stock rally",
+   "normalized": "stock rally",
+   "candidates": [
+    {
+     "entity_id": "ent_b218d57b87",
+     "canonical": "stock rally",
+     "support": 0.5455,
+     "evidence_mentions": [
+      "stock rally"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "2e15e1ea6f0b68f5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675670400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675670400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b69fdc12bf211bc7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1685084400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685084400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0e75bf6f8aa0c91f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1674115200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674115200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9b108f304d0d3fba": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1683270000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683270000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e819b422ddd62bcd": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1679641200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679641200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "80dacbf644695ed1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675929600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675929600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "60be80f1620751ec": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1676448000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676448000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3b5e0c3052050210": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1676620800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676620800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_c5cae9fd0e",
+   "member_ids": [
+    "2e15e1ea6f0b68f5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "McKinsey & Company",
+   "primary_source": "McKinsey & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_11be350d9c",
+   "member_ids": [
+    "b69fdc12bf211bc7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "YouGov",
+   "primary_source": "YouGov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3f9e6ad874",
+   "member_ids": [
+    "0e75bf6f8aa0c91f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Sprout Social",
+   "primary_source": "Sprout Social",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ad7413e4a1",
+   "member_ids": [
+    "9b108f304d0d3fba"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "PYMNTS.com",
+   "primary_source": "PYMNTS.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6feb2d5a71",
+   "member_ids": [
+    "e819b422ddd62bcd"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Brand Finance",
+   "primary_source": "Brand Finance",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c4a746f464",
+   "member_ids": [
+    "80dacbf644695ed1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CNBC",
+   "primary_source": "CNBC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0dbf1beb02",
+   "member_ids": [
+    "60be80f1620751ec"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "FSR magazine",
+   "primary_source": "FSR magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ebf6098b67",
+   "member_ids": [
+    "3b5e0c3052050210"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NextShark",
+   "primary_source": "NextShark",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "2e15e1ea6f0b68f5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675670400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2e15e1ea6f0b68f5:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675670400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b69fdc12bf211bc7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685084400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b69fdc12bf211bc7:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685084400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b69fdc12bf211bc7:c2",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685084400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0e75bf6f8aa0c91f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674115200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "9b108f304d0d3fba:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683270000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "e819b422ddd62bcd:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679641200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "80dacbf644695ed1:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675929600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "80dacbf644695ed1:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675929600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "2e15e1ea6f0b68f5:c0",
+  "2e15e1ea6f0b68f5:c1",
+  "b69fdc12bf211bc7:c0",
+  "b69fdc12bf211bc7:c1",
+  "b69fdc12bf211bc7:c2",
+  "0e75bf6f8aa0c91f:c0",
+  "9b108f304d0d3fba:c0",
+  "e819b422ddd62bcd:c0",
+  "80dacbf644695ed1:c0",
+  "80dacbf644695ed1:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_de096f5e63": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_8fc4cf9c11": {
+   "status": "fulfilled",
+   "n_claims": 10,
+   "n_included": 10
+  },
+  "req_580befe5e2": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_5805170147": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_8f394a07f1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a8151c7809": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_47181506f2": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_0083b13b5c": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_de096f5e63",
+  "req_580befe5e2",
+  "req_5805170147",
+  "req_8f394a07f1",
+  "req_a8151c7809",
+  "req_47181506f2",
+  "req_0083b13b5c"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 8,
+  "n_contradictions": 0,
+  "n_documents": 8
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 16.462,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "51625f6061f8d14d",
+ "bundle_hash": "51625f6061f8d14d",
+ "_persisted_at": "2026-07-13T02:01:57Z"
+}

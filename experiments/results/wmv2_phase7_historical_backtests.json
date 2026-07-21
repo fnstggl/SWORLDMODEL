@@ -1,0 +1,843 @@
+{
+ "_meta": {
+  "note": "Phase-7 end-to-end historical backtests through WorldState + StateDelta. Primary comparison per backtest: full Phase-7 form vs the prior Phase-6 form, identical initial state / cutoff / seeds / particles / horizon; only the mechanism form differs.",
+  "categories": [
+   "diffusion",
+   "persistence",
+   "content"
+  ],
+  "seed": 0,
+  "llm_calls": 0,
+  "runtime_s": 22.9
+ },
+ "baby_names_diffusion": {
+  "category": "diffusion_cascade_evolution",
+  "dataset": "baby_names_1880_2008",
+  "n_names": 40,
+  "as_of": "cutoff year just past each name's adoption inflection",
+  "arms": {
+   "constant_persistence": "S held at cutoff",
+   "phase6_linear": "linear_growth (non-saturating extrapolation)",
+   "phase7_nonlinear": "logistic_growth (Verhulst saturation) stepped through WorldState"
+  },
+  "execution": "NonlinearStateStepOperator emits a StateDelta per forecast year + schedules the next year (future event); trajectory read from terminal world state",
+  "leakage_audit": {
+   "as_of": "only years \u2264 cutoff used to fit each name",
+   "features_used": [
+    "share_history_le_cutoff"
+   ],
+   "forbidden_checked": [
+    "share_after_cutoff"
+   ],
+   "leakage_free": true,
+   "violations": []
+  },
+  "mean_rmse": {
+   "phase7_nonlinear": 0.028815,
+   "phase6_linear": 0.096838,
+   "constant": 0.017352
+  },
+  "paired_trajectory_rmse": {
+   "phase7_vs_phase6": {
+    "mean": -0.068024,
+    "ci95": [
+     -0.129743,
+     -0.01456
+    ],
+    "n": 40
+   },
+   "phase7_vs_constant": {
+    "mean": 0.011463,
+    "ci95": [
+     0.005039,
+     0.020466
+    ],
+    "n": 40
+   }
+  },
+  "beats_phase6": true,
+  "beats_constant": false,
+  "verdict": "PRIMARY (Phase 7 vs Phase 6 form): nonlinear saturation beats non-saturating extrapolation on trajectory RMSE (paired mean -0.068024 CI [-0.129743, -0.01456]). HONEST CAVEAT: neither growth form beats naive persistence on average (constant RMSE 0.0174 < nonlinear 0.0288) because post-peak DECLINE is not modeled by a growth-only mechanism \u2014 a preserved limitation, not a saturation win over all baselines.",
+  "per_name": [
+   {
+    "name": "Robert",
+    "cutoff_year": 1934,
+    "n_forecast_years": 74,
+    "s0": 0.05283,
+    "fitted_L": 914.16639,
+    "rmse_nonlinear": 0.164595,
+    "rmse_linear": 0.029668,
+    "rmse_constant": 0.029705,
+    "terminal_err_nl": 0.347204,
+    "terminal_err_lin": 0.048721,
+    "steps_executed": 74
+   },
+   {
+    "name": "James",
+    "cutoff_year": 1947,
+    "n_forecast_years": 61,
+    "s0": 0.05113,
+    "fitted_L": 0.05669,
+    "rmse_nonlinear": 0.034245,
+    "rmse_linear": 0.023711,
+    "rmse_constant": 0.029214,
+    "terminal_err_nl": 0.049738,
+    "terminal_err_lin": 0.034877,
+    "steps_executed": 61
+   },
+   {
+    "name": "Linda",
+    "cutoff_year": 1951,
+    "n_forecast_years": 57,
+    "s0": 0.0401,
+    "fitted_L": 0.05643,
+    "rmse_nonlinear": 0.050037,
+    "rmse_linear": 0.437642,
+    "rmse_constant": 0.034489,
+    "terminal_err_nl": 0.056133,
+    "terminal_err_lin": 0.999707,
+    "steps_executed": 57
+   },
+   {
+    "name": "Michael",
+    "cutoff_year": 1972,
+    "n_forecast_years": 36,
+    "s0": 0.04294,
+    "fitted_L": 0.04776,
+    "rmse_nonlinear": 0.023192,
+    "rmse_linear": 0.016848,
+    "rmse_constant": 0.019251,
+    "terminal_err_nl": 0.038322,
+    "terminal_err_lin": 0.029377,
+    "steps_executed": 36
+   },
+   {
+    "name": "David",
+    "cutoff_year": 1958,
+    "n_forecast_years": 50,
+    "s0": 0.03847,
+    "fitted_L": 732.66302,
+    "rmse_nonlinear": 0.12848,
+    "rmse_linear": 0.038126,
+    "rmse_constant": 0.019779,
+    "terminal_err_nl": 0.273533,
+    "terminal_err_lin": 0.065402,
+    "steps_executed": 50
+   },
+   {
+    "name": "Jennifer",
+    "cutoff_year": 1977,
+    "n_forecast_years": 31,
+    "s0": 0.03596,
+    "fitted_L": 0.04174,
+    "rmse_nonlinear": 0.029925,
+    "rmse_linear": 0.054344,
+    "rmse_constant": 0.024786,
+    "terminal_err_nl": 0.039922,
+    "terminal_err_lin": 0.092292,
+    "steps_executed": 31
+   },
+   {
+    "name": "Shirley",
+    "cutoff_year": 1938,
+    "n_forecast_years": 69,
+    "s0": 0.02106,
+    "fitted_L": 0.04094,
+    "rmse_nonlinear": 0.036444,
+    "rmse_linear": 0.694245,
+    "rmse_constant": 0.018243,
+    "terminal_err_nl": 0.040791,
+    "terminal_err_lin": 0.999855,
+    "steps_executed": 69
+   },
+   {
+    "name": "Richard",
+    "cutoff_year": 1949,
+    "n_forecast_years": 59,
+    "s0": 0.02836,
+    "fitted_L": 0.04258,
+    "rmse_nonlinear": 0.028814,
+    "rmse_linear": 0.007946,
+    "rmse_constant": 0.018075,
+    "terminal_err_nl": 0.040379,
+    "terminal_err_lin": 0.010517,
+    "steps_executed": 59
+   },
+   {
+    "name": "Barbara",
+    "cutoff_year": 1941,
+    "n_forecast_years": 67,
+    "s0": 0.03187,
+    "fitted_L": 0.03765,
+    "rmse_nonlinear": 0.030996,
+    "rmse_linear": 0.080324,
+    "rmse_constant": 0.025688,
+    "terminal_err_nl": 0.037468,
+    "terminal_err_lin": 0.149741,
+    "steps_executed": 67
+   },
+   {
+    "name": "Jason",
+    "cutoff_year": 1977,
+    "n_forecast_years": 31,
+    "s0": 0.03275,
+    "fitted_L": 0.03444,
+    "rmse_nonlinear": 0.025756,
+    "rmse_linear": 0.274231,
+    "rmse_constant": 0.024183,
+    "terminal_err_nl": 0.030918,
+    "terminal_err_lin": 0.658027,
+    "steps_executed": 31
+   },
+   {
+    "name": "Lisa",
+    "cutoff_year": 1968,
+    "n_forecast_years": 40,
+    "s0": 0.02907,
+    "fitted_L": 0.03374,
+    "rmse_nonlinear": 0.028142,
+    "rmse_linear": 0.09925,
+    "rmse_constant": 0.023741,
+    "terminal_err_nl": 0.033492,
+    "terminal_err_lin": 0.199109,
+    "steps_executed": 40
+   },
+   {
+    "name": "Betty",
+    "cutoff_year": 1933,
+    "n_forecast_years": 63,
+    "s0": 0.03029,
+    "fitted_L": 0.03453,
+    "rmse_nonlinear": 0.02946,
+    "rmse_linear": 0.05492,
+    "rmse_constant": 0.02548,
+    "terminal_err_nl": 0.034415,
+    "terminal_err_lin": 0.090904,
+    "steps_executed": 63
+   },
+   {
+    "name": "Dorothy",
+    "cutoff_year": 1926,
+    "n_forecast_years": 79,
+    "s0": 0.02987,
+    "fitted_L": 0.03459,
+    "rmse_nonlinear": 0.029749,
+    "rmse_linear": 0.045026,
+    "rmse_constant": 0.025412,
+    "terminal_err_nl": 0.034463,
+    "terminal_err_lin": 0.069104,
+    "steps_executed": 79
+   },
+   {
+    "name": "Patricia",
+    "cutoff_year": 1954,
+    "n_forecast_years": 54,
+    "s0": 0.02473,
+    "fitted_L": 0.03125,
+    "rmse_nonlinear": 0.025818,
+    "rmse_linear": 0.014965,
+    "rmse_constant": 0.01978,
+    "terminal_err_nl": 0.030945,
+    "terminal_err_lin": 0.016218,
+    "steps_executed": 54
+   },
+   {
+    "name": "Helen",
+    "cutoff_year": 1920,
+    "n_forecast_years": 88,
+    "s0": 0.02827,
+    "fitted_L": 0.03277,
+    "rmse_nonlinear": 0.028076,
+    "rmse_linear": 0.020504,
+    "rmse_constant": 0.024007,
+    "terminal_err_nl": 0.032348,
+    "terminal_err_lin": 0.02166,
+    "steps_executed": 88
+   },
+   {
+    "name": "Donald",
+    "cutoff_year": 1937,
+    "n_forecast_years": 71,
+    "s0": 0.02556,
+    "fitted_L": 0.03659,
+    "rmse_nonlinear": 0.02892,
+    "rmse_linear": 0.017723,
+    "rmse_constant": 0.019096,
+    "terminal_err_nl": 0.03613,
+    "terminal_err_lin": 0.022706,
+    "steps_executed": 71
+   },
+   {
+    "name": "Joseph",
+    "cutoff_year": 1917,
+    "n_forecast_years": 91,
+    "s0": 0.0259,
+    "fitted_L": 7.5993,
+    "rmse_nonlinear": 0.030147,
+    "rmse_linear": 0.010673,
+    "rmse_constant": 0.011119,
+    "terminal_err_nl": 0.056162,
+    "terminal_err_lin": 0.01752,
+    "steps_executed": 91
+   },
+   {
+    "name": "Deborah",
+    "cutoff_year": 1957,
+    "n_forecast_years": 51,
+    "s0": 0.01914,
+    "fitted_L": 0.02805,
+    "rmse_nonlinear": 0.024853,
+    "rmse_linear": 0.023189,
+    "rmse_constant": 0.016258,
+    "terminal_err_nl": 0.027875,
+    "terminal_err_lin": 0.032359,
+    "steps_executed": 51
+   },
+   {
+    "name": "Mark",
+    "cutoff_year": 1963,
+    "n_forecast_years": 45,
+    "s0": 0.02396,
+    "fitted_L": 0.02773,
+    "rmse_nonlinear": 0.020459,
+    "rmse_linear": 0.025093,
+    "rmse_constant": 0.016981,
+    "terminal_err_nl": 0.026393,
+    "terminal_err_lin": 0.037828,
+    "steps_executed": 45
+   },
+   {
+    "name": "Matthew",
+    "cutoff_year": 1986,
+    "n_forecast_years": 22,
+    "s0": 0.02458,
+    "fitted_L": 0.02914,
+    "rmse_nonlinear": 0.013601,
+    "rmse_linear": 0.023488,
+    "rmse_constant": 0.010117,
+    "terminal_err_nl": 0.020984,
+    "terminal_err_lin": 0.041538,
+    "steps_executed": 22
+   },
+   {
+    "name": "Thomas",
+    "cutoff_year": 1954,
+    "n_forecast_years": 54,
+    "s0": 0.0228,
+    "fitted_L": 0.02582,
+    "rmse_nonlinear": 0.015592,
+    "rmse_linear": 0.007927,
+    "rmse_constant": 0.012821,
+    "terminal_err_nl": 0.021987,
+    "terminal_err_lin": 0.010847,
+    "steps_executed": 54
+   },
+   {
+    "name": "Susan",
+    "cutoff_year": 1957,
+    "n_forecast_years": 51,
+    "s0": 0.02195,
+    "fitted_L": 0.0242,
+    "rmse_nonlinear": 0.019768,
+    "rmse_linear": 0.022587,
+    "rmse_constant": 0.017701,
+    "terminal_err_nl": 0.023995,
+    "terminal_err_lin": 0.030833,
+    "steps_executed": 51
+   },
+   {
+    "name": "Margaret",
+    "cutoff_year": 1919,
+    "n_forecast_years": 89,
+    "s0": 0.0224,
+    "fitted_L": 68.92318,
+    "rmse_nonlinear": 0.037696,
+    "rmse_linear": 0.024008,
+    "rmse_constant": 0.016419,
+    "terminal_err_nl": 0.064555,
+    "terminal_err_lin": 0.03575,
+    "steps_executed": 89
+   },
+   {
+    "name": "Carol",
+    "cutoff_year": 1948,
+    "n_forecast_years": 58,
+    "s0": 0.0167,
+    "fitted_L": 0.02317,
+    "rmse_nonlinear": 0.01978,
+    "rmse_linear": 0.005662,
+    "rmse_constant": 0.013727,
+    "terminal_err_nl": 0.02304,
+    "terminal_err_lin": 0.004223,
+    "steps_executed": 58
+   },
+   {
+    "name": "Brian",
+    "cutoff_year": 1976,
+    "n_forecast_years": 32,
+    "s0": 0.01879,
+    "fitted_L": 0.02292,
+    "rmse_nonlinear": 0.014857,
+    "rmse_linear": 0.01951,
+    "rmse_constant": 0.011439,
+    "terminal_err_nl": 0.020487,
+    "terminal_err_lin": 0.031475,
+    "steps_executed": 32
+   },
+   {
+    "name": "Ruth",
+    "cutoff_year": 1918,
+    "n_forecast_years": 90,
+    "s0": 0.02129,
+    "fitted_L": 0.02185,
+    "rmse_nonlinear": 0.017969,
+    "rmse_linear": 0.075218,
+    "rmse_constant": 0.017441,
+    "terminal_err_nl": 0.021415,
+    "terminal_err_lin": 0.153292,
+    "steps_executed": 90
+   },
+   {
+    "name": "Amy",
+    "cutoff_year": 1978,
+    "n_forecast_years": 30,
+    "s0": 0.01413,
+    "fitted_L": 0.02114,
+    "rmse_nonlinear": 0.016367,
+    "rmse_linear": 0.010909,
+    "rmse_constant": 0.010148,
+    "terminal_err_nl": 0.019913,
+    "terminal_err_lin": 0.014267,
+    "steps_executed": 30
+   },
+   {
+    "name": "Ronald",
+    "cutoff_year": 1946,
+    "n_forecast_years": 62,
+    "s0": 0.01937,
+    "fitted_L": 0.02056,
+    "rmse_nonlinear": 0.015383,
+    "rmse_linear": 0.018757,
+    "rmse_constant": 0.014285,
+    "terminal_err_nl": 0.020059,
+    "terminal_err_lin": 0.027096,
+    "steps_executed": 62
+   },
+   {
+    "name": "Gary",
+    "cutoff_year": 1954,
+    "n_forecast_years": 54,
+    "s0": 0.01833,
+    "fitted_L": 0.02036,
+    "rmse_nonlinear": 0.016527,
+    "rmse_linear": 0.041039,
+    "rmse_constant": 0.014624,
+    "terminal_err_nl": 0.020049,
+    "terminal_err_lin": 0.074184,
+    "steps_executed": 54
+   },
+   {
+    "name": "Melissa",
+    "cutoff_year": 1982,
+    "n_forecast_years": 26,
+    "s0": 0.01432,
+    "fitted_L": 0.02023,
+    "rmse_nonlinear": 0.014988,
+    "rmse_linear": 0.009251,
+    "rmse_constant": 0.009734,
+    "terminal_err_nl": 0.019027,
+    "terminal_err_lin": 0.012273,
+    "steps_executed": 26
+   },
+   {
+    "name": "Sandra",
+    "cutoff_year": 1949,
+    "n_forecast_years": 59,
+    "s0": 0.01749,
+    "fitted_L": 0.02009,
+    "rmse_nonlinear": 0.015724,
+    "rmse_linear": 0.0119,
+    "rmse_constant": 0.013304,
+    "terminal_err_nl": 0.019742,
+    "terminal_err_lin": 0.014709,
+    "steps_executed": 59
+   },
+   {
+    "name": "Michelle",
+    "cutoff_year": 1972,
+    "n_forecast_years": 36,
+    "s0": 0.01824,
+    "fitted_L": 0.02308,
+    "rmse_nonlinear": 0.016481,
+    "rmse_linear": 0.067491,
+    "rmse_constant": 0.012106,
+    "terminal_err_nl": 0.021484,
+    "terminal_err_lin": 0.141751,
+    "steps_executed": 36
+   },
+   {
+    "name": "Karen",
+    "cutoff_year": 1959,
+    "n_forecast_years": 49,
+    "s0": 0.01773,
+    "fitted_L": 0.01987,
+    "rmse_nonlinear": 0.015605,
+    "rmse_linear": 0.04263,
+    "rmse_constant": 0.013665,
+    "terminal_err_nl": 0.018993,
+    "terminal_err_lin": 0.078926,
+    "steps_executed": 49
+   },
+   {
+    "name": "Joan",
+    "cutoff_year": 1935,
+    "n_forecast_years": 64,
+    "s0": 0.01685,
+    "fitted_L": 0.01948,
+    "rmse_nonlinear": 0.016621,
+    "rmse_linear": 0.65246,
+    "rmse_constant": 0.01411,
+    "terminal_err_nl": 0.019385,
+    "terminal_err_lin": 0.999902,
+    "steps_executed": 64
+   },
+   {
+    "name": "Judith",
+    "cutoff_year": 1943,
+    "n_forecast_years": 65,
+    "s0": 0.01763,
+    "fitted_L": 0.0194,
+    "rmse_nonlinear": 0.01713,
+    "rmse_linear": 0.801228,
+    "rmse_constant": 0.015429,
+    "terminal_err_nl": 0.019195,
+    "terminal_err_lin": 0.9998,
+    "steps_executed": 65
+   },
+   {
+    "name": "Larry",
+    "cutoff_year": 1950,
+    "n_forecast_years": 58,
+    "s0": 0.01735,
+    "fitted_L": 0.01923,
+    "rmse_nonlinear": 0.015748,
+    "rmse_linear": 0.030421,
+    "rmse_constant": 0.013968,
+    "terminal_err_nl": 0.018848,
+    "terminal_err_lin": 0.05072,
+    "steps_executed": 58
+   },
+   {
+    "name": "Cynthia",
+    "cutoff_year": 1960,
+    "n_forecast_years": 48,
+    "s0": 0.01288,
+    "fitted_L": 0.01915,
+    "rmse_nonlinear": 0.015345,
+    "rmse_linear": 0.012789,
+    "rmse_constant": 0.009557,
+    "terminal_err_nl": 0.018638,
+    "terminal_err_lin": 0.018373,
+    "steps_executed": 48
+   },
+   {
+    "name": "Willie",
+    "cutoff_year": 1913,
+    "n_forecast_years": 95,
+    "s0": 0.01047,
+    "fitted_L": 0.01854,
+    "rmse_nonlinear": 0.014458,
+    "rmse_linear": 0.002613,
+    "rmse_constant": 0.007296,
+    "terminal_err_nl": 0.018326,
+    "terminal_err_lin": 0.000157,
+    "steps_executed": 95
+   },
+   {
+    "name": "Steven",
+    "cutoff_year": 1958,
+    "n_forecast_years": 50,
+    "s0": 0.01532,
+    "fitted_L": 0.01846,
+    "rmse_nonlinear": 0.010315,
+    "rmse_linear": 0.011199,
+    "rmse_constant": 0.00762,
+    "terminal_err_nl": 0.016521,
+    "terminal_err_lin": 0.01985,
+    "steps_executed": 50
+   },
+   {
+    "name": "Nancy",
+    "cutoff_year": 1950,
+    "n_forecast_years": 58,
+    "s0": 0.01688,
+    "fitted_L": 0.01824,
+    "rmse_nonlinear": 0.014524,
+    "rmse_linear": 0.014014,
+    "rmse_constant": 0.013281,
+    "terminal_err_nl": 0.017829,
+    "terminal_err_lin": 0.017787,
+    "steps_executed": 58
+   }
+  ]
+ },
+ "telco_persistence": {
+  "category": "repeated_behavior_persistence",
+  "dataset": "telco_churn",
+  "n_test": 1407,
+  "replicates": 40,
+  "base_rate": 0.2559,
+  "as_of": "customer signup + observed tenure (outcome = churn); total_charges DROPPED (leakage)",
+  "execution": "each held-out customer run through NonlinearMechanismOperator in the rollout engine; P(churn) = terminal-churn frequency over 40 branches",
+  "leakage_audit": {
+   "as_of": "features known at/before as-of; horizon-coupled total_charges excluded",
+   "features_used": [
+    "senior",
+    "partner",
+    "dependents",
+    "tenure",
+    "phone_service",
+    "paperless_billing",
+    "monthly_charges",
+    "contract",
+    "internet_service",
+    "is_female"
+   ],
+   "forbidden_checked": [
+    "total_charges",
+    "churn"
+   ],
+   "leakage_free": true,
+   "violations": []
+  },
+  "arms": {
+   "phase6_logistic": {
+    "brier": 0.143629,
+    "logloss": 0.458056,
+    "pred_rate": 0.26153,
+    "real_rate": 0.25586,
+    "n": 1407,
+    "auroc": 0.819,
+    "calibration": {
+     "ece": 0.02738,
+     "reliability": [
+      {
+       "bin": 0,
+       "n": 481,
+       "conf": 0.0255,
+       "acc": 0.0353
+      },
+      {
+       "bin": 1,
+       "n": 227,
+       "conf": 0.134,
+       "acc": 0.163
+      },
+      {
+       "bin": 2,
+       "n": 147,
+       "conf": 0.2316,
+       "acc": 0.2585
+      },
+      {
+       "bin": 3,
+       "n": 115,
+       "conf": 0.3361,
+       "acc": 0.3043
+      },
+      {
+       "bin": 4,
+       "n": 131,
+       "conf": 0.4321,
+       "acc": 0.3588
+      },
+      {
+       "bin": 5,
+       "n": 93,
+       "conf": 0.5352,
+       "acc": 0.4946
+      },
+      {
+       "bin": 6,
+       "n": 118,
+       "conf": 0.6345,
+       "acc": 0.5932
+      },
+      {
+       "bin": 7,
+       "n": 75,
+       "conf": 0.7317,
+       "acc": 0.72
+      },
+      {
+       "bin": 8,
+       "n": 20,
+       "conf": 0.8237,
+       "acc": 0.8
+      }
+     ]
+    }
+   },
+   "phase7_gam": {
+    "brier": 0.137881,
+    "logloss": 0.444633,
+    "pred_rate": 0.26015,
+    "real_rate": 0.25586,
+    "n": 1407,
+    "auroc": 0.8314,
+    "calibration": {
+     "ece": 0.01924,
+     "reliability": [
+      {
+       "bin": 0,
+       "n": 464,
+       "conf": 0.0259,
+       "acc": 0.0345
+      },
+      {
+       "bin": 1,
+       "n": 245,
+       "conf": 0.1359,
+       "acc": 0.1388
+      },
+      {
+       "bin": 2,
+       "n": 159,
+       "conf": 0.2365,
+       "acc": 0.239
+      },
+      {
+       "bin": 3,
+       "n": 124,
+       "conf": 0.3355,
+       "acc": 0.3468
+      },
+      {
+       "bin": 4,
+       "n": 131,
+       "conf": 0.4368,
+       "acc": 0.3893
+      },
+      {
+       "bin": 5,
+       "n": 95,
+       "conf": 0.5342,
+       "acc": 0.4842
+      },
+      {
+       "bin": 6,
+       "n": 91,
+       "conf": 0.6327,
+       "acc": 0.5714
+      },
+      {
+       "bin": 7,
+       "n": 56,
+       "conf": 0.7317,
+       "acc": 0.7857
+      },
+      {
+       "bin": 8,
+       "n": 39,
+       "conf": 0.8263,
+       "acc": 0.8462
+      },
+      {
+       "bin": 9,
+       "n": 3,
+       "conf": 0.9167,
+       "acc": 1.0
+      }
+     ]
+    }
+   },
+   "constant": {
+    "brier": 0.190397,
+    "logloss": 0.568686,
+    "pred_rate": 0.25586,
+    "real_rate": 0.25586,
+    "n": 1407,
+    "auroc": 0.5,
+    "calibration": {
+     "ece": 0.0,
+     "reliability": [
+      {
+       "bin": 2,
+       "n": 1407,
+       "conf": 0.2559,
+       "acc": 0.2559
+      }
+     ]
+    }
+   }
+  },
+  "primary_paired_delta_phase7_vs_phase6": {
+   "mean": -0.005748,
+   "ci95": [
+    -0.00873,
+    -0.002802
+   ],
+   "n": 1407
+  },
+  "verdict": "Phase 7 GAM beats Phase 6 logistic end-to-end (paired \u0394Brier -0.00575 CI [-0.00873, -0.002802])"
+ },
+ "upworthy_content": {
+  "category": "platform_content_response",
+  "dataset": "upworthy_ab",
+  "n_test_arms": 1200,
+  "replicates": 30,
+  "global_ctr": 0.0152,
+  "as_of": "headline features known at publish; outcome = click-through on held-out TESTS",
+  "execution": "each held-out arm run through NonlinearMechanismOperator; terminal CTR over branches",
+  "leakage_audit": {
+   "as_of": "headline text features only; test-disjoint split",
+   "features_used": [
+    "len_chars",
+    "len_words",
+    "has_number",
+    "qmark",
+    "you",
+    "this"
+   ],
+   "forbidden_checked": [
+    "clicks",
+    "ctr",
+    "impressions"
+   ],
+   "leakage_free": true,
+   "violations": []
+  },
+  "impression_weighted_brier": {
+   "phase6_linear_headline": 0.000606,
+   "phase7_nonlinear_headline": 0.000595,
+   "global_ctr_baseline": 0.000129
+  },
+  "verdict": "content-response headline effects weak/null \u2014 Phase 7 correctly does not beat the pooled baseline (honest negative)"
+ },
+ "_aggregate": {
+  "per_category": [
+   {
+    "category": "diffusion",
+    "phase7_beats_phase6": true,
+    "phase7_beats_all_baselines": false,
+    "note": "beats Phase-6 extrapolation (no overshoot); naive persistence competitive (decline unmodeled)"
+   },
+   {
+    "category": "persistence",
+    "phase7_beats_phase6": true,
+    "phase7_beats_all_baselines": true,
+    "note": "clean end-to-end win: beats Phase-6 logistic AND the constant baseline through WorldState"
+   },
+   {
+    "category": "content",
+    "phase7_beats_phase6": false,
+    "phase7_beats_all_baselines": false,
+    "note": "honest null: headline effects add nothing; pooled/global baseline dominates"
+   }
+  ],
+  "n_categories_phase7_beats_phase6": 2,
+  "n_categories_phase7_beats_all_baselines": 1,
+  "generalizes_vs_phase6": true,
+  "honest_summary": "PRIMARY comparison (Phase-7 form vs prior Phase-6 form): Phase 7 wins in 2/3 categories (persistence, diffusion) and ties/loses in content. Against ALL required baselines including naive persistence, only PERSISTENCE (telco) is a clean unambiguous win; diffusion beats the Phase-6 growth form but not naive persistence (post-peak decline unmodeled); content is a preserved null. The lift is real but category-specific \u2014 not a universal simulation-accuracy claim."
+ }
+}

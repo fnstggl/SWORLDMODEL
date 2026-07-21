@@ -1,0 +1,2080 @@
+{
+ "case": "case1_founder_platform",
+ "question": "Will Marisol's meal-kit startup keep its retail listing on the GreenCart marketplace through September after GreenCart's fee policy review?",
+ "runtime_s": 2483.9,
+ "simulation_status": "under_modeled",
+ "support_grade": "exploratory",
+ "distribution": {
+  "listing_removed": 0.6,
+  "listing_retained": 0.4
+ },
+ "conditional_forecast_note": "",
+ "under_modeled_subtypes": [
+  "under_modeled_boundary",
+  "under_modeled_external_process",
+  "under_modeled_nonhuman_mechanism"
+ ],
+ "under_modeled_components": [
+  {
+   "component": "ftc_fair_treatment_division",
+   "kind": "institution",
+   "why": "sensitivity analysis: The FTC Fair Treatment Division could enter the causal chain if GreenCart's fee policy review results in a delisting decision that Marisol appeals, and the FTC ",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "media_coverage_of_delisting",
+   "kind": "information_channel",
+   "why": "sensitivity analysis: Media coverage of a potential delisting could influence GreenCart's public reputation and regulatory scrutiny, thereby affecting the internal appeals process an",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "green_cart_leadership_change",
+   "kind": "external_event_family",
+   "why": "sensitivity analysis: A sudden CEO or board chair change at GreenCart could shift strategic priorities, potentially altering the fee policy review outcome or the appeals process for ",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "macroeconomic_demand_shift",
+   "kind": "external_event_family",
+   "why": "sensitivity analysis: A macroeconomic demand shift could reduce overall meal-kit category sales, lowering Marisol's revenue and unit volumes, which GreenCart's fee policy review migh",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "generic_outcome_prior",
+   "kind": "mechanism",
+   "why": "sensitivity analysis: generic_outcome_prior could enter as a residual external process that shifts the baseline probability of listing retention or removal independently of the speci",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "us_marketplace_regulatory_jurisdiction",
+   "kind": "geography",
+   "why": "sensitivity analysis: The us_marketplace_regulatory_jurisdiction component enters the causal chain as an external regulatory constraint that could override GreenCart's internal fee p",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "green_cart_leadership_change",
+   "kind": "external_event_family",
+   "why": "decisive external process without a defensible arrival model or mechanism",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "macroeconomic_demand_shift",
+   "kind": "external_event_family",
+   "why": "decisive external process without a defensible arrival model or mechanism",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "outcome",
+   "kind": "nonhuman_mechanism",
+   "why": "missing validated mechanism: institutional_prior_beta_members \u2014 institution members had no evidence posterior; iid Bernoulli(prior) member draws are quarantined from default production",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "outcome",
+   "kind": "nonhuman_mechanism",
+   "why": "missing validated mechanism: institutional_prior_beta_members \u2014 institution members had no evidence posterior; iid Bernoulli(prior) member draws are quarantined from default production",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "outcome",
+   "kind": "nonhuman_mechanism",
+   "why": "missing validated mechanism: institutional_prior_beta_members \u2014 institution members had no evidence posterior; iid Bernoulli(prior) member draws are quarantined from default production",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  }
+ ],
+ "world_boundaries": {
+  "m4_adversarial_alternative": {
+   "boundary_id": "wb_f98d085e5b843cde",
+   "structural_model_id": "m4_adversarial_alternative",
+   "question": "Will Marisol's meal-kit startup keep its retail listing on the GreenCart marketplace through September after GreenCart's fee policy review?",
+   "intervention": "",
+   "as_of": "2026-07-19",
+   "horizon": "2026-10-01",
+   "components": [
+    {
+     "component_id": "bc0_6acb31fb",
+     "kind": "individual_actor",
+     "name": "marisol_garcia",
+     "representation": "individual",
+     "reason": "Marisol is the founder of the meal-kit startup and a direct decision holder regarding renegotiation, diversification, or waiting. Her actions directly affect the outcome.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc1_63581f44",
+     "kind": "individual_actor",
+     "name": "jennifer_walsh",
+     "representation": "individual",
+     "reason": "Jennifer Walsh is listed as an entity, likely a key decision-maker at GreenCart (e.g., category manager or legal lead). Her individual stance on fee policy and Marisol's listing is critical.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc2_5bae3449",
+     "kind": "individual_actor",
+     "name": "thomas_bergstrom",
+     "representation": "individual",
+     "reason": "Thomas Bergstrom is listed as an entity, possibly a board member or investor representative. His influence on GreenCart's strategic direction matters.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc3_14fd52ad",
+     "kind": "actor_group",
+     "name": "green_cart_board",
+     "representation": "aggregate",
+     "reason": "The board is a collective decision-making body with formal voting power. Simulated as an aggregate group mechanism (e.g., majority vote or consensus model).",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc4_3dac749c",
+     "kind": "actor_group",
+     "name": "green_cart_pr_legal",
+     "representation": "aggregate",
+     "reason": "PR and legal teams act as a coordinated unit advising on reputational and regulatory risk. Their collective assessment is modeled as an aggregate mechanism.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc5_a27f4ded",
+     "kind": "population",
+     "name": "green_cart_investors",
+     "representation": "aggregate",
+     "reason": "Investors are a population with shared financial interests but no single decision point. Their pressure is modeled as an aggregated sentiment or threshold.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If a single investor publicly threatens divestment, that individual would be promoted to individual_actor.",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc6_86218a47",
+     "kind": "population",
+     "name": "green_cart_sellers",
+     "representation": "aggregate",
+     "reason": "Other sellers on GreenCart form a population whose reaction to fee changes could influence PR or regulatory attention. Modeled as an aggregate group mechanism.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "minor",
+     "promotion_trigger": "If a seller coalition forms to protest, it would be promoted to actor_group.",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc7_d3eca7a3",
+     "kind": "institution",
+     "name": "ftc_fair_treatment_division",
+     "representation": "external_process",
+     "reason": "The FTC is a regulatory body with formal procedures. Its involvement is probabilistic and outside the detailed world; represented as a residual external process (e.g., a probability of investigation).",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If Marisol files a formal complaint or media reports trigger an inquiry, the FTC would be promoted to an institution with explicit actions.",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc8_38d680aa",
+     "kind": "institution",
+     "name": "green_cart_internal_appeals",
+     "representation": "individual",
+     "reason": "This is a formal procedure within GreenCart that Marisol could use. It is simulated as an explicit system with steps and decision points (e.g., an appeals committee).",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc9_aa107e6b",
+     "kind": "nonhuman_system",
+     "name": "green_cart_inc",
+     "representation": "aggregate",
+     "reason": "GreenCart as a corporate entity is the platform operator. Its fee policy review and listing decisions are modeled as an aggregate of its internal processes (board, PR, legal, appeals).",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc10_b1b656c1",
+     "kind": "nonhuman_system",
+     "name": "competitor_meal_kit_co",
+     "representation": "individual",
+     "reason": "The competitor is a distinct entity with its own capacity constraints and strategic moves (e.g., exclusive deal). Its actions are a direct input to GreenCart's calculus.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc11_96a85323",
+     "kind": "resource",
+     "name": "marisol_meal_kit",
+     "representation": "individual",
+     "reason": "Marisol's startup is the entity whose listing is at stake. Its volume, cost structure, and legal standing are explicit attributes in the model.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc12_38c1b57b",
+     "kind": "mechanism",
+     "name": "generic_outcome_prior",
+     "representation": "external_process",
+     "reason": "This is a placeholder mechanism for residual uncertainty not captured by other components. It is left as an external process (e.g., a random draw from a prior distribution).",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "minor",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc13_c3864f91",
+     "kind": "information_channel",
+     "name": "media_coverage_of_delisting",
+     "representation": "external_process",
+     "reason": "Media attention could amplify PR risk. It is not explicitly modeled but represented as a probabilistic external shock (e.g., probability of negative article).",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If a major outlet picks up the story, it would be promoted to an explicit information_channel with dynamics.",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc14_f42b067f",
+     "kind": "geography",
+     "name": "us_marketplace_regulatory_jurisdiction",
+     "representation": "external_process",
+     "reason": "Geographic jurisdiction affects applicable laws (e.g., FTC guidelines). It is a fixed background condition, not dynamically simulated.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "minor",
+     "promotion_trigger": "If a state-level law (e.g., California) is invoked, it would be promoted to an institution.",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc15_51ae8d7f",
+     "kind": "time_dependency",
+     "name": "fee_policy_review_timeline",
+     "representation": "individual",
+     "reason": "The August fee review and September deadline are explicit temporal constraints. The model must simulate decisions within this window.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc16_1febaaf8",
+     "kind": "external_event_family",
+     "name": "competitor_capacity_shock",
+     "representation": "external_process",
+     "reason": "A sudden change in competitor's ability to absorb volume (e.g., supply chain disruption) is outside the model but could shift GreenCart's calculus. Represented as a residual shock.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If competitor publicly announces capacity expansion or contraction, it would be promoted to a resource constraint.",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc17_f5db83f9",
+     "kind": "external_event_family",
+     "name": "macroeconomic_demand_shift",
+     "representation": "excluded",
+     "reason": "Broad economic changes (e.g., recession) affecting meal-kit demand are too distant from the specific listing decision and would affect all actors equally, making them irrelevant to the relative outcome.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "negligible",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc18_9366cd22",
+     "kind": "external_event_family",
+     "name": "green_cart_leadership_change",
+     "representation": "unresolved",
+     "reason": "A sudden CEO or board chair change could alter strategic priorities, but the model has no mechanism to represent personnel turnover. Sensitivity is unknown.",
+     "evidence": [
+      "assumption"
+     ],
+     "sensitivity": "unknown",
+     "promotion_trigger": "If a leadership change is announced, it would be promoted to an individual_actor replacement.",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    }
+   ],
+   "included_individual_actors": [
+    "marisol_garcia",
+    "jennifer_walsh",
+    "thomas_bergstrom"
+   ],
+   "included_actor_groups": [
+    "green_cart_board",
+    "green_cart_pr_legal"
+   ],
+   "included_populations": [
+    "green_cart_investors",
+    "green_cart_sellers"
+   ],
+   "included_institutions": [
+    "green_cart_internal_appeals"
+   ],
+   "included_nonhuman_systems": [
+    "green_cart_inc",
+    "competitor_meal_kit_co"
+   ],
+   "included_resources": [
+    "marisol_meal_kit"
+   ],
+   "included_mechanisms": [],
+   "included_information_channels": [],
+   "included_geographies": [],
+   "included_time_dependencies": [
+    "fee_policy_review_timeline"
+   ],
+   "represented_as_aggregates": [
+    "green_cart_board",
+    "green_cart_pr_legal",
+    "green_cart_investors",
+    "green_cart_sellers",
+    "green_cart_inc"
+   ],
+   "represented_as_external_processes": [
+    "ftc_fair_treatment_division",
+    "generic_outcome_prior",
+    "media_coverage_of_delisting",
+    "us_marketplace_regulatory_jurisdiction",
+    "competitor_capacity_shock"
+   ],
+   "explicitly_excluded": [
+    {
+     "name": "macroeconomic_demand_shift",
+     "kind": "external_event_family",
+     "reason": "Broad economic changes (e.g., recession) affecting meal-kit demand are too distant from the specific listing decision and would affect all actors equally, making them irrelevant to the relative outcome."
+    }
+   ],
+   "unresolved_components": [
+    {
+     "name": "green_cart_leadership_change",
+     "kind": "external_event_family",
+     "why_unresolved": "A sudden CEO or board chair change could alter strategic priorities, but the model has no mechanism to represent personnel turnover. Sensitivity is unknown.",
+     "sensitivity": "unknown"
+    }
+   ],
+   "inclusion_reasons": {
+    "marisol_garcia": "Marisol is the founder of the meal-kit startup and a direct decision holder regarding renegotiation, diversification, or waiting. Her actions directly affect the outcome.",
+    "jennifer_walsh": "Jennifer Walsh is listed as an entity, likely a key decision-maker at GreenCart (e.g., category manager or legal lead). Her individual stance on fee policy and Marisol's listing is critical.",
+    "thomas_bergstrom": "Thomas Bergstrom is listed as an entity, possibly a board member or investor representative. His influence on GreenCart's strategic direction matters.",
+    "green_cart_board": "The board is a collective decision-making body with formal voting power. Simulated as an aggregate group mechanism (e.g., majority vote or consensus model).",
+    "green_cart_pr_legal": "PR and legal teams act as a coordinated unit advising on reputational and regulatory risk. Their collective assessment is modeled as an aggregate mechanism.",
+    "green_cart_investors": "Investors are a population with shared financial interests but no single decision point. Their pressure is modeled as an aggregated sentiment or threshold.",
+    "green_cart_sellers": "Other sellers on GreenCart form a population whose reaction to fee changes could influence PR or regulatory attention. Modeled as an aggregate group mechanism.",
+    "ftc_fair_treatment_division": "The FTC is a regulatory body with formal procedures. Its involvement is probabilistic and outside the detailed world; represented as a residual external process (e.g., a probability of investigation).",
+    "green_cart_internal_appeals": "This is a formal procedure within GreenCart that Marisol could use. It is simulated as an explicit system with steps and decision points (e.g., an appeals committee).",
+    "green_cart_inc": "GreenCart as a corporate entity is the platform operator. Its fee policy review and listing decisions are modeled as an aggregate of its internal processes (board, PR, legal, appeals).",
+    "competitor_meal_kit_co": "The competitor is a distinct entity with its own capacity constraints and strategic moves (e.g., exclusive deal). Its actions are a direct input to GreenCart's calculus.",
+    "marisol_meal_kit": "Marisol's startup is the entity whose listing is at stake. Its volume, cost structure, and legal standing are explicit attributes in the model.",
+    "generic_outcome_prior": "This is a placeholder mechanism for residual uncertainty not captured by other components. It is left as an external process (e.g., a random draw from a prior distribution).",
+    "media_coverage_of_delisting": "Media attention could amplify PR risk. It is not explicitly modeled but represented as a probabilistic external shock (e.g., probability of negative article).",
+    "us_marketplace_regulatory_jurisdiction": "Geographic jurisdiction affects applicable laws (e.g., FTC guidelines). It is a fixed background condition, not dynamically simulated.",
+    "fee_policy_review_timeline": "The August fee review and September deadline are explicit temporal constraints. The model must simulate decisions within this window.",
+    "competitor_capacity_shock": "A sudden change in competitor's ability to absorb volume (e.g., supply chain disruption) is outside the model but could shift GreenCart's calculus. Represented as a residual shock."
+   },
+   "exclusion_reasons": {
+    "macroeconomic_demand_shift": "Broad economic changes (e.g., recession) affecting meal-kit demand are too distant from the specific listing decision and would affect all actors equally, making them irrelevant to the relative outcome."
+   },
+   "boundary_evidence": [
+    "The causal thesis explicitly states the fee review is a bargaining chip and Marisol's listing is cost-neutral.",
+    "The executable plan includes entities like 'ftc_fair_treatment_division' and 'green_cart_internal_appeals', indicating these are considered relevant.",
+    "The context mentions Marisol can renegotiate, diversify, or wait, implying her agency is central.",
+    "No evidence excerpts are provided, so all boundary decisions rely on the causal thesis and listed entities."
+   ],
+   "sensitivity_assumptions": [
+    "The fee policy review is primarily a bargaining chip against the competitor, not a genuine cost-cutting exercise.",
+    "Marisol's volume is cost-neutral to retain for GreenCart.",
+    "Delisting Marisol would invite negative PR or regulatory attention.",
+    "The competitor's exclusive deal is a bluff or limited in scope.",
+    "GreenCart's PR risk tolerance is moderate and influenced by media coverage.",
+    "The FTC fair treatment division is dormant unless triggered by a formal complaint or media exposure.",
+    "No other major sellers are facing delisting simultaneously."
+   ],
+   "promotion_rules": [
+    {
+     "component": "green_cart_investors",
+     "trigger": "If a single investor publicly threatens divestment, that individual would be promoted to individual_actor.",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "green_cart_sellers",
+     "trigger": "If a seller coalition forms to protest, it would be promoted to actor_group.",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "ftc_fair_treatment_division",
+     "trigger": "If Marisol files a formal complaint or media reports trigger an inquiry, the FTC would be promoted to an institution with explicit actions.",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "media_coverage_of_delisting",
+     "trigger": "If a major outlet picks up the story, it would be promoted to an explicit information_channel with dynamics.",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "us_marketplace_regulatory_jurisdiction",
+     "trigger": "If a state-level law (e.g., California) is invoked, it would be promoted to an institution.",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "competitor_capacity_shock",
+     "trigger": "If competitor publicly announces capacity expansion or contraction, it would be promoted to a resource constraint.",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "green_cart_leadership_change",
+     "trigger": "If a leadership change is announced, it would be promoted to an individual_actor replacement.",
+     "action": "promote_to_individual"
+    }
+   ],
+   "available_compute": {
+    "n_particles_planned": null
+   },
+   "support_classification": "under_modeled_boundary",
+   "critic_findings": [
+    {
+     "critic": "omitted_actor",
+     "component": "ftc_fair_treatment_division",
+     "finding": "Could reverse outcome if delisting is deemed anticompetitive or discriminatory against small sellers, triggering investigation or injunction.",
+     "sensitivity": "decisive",
+     "activating_event": "formal complaint or media exposure of delisting",
+     "entry_path": "",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_actor",
+     "component": "media_coverage_of_delisting",
+     "finding": "Controls public narrative; negative coverage could force GreenCart to reverse delisting to avoid reputational damage.",
+     "sensitivity": "material",
+     "activating_event": "delisting decision announced or leaked",
+     "entry_path": "",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_actor",
+     "component": "us_marketplace_regulatory_jurisdiction",
+     "finding": "Holds authority to impose fines or mandate listing reinstatement if fee policy violates marketplace fairness rules.",
+     "sensitivity": "decisive",
+     "activating_event": "formal regulatory review or lawsuit",
+     "entry_path": "",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_actor",
+     "component": "competitor_capacity_shock",
+     "finding": "If competitor suddenly gains or loses capacity, GreenCart's bargaining calculus changes, potentially making Marisol's listing more or less valuable.",
+     "sensitivity": "material",
+     "activating_event": "competitor's operational disruption or expansion",
+     "entry_path": "",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_actor",
+     "component": "generic_outcome_prior",
+     "finding": "Collapses individual decision-makers (e.g., GreenCart CEO, board members) into a statistical prior, ignoring that a single executive could override the fee review outcome.",
+     "sensitivity": "negligible",
+     "activating_event": "",
+     "entry_path": "",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_system",
+     "component": "green_cart_inc",
+     "finding": "GreenCart's fee review is treated as a bargaining chip, but its actual algorithm for fee adjustments and listing retention is unspecified; a cost-minimization or revenue-threshold algorithm could dominate the outcome regardless of PR concerns.",
+     "sensitivity": "decisive",
+     "activating_event": "",
+     "entry_path": "GreenCart's internal fee algorithm directly determines listing survival; if it thresholds by volume or profit margin, Marisol's small volume may be automatically delisted without human discretion.",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_system",
+     "component": "competitor_meal_kit_co",
+     "finding": "The competitor's capacity or pricing response is excluded as a 'competitor_capacity_shock', but a sudden capacity increase or price drop could make Marisol's listing irrelevant to GreenCart's bargaining strategy, shifting the review's purpose.",
+     "sensitivity": "material",
+     "activating_event": "",
+     "entry_path": "If competitor expands capacity, GreenCart's need for a bargaining chip diminishes, making Marisol's listing vulnerable to cost-based delisting.",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_system",
+     "component": "generic_outcome_prior",
+     "finding": "The outcome is currently attributed to a causal thesis without a real mechanism linking fee review to PR or regulatory attention; the 'generic_outcome_prior' could dominate if no specific regulatory or media action is triggered.",
+     "sensitivity": "decisive",
+     "activating_event": "",
+     "entry_path": "Without a concrete mechanism (e.g., FTC investigation or media story), the default outcome is determined by GreenCart's internal cost-benefit calculation, which may favor delisting.",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_system",
+     "component": "media_coverage_of_delisting",
+     "finding": "The causal thesis assumes negative PR would deter delisting, but media coverage is excluded; if coverage is unlikely or neutral, the PR deterrent vanishes, making delisting more probable.",
+     "sensitivity": "material",
+     "activating_event": "",
+     "entry_path": "If no media outlet covers a small startup's delisting, GreenCart faces no reputational cost, and the fee review's outcome hinges on operational metrics alone.",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_system",
+     "component": "ftc_fair_treatment_division",
+     "finding": "Regulatory attention is treated as a passive deterrent, but an actual FTC inquiry or investigation would be a decisive external event that changes GreenCart's action ranking from cost-based to compliance-based.",
+     "sensitivity": "decisive",
+     "activating_event": "",
+     "entry_path": "If FTC signals interest in marketplace fee practices, GreenCart would retain Marisol's listing to avoid scrutiny, overriding any cost or bargaining logic.",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_system",
+     "component": "us_marketplace_regulatory_jurisdiction",
+     "finding": "The regulatory jurisdiction is excluded, but its boundaries (e.g., whether GreenCart is subject to FTC rules on unfair practices) determine if any regulatory threat is real; without jurisdiction, the PR/regulatory argument is moot.",
+     "sensitivity": "material",
+     "activating_event": "",
+     "entry_path": "If GreenCart operates outside FTC jurisdiction (e.g., as a non-dominant platform), the regulatory threat is absent, and the fee review outcome is purely operational.",
+     "resolution": "open"
+    },
+    {
+     "critic": "boundary_adversary",
+     "component": "(alternative boundary)",
+     "finding": "If competitor_capacity_shock is inside the boundary, a sudden surge in competitor demand could make GreenCart desperate to retain any seller volume, including Marisol's, to avoid supply gaps. Simultaneously, media_coverage_of_delisting inside means negative press from delisting a small founder would be immediate and amplified, forcing retention. Removing green_cart_internal_appeals eliminates any ",
+     "sensitivity": "decisive",
+     "alternative": {
+      "moves_inside": [
+       "competitor_capacity_shock",
+       "media_coverage_of_delisting"
+      ],
+      "moves_outside": [
+       "green_cart_internal_appeals",
+       "ftc_fair_treatment_division"
+      ]
+     },
+     "resolution": "open"
+    }
+   ],
+   "omitted_component_sensitivity": [
+    {
+     "omitted_component": "ftc_fair_treatment_division",
+     "kind": "institution",
+     "prior_sensitivity": "material",
+     "entry_path": "The FTC Fair Treatment Division could enter the causal chain if GreenCart's fee policy review results in a delisting decision that Marisol appeals, and the FTC intervenes on grounds of unfair or deceptive practices, potentially forcing GreenCart to retain the listing pending investigation.",
+     "can_reverse_forecast_direction": true,
+     "can_change_best_action": true,
+     "changes_tail_risk": true,
+     "evidence_that_would_determine_importance": "Evidence of an active FTC inquiry or complaint filed by Marisol or another seller regarding GreenCart's fee policy, or public statements from the FTC about marketplace fairness in the relevant jurisdiction.",
+     "must_be_promoted_into_detailed_simulation": true,
+     "reasoning": "The FTC Fair Treatment Division is an external regulatory body with the authority to override GreenCart's internal decisions. If it becomes involved, it could reverse a delisting decision (changing forecast direction), alter Marisol's optimal response (e.g., from accepting removal to fighting it), and introduce tail risk of regulatory penalties or forced policy changes. Its importance is contingen"
+    },
+    {
+     "omitted_component": "media_coverage_of_delisting",
+     "kind": "information_channel",
+     "prior_sensitivity": "material",
+     "entry_path": "Media coverage of a potential delisting could influence GreenCart's public reputation and regulatory scrutiny, thereby affecting the internal appeals process and board decision-making regarding Marisol's listing.",
+     "can_reverse_forecast_direction": true,
+     "can_change_best_action": true,
+     "changes_tail_risk": true,
+     "evidence_that_would_determine_importance": "Evidence of a coordinated media campaign or negative press targeting GreenCart's fee policy, combined with any prior FTC interest or investor concern, would determine whether this component shifts the outcome from retention to removal.",
+     "must_be_promoted_into_detailed_simulation": true,
+     "reasoning": "Media coverage acts as an external amplifier that can pressure GreenCart's board and PR/legal team to preemptively remove a listing to avoid reputational damage or regulatory action, even if internal appeals would otherwise retain it. This can reverse the forecast from retention to removal, alter Marisol's best negotiation strategy (e.g., proactive PR vs. quiet appeal), and increase tail risk of s"
+    },
+    {
+     "omitted_component": "green_cart_leadership_change",
+     "kind": "external_event_family",
+     "prior_sensitivity": "unknown",
+     "entry_path": "A sudden CEO or board chair change at GreenCart could shift strategic priorities, potentially altering the fee policy review outcome or the appeals process for Marisol's startup, thereby entering the causal chain through the green_cart_internal_appeals or green_cart_board aggregates.",
+     "can_reverse_forecast_direction": true,
+     "can_change_best_action": true,
+     "changes_tail_risk": true,
+     "evidence_that_would_determine_importance": "Public announcement of a CEO or board chair departure or appointment at GreenCart, along with any stated changes in marketplace strategy or fee structure, would determine whether this component materially affects the listing decision.",
+     "must_be_promoted_into_detailed_simulation": true,
+     "reasoning": "The model currently lacks any mechanism for personnel turnover, yet a leadership change at GreenCart could directly influence the fee policy review and appeals process, potentially reversing the forecast from listing_retained to listing_removed or vice versa. This component introduces tail risk because it is exogenous and could abruptly alter strategic priorities, and it could change the best acti"
+    },
+    {
+     "omitted_component": "macroeconomic_demand_shift",
+     "kind": "external_event_family",
+     "prior_sensitivity": "unknown",
+     "entry_path": "A macroeconomic demand shift could reduce overall meal-kit category sales, lowering Marisol's revenue and unit volumes, which GreenCart's fee policy review might interpret as poor performance or insufficient viability, thereby increasing the risk of delisting.",
+     "can_reverse_forecast_direction": true,
+     "can_change_best_action": true,
+     "changes_tail_risk": true,
+     "evidence_that_would_determine_importance": "Evidence of a significant, sustained decline in meal-kit category sales across GreenCart (e.g., 20%+ drop over two quarters) combined with GreenCart's internal metrics showing Marisol's sales falling below a retention threshold, or explicit statements from GreenCart's policy review that category-wid",
+     "must_be_promoted_into_detailed_simulation": true,
+     "reasoning": "Although macroeconomic demand shift is excluded from the current boundary, it could directly affect the key performance metrics (revenue, order frequency) that GreenCart's fee policy review uses to decide listing retention. If a recession causes a broad drop in meal-kit demand, Marisol's startup would likely underperform, potentially reversing the current forecast of 'listing_retained' to 'listing"
+    },
+    {
+     "omitted_component": "generic_outcome_prior",
+     "kind": "mechanism",
+     "prior_sensitivity": "minor",
+     "entry_path": "generic_outcome_prior could enter as a residual external process that shifts the baseline probability of listing retention or removal independently of the specific actions of Marisol, GreenCart, or other known actors, for example via an unmodeled regulatory trend or market-wide shock.",
+     "can_reverse_forecast_direction": true,
+     "can_change_best_action": true,
+     "changes_tail_risk": true,
+     "evidence_that_would_determine_importance": "Historical correlation between generic_outcome_prior and actual delisting events in similar marketplaces, or a sudden unexplained shift in GreenCart's internal appeals outcomes that cannot be attributed to known variables.",
+     "must_be_promoted_into_detailed_simulation": true,
+     "reasoning": "The generic_outcome_prior is an unresolved residual component that could represent unobserved confounders (e.g., a silent regulatory shift or hidden board decision). If it has a strong effect, it could reverse the forecast direction (e.g., from retained to removed), alter the optimal strategy for Marisol (e.g., preemptive legal action), and increase tail risk of sudden delisting. Its importance ca"
+    },
+    {
+     "omitted_component": "us_marketplace_regulatory_jurisdiction",
+     "kind": "geography",
+     "prior_sensitivity": "minor",
+     "entry_path": "The us_marketplace_regulatory_jurisdiction component enters the causal chain as an external regulatory constraint that could override GreenCart's internal fee policy review. If the jurisdiction imposes new marketplace fairness rules or interprets existing ones to protect sellers from sudden delistin",
+     "can_reverse_forecast_direction": true,
+     "can_change_best_action": true,
+     "changes_tail_risk": true,
+     "evidence_that_would_determine_importance": "Evidence of a pending FTC investigation into GreenCart's fee practices, a recent court ruling in the relevant jurisdiction about marketplace seller protections, or a public statement from a regulatory body about delisting procedures would determine importance.",
+     "must_be_promoted_into_detailed_simulation": true,
+     "reasoning": "The us_marketplace_regulatory_jurisdiction is a residual external process that sits outside GreenCart's control and could legally compel retention of the listing even if GreenCart's internal review recommends removal. Because it can reverse the forecast direction (from removed to retained), change the best action (e.g., Marisol should lobby regulators rather than appeal internally), and significan"
+    }
+   ],
+   "dynamic_promotions": [],
+   "generation_trace": [
+    {
+     "stage": "boundary_generation",
+     "prompt_hash": "8c83cfefa88c70f1",
+     "response_hash": "d9468cc4090a290c",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "critic:omitted_actor",
+     "prompt_hash": "a2921f29f2f5da7c",
+     "response_hash": "e51ea3aba49f5d6c",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "critic:omitted_system",
+     "prompt_hash": "0fc58f38810dfdf8",
+     "response_hash": "e63298e0fda19b02",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "critic:boundary_adversary",
+     "prompt_hash": "9d9ac6697a68233b",
+     "response_hash": "b1667e551196cd6c",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "sensitivity:ftc_fair_treatment_division",
+     "prompt_hash": "b972518482536bb4",
+     "response_hash": "0d3c74b7817df894",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "sensitivity:media_coverage_of_delisting",
+     "prompt_hash": "68dc052334de0fb0",
+     "response_hash": "679b6acac787a532",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "sensitivity:green_cart_leadership_change",
+     "prompt_hash": "ab81d912d68158c3",
+     "response_hash": "817745e72260e533",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "sensitivity:macroeconomic_demand_shift",
+     "prompt_hash": "f7b7ac381c260662",
+     "response_hash": "7106bbc7c499519c",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "sensitivity:generic_outcome_prior",
+     "prompt_hash": "1acc15d9bd715f75",
+     "response_hash": "e7b0ee1cb2374131",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "sensitivity:us_marketplace_regulatory_jurisdiction",
+     "prompt_hash": "1b178e31bf66011f",
+     "response_hash": "d1e95a4d9ba1b248",
+     "ok": true,
+     "error": ""
+    }
+   ],
+   "schema_version": "world.boundary.v1",
+   "boundary_hash": "b13ff54021ea1bd6",
+   "answers": {
+    "simulated_individually": [
+     "marisol_garcia",
+     "jennifer_walsh",
+     "thomas_bergstrom",
+     "green_cart_internal_appeals"
+    ],
+    "simulated_as_population": [
+     "green_cart_investors",
+     "green_cart_sellers"
+    ],
+    "represented_as_nonhuman_system": [
+     "green_cart_inc",
+     "competitor_meal_kit_co"
+    ],
+    "outside_detailed_world": [
+     "ftc_fair_treatment_division",
+     "generic_outcome_prior",
+     "media_coverage_of_delisting",
+     "us_marketplace_regulatory_jurisdiction",
+     "competitor_capacity_shock",
+     "macroeconomic_demand_shift"
+    ],
+    "inclusion_reasons": {
+     "marisol_garcia": "Marisol is the founder of the meal-kit startup and a direct decision holder regarding renegotiation, diversification, or waiting. Her actions directly affect the outcome.",
+     "jennifer_walsh": "Jennifer Walsh is listed as an entity, likely a key decision-maker at GreenCart (e.g., category manager or legal lead). Her individual stance on fee policy and Marisol's listing is critical.",
+     "thomas_bergstrom": "Thomas Bergstrom is listed as an entity, possibly a board member or investor representative. His influence on GreenCart's strategic direction matters.",
+     "green_cart_board": "The board is a collective decision-making body with formal voting power. Simulated as an aggregate group mechanism (e.g., majority vote or consensus model).",
+     "green_cart_pr_legal": "PR and legal teams act as a coordinated unit advising on reputational and regulatory risk. Their collective assessment is modeled as an aggregate mechanism.",
+     "green_cart_investors": "Investors are a population with shared financial interests but no single decision point. Their pressure is modeled as an aggregated sentiment or threshold.",
+     "green_cart_sellers": "Other sellers on GreenCart form a population whose reaction to fee changes could influence PR or regulatory attention. Modeled as an aggregate group mechanism.",
+     "ftc_fair_treatment_division": "The FTC is a regulatory body with formal procedures. Its involvement is probabilistic and outside the detailed world; represented as a residual external process (e.g., a probability of investigation).",
+     "green_cart_internal_appeals": "This is a formal procedure within GreenCart that Marisol could use. It is simulated as an explicit system with steps and decision points (e.g., an appeals committee).",
+     "green_cart_inc": "GreenCart as a corporate entity is the platform operator. Its fee policy review and listing decisions are modeled as an aggregate of its internal processes (board, PR, legal, appeals).",
+     "competitor_meal_kit_co": "The competitor is a distinct entity with its own capacity constraints and strategic moves (e.g., exclusive deal). Its actions are a direct input to GreenCart's calculus.",
+     "marisol_meal_kit": "Marisol's startup is the entity whose listing is at stake. Its volume, cost structure, and legal standing are explicit attributes in the model.",
+     "generic_outcome_prior": "This is a placeholder mechanism for residual uncertainty not captured by other components. It is left as an external process (e.g., a random draw from a prior distribution).",
+     "media_coverage_of_delisting": "Media attention could amplify PR risk. It is not explicitly modeled but represented as a probabilistic external shock (e.g., probability of negative article).",
+     "us_marketplace_regulatory_jurisdiction": "Geographic jurisdiction affects applicable laws (e.g., FTC guidelines). It is a fixed background condition, not dynamically simulated.",
+     "fee_policy_review_timeline": "The August fee review and September deadline are explicit temporal constraints. The model must simulate decisions within this window.",
+     "competitor_capacity_shock": "A sudden change in competitor's ability to absorb volume (e.g., supply chain disruption) is outside the model but could shift GreenCart's calculus. Represented as a residual shock."
+    },
+    "exclusion_reasons": {
+     "macroeconomic_demand_shift": "Broad economic changes (e.g., recession) affecting meal-kit demand are too distant from the specific listing decision and would affect all actors equally, making them irrelevant to the relative outcome."
+    },
+    "boundary_evidence": [
+     "The causal thesis explicitly states the fee review is a bargaining chip and Marisol's listing is cost-neutral.",
+     "The executable plan includes entities like 'ftc_fair_treatment_division' and 'green_cart_internal_appeals', indicating these are considered relevant.",
+     "The context mentions Marisol can renegotiate, diversify, or wait, implying her agency is central.",
+     "No evidence excerpts are provided, so all boundary decisions rely on the causal thesis and listed entities."
+    ],
+    "omitted_components_that_could_change_answer": [
+     {
+      "name": "ftc_fair_treatment_division",
+      "kind": "institution",
+      "why_unresolved": "sensitivity analysis: The FTC Fair Treatment Division could enter the causal chain if GreenCart's fee policy review results in a delisting decision that Marisol appeals, and the FTC ",
+      "sensitivity": "decisive"
+     },
+     {
+      "name": "media_coverage_of_delisting",
+      "kind": "information_channel",
+      "why_unresolved": "sensitivity analysis: Media coverage of a potential delisting could influence GreenCart's public reputation and regulatory scrutiny, thereby affecting the internal appeals process an",
+      "sensitivity": "decisive"
+     },
+     {
+      "name": "green_cart_leadership_change",
+      "kind": "external_event_family",
+      "why_unresolved": "sensitivity analysis: A sudden CEO or board chair change at GreenCart could shift strategic priorities, potentially altering the fee policy review outcome or the appeals process for ",
+      "sensitivity": "decisive"
+     },
+     {
+      "name": "macroeconomic_demand_shift",
+      "kind": "external_event_family",
+      "why_unresolved": "sensitivity analysis: A macroeconomic demand shift could reduce overall meal-kit category sales, lowering Marisol's revenue and unit volumes, which GreenCart's fee policy review migh",
+      "sensitivity": "decisive"
+     },
+     {
+      "name": "generic_outcome_prior",
+      "kind": "mechanism",
+      "why_unresolved": "sensitivity analysis: generic_outcome_prior could enter as a residual external process that shifts the baseline probability of listing retention or removal independently of the speci",
+      "sensitivity": "decisive"
+     },
+     {
+      "name": "us_marketplace_regulatory_jurisdiction",
+      "kind": "geography",
+      "why_unresolved": "sensitivity analysis: The us_marketplace_regulatory_jurisdiction component enters the causal chain as an external regulatory constraint that could override GreenCart's internal fee p",
+      "sensitivity": "decisive"
+     }
+    ],
+    "expansion_triggers": [
+     {
+      "component": "green_cart_investors",
+      "trigger": "If a single investor publicly threatens divestment, that individual would be promoted to individual_actor.",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "green_cart_sellers",
+      "trigger": "If a seller coalition forms to protest, it would be promoted to actor_group.",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "ftc_fair_treatment_division",
+      "trigger": "If Marisol files a formal complaint or media reports trigger an inquiry, the FTC would be promoted to an institution with explicit actions.",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "media_coverage_of_delisting",
+      "trigger": "If a major outlet picks up the story, it would be promoted to an explicit information_channel with dynamics.",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "us_marketplace_regulatory_jurisdiction",
+      "trigger": "If a state-level law (e.g., California) is invoked, it would be promoted to an institution.",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "competitor_capacity_shock",
+      "trigger": "If competitor publicly announces capacity expansion or contraction, it would be promoted to a resource constraint.",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "green_cart_leadership_change",
+      "trigger": "If a leadership change is announced, it would be promoted to an individual_actor replacement.",
+      "action": "promote_to_individual"
+     }
+    ]
+   }
+  }
+ },
+ "outside_world": {
+  "m4_adversarial_alternative": {
+   "boundary_id": "wb_f98d085e5b843cde",
+   "structural_model_id": "m4_adversarial_alternative",
+   "families": [
+    {
+     "family_id": "ftc_regulatory_action",
+     "description": "Formal or informal action by the FTC Fair Treatment Division regarding marketplace fee policies, delisting practices, or seller treatment, potentially affecting GreenCart's ability to enforce its new fee structure or delist Marisol's startup.",
+     "marks": [
+      "FTC opens investigation into GreenCart fee policy",
+      "FTC issues guidance or warning letter on delisting procedures",
+      "FTC announces consent decree or fine against GreenCart",
+      "Congressional hearing or press release referencing GreenCart practices"
+     ],
+     "affected_boundary_components": [
+      "green_cart_internal_appeals",
+      "green_cart_investors",
+      "green_cart_sellers",
+      "marisol_garcia",
+      "jennifer_walsh",
+      "thomas_bergstrom"
+     ],
+     "observability_paths": [
+      "media_coverage_of_delisting",
+      "FTC public docket filings",
+      "GreenCart investor communications",
+      "seller community forums"
+     ],
+     "impact_mechanism": "institutional_rule_change",
+     "impact_description": "FTC action imposes new constraints on GreenCart's fee policy or delisting authority, altering the probability that Marisol's startup is delisted or forcing a reversal of any pending delisting.",
+     "arrival": {
+      "kind": "documented_broad_prior",
+      "rate_per_day": 0.0,
+      "scheduled_times": [],
+      "state_condition": "",
+      "provenance": "FTC enforcement actions against digital marketplace platforms occur at a rate of roughly 2\u20135 per year across the US market (FTC Annual Enforcement Reports, 2020\u20132025).",
+      "uncertainty_band": []
+     },
+     "evidence": [],
+     "uncertainty": "broad_but_bounded",
+     "promotion_trigger": "If FTC announces an investigation or formal inquiry into GreenCart's fee policy, this family should be promoted to an internal mechanism with direct actor interactions.",
+     "validation_error": ""
+    },
+    {
+     "family_id": "competitor_capacity_shock",
+     "description": "A sudden change in capacity or market presence of a competing meal-kit or grocery delivery platform (e.g., HelloFresh, Blue Apron, local rivals) that alters GreenCart's strategic calculus regarding seller retention or fee enforcement.",
+     "marks": [
+      "Major competitor announces bankruptcy or exit from US market",
+      "Competitor launches aggressive price war or capacity expansion",
+      "Supply chain disruption at a competitor (e.g., warehouse fire, labor strike)",
+      "Competitor acquires a key supplier or technology"
+     ],
+     "affected_boundary_components": [
+      "green_cart_investors",
+      "green_cart_sellers",
+      "marisol_garcia",
+      "thomas_bergstrom"
+     ],
+     "observability_paths": [
+      "media_coverage_of_delisting",
+      "industry trade press (e.g., Grocery Dive, Food Navigator)",
+      "GreenCart internal strategy documents",
+      "investor calls"
+     ],
+     "impact_mechanism": "capacity_change",
+     "impact_description": "A competitor shock changes the competitive landscape, potentially making GreenCart more lenient (to retain sellers) or more aggressive (to consolidate market share) in its fee policy enforcement, thereby affecting Marisol's delisting risk.",
+     "arrival": {
+      "kind": "observed_base_rate",
+      "rate_per_day": 0.003,
+      "scheduled_times": [],
+      "state_condition": "",
+      "provenance": "Historical frequency of major competitor shocks in US meal-kit/grocery delivery sector: approximately 1 significant event per year (e.g., Blue Apron restructuring 2020, Kroger/HelloFresh partnership 2022, etc.) \u2014 source: IBISWorld Industry Report OD5519, 2025.",
+      "uncertainty_band": []
+     },
+     "evidence": [],
+     "uncertainty": "broad_but_bounded",
+     "promotion_trigger": "If a competitor shock is reported in credible media or industry sources, this family should be promoted to an internal mechanism with direct effects on GreenCart's decision-making.",
+     "validation_error": ""
+    },
+    {
+     "family_id": "media_coverage_of_delisting",
+     "description": "Public news or social media coverage specifically about GreenCart's fee policy review, delisting of sellers, or Marisol's startup, which could influence public perception, investor sentiment, or regulatory attention.",
+     "marks": [
+      "Major outlet (e.g., TechCrunch, Wall Street Journal) reports on GreenCart delisting controversy",
+      "Viral social media thread about unfair delisting practices",
+      "Local news coverage of Marisol's startup being delisted",
+      "Industry blog analysis of GreenCart fee changes"
+     ],
+     "affected_boundary_components": [
+      "green_cart_investors",
+      "green_cart_internal_appeals",
+      "marisol_garcia",
+      "jennifer_walsh",
+      "thomas_bergstrom"
+     ],
+     "observability_paths": [
+      "media_coverage_of_delisting (self-referential)",
+      "GreenCart PR monitoring",
+      "seller community forums",
+      "investor relations"
+     ],
+     "impact_mechanism": "observation_delivery",
+     "impact_description": "Media coverage delivers information to the simulated world about the delisting process, potentially triggering investor pressure, internal appeals, or regulatory scrutiny that changes the outcome for Marisol's startup.",
+     "arrival": {
+      "kind": "observed_base_rate",
+      "rate_per_day": 0.01,
+      "scheduled_times": [],
+      "state_condition": "",
+      "provenance": "Frequency of media coverage on marketplace delisting controversies: approximately 3\u20135 notable stories per month across US tech/business media (source: LexisNexis search for 'marketplace delisting' 2024\u20132025).",
+      "uncertainty_band": []
+     },
+     "evidence": [],
+     "uncertainty": "well_characterized",
+     "promotion_trigger": "If a specific article or report about GreenCart's delisting or Marisol's startup appears in a major outlet, this family should be promoted to an internal mechanism with direct actor reactions.",
+     "validation_error": ""
+    },
+    {
+     "family_id": "us_marketplace_regulatory_jurisdiction_change",
+     "description": "Changes in federal or state regulatory jurisdiction over online marketplaces, such as new legislation, court rulings, or agency rulemaking that affects GreenCart's fee policies or delisting authority.",
+     "marks": [
+      "Congress passes bill regulating marketplace fee transparency",
+      "State attorney general announces investigation into marketplace practices",
+      "Court ruling on marketplace liability or seller rights",
+      "FTC or CFPB issues new rule on digital platform fees"
+     ],
+     "affected_boundary_components": [
+      "green_cart_internal_appeals",
+      "green_cart_investors",
+      "green_cart_sellers",
+      "ftc_fair_treatment_division"
+     ],
+     "observability_paths": [
+      "media_coverage_of_delisting",
+      "legal news (e.g., Law360, SCOTUSblog)",
+      "GreenCart legal department communications",
+      "trade association alerts"
+     ],
+     "impact_mechanism": "institutional_rule_change",
+     "impact_description": "A change in regulatory jurisdiction alters the legal framework under which GreenCart operates, potentially invalidating or reinforcing its fee policy and affecting the likelihood of Marisol's delisting.",
+     "arrival": {
+      "kind": "documented_broad_prior",
+      "rate_per_day": 0.0,
+      "scheduled_times": [],
+      "state_condition": "",
+      "provenance": "Major federal marketplace regulation changes occur roughly once every 2\u20133 years (e.g., INFORM Act 2022, state-level bills 2023\u20132025) \u2014 source: National Conference of State Legislatures (NCSL) digital marketplace legislation tracker, 2025.",
+      "uncertainty_band": []
+     },
+     "evidence": [],
+     "uncertainty": "broad_but_bounded",
+     "promotion_trigger": "If a bill, court ruling, or agency action specifically targeting marketplace fee or delisting practices is announced, this family should be promoted to an internal mechanism.",
+     "validation_error": ""
+    },
+    {
+     "family_id": "generic_outcome_prior",
+     "description": "A generic prior distribution over the binary outcome (Marisol's startup keeps listing vs. is delisted) based on historical rates of seller delisting on major marketplaces after fee policy changes, used as a residual baseline when no other external events occur.",
+     "marks": [
+      "No external event arrives; outcome determined by internal dynamics plus this prior"
+     ],
+     "affected_boundary_components": [
+      "marisol_garcia",
+      "jennifer_walsh",
+      "thomas_bergstrom",
+      "green_cart_internal_appeals"
+     ],
+     "observability_paths": [
+      "not directly observable; inferred from final outcome"
+     ],
+     "impact_mechanism": "observation_delivery",
+     "impact_description": "Provides a probabilistic baseline for the delisting decision in the absence of external shocks, reflecting the typical rate at which small sellers are delisted after fee policy reviews on platforms like GreenCart.",
+     "arrival": {
+      "kind": "documented_broad_prior",
+      "rate_per_day": 0.0,
+      "scheduled_times": [],
+      "state_condition": "",
+      "provenance": "Historical data from similar marketplaces (e.g., Amazon, Etsy, Shopify) indicates that 10\u201330% of small sellers are delisted or suspended within 6 months of a major fee policy change (source: Marketplace Pulse annual seller survey, 2024).",
+      "uncertainty_band": []
+     },
+     "evidence": [],
+     "uncertainty": "broad_but_bounded",
+     "promotion_trigger": "This family is always active as a residual baseline; it should be promoted to an internal mechanism only if the simulation requires explicit modeling of the prior distribution.",
+     "validation_error": ""
+    }
+   ],
+   "external_state_processes": [
+    {
+     "name": "marketplace_regulatory_climate_drift",
+     "description": "Gradual shift in the overall regulatory and public sentiment toward online marketplace fee practices, influenced by cumulative media coverage, political discourse, and enforcement trends. This drift affects the baseline probability of regul",
+     "provenance": "Based on observed trend of increasing regulatory scrutiny on digital platforms from 2020\u20132025 (FTC, CFPB, state AGs) \u2014 source: FTC Annual Reports, 2020\u20132025."
+    },
+    {
+     "name": "competitor_landscape_volatility",
+     "description": "Background volatility in the meal-kit and grocery delivery competitive landscape, including slow-burn changes like market share shifts, funding rounds, or technology adoption that do not constitute discrete shocks but alter the strategic en",
+     "provenance": "Industry reports from IBISWorld, Statista, and Food Navigator indicate steady but unpredictable competitive dynamics in the US meal-kit market (2024\u20132025)."
+    }
+   ],
+   "unresolved_external_risks": [],
+   "empty_residual_justification": "",
+   "generation_trace": [
+    {
+     "stage": "outside_world_generation",
+     "prompt_hash": "f81b20ecdb0cd219",
+     "response_hash": "284af25c40bd3c19",
+     "ok": true,
+     "error": ""
+    }
+   ],
+   "schema_version": "outside.world.v1",
+   "process_hash": "46a4629f41829125"
+  }
+ },
+ "cognition_report": {
+  "pipeline": "observation\u2192attention\u2192working_memory\u2192memory_retrieval\u2192interpretation\u2192limited_action_search\u2192one_choice\u2192memory_update",
+  "schema": "bounded.cognition.v1",
+  "per_model_actor_policy": {
+   "m4_adversarial_alternative": {
+    "requested_actor_policy_mode": "hybrid_relevant_actor_policy",
+    "actual_actor_policy_mode": "hybrid_relevant_actor_policy",
+    "construction_error": "",
+    "degraded": false,
+    "actors_routed_qualitatively": [
+     "GreenCart_Fee_Policy_Review_Committee",
+     "GreenCart_Marketplace_Management",
+     "Marisol_Garcia",
+     "competitor_meal_kit_co",
+     "ftc_fair_treatment_division",
+     "green_cart_board",
+     "green_cart_inc",
+     "green_cart_pr_legal",
+     "jennifer_walsh",
+     "marisol_garcia",
+     "marisol_meal_kit",
+     "thomas_bergstrom"
+    ],
+    "actors_routed_numerically": [],
+    "fallbacks": 0,
+    "fallback_reasons": []
+   }
+  },
+  "sample_decision_records": [
+   {
+    "schema": "bounded.cognition.v1",
+    "model_family": "deepseek_v3",
+    "observations_available": [
+     "ev_6c88477ba74c9c"
+    ],
+    "observations_noticed": [
+     "ev_6c88477ba74c9c"
+    ],
+    "observations_missed": [],
+    "availability_rule": "recent_view_items(no delivery bundle on this route; recorded)",
+    "working_memory_capacity": 4,
+    "working_memory_basis": "base=5; workload:high(-1) \u2192 4 (safety_max=9, implementation limit)",
+    "working_memory_items": [
+     "decision_opportunity"
+    ],
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "active_contradictions": [],
+    "interpretation": {
+     "what_happened": "I just noticed a decision opportunity\u2014likely a chance to adjust our fee structure or renegotiate terms with a key seller. It feels like a window to act before the board or top sellers force a reactive move.",
+     "why_it_matters": "This could let me proactively shape the fee review to protect our most profitable seller relationships while quietly improving margins. If I miss it, I'll be stuck defending a less balanced proposal later.",
+     "unresolved_ambiguity": "I'm not sure if this opportunity is real or just noise from my own over-analysis. I also don't know which seller or product line this decision applies to\u2014need to check the data before I commit."
+    },
+    "options_considered": [
+     "Propose a tiered fee reduction for top sellers in exchange for longer contract commitments",
+     "Run a quiet A/B test on a small seller to see how they react to a 0.5% fee increase",
+     "Prepare a data-backed memo for the board recommending a gradual fee adjustment over two quarters"
+    ],
+    "options_screened_out": [
+     {
+      "option": "Immediately announce a broad fee cut to all sellers",
+      "why_dismissed": "Too blunt \u2014 would spook the board and signal weakness to top sellers; I need precision, not a fire sale."
+     },
+     {
+      "option": "Do nothing and wait for the board to bring it up",
+      "why_dismissed": "That cedes control; I'd be reactive and lose the chance to shape the narrative."
+     }
+    ],
+    "actually_feasible_not_considered": [
+     "- act: generic/act",
+     "- wait: generic/wait"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "e53944b8d1503f49",
+      "output_hash": "d5b733636c0174df",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1790812795.0
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "e53944b8d1503f49",
+      "output_hash": "8c40830860f9f216",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1790812795.0
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "7d1ddbba7db9f06b",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1790812795.0
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "26689eb9496b56c4",
+      "output_hash": "bfa8ec23bcbe5a14",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1790812795.0
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "74a96cdf30e8387f",
+      "output_hash": "0ef5c2125810aeba",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1790812795.0
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "f22a25ea1e1f9cb0",
+      "output_hash": "89b57b6928c748eb",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1790812795.0
+     }
+    ],
+    "family_transitions": []
+   },
+   {
+    "schema": "bounded.cognition.v1",
+    "model_family": "deepseek_v3",
+    "observations_available": [
+     "ev_6c88477ba74c9c"
+    ],
+    "observations_noticed": [
+     "ev_6c88477ba74c9c"
+    ],
+    "observations_missed": [],
+    "availability_rule": "recent_view_items(no delivery bundle on this route; recorded)",
+    "working_memory_capacity": 5,
+    "working_memory_basis": "base=5; workload:light(+1); condition:depleted(-1) \u2192 5 (safety_max=9, implementation limit)",
+    "working_memory_items": [
+     "decision_opportunity"
+    ],
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "active_contradictions": [],
+    "interpretation": {
+     "what_happened": "I just noticed the 'decision_opportunity' flag in my calendar\u2014it's the board's euphemism for the fee review vote. They're pushing me to present it as a done deal, but I know the sellers will see it as a betrayal. I'm the one who has to sell this to them, and I'm already dreading the calls.",
+     "why_it_matters": "This is the moment where I either protect my relationships with key sellers or lose them. The board wants me to be the shield, but I'm the one who'll have to look them in the eye afterward. If this goes badly, my reputation with the sellers\u2014the people I've spent years cultivating\u2014will be damaged beyond repair.",
+     "unresolved_ambiguity": "I'm not sure if the board has already decided the exact fee increase percentage, or if I still have room to influence the final number to make it more palatable. Also, I don't know which of my key sellers have already heard rumors\u2014that could change how I approach them."
+    },
+    "options_considered": [
+     "Frame the fee review as a necessary market adjustment to protect seller margins long-term, then present it to sellers myself in a series of one-on-one calls.",
+     "Delay the vote by citing unresolved seller concerns, buying time to build a coalition of supportive sellers first.",
+     "Ask a more senior board member to co-present the fee review, sharing the reputational risk."
+    ],
+    "options_screened_out": [
+     {
+      "option": "Resign or publicly oppose the fee review",
+      "why_dismissed": "That would destroy my career at GreenCart and I'm not willing to burn that bridge yet."
+     },
+     {
+      "option": "Do nothing and let the board proceed without my input",
+      "why_dismissed": "I can't just ignore it\u2014the flag is in my calendar and I'm expected to act. Silence would look like complicity or incompetence."
+     }
+    ],
+    "actually_feasible_not_considered": [
+     "- act: generic/act",
+     "- wait: generic/wait"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "e53944b8d1503f49",
+      "output_hash": "3f44aa76667d9d91",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1790812795.0
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "e53944b8d1503f49",
+      "output_hash": "a7be25db2ce8ccbf",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1790812795.0
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "7d1ddbba7db9f06b",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1790812795.0
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "26689eb9496b56c4",
+      "output_hash": "274557bed3491e4e",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1790812795.0
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "74a96cdf30e8387f",
+      "output_hash": "d971216fc8406951",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1790812795.0
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "433eec0cdfc6ac9c",
+      "output_hash": "3f40b896ff271706",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1790812795.0
+     }
+    ],
+    "family_transitions": []
+   },
+   {
+    "schema": "bounded.cognition.v1",
+    "model_family": "deepseek_v3",
+    "observations_available": [
+     "ev_be0db905ac270c",
+     "owe_90e1b4f3124a"
+    ],
+    "observations_noticed": [
+     "owe_90e1b4f3124a"
+    ],
+    "observations_missed": [
+     {
+      "obs_id": "ev_be0db905ac270c",
+      "why": "This is an internally generated decision opportunity, but the person is focused on external news and under pressure for a win. Internal opportunities are likely deferred or skimmed over when the CEO w"
+     }
+    ],
+    "availability_rule": "recent_view_items(no delivery bundle on this route; recorded)",
+    "working_memory_capacity": 5,
+    "working_memory_basis": "base=5 \u2192 5 (safety_max=9, implementation limit)",
+    "working_memory_items": [
+     "Viral social media thread about unfair delisting practices"
+    ],
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "active_contradictions": [],
+    "interpretation": {
+     "what_happened": "Someone\u2014likely a disgruntled supplier or a competitor's plant\u2014has kicked off a viral thread accusing Marisol of unfair delisting practices. Given my background, I see this as either a genuine leak from a burned partner or, more likely, a calculated move by Marisol themselves to play the victim and shift blame for their own operational failures. They know regulators are watching, and they want to look like the aggrieved party.",
+     "why_it_matters": "This thread could trigger regulatory scrutiny or supplier backlash that hurts Marisol, which is good for us. But if Marisol planted it, they're trying to control the narrative and paint themselves as a victim of a broken system\u2014making it harder for us to lobby for fee changes that would hurt them. I need to know who lit the match.",
+     "unresolved_ambiguity": "I still don't know if the original poster is a real supplier or a Marisol operative. I need to trace the thread's origin and check if any of our known contacts are involved."
+    },
+    "options_considered": [
+     "Monitor the thread and map the source",
+     "Leak a counter-narrative to industry press",
+     "Reach out to supplier contacts",
+     "Prepare a quiet briefing for our lobbying team"
+    ],
+    "options_screened_out": [
+     {
+      "option": "Publicly comment or engage on the thread",
+      "why_dismissed": "Too risky \u2014 would reveal our hand and give Marisol a foil to rally against. My background says never fight on the opponent\u2019s chosen terrain."
+     },
+     {
+      "option": "Do nothing and wait",
+      "why_dismissed": "Waiting is passive; I need to know if this is a real vulnerability or a setup before the narrative solidifies. My instinct is to gather intel fast."
+     }
+    ],
+    "actually_feasible_not_considered": [
+     "- wait: generic/wait",
+     "- abstain: generic/abstain"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "e42619efc4cc4b8c",
+      "output_hash": "3c93327132aff6fb",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1784439333.1606748
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "06cf314a18506852",
+      "output_hash": "acaad16b0fbc4ca1",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1784439333.1606748
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "748d505dcd56280d",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1784439333.1606748
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "9eeeb3c2e9dd5c9b",
+      "output_hash": "0da948598d1d7f27",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784439333.1606748
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "1ccb1bf34309ee2b",
+      "output_hash": "a74cf4bde175bac2",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784439333.1606748
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "4b620fe1fa5fe007",
+      "output_hash": "0c7887b0e3a9ec4f",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1784439333.1606748
+     }
+    ],
+    "family_transitions": []
+   },
+   {
+    "schema": "bounded.cognition.v1",
+    "model_family": "deepseek_v3",
+    "observations_available": [
+     "ev_39fd3eb45609ae",
+     "owe_90e1b4f3124a"
+    ],
+    "observations_noticed": [
+     "owe_90e1b4f3124a"
+    ],
+    "observations_missed": [
+     {
+      "obs_id": "ev_39fd3eb45609ae",
+      "why": "This decision opportunity arrives via an internal channel while they are hyper-focused on external news and leaks; under high workload and sleep deprivation, they do not register it."
+     }
+    ],
+    "availability_rule": "recent_view_items(no delivery bundle on this route; recorded)",
+    "working_memory_capacity": 5,
+    "working_memory_basis": "base=5 \u2192 5 (safety_max=9, implementation limit)",
+    "working_memory_items": [
+     "Viral social media thread about unfair delisting practices"
+    ],
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "active_contradictions": [],
+    "interpretation": {
+     "what_happened": "Someone inside the unit or with inside knowledge deliberately leaked or orchestrated a viral thread about unfair delisting practices. This isn't random\u2014it's timed to hit just as I'm pushing for reform. The author is offering me a direct line, which means they want to be an ally or a lever, not just an anonymous critic.",
+     "why_it_matters": "This is the opening I needed. The public pressure gives me cover to override the old guard's resistance and force through automated, auditable criteria. It also lets me identify who on my staff is gaming the system\u2014if I can trace the leak or the pattern behind the delistings, I can clean house. This is my defining moment to prove I'm serious.",
+     "unresolved_ambiguity": "I'm not sure if the thread author is a genuine whistleblower or a rival faction's pawn. Also, I don't yet know which specific staff members are behind the manipulated delistings\u2014I need to move before they cover their tracks."
+    },
+    "options_considered": [
+     "Reply directly to the thread author to establish a backchannel and gauge their intent",
+     "Issue a public statement acknowledging the thread and promising a full audit with automated criteria",
+     "Quietly task my most trusted analyst to trace the leak pattern and identify the source inside the unit"
+    ],
+    "options_screened_out": [
+     {
+      "option": "Ignore the thread and wait for it to blow over",
+      "why_dismissed": "That would signal weakness and waste the leverage this gives me against the old guard."
+     },
+     {
+      "option": "Publicly denounce the leak as a breach of protocol",
+      "why_dismissed": "Would alienate the potential ally and look defensive; I need to ride this wave, not fight it."
+     }
+    ],
+    "actually_feasible_not_considered": [
+     "- wait: generic/wait",
+     "- abstain: generic/abstain"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "4e3eb3b5f17617eb",
+      "output_hash": "db538a9776ee7d19",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1784443498.6327813
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "06cf314a18506852",
+      "output_hash": "1f1e12e3abf02cdb",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1784443498.6327813
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "748d505dcd56280d",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1784443498.6327813
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "9eeeb3c2e9dd5c9b",
+      "output_hash": "04addeea25fce0f3",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784443498.6327813
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "1ccb1bf34309ee2b",
+      "output_hash": "a951a3d8b4fe8f60",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784443498.6327813
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "528d460ae50fe522",
+      "output_hash": "5941fca1f9eba2db",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1784443498.6327813
+     }
+    ],
+    "family_transitions": []
+   },
+   {
+    "schema": "bounded.cognition.v1",
+    "model_family": "deepseek_v3",
+    "observations_available": [
+     "ev_c98a39ffcf6968",
+     "owe_90e1b4f3124a"
+    ],
+    "observations_noticed": [
+     "owe_90e1b4f3124a"
+    ],
+    "observations_missed": [
+     {
+      "obs_id": "ev_c98a39ffcf6968",
+      "why": "This is an abstract decision opportunity with no clear channel or urgency; under stress and sleep deprivation, it fails to break through the current fixation on the viral thread."
+     }
+    ],
+    "availability_rule": "recent_view_items(no delivery bundle on this route; recorded)",
+    "working_memory_capacity": 4,
+    "working_memory_basis": "base=5; condition:depleted(-1) \u2192 4 (safety_max=9, implementation limit)",
+    "working_memory_items": [
+     "Viral social media thread about unfair delisting practices"
+    ],
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "active_contradictions": [],
+    "interpretation": {
+     "what_happened": "That viral thread about unfair delisting practices just landed in my lap. Someone\u2014probably a disgruntled seller\u2014finally got traction, and now it's blowing up. Management probably ignored the early signs, and now we're all exposed.",
+     "why_it_matters": "This is exactly the kind of spark that could ignite an FTC inquiry before we have our defensive narrative ready. It also gives the review committee cover to leak their own version of events, which would be a disaster. I need to keep everyone quiet and buy time until the heat dies down.",
+     "unresolved_ambiguity": "I don't know yet if this thread is organic or if a competitor or activist investor is behind it. Also unclear if any of our internal people have already leaked to the press."
+    },
+    "options_considered": [
+     "Call the general counsel to demand a gag order on all management until we have a unified statement",
+     "Leak a sanitized version of the old fee structure to a friendly reporter to frame it as 'operational necessity' before the FTC gets involved",
+     "Schedule an emergency board call to force a pause on all new fee announcements"
+    ],
+    "options_screened_out": [
+     {
+      "option": "Publicly apologize and promise a review of delisting practices",
+      "why_dismissed": "That would be an admission of guilt and hand the FTC a confession. I can't trust management to follow through, and it would make us look weak."
+     },
+     {
+      "option": "Ignore it and hope it blows over",
+      "why_dismissed": "The thread is already viral; ignoring it is what got us into this mess. The FTC won't ignore it."
+     },
+     {
+      "option": "Fire the person who ignored the early signs",
+      "why_dismissed": "I don't have the authority, and it would cause a panic. Plus, I don't know who that is yet."
+     }
+    ],
+    "actually_feasible_not_considered": [
+     "- wait: generic/wait",
+     "- abstain: generic/abstain"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "f1437997af562b60",
+      "output_hash": "3f5c39586968cd7b",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1784444473.5869136
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "06cf314a18506852",
+      "output_hash": "836306f27c8dafac",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1784444473.5869136
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "748d505dcd56280d",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1784444473.5869136
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "9eeeb3c2e9dd5c9b",
+      "output_hash": "897c51121d1666f9",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784444473.5869136
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "1ccb1bf34309ee2b",
+      "output_hash": "d1f6c438d276284d",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784444473.5869136
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "99427d0c3664071c",
+      "output_hash": "a5caa5a36327a8f0",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1784444473.5869136
+     }
+    ],
+    "family_transitions": []
+   },
+   {
+    "schema": "bounded.cognition.v1",
+    "model_family": "deepseek_v3",
+    "observations_available": [
+     "ev_96fd74c0857aca",
+     "owe_90e1b4f3124a"
+    ],
+    "observations_noticed": [
+     "owe_90e1b4f3124a"
+    ],
+    "observations_missed": [
+     {
+      "obs_id": "ev_96fd74c0857aca",
+      "why": "Emotionally drained and focused on the external crisis, the internal decision opportunity is not registered; it conflicts with the current preoccupation and low-grade despair."
+     }
+    ],
+    "availability_rule": "recent_view_items(no delivery bundle on this route; recorded)",
+    "working_memory_capacity": 5,
+    "working_memory_basis": "base=5 \u2192 5 (safety_max=9, implementation limit)",
+    "working_memory_items": [
+     "Viral social media thread about unfair delisting practices"
+    ],
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "active_contradictions": [],
+    "interpretation": {
+     "what_happened": "I just saw a viral thread about how GreenCart is screwing over small suppliers like us\u2014delisting them without warning, making up excuses about quality or demand. It\u2019s not a surprise, it\u2019s confirmation. They\u2019re going to do the same to me, and this thread is just noise from someone else who got burned.",
+     "why_it_matters": "It means my timeline just got shorter. If this is going viral, GreenCart might double down on cleaning house to protect their image. I can\u2019t afford to wait\u2014I need to accelerate my backup plan before they pull the trigger on us. This thread is a warning flare, not a call to action.",
+     "unresolved_ambiguity": "I don\u2019t know if GreenCart has already flagged us internally, or if this thread is just about a different supplier. I also don\u2019t know if the author is credible or just making noise\u2014could be a disgruntled ex-employee for all I know."
+    },
+    "options_considered": [
+     "Call my backup distributor contact tonight, use the thread as leverage to speed up our contract",
+     "Draft a preemptive email to GreenCart's supplier relations manager, citing the thread as a concern about my own account stability"
+    ],
+    "options_screened_out": [
+     {
+      "option": "Post a public response to the thread defending GreenCart or offering my own story",
+      "why_dismissed": "Too risky \u2014 I'm still dependent on them for cash flow this quarter, and going public would burn the bridge before I have a fallback locked in."
+     },
+     {
+      "option": "Ignore the thread and focus on operations",
+      "why_dismissed": "Can't ignore it \u2014 this is a direct threat to my business model, and I'm too tired to pretend otherwise."
+     }
+    ],
+    "actually_feasible_not_considered": [
+     "- wait: generic/wait",
+     "- abstain: generic/abstain"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "d61ef895f9be9808",
+      "output_hash": "46e8517473d7819b",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1784445157.9355798
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "06cf314a18506852",
+      "output_hash": "57f949ecf5433ad0",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1784445157.9355798
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "748d505dcd56280d",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1784445157.9355798
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "9eeeb3c2e9dd5c9b",
+      "output_hash": "e75deee1e6003fed",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784445157.9355798
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "1ccb1bf34309ee2b",
+      "output_hash": "1129208ed5691754",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784445157.9355798
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "7b20c6f6499204b8",
+      "output_hash": "bcc07b3c4d63d882",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1784445157.9355798
+     }
+    ],
+    "family_transitions": []
+   }
+  ],
+  "model_family_monoculture": true
+ },
+ "truncation_report": {
+  "total_weight": 1.0000000000000002,
+  "completed_weight": 0.08571428571428572,
+  "truncated_weight": 0.9142857142857145,
+  "invalid_weight": 0.0,
+  "truncated_branch_share": 0.914286,
+  "truncation_reasons": {
+   "cognition_stage_failure": 1,
+   "actor_llm_budget_exhausted": 31
+  },
+  "earliest_truncation_ts": 1784527531.2054942,
+  "actors_affected": [],
+  "pending_high_sensitivity_events": [],
+  "truncated_branch_ids": [
+   "m4_adversarial_alternative/b000",
+   "m4_adversarial_alternative/b001",
+   "m4_adversarial_alternative/b002",
+   "m4_adversarial_alternative/b003",
+   "m4_adversarial_alternative/b004",
+   "m4_adversarial_alternative/b005",
+   "m4_adversarial_alternative/b006",
+   "m4_adversarial_alternative/b007",
+   "m4_adversarial_alternative/b008",
+   "m4_adversarial_alternative/b009",
+   "m4_adversarial_alternative/b010",
+   "m4_adversarial_alternative/b011",
+   "m4_adversarial_alternative/b012",
+   "m4_adversarial_alternative/b013",
+   "m4_adversarial_alternative/b014",
+   "m4_adversarial_alternative/b015",
+   "m4_adversarial_alternative/b016",
+   "m4_adversarial_alternative/b017",
+   "m4_adversarial_alternative/b018",
+   "m4_adversarial_alternative/b019",
+   "m4_adversarial_alternative/b020",
+   "m4_adversarial_alternative/b021",
+   "m4_adversarial_alternative/b022",
+   "m4_adversarial_alternative/b023",
+   "m4_adversarial_alternative/b024",
+   "m4_adversarial_alternative/b025",
+   "m4_adversarial_alternative/b026",
+   "m4_adversarial_alternative/b027",
+   "m4_adversarial_alternative/b028",
+   "m4_adversarial_alternative/b029",
+   "m4_adversarial_alternative/b030",
+   "m4_adversarial_alternative/b031"
+  ],
+  "mapping_notes": [],
+  "honest_note": "truncated branch mass is unresolved simulation, not Monte Carlo error",
+  "bounds_under_truncation": {
+   "listing_removed": {
+    "lower": 0.0514,
+    "upper": 0.9657
+   },
+   "listing_retained": {
+    "lower": 0.0343,
+    "upper": 0.9486
+   }
+  },
+  "answer_settled_under_truncation": false,
+  "note": "truncated branch mass is unresolved simulation, not Monte Carlo error",
+  "recommendation_rule": "a recommendation is withheld unless the leading action remains best under all admissible truncated-branch completions (\u00a721)"
+ },
+ "model_family_report": {
+  "schema": "model.family.v1",
+  "families": [
+   {
+    "family_id": "deepseek_v3",
+    "provider": "deepseek",
+    "model": "deepseek-chat",
+    "version": "",
+    "lineage": "deepseek-v3",
+    "capabilities": [
+     "json",
+     "long_context",
+     "multilingual"
+    ],
+    "context_limit": 64000,
+    "supported_schemas": [
+     "qualitative.actor.v1",
+     "world.boundary.v1"
+    ],
+    "cost_per_mtok_usd": 0.27,
+    "latency_class": "medium",
+    "availability": "configured",
+    "known_limitations": [
+     "single training lineage \u2014 correlated blind spots when serving every actor"
+    ],
+    "strength_tier": "strong"
+   }
+  ],
+  "configured_families": [
+   "deepseek_v3"
+  ],
+  "distinct_lineages": [
+   "deepseek-v3"
+  ],
+  "model_family_monoculture": true,
+  "monoculture_note": "every simulated actor is served by one model lineage; actor instances share that lineage's knowledge, salience and blind spots \u2014 correlated failure risk is NOT diversified",
+  "actor_independence_language": "independently situated LLM actor instances with partially diversified model families",
+  "assignments": [
+   {
+    "particle": 0,
+    "actor": "jennifer_walsh",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 1,
+    "actor": "jennifer_walsh",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "competitor_meal_kit_co",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "ftc_fair_treatment_division",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "green_cart_board",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "marisol_garcia",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "GreenCart_Fee_Policy_Review_Committee",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "green_cart_pr_legal",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "GreenCart_Marketplace_Management",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "green_cart_inc",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "Marisol_Garcia",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "thomas_bergstrom",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "marisol_meal_kit",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "jennifer_walsh",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 3,
+    "actor": "thomas_bergstrom",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 3,
+    "actor": "Marisol_Garcia",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 3,
+    "actor": "green_cart_board",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 3,
+    "actor": "GreenCart_Fee_Policy_Review_Committee",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 3,
+    "actor": "marisol_meal_kit",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 3,
+    "actor": "green_cart_pr_legal",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 3,
+    "actor": "ftc_fair_treatment_division",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 3,
+    "actor": "green_cart_inc",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 3,
+    "actor": "GreenCart_Marketplace_Management",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   }
+  ],
+  "n_assignments": 23,
+  "failure_transitions": []
+ },
+ "structural_models": [
+  {
+   "model_id": "m4_adversarial_alternative",
+   "promotion_status": "promoted",
+   "causal_thesis": "Marisol's listing survives because GreenCart's fee review is primarily a bargaining chip against the competitor, and Marisol's small volume makes her listing cost-neutral to retain, while delisting her would invite negative PR or regulatory attention.",
+   "world_boundary": "{\"simulated_individually\": [\"marisol_garcia\", \"jennifer_walsh\", \"thomas_bergstrom\", \"green_cart_internal_appeals\"], \"simulated_as_population\": [\"green_cart_investors\", \"green_cart_sellers\"], \"represented_as_nonhuman_system\": [\"green_cart_inc\", \"competitor_meal_kit_co\"], \"outside_detailed_world\": [\"ftc_fair_treatment_division\", \"generic_outcome_prior\", \"media_coverage_of_delisting\", \"us_marketplace_regulatory_jurisdiction\", \"competitor_capacity_shock\", \"macroeconomic_demand_shift\"], \"inclusion_reasons\": {\"marisol_garcia\": \"Marisol is the founder of the meal-kit startup and a direct decision holder regarding renegotiation, diversification, or waiting. Her actions directly affect the outcome.\", \"jennifer_walsh\": \"Jennifer Walsh is listed as an entity, likely a key decision-maker at GreenCart ",
+   "support_class": "unresolved"
+  }
+ ],
+ "cost_manifest": {
+  "llm_calls_by_stage": {
+   "structural_generation": 5,
+   "structural_critic": 7,
+   "structural_compile": 5,
+   "structural_repair": 4,
+   "model_conditioning": 21,
+   "actor_rollout": 84
+  },
+  "llm_calls_by_model": {
+   "m0_actor_relationship": 2,
+   "m1_institutional_procedural": 2,
+   "m2_resource_constraint": 2,
+   "m3_information_distribution": 2,
+   "m4_adversarial_alternative": 106
+  },
+  "cache_hits_by_stage": {},
+  "total_llm_calls": 126,
+  "total_cache_hits": 0,
+  "prompt_chars": 813824,
+  "response_chars": 730133,
+  "errors": 0,
+  "single_model_equivalent_llm_calls": 22,
+  "incremental_call_multiplier": 5.73,
+  "pilot_particles_reused": 8
+ },
+ "boundary_promotions": [],
+ "verification": {
+  "canonical_route": true,
+  "structural_mode": "ensemble",
+  "numeric_actor_fallbacks": 0,
+  "numeric_fallback_rows": [],
+  "generic_prior_writes": 0,
+  "generic_prior_suppressions": 3,
+  "branch_continuation_after_truncation": false,
+  "monoculture_reported": true,
+  "boundaries_present": true,
+  "outside_world_present": true,
+  "cognition_records": 12,
+  "under_modeled_subtypes": [
+   "under_modeled_boundary",
+   "under_modeled_external_process",
+   "under_modeled_nonhuman_mechanism"
+  ],
+  "simulation_status": "under_modeled",
+  "truncated_weight": 0.9142857142857145,
+  "truncation_reasons": {
+   "cognition_stage_failure": 1,
+   "actor_llm_budget_exhausted": 31
+  },
+  "ok": true
+ },
+ "provider_cost": {
+  "calls": 126,
+  "tokens_in": 203413,
+  "tokens_out": 182487,
+  "seconds": 1683.94,
+  "cost_usd": 0.255657
+ },
+ "recommendation_status": "not_requested",
+ "note": "architecture probe \u2014 no real-world accuracy claimed (\u00a738)"
+}

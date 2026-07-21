@@ -1,0 +1,231 @@
+{
+ "question": "Will the stock rise more than 5% the day after the earnings call?",
+ "as_of": "2023-07-25",
+ "horizon": "2023-07-27",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "rise_more_than_5%",
+   "rise_5%_or_less_or_fall"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "If the closing price of the stock on 2023-07-27 is more than 5% higher than the closing price on 2023-07-25, then 'rise_more_than_5%'; else 'rise_5%_or_less_or_"
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The stock price change on the day after the earnings call is determined by the market's reaction to the earnings surprise relative to consensus expectations, mediated by investor sentiment, institutional trading, and information flow.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 3,
+ "n_institutions": 2,
+ "n_populations": 3,
+ "n_latents": 4,
+ "sample_entities": [
+  "company_issuing_stock",
+  "ceo",
+  "cfo"
+ ],
+ "sample_latents": [
+  {
+   "path": "company_issuing_stock.earnings_actual_eps",
+   "candidates": {
+    "mean": 0.0,
+    "sd": 5.0,
+    "lo": -10.0,
+    "hi": 10.0
+   },
+   "sensitivity": 1.0
+  },
+  {
+   "path": "company_issuing_stock.guidance",
+   "candidates": {
+    "mean": 0.0,
+    "sd": 2.5,
+    "lo": -5.0,
+    "hi": 5.0
+   },
+   "sensitivity": 0.9
+  },
+  {
+   "path": "investors.sentiment",
+   "candidates": {
+    "mean": 0.0,
+    "sd": 0.5,
+    "lo": -1.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "analysts.reaction",
+   "candidates": {
+    "mean": 0.0,
+    "sd": 1.5,
+    "lo": -3.0,
+    "hi": 3.0
+   },
+   "sensitivity": 0.7
+  }
+ ],
+ "accepted_mechanisms": [
+  "agent_decision",
+  "belief_update",
+  "background_dynamics",
+  "generic_outcome_prior",
+  "resource_update",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [
+  [
+   "attention_allocation",
+   "no executable operator ('swm.world_model_v2.actor_"
+  ],
+  [
+   "attention_dynamics",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "information_interpretation",
+   "no executable operator ('swm.world_model_v2.actor_"
+  ],
+  [
+   "observation_exposure",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "quantal_response_choice",
+   "no executable operator ('swm.world_model_v2.policy"
+  ]
+ ],
+ "experimental_mechanisms": [
+  "price_discovery",
+  "earnings_surprise_calculation"
+ ],
+ "mechanism_tiers": {
+  "earnings_surprise_determination": 7,
+  "investor_attention_allocation": 7,
+  "belief_update_from_earnings": 7,
+  "trading_decision": 7,
+  "price_impact_of_trades": 7,
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "efficient_market",
+   "lean": "neutral",
+   "prior": 0.3
+  },
+  {
+   "id": "behavioral_overreaction",
+   "lean": "weak_yes",
+   "prior": 0.4
+  },
+  {
+   "id": "information_cascade",
+   "lean": "weak_yes",
+   "prior": 0.3
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "company_issuing_stock",
+   "ceo",
+   "cfo",
+   "investors",
+   "analysts",
+   "media",
+   "company_issuing_stock.earnings_actual_eps",
+   "company_issuing_stock.guidance",
+   "investors.sentiment",
+   "analysts.reaction"
+  ],
+  "marginalized_with_uncertainty": [
+   "stock_exchange",
+   "sec"
+  ],
+  "n_particles": 66
+ },
+ "omissions": [
+  {
+   "component": "macroeconomic_indicators",
+   "sensitivity": 0.1,
+   "reason": "negligible sensitivity because horizon is 2 days and no evidence of macro shock"
+  },
+  {
+   "component": "political_events",
+   "sensitivity": 0.05,
+   "reason": "negligible sensitivity because no scheduled political events in window"
+  }
+ ],
+ "world_provenance_statuses": {},
+ "n_deltas": 132,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "efficient_market": 0.303,
+  "behavioral_overreaction": 0.3939,
+  "information_cascade": 0.303
+ },
+ "delta_log_sample": [
+  {
+   "at": 1690389000.0,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1690415999.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=neutral"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "rise_more_than_5%": 0.5455,
+   "rise_5%_or_less_or_fall": 0.4545
+  },
+  "raw_probability": 0.5455,
+  "structural_disagreement": {
+   "efficient_market": 0.303,
+   "behavioral_overreaction": 0.3939,
+   "information_cascade": 0.303
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 66,
+   "structural_model_uncertainty": 0.9927,
+   "structural_posterior": {
+    "efficient_market": 0.303,
+    "behavioral_overreaction": 0.3939,
+    "information_cascade": 0.303
+   },
+   "state_parameter_uncertainty": 0.2512,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "omitted (negligible-sensitivity): macroeconomic_indicators",
+   "omitted (negligible-sensitivity): political_events",
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "fd005b7d21e0"
+ },
+ "plan_hash": "fd005b7d21e0",
+ "latency_s": 17.21
+}

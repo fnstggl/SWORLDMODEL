@@ -46,21 +46,47 @@ def _clip01(p):
     return min(0.999, max(0.001, p))
 
 
+def _num(x, default):
+    """LLM-JSON tolerance: explicit nulls and non-numeric junk collapse to the default. The compile prompt
+    invites OMITTING unknown params (EXP-101) — an omitted/null count must mean 'use the honest fallback',
+    never a TypeError."""
+    try:
+        return default if x is None else float(x)
+    except (TypeError, ValueError):
+        return default
+
+
 # --------------------------------------------------------------------------- the seven mechanism simulators
 
-def sim_aggregation(share, *, threshold=0.5, share_sd=None, direction=">", base_rate=0.5, n=4000, seed=0):
+PROVENANCE_SD_FLOOR = {"grounded": 0.0, "quoted": 0.08, "invented": 0.15}
+PROVENANCE_ANCHOR_W = {"grounded": 1.0, "quoted": 0.75, "invented": 0.55}
+
+
+def _anchor(p, base_rate, provenance):
+    """EXP-101 fix: shrink toward the outside-view anchor in log-odds, by parameter PROVENANCE. A kernel fed
+    measured params keeps its full signal (w=1); one fed numbers the LLM merely read (quoted) or made up
+    (invented) may not assert near-certainty — the uncertainty that matters is whether the params are even
+    right, which no within-kernel sampling can see."""
+    w = PROVENANCE_ANCHOR_W.get(provenance, 1.0)
+    return _clip01(_sig(w * _logit(p) + (1 - w) * _logit(base_rate)))
+
+
+def sim_aggregation(share, *, threshold=0.5, share_sd=None, direction=">", base_rate=0.5, n=4000, seed=0,
+                    provenance="grounded"):
     """VOTE / APPROVAL / REFERENDUM: YES iff an aggregate SHARE beats a threshold (usually 0.5). The share is a
     latent Normal centered on the grounded current/poll share with poll-error sd (empirical ~0.03-0.06; wider
-    when ungrounded). Integrates the poll error — a 52% lead with 4pt error is ~0.7, not 1.0."""
+    when ungrounded). Integrates the poll error — a 52% lead with 4pt error is ~0.7, not 1.0. Ungrounded
+    provenance widens the sd (the share ESTIMATE has error on top of poll error) and anchors to the base rate."""
     if share is None:
         return base_rate
+    share, threshold = _num(share, 0.5), _num(threshold, 0.5)
     rng = random.Random(seed)
-    sd = share_sd if share_sd is not None else 0.06
+    sd = max(_num(share_sd, 0.06), PROVENANCE_SD_FLOOR.get(provenance, 0.0))
     yes = 0
     for _ in range(n):
         s = rng.gauss(share, sd)
         yes += 1 if (s > threshold if direction == ">" else s < threshold) else 0
-    return _clip01(yes / n)
+    return _anchor(yes / n, base_rate, provenance)
 
 
 def sim_contest(*, win_prob=None, rating_diff=None, rating_sd=120.0, base_rate=0.5, n=4000, seed=0):
@@ -100,26 +126,44 @@ def sim_arrival(*, base_rate=None, rate_per_year=None, horizon_years=1.0, ref_ye
     return _clip01(acc / n)
 
 
-def sim_whipcount(*, committed_yes=0, committed_no=0, undecided=0, needed=None, total=None, lean=0.5,
-                  n=4000, seed=0, base_rate=0.5):
+def sim_whipcount(*, committed_yes=None, committed_no=0, undecided=None, needed=None, total=None, lean=0.5,
+                  n=4000, seed=0, base_rate=0.5, provenance="grounded"):
     """LEGISLATION / TREATY / MERGER / BOARD VOTE: YES iff committed-yes plus the undecided that break yes reach
     the needed threshold. Each undecided breaks YES with probability `lean` (grounded from party/whip signal);
-    the count is Binomial, integrated. `needed` defaults to a bare majority of `total`."""
+    the count is Binomial, integrated. `needed` defaults to a bare majority of `total`.
+    With GROUNDED counts the arithmetic gates are facts (have the votes ⇒ ~done). With quoted/invented counts
+    the gates are conjecture: the counts themselves get sampling noise, `lean` gets estimate error, and the
+    result anchors to the base rate — an invented whip count may not produce 0.02/0.98 (EXP-101)."""
+    if committed_yes is None and undecided is None:
+        return base_rate                       # no whip information at all — "0 committed" would be invented
+    committed_yes, undecided = _num(committed_yes, 0.0), _num(undecided, 0.0)
+    total = None if total is None else _num(total, None)
     if needed is None:
         if total is None:
             return base_rate
         needed = total / 2.0 + 0.5
-    if committed_yes >= needed:
-        return 0.98
-    if committed_yes + undecided < needed:
-        return 0.02
+    needed = _num(needed, 1.0)
     rng = random.Random(seed)
-    lean = min(1.0, max(0.0, lean))
+    lean = min(1.0, max(0.0, _num(lean, 0.5)))
+    if provenance == "grounded":
+        if committed_yes >= needed:
+            return 0.98
+        if committed_yes + undecided < needed:
+            return 0.02
+        yes = 0
+        for _ in range(n):
+            breaks = sum(1 for _ in range(int(undecided)) if rng.random() < lean)
+            yes += 1 if committed_yes + breaks >= needed else 0
+        return _clip01(yes / n)
+    scale = max(2.0, 0.15 * float(total if total is not None else max(needed * 2, committed_yes + undecided)))
     yes = 0
     for _ in range(n):
-        breaks = sum(1 for _ in range(int(undecided)) if rng.random() < lean)
-        yes += 1 if committed_yes + breaks >= needed else 0
-    return _clip01(yes / n)
+        cy = max(0.0, rng.gauss(float(committed_yes), scale))
+        und = max(0.0, rng.gauss(float(undecided), scale))
+        ln = min(1.0, max(0.0, rng.gauss(lean, 0.15)))
+        breaks = sum(1 for _ in range(int(round(und))) if rng.random() < ln)
+        yes += 1 if cy + breaks >= needed else 0
+    return _anchor(yes / n, base_rate, provenance)
 
 
 def sim_escalation(*, base_rate=0.5, pressure=0.0, trend=0.0, reinforce=0.4, horizon_years=1.0,
@@ -187,10 +231,11 @@ def simulate_mechanism(mechanism, params, *, base_rate=0.5, horizon_years=1.0, n
     p.setdefault("base_rate", base_rate)
     p.setdefault("n", n)
     p.setdefault("seed", seed)
+    prov = p.get("provenance", "grounded")
     if mechanism in ("aggregation", "vote"):
         return sim_aggregation(p.pop("share", None), threshold=p.get("threshold", 0.5),
                                share_sd=p.get("share_sd"), direction=p.get("direction", ">"),
-                               base_rate=p["base_rate"], n=p["n"], seed=p["seed"])
+                               base_rate=p["base_rate"], n=p["n"], seed=p["seed"], provenance=prov)
     if mechanism in ("contest", "match"):
         return sim_contest(win_prob=p.get("win_prob"), rating_diff=p.get("rating_diff"),
                            rating_sd=p.get("rating_sd", 120.0), base_rate=p["base_rate"], n=p["n"], seed=p["seed"])
@@ -199,9 +244,10 @@ def simulate_mechanism(mechanism, params, *, base_rate=0.5, horizon_years=1.0, n
                            horizon_years=horizon_years, ref_years=p.get("ref_years", 1.0),
                            n=p["n"], seed=p["seed"])
     if mechanism in ("whipcount", "legislation"):
-        return sim_whipcount(committed_yes=p.get("committed_yes", 0), committed_no=p.get("committed_no", 0),
-                             undecided=p.get("undecided", 0), needed=p.get("needed"), total=p.get("total"),
-                             lean=p.get("lean", 0.5), base_rate=p["base_rate"], n=p["n"], seed=p["seed"])
+        return sim_whipcount(committed_yes=p.get("committed_yes"), committed_no=p.get("committed_no", 0),
+                             undecided=p.get("undecided"), needed=p.get("needed"), total=p.get("total"),
+                             lean=p.get("lean", 0.5), base_rate=p["base_rate"], n=p["n"], seed=p["seed"],
+                             provenance=prov)
     if mechanism in ("escalation", "contagion"):
         return sim_escalation(base_rate=p["base_rate"], pressure=p.get("pressure", 0.0),
                               trend=p.get("trend", 0.0), reinforce=p.get("reinforce", 0.4),
@@ -227,18 +273,21 @@ def build_mechanism_prompt(question, as_of_ts, horizon_years, social_block=None)
         f"{route_prompt_block()}\n\n"
         f"Give JSON: \"base_rate\" (outside-view reference-class rate; 0.5 if a fair coin), \"mechanism\" (one "
         f"label above), and the params for that mechanism:\n"
-        f'  aggregation: "share" (current YES vote/approval share 0-1), "threshold" (default 0.5), "share_sd" '
-        f'(poll error, ~0.04); \n'
+        f'  aggregation: "share" (current YES vote/approval share 0-1 — ONLY if a poll/count is stated in the '
+        f'question text; OMIT it if you would be guessing), "threshold" (default 0.5), "share_sd" (poll error); \n'
         f'  contest: "win_prob" (0-1 if you know the odds) OR "rating_diff" (tracked side minus opponent, Elo '
         f"points);\n"
         f'  diffusion: "current_value","threshold","direction" (">"/"<"),"annual_vol_pct","grounded_conf";\n'
         f'  arrival: "rate_per_year" (expected occurrences/yr) OR rely on base_rate with "ref_years" (the '
         f"horizon that base rate refers to);\n"
-        f'  whipcount: "committed_yes","undecided","needed" (or "total"),"lean" (prob an undecided breaks yes);\n'
+        f'  whipcount: "committed_yes","undecided","needed" (or "total"),"lean" (prob an undecided breaks yes) '
+        f'— ONLY counts stated in the question text; OMIT counts you would be inventing;\n'
         f'  escalation: "push" (+1 if rising conflict makes YES, -1 if it makes NO) — pressure is measured for '
         f"you;\n"
         f'  persistence: "happens" (true if YES = the status quo/scheduled thing holds) and base_rate = P(it '
         f"holds over ref_years).\n"
+        f'Also give "evidence": "quoted" if your key numeric params appear in the question text above, else '
+        f'"estimated". Estimates are welcome but are treated as uncertain — never fake a quote.\n'
         f"Return ONLY compact JSON.")
 
 
@@ -283,6 +332,9 @@ def mechanism_forecast(question, as_of_ts, resolve_ts, llm, *, n=4000, seed=0, m
             return simulate_latent(spec, hy, n=n, seed=seed), {"mechanism": "diffusion", "raw": r}
 
     params = dict(r)
+    # provenance: LLM-supplied params are at best QUOTED from the as-of question text, never "grounded"
+    # (grounded is reserved for measured feeds — polls/whip evidence pipelines, when they exist)
+    params["provenance"] = "quoted" if str(r.get("evidence", "")).lower() == "quoted" else "invented"
     if mech in ("escalation", "contagion") and social is not None:      # inject MEASURED conflict pressure
         d = social["driver"]
         params["pressure"] = max(0.0, -d["goldstein"] / 5.0) + 6.0 * d["violence_rate"]

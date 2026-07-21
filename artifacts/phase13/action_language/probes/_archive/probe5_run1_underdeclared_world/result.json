@@ -1,0 +1,1015 @@
+{
+ "result": {
+  "decision_id": "probe5",
+  "contract_hash": "d42b2adcf0bd71d5",
+  "runtime_fingerprint": {},
+  "reference_action": "do_nothing",
+  "evaluated": [
+   {
+    "action_id": "do_nothing",
+    "n_particles": 3,
+    "success_count": 0,
+    "forbidden_count": 0,
+    "near_miss_count": 0,
+    "predicate_counts": {
+     "deposit_escrowed_with_neutral_holder": 0,
+     "conditional_withdrawal_filed": 0,
+     "tenant_complaint_withdrawn": 0,
+     "dispute_resolved_no_penalty_by_oct2025": 0,
+     "dispute_resolved_by_oct2025": 0,
+     "deposit_released_to_landlord": 0,
+     "no_board_penalty_against_landlord": 0,
+     "deposit_not_released_to_tenant_unilaterally": 0
+    },
+    "by_hypothesis": {
+     "H0": {
+      "n": 3,
+      "success": 0,
+      "forbidden": 0
+     }
+    },
+    "quantities": {}
+   }
+  ],
+  "policies": [],
+  "recommended": "do_nothing",
+  "recommendation_kind": "action",
+  "pareto_frontier": [
+   "do_nothing"
+  ],
+  "feasibility": [
+   {
+    "candidate_id": "user_1",
+    "n_particles": 3,
+    "n_feasible": 0,
+    "feasible_everywhere": false,
+    "feasible_somewhere": false,
+    "feasibility_mask": [
+     false,
+     false,
+     false
+    ],
+    "by_hypothesis": {
+     "H0": {
+      "n": 3,
+      "feasible": 0,
+      "reasons": {
+       "target_missing": 3
+      }
+     }
+    },
+    "rejection_reasons": [
+     {
+      "code": "target_missing",
+      "detail": "step user_1_s1: target 'county_neutral_holder_program' does not exist",
+      "in_n_worlds": 3
+     }
+    ],
+    "conditional": [],
+    "unresolved": [
+     {
+      "step": "user_1_s1",
+      "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:; not_a_kernel_op:"
+     },
+     {
+      "step": "user_1_s2",
+      "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:"
+     },
+     {
+      "step": "user_1_s1",
+      "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:; not_a_kernel_op:"
+     },
+     {
+      "step": "user_1_s2",
+      "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:"
+     }
+    ]
+   },
+   {
+    "feasible_everywhere": true,
+    "note": "no-step reference"
+   }
+  ],
+  "counterfactual": {},
+  "value_of_information": {},
+  "search": {
+   "stages": [
+    {
+     "stage": "full",
+     "candidates": [
+      "do_nothing"
+     ],
+     "n_particles": 3
+    }
+   ],
+   "stop_reason": "converged after round 0: no diagnosis-supported revision remained",
+   "n_simulated": 1
+  },
+  "causal_claim": "simulated_mechanism_counterfactual",
+  "empirical_validation": "not_validated_on_this_decision",
+  "support_grade": "exploratory",
+  "abstention": null,
+  "active_phases": {},
+  "provenance": {
+   "scenario_report": {
+    "decision_id": "probe5",
+    "decision_maker": "landlord_petrov",
+    "stated_goal": "Landlord negotiating a disputed commercial deposit: what happens if I escrow the disputed amount with a neutral third party while filing a conditional withdrawal of my damage claim, contingent on the tenant withdrawing their complaint?",
+    "horizon": "2025-10-01T00:00:00Z",
+    "constraints": [],
+    "risk_posture": {
+     "tolerance": "neutral",
+     "robustness": "expected"
+    },
+    "world_support": "generated_scenario_world",
+    "action_language_summary": {
+     "decision_maker": "landlord_petrov",
+     "n_controllable_objects": 0,
+     "authority_sources": [],
+     "channels": [
+      "direct_negotiation",
+      "tenancy_dispute_board_filing",
+      "county_neutral_holder_program"
+     ],
+     "institutions": [
+      "tenancy_dispute_board"
+     ],
+     "resources": [
+      "board_hearing_room",
+      "deposit_funds",
+      "deposit_usd"
+     ],
+     "dimensions": [
+      {
+       "id": "escrow_trigger",
+       "description": "whether landlord_petrov actually deposits the 18000 USD into escrow with county_neutral_ho",
+       "example_values": [
+        "escrow_deposited",
+        "escrow_not_deposited"
+       ],
+       "open_ended": false
+      },
+      {
+       "id": "conditional_withdrawal_terms",
+       "description": "the exact condition and wording of the conditional withdrawal of damage claim (e.g., conti",
+       "example_values": [
+        "contingent_on_complaint_withdrawal",
+        "contingent_on_release_signing",
+        "unconditional_withdrawal"
+       ],
+       "open_ended": true
+      },
+      {
+       "id": "communication_channel",
+       "description": "through which channel landlord_petrov conveys the escrow+conditional withdrawal proposal t",
+       "example_values": [
+        "direct_negotiation",
+        "via_board_filing",
+        "via_third_party_mediator"
+       ],
+       "open_ended": true
+      },
+      {
+       "id": "publicity_of_proposal",
+       "description": "whether landlord_petrov makes the proposal public (e.g., as part of board record) or keeps",
+       "example_values": [
+        "public_filing",
+        "private_offer"
+       ],
+       "open_ended": false
+      }
+     ],
+     "timing_opportunities": [
+      "landlord_petrov can escrow the disputed deposit with county_neutral_holder_progr",
+      "landlord_petrov can file a conditional withdrawal of damage claim contingent on "
+     ],
+     "unresolved_affordances": [
+      {
+       "claim": "landlord_petrov can directly escrow with a 'neutral third party' not listed as an institution",
+       "reason": "The scenario lists 'county_neutral_holder_program' as a record type but not as an actor or institution with a procedure; it is unclear if landlord_petrov can initiate escrow unilaterally or if tenant_okada must consent. The 'deposit_escrowed' event exists but no procedure for entry is defined."
+      },
+      {
+       "claim": "landlord_petrov can file a 'conditional withdrawal' as a formal board action",
+       "reason": "The scenario does not define a 'conditional withdrawal' record type or event; only 'settlement_agreement_signed' and 'board_decision_event' exist. It is ambiguous whether a conditional withdrawal is a subtype of settlement or an unmodeled_actor_action."
+      },
+      {
+       "claim": "authority 'landlord role in tenancy dispute'",
+       "reason": "not in the declared decision contract, the schema role, or any institution's decision holders \u2014 authority is never invented"
+      },
+      {
+       "claim": "institution 'county_neutral_holder_program'",
+       "reason": "not declared in the scenario schema or the world"
+      },
+      {
+       "claim": "relevant actor 'board_chair'",
+       "reason": "not in the world"
+      },
+      {
+       "claim": "relevant actor 'board_member'",
+       "reason": "not in the world"
+      }
+     ],
+     "generator": "llm",
+     "language_hash": "27a1618e97569dee"
+    },
+    "goal_contract": {
+     "goal_id": "goal_a65be30fb72943af",
+     "decision_id": "probe5",
+     "schema_id": "schema_0c76f68fbbc7c087",
+     "goal_text": "Landlord negotiating a disputed commercial deposit: what happens if I escrow the disputed amount with a neutral third party while filing a conditional withdrawal of my damage claim, contingent on the tenant withdrawing their complaint?",
+     "predicates": [
+      {
+       "predicate_id": "deposit_escrowed_with_neutral_holder",
+       "role": "required_intermediate",
+       "record_type": "deposit_escrowed_with_holder",
+       "field": "status",
+       "op": "eq",
+       "value": "active",
+       "description": "The disputed deposit amount is held by a neutral third party (county neutral holder program) in active escrow status.",
+       "by_ts": null,
+       "hold_for_s": 0.0
+      },
+      {
+       "predicate_id": "conditional_withdrawal_filed",
+       "role": "required_intermediate",
+       "record_type": "complaint_filed",
+       "field": "filing_party",
+       "op": "eq",
+       "value": "landlord_petrov",
+       "description": "Landlord files a conditional withdrawal of their damage claim (recorded as a complaint filed by landlord) contingent on tenant withdrawing complaint.",
+       "by_ts": null,
+       "hold_for_s": 0.0
+      },
+      {
+       "predicate_id": "tenant_complaint_withdrawn",
+       "role": "required_intermediate",
+       "record_type": "complaint_filed",
+       "field": "filing_party",
+       "op": "eq",
+       "value": "tenant",
+       "description": "Tenant's complaint against landlord is withdrawn (no active complaint filed by tenant).",
+       "by_ts": null,
+       "hold_for_s": 0.0
+      },
+      {
+       "predicate_id": "dispute_resolved_no_penalty_by_oct2025",
+       "role": "desired_terminal",
+       "record_type": "board_decision_record",
+       "field": "penalty_imposed",
+       "op": "eq",
+       "value": false,
+       "description": "Dispute resolved without board-imposed penalty by October 2025 (schema predicate).",
+       "by_ts": null,
+       "hold_for_s": 0.0
+      },
+      {
+       "predicate_id": "dispute_resolved_by_oct2025",
+       "role": "desired_terminal",
+       "record_type": "board_decision_record",
+       "field": "decision_date",
+       "op": "exists",
+       "value": true,
+       "description": "A board decision exists by October 2025 (schema predicate).",
+       "by_ts": null,
+       "hold_for_s": 0.0
+      },
+      {
+       "predicate_id": "deposit_released_to_landlord",
+       "role": "desired_terminal",
+       "record_type": "deposit_released_to_party",
+       "field": "recipient",
+       "op": "eq",
+       "value": "landlord_petrov",
+       "description": "Deposit funds are released to landlord as part of resolution.",
+       "by_ts": null,
+       "hold_for_s": 0.0
+      },
+      {
+       "predicate_id": "no_board_penalty_against_landlord",
+       "role": "forbidden",
+       "record_type": "board_decision_record",
+       "field": "penalty_imposed",
+       "op": "eq",
+       "value": true,
+       "description": "Board imposes any penalty against landlord (disqualifies success).",
+       "by_ts": null,
+       "hold_for_s": 0.0
+      },
+      {
+       "predicate_id": "deposit_not_released_to_tenant_unilaterally",
+       "role": "near_miss",
+       "record_type": "deposit_released_to_party",
+       "field": "recipient",
+       "op": "eq",
+       "value": "tenant",
+       "description": "Deposit released to tenant without landlord's conditional withdrawal being honored \u2014 looks like resolution but fails landlord's goal.",
+       "by_ts": null,
+       "hold_for_s": 0.0
+      }
+     ],
+     "quantities": [
+      {
+       "name": "disputed_deposit_amount",
+       "kind": "record_field",
+       "entity_id": "deposit_dispute",
+       "record_type": "deposit_dispute",
+       "field": "dispute_amount",
+       "direction": "unstated",
+       "unit": "currency_unit"
+      },
+      {
+       "name": "escrow_duration",
+       "kind": "record_field",
+       "entity_id": "deposit_escrowed_with_holder",
+       "record_type": "deposit_escrowed_with_holder",
+       "field": "escrow_date",
+       "direction": "unstated",
+       "unit": "days"
+      }
+     ],
+     "priority_order": [
+      "deposit_escrowed_with_neutral_holder",
+      "conditional_withdrawal_filed",
+      "tenant_complaint_withdrawn",
+      "dispute_resolved_no_penalty_by_oct2025",
+      "dispute_resolved_by_oct2025",
+      "deposit_released_to_landlord"
+     ],
+     "acceptable_tradeoffs": [
+      "deposit released to landlord later than October 2025 if dispute is resolved without penalty",
+      "board decision exists but with minor procedural delay as long as no penalty imposed"
+     ],
+     "unresolved_tradeoffs": [
+      "tradeoff between speed of escrow setup vs. certainty of tenant complaint withdrawal"
+     ],
+     "missing_preferences": [
+      "whether landlord prefers deposit released to them vs. deposit returned to tenant as part of settlement",
+      "whether landlord prioritizes avoiding any board hearing vs. obtaining a formal decision",
+      "whether landlord cares about the exact amount of deposit released vs. the dispute being closed"
+     ],
+     "generator": "llm",
+     "provenance": {
+      "kind": "scenario.goal.contract.v1",
+      "validation_issues": []
+     }
+    },
+    "user_supplied_actions": [
+     {
+      "candidate_id": "user_1",
+      "original_text": "Escrow the disputed 18,000 deposit with the county neutral-holder program AND simultaneously file a conditional withdrawal of my damage claim that only takes effect if the tenant withdraws their board complaint within 14 days."
+     }
+    ],
+    "generated_strategy_classes": [
+     "status_quo"
+    ],
+    "candidates": [
+     {
+      "candidate_id": "user_1",
+      "actor_id": "landlord_petrov",
+      "title": "Escrow deposit and file conditional withdrawal of damage claim",
+      "strategy_class": "",
+      "causal_theory": "",
+      "steps": [
+       {
+        "step_id": "user_1_s1",
+        "intent": "Deposit the disputed 18,000 USD deposit into the county neutral-holder program",
+        "target_ids": [
+         "county_neutral_holder_program"
+        ],
+        "channel": "county_neutral_holder_program",
+        "exact_content": "Deposit the full 18,000 USD of the disputed deposit into the county neutral-holder program escrow.",
+        "terms": {},
+        "timing_ts": null,
+        "after_steps": [],
+        "conditions": [],
+        "max_condition_checks": 3,
+        "visibility": "participants",
+        "audience": [],
+        "resource_commitments": {},
+        "authority_basis": "",
+        "duration_s": 0.0,
+        "reversible": null,
+        "compiled_ops": [
+         {
+          "op": "emit_semantic_event",
+          "semantic_type_id": "unmodeled_actor_action",
+          "exact_content": "Deposit the full 18,000 USD of the disputed deposit into the county neutral-holder program escrow.",
+          "structured_fields": {
+           "action_name": "Deposit the disputed 18,000 USD deposit into the county neut",
+           "content": "Deposit the full 18,000 USD of the disputed deposit into the county neutral-holder program escrow.",
+           "target": "county_neutral_holder_program"
+          },
+          "direct_targets": [
+           "county_neutral_holder_program"
+          ],
+          "intended_visibility": "participants"
+         }
+        ],
+        "compile_meta": {
+         "compiler": "unmodeled_scaffold",
+         "compiler_version": "scenario-action-compiler-1.0"
+        },
+        "unresolved": [
+         {
+          "step": "user_1_s1",
+          "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:; not_a_kernel_op:"
+         }
+        ],
+        "provenance": {}
+       },
+       {
+        "step_id": "user_1_s2",
+        "intent": "File a conditional withdrawal of my damage claim that only takes effect if tenant_okada withdraws their board complaint within 14 days",
+        "target_ids": [
+         "tenancy_dispute_board"
+        ],
+        "channel": "tenancy_dispute_board_filing",
+        "exact_content": "File a conditional withdrawal of the damage claim, with the condition that the withdrawal takes effect only if tenant_okada withdraws their complaint with the tenancy_dispute_board within 14 days of this filing.",
+        "terms": {},
+        "timing_ts": null,
+        "after_steps": [],
+        "conditions": [],
+        "max_condition_checks": 3,
+        "visibility": "participants",
+        "audience": [],
+        "resource_commitments": {},
+        "authority_basis": "",
+        "duration_s": 0.0,
+        "reversible": null,
+        "compiled_ops": [
+         {
+          "op": "emit_semantic_event",
+          "semantic_type_id": "unmodeled_actor_action",
+          "exact_content": "File a conditional withdrawal of the damage claim, with the condition that the withdrawal takes effect only if tenant_okada withdraws their complaint with the tenancy_dispute_board within 14 days of this filing.",
+          "structured_fields": {
+           "action_name": "File a conditional withdrawal of my damage claim that only t",
+           "content": "File a conditional withdrawal of the damage claim, with the condition that the withdrawal takes effect only if tenant_okada withdraws their complaint with the tenancy_dispute_board within 14 days of this filing.",
+           "target": "tenancy_dispute_board"
+          },
+          "direct_targets": [
+           "tenancy_dispute_board"
+          ],
+          "intended_visibility": "participants"
+         }
+        ],
+        "compile_meta": {
+         "compiler": "unmodeled_scaffold",
+         "compiler_version": "scenario-action-compiler-1.0"
+        },
+        "unresolved": [
+         {
+          "step": "user_1_s2",
+          "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:"
+         }
+        ],
+        "provenance": {}
+       }
+      ],
+      "stop_conditions": [],
+      "fallback": "",
+      "assumptions": [],
+      "evidence": [],
+      "source": "user",
+      "parent_ids": [],
+      "revision_reason": "",
+      "original_text": "Escrow the disputed 18,000 deposit with the county neutral-holder program AND simultaneously file a conditional withdrawal of my damage claim that only takes effect if the tenant withdraws their board complaint within 14 days.",
+      "schema_id": "",
+      "language_hash": "",
+      "unresolved": [
+       {
+        "step": "user_1_s1",
+        "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:; not_a_kernel_op:"
+       },
+       {
+        "step": "user_1_s2",
+        "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:"
+       }
+      ],
+      "implementation_support": "unstated",
+      "provenance": {
+       "ambiguities_resolved": [
+        "The 'county neutral-holder program' is interpreted as the 'county_neutral_holder_program' resource.",
+        "The 'tenant' is resolved to actor 'tenant_okada'.",
+        "The 'board complaint' is resolved to a complaint filed with the 'tenancy_dispute_board' institution.",
+        "The '14 days' timing is applied from the moment of filing the conditional withdrawal."
+       ],
+       "compile_report": {
+        "candidate_id": "user_1",
+        "steps_compiled": 0,
+        "steps_unresolved": 2,
+        "violations": [
+         {
+          "step": "user_1_s1",
+          "violations": [
+           "not_a_kernel_op:",
+           "not_a_kernel_op:",
+           "not_a_kernel_op:"
+          ]
+         },
+         {
+          "step": "user_1_s2",
+          "violations": [
+           "not_a_kernel_op:",
+           "not_a_kernel_op:"
+          ]
+         }
+        ],
+        "llm_calls": 2,
+        "compiler_paths": [
+         "unmodeled_scaffold",
+         "unmodeled_scaffold"
+        ],
+        "classification": "unmodeled",
+        "compiler_version": "scenario-action-compiler-1.0"
+       },
+       "feasibility": {
+        "candidate_id": "user_1",
+        "n_particles": 3,
+        "n_feasible": 0,
+        "feasible_everywhere": false,
+        "feasible_somewhere": false,
+        "feasibility_mask": [
+         false,
+         false,
+         false
+        ],
+        "by_hypothesis": {
+         "H0": {
+          "n": 3,
+          "feasible": 0,
+          "reasons": {
+           "target_missing": 3
+          }
+         }
+        },
+        "rejection_reasons": [
+         {
+          "code": "target_missing",
+          "detail": "step user_1_s1: target 'county_neutral_holder_program' does not exist",
+          "in_n_worlds": 3
+         }
+        ],
+        "conditional": [],
+        "unresolved": [
+         {
+          "step": "user_1_s1",
+          "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:; not_a_kernel_op:"
+         },
+         {
+          "step": "user_1_s2",
+          "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:"
+         },
+         {
+          "step": "user_1_s1",
+          "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:; not_a_kernel_op:"
+         },
+         {
+          "step": "user_1_s2",
+          "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:"
+         }
+        ]
+       },
+       "model_support": "unmodeled"
+      }
+     },
+     {
+      "candidate_id": "do_nothing",
+      "actor_id": "landlord_petrov",
+      "title": "do nothing (status quo)",
+      "strategy_class": "status_quo",
+      "causal_theory": "the world evolves without intervention",
+      "steps": [],
+      "stop_conditions": [],
+      "fallback": "",
+      "assumptions": [],
+      "evidence": [],
+      "source": "baseline",
+      "parent_ids": [],
+      "revision_reason": "",
+      "original_text": "",
+      "schema_id": "",
+      "language_hash": "",
+      "unresolved": [],
+      "implementation_support": "unstated",
+      "provenance": {
+       "feasibility": {
+        "feasible_everywhere": true,
+        "note": "no-step reference"
+       }
+      }
+     }
+    ],
+    "candidate_ancestry": {
+     "user_1": {
+      "source": "user",
+      "parents": [],
+      "revision_reason": ""
+     },
+     "do_nothing": {
+      "source": "baseline",
+      "parents": [],
+      "revision_reason": ""
+     }
+    },
+    "feasibility": {
+     "user_1": {
+      "candidate_id": "user_1",
+      "n_particles": 3,
+      "n_feasible": 0,
+      "feasible_everywhere": false,
+      "feasible_somewhere": false,
+      "feasibility_mask": [
+       false,
+       false,
+       false
+      ],
+      "by_hypothesis": {
+       "H0": {
+        "n": 3,
+        "feasible": 0,
+        "reasons": {
+         "target_missing": 3
+        }
+       }
+      },
+      "rejection_reasons": [
+       {
+        "code": "target_missing",
+        "detail": "step user_1_s1: target 'county_neutral_holder_program' does not exist",
+        "in_n_worlds": 3
+       }
+      ],
+      "conditional": [],
+      "unresolved": [
+       {
+        "step": "user_1_s1",
+        "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:; not_a_kernel_op:"
+       },
+       {
+        "step": "user_1_s2",
+        "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:"
+       },
+       {
+        "step": "user_1_s1",
+        "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:; not_a_kernel_op:"
+       },
+       {
+        "step": "user_1_s2",
+        "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:"
+       }
+      ]
+     },
+     "do_nothing": {
+      "feasible_everywhere": true,
+      "note": "no-step reference"
+     }
+    },
+    "unresolved_semantics": [
+     {
+      "candidate_id": "user_1",
+      "unresolved": [
+       {
+        "step": "user_1_s1",
+        "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:; not_a_kernel_op:"
+       },
+       {
+        "step": "user_1_s2",
+        "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:"
+       }
+      ]
+     }
+    ],
+    "rejected": [
+     {
+      "candidate_id": "user_1",
+      "gates": [
+       {
+        "code": "infeasible_all_hypotheses",
+        "detail": "[{\"code\": \"target_missing\", \"detail\": \"step user_1_s1: target 'county_neutral_holder_program' does not exist\", \"in_n_worlds\": 3}]"
+       }
+      ]
+     }
+    ],
+    "compiled_effects": {
+     "user_1": [
+      {
+       "step": "user_1_s1",
+       "ops": [
+        {
+         "op": "emit_semantic_event",
+         "semantic_type_id": "unmodeled_actor_action",
+         "exact_content": "Deposit the full 18,000 USD of the disputed deposit into the county neutral-holder program escrow.",
+         "structured_fields": {
+          "action_name": "Deposit the disputed 18,000 USD deposit into the county neut",
+          "content": "Deposit the full 18,000 USD of the disputed deposit into the county neutral-holder program escrow.",
+          "target": "county_neutral_holder_program"
+         },
+         "direct_targets": [
+          "county_neutral_holder_program"
+         ],
+         "intended_visibility": "participants"
+        }
+       ]
+      },
+      {
+       "step": "user_1_s2",
+       "ops": [
+        {
+         "op": "emit_semantic_event",
+         "semantic_type_id": "unmodeled_actor_action",
+         "exact_content": "File a conditional withdrawal of the damage claim, with the condition that the withdrawal takes effect only if tenant_okada withdraws their complaint with the tenancy_dispute_board within 14 days of this filing.",
+         "structured_fields": {
+          "action_name": "File a conditional withdrawal of my damage claim that only t",
+          "content": "File a conditional withdrawal of the damage claim, with the condition that the withdrawal takes effect only if tenant_okada withdraws their complaint with the tenancy_dispute_board within 14 days of this filing.",
+          "target": "tenancy_dispute_board"
+         },
+         "direct_targets": [
+          "tenancy_dispute_board"
+         ],
+         "intended_visibility": "participants"
+        }
+       ]
+      }
+     ]
+    },
+    "simulation_coverage": {
+     "n_candidates_screened": 2,
+     "n_structurally_gated": 1,
+     "n_simulated_arms": 1,
+     "n_particles_per_arm": 3,
+     "n_revision_rounds_run": 0
+    },
+    "matched_world_proof": {},
+    "trajectory_summaries": {},
+    "evaluations": {
+     "do_nothing": {
+      "n_particles": 3,
+      "success_count": 0,
+      "forbidden_count": 0,
+      "near_miss_count": 0,
+      "predicate_counts": {
+       "deposit_escrowed_with_neutral_holder": 0,
+       "conditional_withdrawal_filed": 0,
+       "tenant_complaint_withdrawn": 0,
+       "dispute_resolved_no_penalty_by_oct2025": 0,
+       "dispute_resolved_by_oct2025": 0,
+       "deposit_released_to_landlord": 0,
+       "no_board_penalty_against_landlord": 0,
+       "deposit_not_released_to_tenant_unilaterally": 0
+      },
+      "by_hypothesis": {
+       "H0": {
+        "n": 3,
+        "success": 0,
+        "forbidden": 0
+       }
+      },
+      "quantities": {}
+     }
+    },
+    "revisions": [],
+    "finalist_reasons": {
+     "do_nothing": "success in 0/3 matched worlds, forbidden states in 0"
+    },
+    "pareto": [
+     "do_nothing"
+    ],
+    "recommended": "do_nothing",
+    "recommendation_kind": "action",
+    "recommended_implementation": {
+     "candidate_id": "do_nothing",
+     "actor_id": "landlord_petrov",
+     "title": "do nothing (status quo)",
+     "strategy_class": "status_quo",
+     "causal_theory": "the world evolves without intervention",
+     "steps": [],
+     "stop_conditions": [],
+     "fallback": "",
+     "assumptions": [],
+     "evidence": [],
+     "source": "baseline",
+     "parent_ids": [],
+     "revision_reason": "",
+     "original_text": "",
+     "schema_id": "",
+     "language_hash": "",
+     "unresolved": [],
+     "implementation_support": "unstated",
+     "provenance": {
+      "feasibility": {
+       "feasible_everywhere": true,
+       "note": "no-step reference"
+      }
+     }
+    },
+    "assumptions": [],
+    "reversal_conditions": [
+     "if the world is H0 (success 0/3 there), this recommendation loses its support"
+    ],
+    "highest_value_information": "Whether any alternative intervention (not shown) could achieve at least one success without violating hard constraints, as the current data only evaluates the status quo.",
+    "finalists_distinguishable": true,
+    "human_approval_required": true,
+    "causal_claim": "simulated_mechanism_counterfactual",
+    "real_world_validation": "not_validated_on_this_decision",
+    "diversity": {
+     "n_candidates": 2,
+     "n_concrete": 1,
+     "n_strategy_classes": 1,
+     "strategy_classes": [
+      ""
+     ],
+     "n_distinct_targets": 2,
+     "n_distinct_timings": 0,
+     "n_distinct_channels": 2,
+     "n_distinct_sequence_lengths": 1,
+     "has_status_quo": true,
+     "has_information_gathering": false
+    },
+    "critic_findings": [
+     {
+      "role": "adversarial_omission_critic",
+      "candidate_id": "ALL",
+      "code": "missing_strategy",
+      "detail": "No step targets the tenant (tenant_okada) directly, yet the goal requires the tenant to withdraw their complaint and release the deposit. The conditional withdrawal is filed with the board, not communicated or negotiated with the tenant. A direct negotiation or communication move targeting tenant_ok",
+      "severity": "gate"
+     },
+     {
+      "role": "feasibility_authority_critic",
+      "candidate_id": "user_1",
+      "code": "infeasible_step",
+      "detail": "Step 1 targets 'county_neutral_holder_program', but the VALID TARGET IDS only allow targeting 'tenant_okada' or 'tenancy_dispute_board'. The decision maker cannot directly deposit into the county neutral-holder program as a step target.",
+      "severity": "gate"
+     },
+     {
+      "role": "feasibility_authority_critic",
+      "candidate_id": "user_1",
+      "code": "missing_mechanism",
+      "detail": "Step 2 files a conditional withdrawal with the tenancy_dispute_board, but the scenario does not specify that the board accepts or processes conditional withdrawals with a 14-day contingency. The mechanism for such a conditional filing is not verified as available.",
+      "severity": "flag"
+     },
+     {
+      "role": "mechanism_critic",
+      "candidate_id": "user_1",
+      "code": "missing_mechanism",
+      "detail": "The first step targets 'county_neutral_holder_program', which is not a valid target ID. The available targets are only 'tenant_okada' and 'tenancy_dispute_board'. The channel 'county_neutral_holder_program' is listed as a channel, but the step's target must be a valid actor or institution. There is ",
+      "severity": "gate"
+     },
+     {
+      "role": "mechanism_critic",
+      "candidate_id": "user_1",
+      "code": "missing_mechanism",
+      "detail": "The second step files a conditional withdrawal with the board, but there is no step or mechanism that ensures tenant_okada actually withdraws their complaint within 14 days. The condition is set, but the tenant's action is not causally connected to any step; it assumes a magical direct effect that t",
+      "severity": "gate"
+     },
+     {
+      "role": "mechanism_critic",
+      "candidate_id": "user_1",
+      "code": "missing_mechanism",
+      "detail": "There is no step that ensures the board issues a decision by October 2025, nor that the deposit funds are released to the landlord. The steps only describe depositing and filing, but the goal requires a board decision and release of funds, which are not causally linked to the proposed actions.",
+      "severity": "gate"
+     },
+     {
+      "role": "domain_reality_critic",
+      "candidate_id": "user_1",
+      "code": "infeasible_step",
+      "detail": "Step 1 targets 'county_neutral_holder_program', but this is not in the VALID TARGET IDS list. Only 'tenant_okada' and 'tenancy_dispute_board' are valid targets.",
+      "severity": "gate"
+     },
+     {
+      "role": "domain_reality_critic",
+      "candidate_id": "user_1",
+      "code": "domain_mismatch",
+      "detail": "Step 1 uses channel 'county_neutral_holder_program' which is listed as a channel, but the target 'county_neutral_holder_program' is not a valid target. The channel and target must align with the scenario's allowed targets.",
+      "severity": "flag"
+     },
+     {
+      "role": "goal_gaming_critic",
+      "candidate_id": "user_1",
+      "code": "goal_gaming",
+      "detail": "The conditional withdrawal is contingent on tenant_okada withdrawing their board complaint within 14 days. If tenant_okada does not withdraw, the withdrawal never takes effect, and the board may still proceed to a hearing and impose a penalty against landlord_petrov, which would violate the forbidde",
+      "severity": "flag"
+     },
+     {
+      "role": "implementation_critic",
+      "candidate_id": "user_1",
+      "code": "missing_strategy",
+      "detail": "Step 1 targets 'county_neutral_holder_program' which is not in the valid target IDs list. The only valid targets are 'tenant_okada', 'tenancy_dispute_board', and no records. The step is not executable as specified.",
+      "severity": "gate"
+     },
+     {
+      "role": "implementation_critic",
+      "candidate_id": "user_1",
+      "code": "missing_mechanism",
+      "detail": "Step 1 uses channel 'county_neutral_holder_program' but the scenario action language lists channels as 'direct_negotiation', 'tenancy_dispute_board_filing', 'county_neutral_holder_program'. However, the step does not specify how the deposit is actually transferred or what terms govern the escrow (e.",
+      "severity": "flag"
+     },
+     {
+      "role": "implementation_critic",
+      "candidate_id": "user_1",
+      "code": "missing_strategy",
+      "detail": "Step 2 targets 'tenancy_dispute_board' and uses channel 'tenancy_dispute_board_filing', which is valid. However, the conditional withdrawal terms are not fully specified: the condition 'if tenant_okada withdraws their complaint within 14 days' lacks exact wording, does not specify what happens if te",
+      "severity": "flag"
+     },
+     {
+      "role": "implementation_critic",
+      "candidate_id": "user_1",
+      "code": "goal_gaming",
+      "detail": "The goal contract requires 'Deposit funds are released to landlord as part of resolution.' The steps do not specify any mechanism or condition for the release of the deposit funds to landlord_petrov. The escrow deposit step only moves funds to the neutral holder, but no step ensures they are returne",
+      "severity": "flag"
+     },
+     {
+      "role": "implementation_critic",
+      "candidate_id": "user_1",
+      "code": "not_executable",
+      "detail": "Step 1 has 'timing_ts': null and no conditions. The scenario horizon is 2025-10-01, but no deadline is set for the escrow deposit or the conditional withdrawal filing. Without timing, the steps are not executable as a real plan.",
+      "severity": "flag"
+     }
+    ],
+    "missing_preferences": [
+     "whether landlord prefers deposit released to them vs. deposit returned to tenant as part of settlement",
+     "whether landlord prioritizes avoiding any board hearing vs. obtaining a formal decision",
+     "whether landlord cares about the exact amount of deposit released vs. the dispute being closed",
+     "tradeoff between speed of escrow setup vs. certainty of tenant complaint withdrawal"
+    ],
+    "stop_reason": "converged after round 0: no diagnosis-supported revision remained",
+    "trace_summary": {
+     "n_llm_calls": 10,
+     "by_role": {
+      "goal_generator": 1,
+      "adversarial_omission_critic": 1,
+      "feasibility_authority_critic": 1,
+      "mechanism_critic": 1,
+      "domain_reality_critic": 1,
+      "goal_gaming_critic": 1,
+      "implementation_critic": 1,
+      "direct_effect_compiler": 2,
+      "final_adjudicator": 1
+     }
+    },
+    "provenance": {
+     "language_hash": "27a1618e97569dee",
+     "goal_hash": "4dd6174ae8751c34",
+     "schema_id": "schema_0c76f68fbbc7c087",
+     "schema_version": "1"
+    }
+   },
+   "human_summary": {
+    "decision": "probe5",
+    "recommendation_kind": "action",
+    "recommended": "do_nothing",
+    "recommended_plan": {
+     "title": "do nothing (status quo)",
+     "steps": []
+    },
+    "why": "success in 0/3 matched worlds, forbidden states in 0",
+    "support": "best-supported among the considered feasible actions under the stated goal, constraints, world hypotheses, and simulation support \u2014 not 'objectively best'",
+    "finalists_distinguishable": true,
+    "pareto_set": [],
+    "missing_preferences": [
+     "whether landlord prefers deposit released to them vs. deposit returned to tenant as part of settlement",
+     "whether landlord prioritizes avoiding any board hearing vs. obtaining a formal decision",
+     "whether landlord cares about the exact amount of deposit released vs. the dispute being closed",
+     "tradeoff between speed of escrow setup vs. certainty of tenant complaint withdrawal"
+    ],
+    "reversal_conditions": [
+     "if the world is H0 (success 0/3 there), this recommendation loses its support"
+    ],
+    "highest_value_information": "Whether any alternative intervention (not shown) could achieve at least one success without violating hard constraints, as the current data only evaluates the status quo.",
+    "unresolved": [
+     {
+      "candidate_id": "user_1",
+      "unresolved": [
+       {
+        "step": "user_1_s1",
+        "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:; not_a_kernel_op:"
+       },
+       {
+        "step": "user_1_s2",
+        "reason": "all proposed effects rejected: not_a_kernel_op:; not_a_kernel_op:"
+       }
+      ]
+     }
+    ],
+    "human_approval_required": true,
+    "causal_claim": "simulated_mechanism_counterfactual",
+    "real_world_validation": "not_validated_on_this_decision"
+   },
+   "crn_manifest": {
+    "root_seed": 2,
+    "n_particles": 3,
+    "hypothesis_stratification": [
+     "H0"
+    ],
+    "per_particle_seed": "seed*7919 + particle_index"
+   }
+  },
+  "cost": {
+   "llm_calls": 10,
+   "simulated_arms": 1,
+   "rollouts": 3
+  },
+  "latency_s": 36.717,
+  "seed": 2
+ },
+ "wall_s": 85.0
+}

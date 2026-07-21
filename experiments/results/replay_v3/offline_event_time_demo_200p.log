@@ -1,0 +1,167 @@
+====================================================================================================
+UKRAINE DEMO — When will the Russia-Ukraine conflict end?  (as-of 2026-07-16, horizon 2028-12-31)
+====================================================================================================
+
+-- MODE GRAPH (canonical, 3 sources, agreement 1.0) --
+  russian_victory        pathway=unilateral_action        rule=unilateral prior=0.31 support=3/3+  HR med=1.4081 [1.0943, 1.8058] binder=Vladimir_Putin (split=0.6)
+  ceasefire              pathway=cooperative_agreement    rule=unanimity  prior=0.29 support=3/3+  HR med=0.6986 [0.4856, 0.9387] binder=Vladimir_Putin (split=0.6)
+  ukrainian_victory      pathway=unilateral_action        rule=unilateral prior=0.23 support=3/3+  HR med=1.236 [1.0087, 1.5032] binder=Volodymyr_Zelenskyy (split=0.6)
+  peace_treaty           pathway=cooperative_agreement    rule=unanimity  prior=0.14 support=3/3+  HR med=0.6986 [0.4856, 0.9387] binder=Vladimir_Putin (split=0.6)
+  rejected (not absorbing): []
+  dropped by consensus vote: ['frozen_conflict_stalemate', 'nato_direct_escalation']
+
+-- PATHWAY PROCESSES (grounded) --
+  pathway_progress:cooperative_agreement       init=0.3  state=exploratory  basis=Trump holds separate calls with Putin and Zelenskyy (CBS)
+  pathway_progress:unilateral_action           init=0.5  state=active  basis=Putin likely to escalate Ukraine war, despite Trump peace push (Reuters)
+
+-- GROUNDED STANCES (8 stances, 5 mode-scoped) --
+  Vladimir_Putin             committed_to_prevent   pathway=cooperative_agreement    target=None               control=veto                   rel=high cap=high
+      “Putin likely to escalate Ukraine war, despite Trump peace push (Reuters)”
+  Vladimir_Putin             actively_pursuing      pathway=unilateral_action        target=russian_victory    control=sole_authority         rel=high cap=high
+      “objectives of the special military operation will be achieved”
+  Vladimir_Putin             committed_to_prevent   pathway=unilateral_action        target=ukrainian_victory  control=operational_capability rel=medium cap=high
+      “Russia will never accept defeat on the battlefield”
+  Volodymyr_Zelenskyy        conditionally_opposed  pathway=cooperative_agreement    target=ceasefire          control=veto                   rel=high cap=high
+      “we will not accept a frozen conflict without real security guarantees”
+  Volodymyr_Zelenskyy        actively_pursuing      pathway=unilateral_action        target=ukrainian_victory  control=sole_authority         rel=high cap=medium
+      “we will liberate our land”
+  Donald_Trump               actively_pursuing      pathway=cooperative_agreement    target=None               control=informal_influence     rel=high cap=medium
+      “Trump holds separate calls with Putin and Zelenskyy (CBS)”
+  Verkhovna_Rada             committed_to_prevent   pathway=cooperative_agreement    target=None               control=agenda_setting         rel=high cap=high
+      “the 2022 NSDC decision bans negotiations with Putin (law in force)”
+  Russian_General_Staff      actively_pursuing      pathway=unilateral_action        target=russian_victory    control=operational_capability rel=medium cap=high
+      “summer offensive continues along the eastern front”
+
+-- SCHEDULE --  horizon 899.0d, cadence 7.0d, 6 strategic actors × 14 decision points = 84 decision events; 40 hazard rounds (10/mode × 4 modes); n_particles=200
+  candidate actions per review: ['accept', 'counteroffer', 'hold_position', 'delay', 'reject', 'escalate', 'seek_mediator', 'exit', 'mobilize', 'withdraw', 'wait']
+
+-- RUNNING the production rollout (build_world → phase-4 policies → pathway writes → hazard rounds → absorption monitor) --
+
+-- PARTICLE 24 — ABSORBED 2026-12-26 via ceasefire --
+  2026-09-13  ACTION       Vladimir_Putin               chose wait          
+  2026-09-13  ACTION       Volodymyr_Zelenskyy          chose reject         | process cooperative_agreement 0.3→0.272
+  2026-09-13  ACTION       Donald_Trump                 chose wait          
+  2026-09-13  ACTION       Russian_General_Staff        chose wait          
+  2026-09-13  ACTION       Ukrainian_Ministry_of_Defense chose reject        
+  2026-09-13  ACTION       Verkhovna_Rada               chose wait          
+  2026-10-05  HAZARD       mode=russian_victory    h=0.0027 state×0.832 hr=1.6095
+  2026-10-05  HAZARD       mode=ceasefire          h=0.0009 state×0.656 hr=0.7445
+  2026-10-05  HAZARD       mode=ukrainian_victory  h=0.0014 state×0.832 hr=1.186
+  2026-10-05  HAZARD       mode=peace_treaty       h=0.0004 state×0.656 hr=0.6155
+  2026-11-12  ACTION       Vladimir_Putin               chose withdraw       | process cooperative_agreement 0.272→0.26; unilateral_action 0.5→0.492
+  2026-11-12  ACTION       Volodymyr_Zelenskyy          chose delay          | process cooperative_agreement 0.26→0.252
+  2026-11-12  ACTION       Donald_Trump                 chose reject         | process cooperative_agreement 0.252→0.224
+  2026-11-12  ACTION       Russian_General_Staff        chose reject        
+  2026-11-12  ACTION       Ukrainian_Ministry_of_Defense chose reject        
+  2026-11-12  ACTION       Verkhovna_Rada               chose reject        
+  2026-12-26  HAZARD       mode=russian_victory    h=0.0026 state×0.809 hr=1.6095
+  2026-12-26  HAZARD       mode=ceasefire          h=0.0009 state×0.612 hr=0.7445  → ABSORBED
+  2026-12-26  ABSORPTION   first passage observed (absorbed_at stamped)
+  2027-01-11  ACTION       Vladimir_Putin               chose exit           | process cooperative_agreement 0.224→0.184
+    … 63 more events …
+  2028-09-02  ACTION       Ukrainian_Ministry_of_Defense chose approve       
+  2028-09-02  ACTION       Verkhovna_Rada               chose approve       
+  2028-11-01  ACTION       Vladimir_Putin               chose withdraw       | process cooperative_agreement 0.084→0.072; unilateral_action 0.552→0.544
+  2028-11-01  ACTION       Volodymyr_Zelenskyy          chose mobilize       | process unilateral_action 0.544→0.564
+  2028-11-01  ACTION       Donald_Trump                 chose withdraw       | process cooperative_agreement 0.072→0.06; unilateral_action 0.564→0.556
+  2028-11-01  ACTION       Russian_General_Staff        chose wait          
+  2028-11-01  ACTION       Ukrainian_Ministry_of_Defense chose defer         
+  2028-11-01  ACTION       Verkhovna_Rada               chose reject        
+
+-- PARTICLE 48 — ABSORBED 2026-10-05 via russian_victory --
+  2026-09-13  ACTION       Vladimir_Putin               chose withdraw       | process cooperative_agreement 0.3→0.288; unilateral_action 0.5→0.492
+  2026-09-13  ACTION       Volodymyr_Zelenskyy          chose delay          | process cooperative_agreement 0.288→0.28
+  2026-09-13  ACTION       Donald_Trump                 chose delay          | process cooperative_agreement 0.28→0.272
+  2026-09-13  ACTION       Russian_General_Staff        chose defer         
+  2026-09-13  ACTION       Ukrainian_Ministry_of_Defense chose wait          
+  2026-09-13  ACTION       Verkhovna_Rada               chose seek_mediator  | process cooperative_agreement 0.272→0.288
+  2026-10-05  HAZARD       mode=russian_victory    h=0.0026 state×0.827 hr=1.5943  → ABSORBED
+  2026-10-05  ABSORPTION   first passage observed (absorbed_at stamped)
+  2026-11-12  ACTION       Vladimir_Putin               chose hold_position  | process cooperative_agreement 0.288→0.276
+  2026-11-12  ACTION       Volodymyr_Zelenskyy          chose hold_position  | process cooperative_agreement 0.276→0.264
+  2026-11-12  ACTION       Donald_Trump                 chose counteroffer   | process cooperative_agreement 0.264→0.278
+  2026-11-12  ACTION       Russian_General_Staff        chose wait          
+  2026-11-12  ACTION       Ukrainian_Ministry_of_Defense chose defer         
+  2026-11-12  ACTION       Verkhovna_Rada               chose approve       
+  2027-01-11  ACTION       Vladimir_Putin               chose wait          
+  2027-01-11  ACTION       Volodymyr_Zelenskyy          chose exit           | process cooperative_agreement 0.278→0.238
+  2027-01-11  ACTION       Donald_Trump                 chose mobilize       | process unilateral_action 0.492→0.512
+  2027-01-11  ACTION       Russian_General_Staff        chose reject        
+  2027-01-11  ACTION       Ukrainian_Ministry_of_Defense chose reject        
+  2027-01-11  ACTION       Verkhovna_Rada               chose defer         
+    … 58 more events …
+  2028-09-02  ACTION       Ukrainian_Ministry_of_Defense chose schedule      
+  2028-09-02  ACTION       Verkhovna_Rada               chose schedule      
+  2028-11-01  ACTION       Vladimir_Putin               chose exit           | process cooperative_agreement 0.142→0.102
+  2028-11-01  ACTION       Volodymyr_Zelenskyy          chose counteroffer   | process cooperative_agreement 0.102→0.116
+  2028-11-01  ACTION       Donald_Trump                 chose counteroffer   | process cooperative_agreement 0.116→0.13
+  2028-11-01  ACTION       Russian_General_Staff        chose seek_mediator  | process cooperative_agreement 0.13→0.146
+  2028-11-01  ACTION       Ukrainian_Ministry_of_Defense chose place_on_agenda
+  2028-11-01  ACTION       Verkhovna_Rada               chose wait          
+
+-- PARTICLE 0 — CENSORED beyond horizon --
+  2026-09-13  ACTION       Vladimir_Putin               chose hold_position  | process cooperative_agreement 0.3→0.288
+  2026-09-13  ACTION       Volodymyr_Zelenskyy          chose mobilize       | process unilateral_action 0.5→0.52
+  2026-09-13  ACTION       Donald_Trump                 chose counteroffer   | process cooperative_agreement 0.288→0.302
+  2026-09-13  ACTION       Russian_General_Staff        chose schedule      
+  2026-09-13  ACTION       Ukrainian_Ministry_of_Defense chose defer         
+  2026-09-13  ACTION       Verkhovna_Rada               chose place_on_agenda
+  2026-10-05  HAZARD       mode=russian_victory    h=0.0023 state×0.864 hr=1.3451
+  2026-10-05  HAZARD       mode=ceasefire          h=0.0009 state×0.689 hr=0.6798
+  2026-10-05  HAZARD       mode=ukrainian_victory  h=0.0013 state×0.864 hr=1.018
+  2026-10-05  HAZARD       mode=peace_treaty       h=0.0004 state×0.689 hr=0.6553
+  2026-11-12  ACTION       Vladimir_Putin               chose wait          
+  2026-11-12  ACTION       Volodymyr_Zelenskyy          chose mobilize       | process unilateral_action 0.52→0.54
+  2026-11-12  ACTION       Donald_Trump                 chose escalate       | process cooperative_agreement 0.302→0.282; unilateral_action 0.54→0.556
+  2026-11-12  ACTION       Russian_General_Staff        chose defer         
+  2026-11-12  ACTION       Ukrainian_Ministry_of_Defense chose place_on_agenda
+  2026-11-12  ACTION       Verkhovna_Rada               chose reject        
+  2026-12-26  HAZARD       mode=russian_victory    h=0.0024 state×0.902 hr=1.3451
+  2026-12-26  HAZARD       mode=ceasefire          h=0.0009 state×0.679 hr=0.6798
+  2026-12-26  HAZARD       mode=ukrainian_victory  h=0.0013 state×0.902 hr=1.018
+  2026-12-26  HAZARD       mode=peace_treaty       h=0.0004 state×0.679 hr=0.6553
+    … 96 more events …
+  2028-10-10  HAZARD       mode=ukrainian_victory  h=0.0068 state×0.937 hr=1.018
+  2028-10-10  HAZARD       mode=peace_treaty       h=0.0015 state×0.531 hr=0.6553
+  2028-11-01  ACTION       Vladimir_Putin               chose counteroffer   | process cooperative_agreement 0.086→0.1
+  2028-11-01  ACTION       Volodymyr_Zelenskyy          chose counteroffer   | process cooperative_agreement 0.1→0.114
+  2028-11-01  ACTION       Donald_Trump                 chose mobilize       | process unilateral_action 0.632→0.652
+  2028-11-01  ACTION       Russian_General_Staff        chose place_on_agenda
+  2028-11-01  ACTION       Ukrainian_Ministry_of_Defense chose schedule      
+  2028-11-01  ACTION       Verkhovna_Rada               chose wait          
+
+-- WHO DID WHAT (chosen actions across all particles) --
+  Donald_Trump                 accept×428, counteroffer×352, seek_mediator×303, wait×289, mobilize×269, hold_position×264
+  Russian_General_Staff        place_on_agenda×417, schedule×414, reject×405, wait×404, defer×402, seek_mediator×381
+  Ukrainian_Ministry_of_Defense schedule×451, approve×409, seek_mediator×401, defer×387, place_on_agenda×386, wait×386
+  Verkhovna_Rada               reject×458, defer×448, wait×435, place_on_agenda×434, approve×411, schedule×404
+  Vladimir_Putin               exit×445, escalate×374, reject×353, mobilize×304, hold_position×299, delay×262
+  Volodymyr_Zelenskyy          exit×358, escalate×343, mobilize×273, delay×273, reject×265, hold_position×260
+
+-- PATHWAY PROCESSES AT HORIZON (mean over particles; started at init above) --
+  pathway_progress:cooperative_agreement       mean_end=0.130 min=0.050 max=0.398
+  pathway_progress:unilateral_action           mean_end=0.629 min=0.504 max=0.788
+
+-- TERMINAL READOUT (pure first-passage readout; nothing drew an outcome) --
+  P(conflict ends by 2028-12-31) = 0.125   censored beyond horizon = 0.875
+  CDF: 2027-01-11:0.020  2027-07-10:0.020  2028-01-06:0.035  2028-07-04:0.070  2028-12-31:0.125
+  first-passage quantiles: {'0.1': '2028-07-20', '0.25': 'beyond_horizon', '0.5': 'beyond_horizon', '0.75': 'beyond_horizon', '0.9': 'beyond_horizon'}
+  mode × absorption: {'ceasefire': 0.025, 'russian_victory': 0.055, 'ukrainian_victory': 0.04, 'peace_treaty': 0.005}
+
+====================================================================================================
+CROSS-DOMAIN FIXTURES — same engine, different decision structures / pathways
+====================================================================================================
+
+[BILL] rule=majority HR med=1.0774 binder=majority:4 actors (largest: Senator_Blocker)
+       3 pursuing vs 1 blocking under MAJORITY → combined HR 1.0774 > 1 (most-opposed does NOT bind); absorbing institutional votes: 1
+       P(passes by horizon) = 0.113; modes: {'bill_passes_senate': 0.1125}
+
+[LAUNCH] rule=hierarchy HR med=1.5477 binder=CEO
+         committed CEO under HIERARCHY beats one resister → HR > 1; advanced process (0.7) amplifies hazards endogenously
+         P(ships by horizon) = 0.250
+
+[INFLATION] rule=aggregation HR med=0.9735 binder=committed_to_prevent
+            world-driven pathway: a Fed stance shrinks to ~no-effect under AGGREGATION; hazards consume ['nonlinear_state', 'pathway_progress:threshold_crossing']
+            P(below 2% by horizon) = 0.150
+
+artifact → experiments/results/replay_v3/offline_event_time_demo.json

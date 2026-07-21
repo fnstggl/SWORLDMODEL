@@ -1,0 +1,22 @@
+{
+  "commit_audited": "7d57dac",
+  "unified_orchestrator_exists_before": false,
+  "public_facade_v2_dispatch": "swm/facade.py:87 -> pipeline.simulate (lightweight, NO posterior)",
+  "single_execution_funnel": "materialize.run_from_plan -> rollout.RolloutEngine.run_branch (event queue + StateDeltas)",
+  "one_plan_type": "swm/world_model_v2/compiler.WorldExecutionPlan",
+  "one_worldstate_type": "swm/world_model_v2/state.py (+ transitions.StateDelta); v1 legacy under swm/state, swm/api NOT reachable from facade",
+  "phases": {
+    "phase1_compiler":    {"on_canonical_path": true,  "how": "compile_world produces the shared plan"},
+    "phase2_evidence":    {"on_canonical_path": "orphan_in_facade", "how": "gather_evidence only via simulate_with_posterior, NOT via facade pipeline.simulate"},
+    "phase3_posterior":   {"on_canonical_path": false, "how": "simulate_with_posterior is a SEPARATE orchestration; no production caller"},
+    "phase4_actor_policy":{"on_canonical_path": "conditional", "how": "operators self-register in transitions._OPERATORS; fire only if plan names them"},
+    "phase6_registry":    {"on_canonical_path": "conditional", "how": "registry families registered; selected by compiler"},
+    "phase7_nonlinear":   {"on_canonical_path": false, "how": "CLI-only (nonlinear/__main__); no runtime importer"},
+    "phase8_persistence": {"on_canonical_path": true,  "how": "run_with_persistence invoked from pipeline.simulate when persistence arg passed"},
+    "phase9_populations_networks": {"on_canonical_path": false, "how": "simulate_with_populations_networks SEPARATE; no production caller"},
+    "phase10_institutions":{"on_canonical_path": "conditional", "how": "institutions_v2 operators self-register; RuleSystem built in run_from_plan; fire if plan names them"},
+    "phase11_recompilation":{"on_canonical_path": false, "how": "RecompilationController.run only referenced in its own module + tests; ExecutionAdapter seam ready"}
+  },
+  "gap": "No module orchestrates P1+P2+P3+P8+P9+P11 through one shared plan/world/funnel. This run builds simulate_world() to do so and routes the facade to it by default.",
+  "phase12_calibrator_status": "provisional (pre-unification distribution); must be marked incompatible with the unified runtime and refit after this PR merges."
+}

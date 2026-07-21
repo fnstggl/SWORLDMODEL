@@ -1,0 +1,1411 @@
+{
+ "_integrity": {
+  "n": 49,
+  "sha256": "c975aa474ee21b73d3c48a900fe00402d567bdc1860f2021b6cb2b3b15a347a0"
+ },
+ "payload": [
+  {
+   "best_validation_route": "Held-out MobLab ultimatum: fit offer distribution + rejection hazard on train split, score W1 vs held-out human sample; cross-check pooled targets (mean 0.40 / reject 0.16) from Oosterbeek. Structural Rubinstein SPE needs no fit (identity from delta).",
+   "cluster": "bargaining_coalition",
+   "current_executable_status": "executable: swm.world_model_v2.registry.families.interaction:rubinstein_split (x*=(1-delta_b)/(1-delta_a*delta_b)); test_ref tests/test_interaction_families.py::test_rubinstein_split_favors_patient_player",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Guth et al. 1982 lab sessions (Cologne)",
+    "Roth, Prasnikar, Okuno-Fujiwara & Zamir 1991 four-country ultimatum experiments",
+    "Henrich et al. 2001/2005 small-scale-society ultimatum data (cross-cultural)",
+    "Oosterbeek et al. 2004 meta-analytic dataset (37 papers / 75 results)",
+    "MobLab game_behavior (ultimatum_proposer / ultimatum_responder) - present in-repo as parsed means and 50/50 train/test split"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model (Rubinstein SPE) + causal_estimate (lab experiments) + meta_analysis (Oosterbeek)",
+   "expected_applicability": "High for lab/game-like negotiation and any two-party split-the-surplus interaction; moderate for real high-stakes bargaining where delay/incomplete information dominate.",
+   "expected_transport_risk": "medium (offer level travels moderately; rejection threshold is culture/framing sensitive)",
+   "family": "Alternating-offer bargaining (Rubinstein SPE + ultimatum behavior)",
+   "formal_model": "Rubinstein alternating-offers: two players split a unit pie, alternating proposals each round, per-round discount factors delta_a, delta_b in (0,1). Unique SPE: agreement in round 1 at proposer share x* = (1-delta_b)/(1-delta_a*delta_b); more patient player (higher delta) gets more; as delta->1 the split approaches Nash bargaining. Ultimatum game is the one-round limit (delta_b=0 => x*=1), whose SPE (offer ~0) is empirically violated; behavioral layer replaces it with an offer distribution centered ~0.4-0.5 and a responder rejection hazard increasing as the offered share falls below ~0.2 (inequity-aversion / negative-reciprocity correction).",
+   "local_refit_feasible": "YES (validate, not identify de novo): MobLab ultimatum_proposer/responder distributions are in-repo (behaviorbench_eval.json means + wmv2_behaviorbench.json 50/50 split, seed 13). Can validate a proposer-offer distribution and a responder rejection-threshold against held-out human choices via normalized Wasserstein-1. License cc-by-nc-nd (benchmark only).",
+   "n_sources": 4,
+   "n_verified_sources": 4,
+   "planned_implementation": "Keep rubinstein_split as the structural SPE. Add a behavioral readout: proposer offer ~ distribution centered 0.40-0.50 and responder rejection hazard rising below ~0.20 offered share. Register a parameter pack sourced from Oosterbeek/Camerer priors and refined on MobLab train split; record a held-out W1 PPC to promote.",
+   "planned_parameter_packs": [
+    "rubinstein_spe_structural: {delta_a, delta_b priors} - identity, no fit",
+    "ultimatum_behavioral: {mean_offer=0.40 (Oosterbeek), modal_offer=0.40-0.50 (Camerer), rejection_rate=0.16 (Oosterbeek), low_offer_reject~0.5 (Camerer)} + MobLab-refit offer distribution"
+   ],
+   "priority": "medium-high (already implemented; cheap, high-value win = attach a behavioral ultimatum parameter pack + local held-out record to reach locally_validated)",
+   "promotion_blocker": "No committed parameter pack and no held-out/PPC validation record for the ultimatum behavioral layer (the SPE itself is structural and needs none). MobLab data present but not yet fit/scored for this family.",
+   "registry_id": "bargaining_rubinstein",
+   "temporal_scale": "interaction/episode: one-shot to short multi-round horizon (bargaining rounds)."
+  },
+  {
+   "best_validation_route": "External human negotiation transcripts with timestamped offer sequences (e.g. Inspire / CraigslistBargain); fit beta per role and score predicted vs actual offer path. Not achievable with current in-repo data.",
+   "cluster": "bargaining_coalition",
+   "current_executable_status": "executable: swm.world_model_v2.registry.families.interaction:concession_offer (offer decays initial->reservation as deadline nears, rate governed by beta); test_ref tests/test_interaction_families.py::test_concession_moves_toward_reservation_near_deadline",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Faratin et al. 1998 simulated agent-agent negotiations (no human ground truth)",
+    "ANAC (Automated Negotiating Agents Competition) logs - agent tournaments, not human",
+    "Human negotiation corpora (e.g., Inspire, CraigslistBargain, JobInterview dialogues) exist externally but are NOT in this repo"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model / agent-design heuristic (no empirical parameter estimation)",
+   "expected_applicability": "Moderate as a scaffold for deadline-driven agent negotiation; low as a validated model of human concession.",
+   "expected_transport_risk": "high (beta is a per-agent strategy, not an estimated population coefficient)",
+   "family": "Concession dynamics (time-dependent negotiation tactics)",
+   "formal_model": "Time-dependent concession: offer(t) = initial + (reservation - initial) * (min(1, t/deadline))^(1/beta). beta<1 => Boulware (tough, concede late); beta=1 => linear; beta>1 => Conceder (concede early). Agreement when the two agents' offers cross. Faratin also defines resource-dependent (concede faster as time/resources deplete) and behavior-dependent (imitate opponent's concessions) tactic families. This is a prescriptive/engineering model of a bargaining trajectory, not an estimated law of human concession.",
+   "local_refit_feasible": "LOW / NO: the repo has no human negotiation offer-by-time dataset. MobLab ultimatum is one-shot (no concession trajectory). Refit would require importing an external negotiation-dialogue corpus.",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Retain concession_offer as an engineering tactic. Do NOT promote past software_implemented without a human offer-sequence dataset. If added later: fit beta per role/domain and record a held-out trajectory error.",
+   "planned_parameter_packs": [
+    "concession_tactic_priors: {beta_boulware<1, beta_linear=1, beta_conceder>1} - labeled DESIGN priors, explicitly unidentified"
+   ],
+   "priority": "low (implemented and useful as a heuristic; not worth a validation pack until a human concession corpus is added)",
+   "promotion_blocker": "beta is an unidentified design parameter and there is no in-repo human concession dataset; the primary source is an agent-design paper, not a causal estimate. Cannot reach locally_validated.",
+   "registry_id": "negotiation_concession",
+   "temporal_scale": "interaction/episode: within a single negotiation, indexed by deadline-relative time."
+  },
+  {
+   "best_validation_route": "External dollar-auction or all-pay-auction experiment data (stopping bids vs prize value) and/or strike-duration data; validate the concession hazard and escalation ceiling. Structural predictions (zero complete-info delay; exponential ESS hazard) can be unit-tested without data.",
+   "cluster": "bargaining_coalition",
+   "current_executable_status": "not implemented: no code_ref / test_ref in swm.world_model_v2.registry",
+   "current_registry_status": "NONE (not registered)",
+   "datasets_in_literature": [
+    "Dollar-auction lab experiments (Teger 1980 'Too Much Invested to Quit'; Murnighan escalation studies)",
+    "Animal-contest duration data (war-of-attrition tests in behavioral ecology)",
+    "Strike / bargaining-delay data and surveys (Kennan & Wilson 1993 JEL bargaining-with-private-information survey)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "structural_model (game-theoretic); qualitative experimental support, no verified point estimates extracted",
+   "expected_applicability": "Moderate but high-value for conflict/negotiation-breakdown, bidding wars, arms races, and commitment traps - phenomena the current registry cannot represent.",
+   "expected_transport_risk": "high (behavioral escalation is emotion/commitment-driven; parameters are context-bound)",
+   "family": "Delay & escalation (costly delay, war of attrition, dollar-auction entrapment)",
+   "formal_model": "Three linked structural mechanisms of costly persistence: (1) Discounted-delay (Rubinstein): payoff of agreement at round t is delta^t * share; complete info => immediate deal, incomplete info => screening delay. (2) War of attrition (Maynard Smith): cost accrues linearly with time persisted; each side chooses a stopping time; symmetric mixed-strategy equilibrium has memoryless (exponential) concession hazard with mean tied to prize value V, dissipating rents. (3) Dollar-auction / all-pay escalation (Shubik): both leading bidders pay; the unique subgame structure has no interior stopping point below V, producing bids exceeding the prize (escalation/entrapment). Common core: sunk costs + second-mover loss => persistence beyond the myopic optimum.",
+   "local_refit_feasible": "NO: repository contains no war-of-attrition, auction-escalation, or strike/delay dataset. Would require importing external escalation-experiment or strike-duration data.",
+   "n_sources": 3,
+   "n_verified_sources": 3,
+   "planned_implementation": "New interaction family module: (a) discounted_delay(delta, t); (b) war_of_attrition equilibrium concession hazard given V and cost rate; (c) dollar_auction / all-pay escalation dynamics with sunk-cost tracking and optional behavioral over-escalation multiplier. Register as structural with unit tests on the equilibrium properties.",
+   "planned_parameter_packs": [
+    "war_of_attrition_structural: {prize V, per-period cost c} -> exponential give-up hazard (no fit)",
+    "dollar_auction_structural: {prize, bid increment, all-pay=2} (no fit)",
+    "delay_incomplete_info: {discount delta, screening prior} - structural priors, unidentified without data"
+   ],
+   "priority": "medium (fills a real registry gap - no delay/escalation family exists - but has no local data, so structural-only initially)",
+   "promotion_blocker": "Not implemented (no code_ref/test_ref) and no in-repo escalation/delay dataset. Can reach software_implemented as a structural family; blocked from locally_validated by absence of data.",
+   "registry_id": null,
+   "temporal_scale": "interaction/episode to protracted: escalation and delay unfold over repeated rounds / extended standoffs (strikes, bidding wars, attrition conflicts)."
+  },
+  {
+   "best_validation_route": "Power indices: verify by exact recomputation against textbook cases (Nassau County, EU Council) - no statistical validation needed. Size principle: external government-formation dataset (formed vs feasible coalitions); score MWC hit-rate. Not feasible with current in-repo data.",
+   "cluster": "bargaining_coalition",
+   "current_executable_status": "executable: swm.world_model_v2.registry.families.interaction:banzhaf_power (exact swing-enumeration) + coalition_forms (greedy MWC by support share); test_ref tests/test_interaction_families.py",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Weighted voting bodies (US Electoral College, EU Council of Ministers, IMF, UN Security Council, Nassau County Board) - used to compute/illustrate indices",
+    "European government-formation datasets (which coalitions formed) - to test the size principle; not in this repo",
+    "VoteView congress roll-calls (in-repo buildable) - relevant to bloc/coalition analysis but tangential to formation"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model (exact power indices - no fit) + descriptive/contested empirical (size principle)",
+   "expected_applicability": "High and reliable for the power-index computations (committees, weighted votes, boards); moderate/contested for predicting which coalition forms.",
+   "expected_transport_risk": "low for power indices (structural); high for the size-principle prediction",
+   "family": "Coalition formation (minimal-winning coalitions + voting-power indices)",
+   "formal_model": "Two structural pieces. (1) Minimal winning coalition (Riker size principle): among coalitions whose summed weight/seats >= quota, rational side-payment bargaining selects a MINIMAL one (no dispensable member); registry uses a greedy MWC by descending support share. (2) Power indices on the weighted voting game [q; w_1..w_n]: Banzhaf index beta_i = (number of coalitions in which i is critical) / (total critical swings); Shapley-Shubik phi_i = (orderings in which i is pivotal)/n!. Both are EXACT combinatorial functions of (weights, quota) - no free parameters, no estimation. Power != weight (a large bloc can have zero pivotality; Banzhaf's Nassau County result).",
+   "local_refit_feasible": "PARTIAL: power indices require NO data (exact - just unit-test correctness). The size-principle/formation claim would need a government-formation dataset (which coalitions actually formed), which is NOT in-repo; VoteView congress data (buildable) supports bloc analysis but not multiparty government formation.",
+   "n_sources": 3,
+   "n_verified_sources": 3,
+   "planned_implementation": "Keep banzhaf_power / coalition_forms. Add Shapley-Shubik index as a second exact operator. Treat power indices as structurally exact (unit tests, no pack). For formation, mark the greedy-MWC as a heuristic and, if a government-formation dataset is added, validate MWC hit-rate.",
+   "planned_parameter_packs": [
+    "power_indices_structural: exact Banzhaf + Shapley-Shubik (NO parameters - do not create a fitted pack)",
+    "size_principle_prior: MWC-selection heuristic; flagged contested, needs external formation data to validate"
+   ],
+   "priority": "medium (index computation is done and exact; the valuable extension is a validated formation/selection model, which needs external data)",
+   "promotion_blocker": "Power-index portion has no blocker (structurally exact - arguably production-eligible as computation, but registry treats it as implemented). Formation/size-principle portion is blocked from validation by the absence of an in-repo government-formation dataset and any held-out record.",
+   "registry_id": "coalition_formation",
+   "temporal_scale": "institutional/episode: a coalition-formation event; power structure is otherwise static between reweightings."
+  },
+  {
+   "best_validation_route": "Build the VoteView senate cache and fit/validate a defection (party-line vs ideal-point) model on held-out congresses (leakage-free grounding already implemented in the builder). Separately, verify core/nucleolus by exact recomputation on textbook games. Gamson's-law validation requires importing a cabinet-portfolio dataset.",
+   "cluster": "bargaining_coalition",
+   "current_executable_status": "not implemented: no code_ref / test_ref in swm.world_model_v2.registry",
+   "current_registry_status": "NONE (not registered)",
+   "datasets_in_literature": [
+    "European coalition-government portfolio datasets (Browne-Franklin 1973; Warwick-Druckman 2006; ParlGov / Woldendorp-Keman-Budge)",
+    "Comparative Political Data Set / Database of Political Institutions (party seats, cabinet posts)",
+    "VoteView congressional roll-calls + DW-NOMINATE ideal points (Snyder-Groseclose) - BUILDABLE in-repo via experiments/build_congress_votes.py"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "structural_model (core/nucleolus) + associational (Gamson's law) + causal_estimate (party influence on defection)",
+   "expected_applicability": "High for legislative coalition discipline/defection (local congress data) and for cabinet payoff prediction (Gamson's law); moderate for general cooperative-game stability where v(S) is unobserved.",
+   "expected_transport_risk": "medium (Gamson's law replicates broadly but slope varies; legislative estimates are institution-specific)",
+   "family": "Coalition stability & defection (core/nucleolus, Gamson's law payoffs, legislative defection)",
+   "formal_model": "Two layers. (1) Cooperative-game STABILITY: given a characteristic function v(S) over coalitions, the CORE is the set of payoff vectors x with sum(x)=v(N) and sum_{i in S} x_i >= v(S) for all S (no subcoalition can profitably defect); when the core is empty or non-unique the NUCLEOLUS (Schmeidler) selects the allocation minimizing the lexicographically ordered vector of maximal excesses e(S,x)=v(S)-sum_{i in S}x_i - the most 'defection-resistant' split. (2) Empirical payoff/stability regularity: Gamson's law - realized payoff share s_i ~= seat/resource contribution share r_i (near-proportional, slope just under 1 with small-party bonus); large deviations from proportionality predict instability and portfolio renegotiation. Defection at the individual level (legislators leaving the party-line coalition) is modeled as party pressure vs member ideal-point pull (Snyder-Groseclose).",
+   "local_refit_feasible": "PARTIAL-YES: legislative-defection sub-model IS locally refittable - experiments/build_congress_votes.py fetches public VoteView members/rollcalls/votes (proxy-reachable) with leakage-safe prior-congress NOMINATE ideal points; can fit party-line defection = f(ideal-point distance, party) and validate held-out roll-calls. RAW not committed (builder present, must run). Gamson's-law payoff layer needs a portfolio dataset (NOT in-repo). Core/nucleolus need no data (structural).",
+   "n_sources": 5,
+   "n_verified_sources": 5,
+   "planned_implementation": "New coalition-stability family module: (a) core_membership / nucleolus allocation given v(S) (structural, unit-tested); (b) gamson_payoff: predicted payoff share = proportional-to-seats with a small-party-bonus term (pack from Browne-Franklin/Warwick-Druckman priors); (c) legislative_defection: P(defect) as a function of ideal-point distance to party median and party pressure, refit on VoteView. Record held-out roll-call validation to promote toward locally_validated.",
+   "planned_parameter_packs": [
+    "gamson_payoff: {slope ~1 (near-proportional), small-party bonus} - priors from Browne-Franklin 1973 / Warwick-Druckman 2006; refine on portfolio data",
+    "core_nucleolus_structural: exact allocation given v(S) (no fit)",
+    "legislative_defection: {ideal-point-distance coefficient, party-pressure term} - to be FIT on VoteView congress cache (build_congress_votes.py), held-out by congress"
+   ],
+   "priority": "high (registry GAP with the strongest empirical support in this cluster: a near-law (Gamson) AND a real in-repo local-validation route (VoteView congress) AND a causal method for defection)",
+   "promotion_blocker": "Not implemented (no code_ref/test_ref). To reach locally_validated: build the VoteView cache and record a held-out defection PPC (feasible); Gamson's-law and core/nucleolus layers additionally need a portfolio dataset / specified v(S) respectively.",
+   "registry_id": null,
+   "temporal_scale": "institutional/medium-to-long: government duration and legislative sessions; defection observed vote-by-vote, stability over the coalition's life."
+  },
+  {
+   "best_validation_route": "Refit MLE on an external repeated-game dataset with feedback (Camerer-Ho / Van Huyck data), hold out later rounds or a left-out game class, and test EWA against its reinforcement (delta=0) and belief (delta=1,rho=phi) special cases via out-of-sample choice-probability MSD.",
+   "cluster": "choice_learning",
+   "current_executable_status": "executable",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "4x4 and 6x6 constant-sum games in rupees (Mookherjee & Sopher 1997)",
+    "Median-action / weak-link order-statistic coordination games (Van Huyck, Battalio & Beil)",
+    "p-beauty contest / dominance-solvable games (Ho, Camerer & Weigelt 1998)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "narrow (repeated strategic games with feedback)",
+   "expected_transport_risk": "high",
+   "family": "Experience-Weighted Attraction (EWA) learning",
+   "formal_model": "Attraction update A_i^j(t) = [phi*N(t-1)*A_i^j(t-1) + (delta + (1-delta)*I(j=chosen))*payoff_i^j(t)] / N(t), with experience weight N(t) = rho*N(t-1) + 1; choice via logit P_i^j = exp(lambda*A_i^j)/sum_k exp(lambda*A_i^k). Nests cumulative reinforcement (delta=0, rho=0) and weighted fictitious play / belief learning (delta=1, rho=phi). Parameters: phi (decay of prior attractions), delta (foregone-payoff weight), rho (decay of experience weight), kappa (cumulative vs averaging), lambda (logit precision), N(0) (initial experience weight).",
+   "local_refit_feasible": "Limited. EWA dynamics require repeated-play panels with round-by-round realized AND foregone payoffs. In-repo MobLab/BehaviorBench economic games (dictator, ultimatum, trust, public goods, guessing) are largely one-shot cross-sections, so the (phi,delta,rho,N0) dynamics are not identifiable without a multi-round game panel (a repeated p-beauty/guessing panel would be the only candidate, if round-level data exist).",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep EWAState executable; add an MLE fitter for (phi,delta,rho,kappa,lambda,N0) on repeated-game panels; expose the reinforcement and belief special-case restrictions as selectable variants; adopt self-tuning EWA as a low-parameter default.",
+   "planned_parameter_packs": [
+    "ewa_camererho1999_reference: constant_sum(delta0.42/phi1.00/rho0.94/N0 15.80), median_action(delta0.85/phi0.80/rho0/N0 0.65), beauty_contest(delta0.23/phi1.33/rho0.94/N0 16.82) -- labeled lab-reference priors, NOT fit on target domain"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "No local held-out validation record; no repeated-game panel in-repo to identify the learning dynamics; published coefficients are lab-reference priors that vary by game class and are not fit on any target domain.",
+   "registry_id": "experience_weighted_attraction",
+   "temporal_scale": "event (per round of repeated play; identification needs many rounds)"
+  },
+  {
+   "best_validation_route": "Held-out choice-distribution prediction on BehaviorBench per game with lambda refit, benchmarked against the per-game histogram and hand-crafted baselines (note the existing in-distribution failure vs histogram); require payoff-scale normalization before comparing lambda across games.",
+   "cluster": "choice_learning",
+   "current_executable_status": "executable",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Normal-form matrix-game experiments re-analyzed by McKelvey-Palfrey (e.g., Ochs 1995 games)",
+    "In-repo: BehaviorBench/MobLab games -- lambda_per_game already fitted inside the social_preference_population record (wmv2_behaviorbench_policy.json)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "broad for static discrete choice",
+   "expected_transport_risk": "medium",
+   "family": "Quantal Response Equilibrium / logit choice",
+   "formal_model": "Logit QRE: each player's choice probability P_i(a) = exp(lambda * EU_i(a; P))/sum_b exp(lambda * EU_i(b; P)), a fixed point in which expected utilities are computed against the equilibrium mixed profile. As lambda->0 choices are uniform; as lambda->infinity QRE converges to Nash. The single-agent 'logit choice' reduction takes expected utilities as given (no equilibrium fixed point).",
+   "local_refit_feasible": "Yes. The logit_choice operator is executable and lambda is already fit per game on BehaviorBench inside social_preference_population; logit choice can also be fit as a generic stochastic-choice layer to any in-repo choice-frequency dataset (Upworthy CTR, StackExchange answered).",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep logit_choice; add per-game lambda MLE with a payoff-scale normalizer and a falsifiability guard (reject when lambda absorbs arbitrary structure); optionally add a QRE fixed-point solver for the equilibrium version.",
+   "planned_parameter_packs": [
+    "qre_lambda_per_game_behaviorbench: fitted lambda per MobLab game (already in wmv2_behaviorbench_policy.json) -- lab economic games, transport to field unvalidated"
+   ],
+   "priority": "high",
+   "promotion_blocker": "No PASSED held-out record that beats a strong per-game baseline (current best in-distribution loses to the histogram); lambda not transportable across payoff scales; falsifiability requires imposing scale-normalized cross-game restrictions.",
+   "registry_id": "quantal_response_choice",
+   "temporal_scale": "event (static choice / one-shot game)"
+  },
+  {
+   "best_validation_route": "Refit the propensity model on an external repeated-game dataset (hold out later rounds / a left-out game), or map the Q-update onto OmniBehavior repeat-engagement and test whether payoff-reinforced propensity beats an AR/momentum baseline held-out.",
+   "cluster": "choice_learning",
+   "current_executable_status": "executable",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "12 experimental games with unique mixed-strategy equilibria (Suppes & Atkinson; Ochs 1995; O'Neill 1987; Rapoport-Boebel; etc.) plus a new Erev-Roth experiment"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "narrow for game learning; the Q-update primitive is broadly reusable",
+   "expected_transport_risk": "high",
+   "family": "Reinforcement learning in games (Roth-Erev)",
+   "formal_model": "Roth-Erev propensity model: q_nj(t+1) = (1-phi)*q_nj(t) + E_k(j, R(x)), choice P = q_nj / sum_k q_nk, with reinforcement R(x)=payoff - x_min, forgetting/recency parameter phi, and a 'three-step' generalization/experimentation function E_k with parameter epsilon that spreads reinforcement to similar strategies. Basic 1-parameter model has only the initial-propensity strength s(1). A 4-parameter FP-like generalization adds a foregone-info weight d, a maximization parameter m, and a habit/past-experience weight h. Generic value form: Q <- Q + alpha*(r-Q).",
+   "local_refit_feasible": "Limited. Requires repeated-play panels with per-round payoffs; in-repo MobLab games are mostly one-shot. OmniBehavior/Kuaishou repeated daily engagement could support a loose 'reinforcement of a binary action' fit, but not the mixed-equilibrium game setting the model was built for.",
+   "n_sources": 3,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep reinforcement_update; add the full Roth-Erev propensity model with {s(1), epsilon, phi} and an MLE fitter; expose forgetting and local-experimentation; keep generic Q-learning alpha as a labeled prior.",
+   "planned_parameter_packs": [
+    "roth_erev1998_reference: basic s(1)=54; 4-param FP-like d0.9/m1.5/h0.1/s1 27 (MSD 0.72) -- labeled lab-reference priors from 12-game calibration"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "No local held-out validation; no repeated-game panel in-repo; published parameters are payoff-scale-dependent lab-reference priors.",
+   "registry_id": "reinforcement_learning",
+   "temporal_scale": "event (per round; designed for 100+ round games)"
+  },
+  {
+   "best_validation_route": "Refit gamma,beta on an external repeated-game panel; test the Cournot (gamma=0), fictitious-play (gamma=1) and EWA nesting via out-of-sample fit.",
+   "cluster": "choice_learning",
+   "current_executable_status": "executable",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Cheung-Friedman laboratory normal-form games: Hawk-Dove, Coordination, Battle-of-Sexes, Buyer-Seller, under varying information and matching protocols"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "narrow (repeated strategic games)",
+   "expected_transport_risk": "high",
+   "family": "Belief learning / fictitious play",
+   "formal_model": "gamma-weighted beliefs over an opponent's action frequencies: recent observations weighted more, older observations discounted by gamma per period. gamma=0 => Cournot best-response (last period only); gamma=1 => (unweighted) fictitious play. Expected payoffs are computed against these beliefs and mapped to choice via a probabilistic best-response with response sensitivity beta. Registry executable form is a Dirichlet-style count updater.",
+   "local_refit_feasible": "Limited. Requires repeated games with observable opponent history; in-repo MobLab games are mostly one-shot, so gamma is not identifiable without a repeated-game panel.",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Upgrade belief_update_counts to an explicit gamma-weighted (recency-discounted) belief with a logit response beta; expose the Cournot and fictitious-play endpoints as selectable limits.",
+   "planned_parameter_packs": [
+    "cheung_friedman1997_reference: median gamma ~0.26-0.41, beta ~0.42 -- labeled lab-reference priors"
+   ],
+   "priority": "low-medium",
+   "promotion_blocker": "No local validation; no repeated-game panel in-repo; empirically dominated by EWA where directly compared.",
+   "registry_id": "belief_learning",
+   "temporal_scale": "event (per round of repeated play)"
+  },
+  {
+   "best_validation_route": "Fit habit-stock accumulation on OmniBehavior repeat-engagement and test held-out whether accumulated repetition predicts next-day behavior beyond the engagement_momentum_persistence baseline (which already validated on OmniBehavior).",
+   "cluster": "choice_learning",
+   "current_executable_status": "executable",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Lally 2010 UCL daily-diary cohort (SRHI automaticity over 84 days)",
+    "Wood, Quinn & Kashy 2002 experience-sampling diary studies (habit in everyday life)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "descriptive",
+   "expected_applicability": "medium (broad behavioral-repetition domains)",
+   "expected_transport_risk": "medium",
+   "family": "Habit formation",
+   "formal_model": "Automaticity (habit strength) grows with repetition in a stable context following an asymptotic exponential-approach curve toward a plateau; the increment per repetition diminishes as the asymptote is neared. Registry executable form: H <- (1-gamma)*H + gamma*1[acted] (habit-stock accumulation), and habit raises the probability of repeating the behavior (logit boost). Wood & Neal add the context-cue -> response associative account.",
+   "local_refit_feasible": "Partially. OmniBehavior/Kuaishou repeated daily engagement can support a behavioral habit-stock fit (does prior-repetition raise next-period engagement beyond a momentum/AR baseline?). Baby-names data is cultural diffusion, not individual habit. No in-repo dataset has the SRHI automaticity measure.",
+   "n_sources": 3,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep habit_update; add a fitter for gamma / time-to-plateau on repeat-behavior panels; explicitly separate self-report automaticity from behavioral repeat-rate; guard against conflating habit with momentum/autocorrelation.",
+   "planned_parameter_packs": [
+    "lally2010_reference: time-to-95%-automaticity median 66 days (range 18-254) -- a reference prior for automaticity growth, NOT a behavioral repeat-rate"
+   ],
+   "priority": "medium-high",
+   "promotion_blocker": "No local held-out validation; the registry gamma is a labeled prior not fit on target data; primary evidence is self-report and correlational; must be disentangled from the already-validated momentum/persistence family.",
+   "registry_id": "habit_formation",
+   "temporal_scale": "longitudinal (days-to-months; ~66-day median plateau)"
+  },
+  {
+   "best_validation_route": "Cannot be validated on current in-repo data. Requires a choice-process/search dataset (eye-tracking, or click-stream logs of option examination by a single decider). Would first need a new operator + such a dataset.",
+   "cluster": "choice_learning",
+   "current_executable_status": "not_implemented",
+   "current_registry_status": "none (not registered)",
+   "datasets_in_literature": [
+    "Caplin-Dean-Martin incentivized sequential-search experiment (choice-process data recording which option is provisionally selected over time)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "structural_model",
+   "expected_applicability": "medium (consideration-set / bounded search is common) but data-hungry",
+   "expected_transport_risk": "medium",
+   "family": "Satisficing / bounded search",
+   "formal_model": "Sequential search with a reservation utility u*: the agent examines options in sequence, accumulating a consideration set, and STOPS as soon as an option with utility >= u* is encountered (Caplin-Dean-Martin 'Condition 1'). The reservation level is fixed within a standard-choice environment and responds to the environment (rising with set size and object complexity). Simon (1955) is the origin: choose the first option that meets an aspiration level.",
+   "local_refit_feasible": "No. In-repo datasets record final choices/outcomes but NOT the choice process (which options were examined, in what order, with provisional switches). Reservation utilities and search order are therefore not identifiable from BehaviorBench, Upworthy, StackExchange, CMV, or OmniBehavior.",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "NEW family: a reservation-threshold sequential-search operator -- given an ordered option stream and reservation u*, stop at the first option >= u*; expose u* as a fitted/prior consideration-set gate placed before the choice operator; add executable code + test to reach 'implemented'.",
+   "planned_parameter_packs": [
+    "caplin_dean_martin2011_reference (sanity target only, not fittable locally): HM>0.95 for >40% of subjects; ~38% best-option miss rate; reservation rises with set size/complexity"
+   ],
+   "priority": "low-medium",
+   "promotion_blocker": "Not implemented (no executable code or test); no local choice-process data to identify reservation utility; requires both a new operator and a search-process dataset before any validation is possible.",
+   "registry_id": null,
+   "temporal_scale": "event (within-decision sequential search)"
+  },
+  {
+   "best_validation_route": "Pair BehaviorBench allocation choices with a fresh elicited norm-rating table and test whether V(pi)+gamma*N(a) predicts choice shifts across variants held-out; without elicited norms the model is not identifiable.",
+   "cluster": "choice_learning",
+   "current_executable_status": "executable",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Krupka-Weber dictator-game variants (standard, bully/take, and others) plus reanalysis of prior DG studies (List 2007; Bardsley 2008); norms elicited via a coordination game"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "medium-high (norms pervade social behavior) but requires elicited-norm inputs",
+   "expected_transport_risk": "high",
+   "family": "Norm compliance",
+   "formal_model": "Utility U_i(a) = V(pi_i(a)) + gamma_i * N(a), where pi_i(a) is the monetary payoff of action a, N(a) in [-1,+1] is the elicited social-appropriateness rating of a (incentive-compatibly elicited via a coordination game), and gamma_i >= 0 is heterogeneous norm-sensitivity. Choice maximizes (or is logit over) U. Appropriateness is elicited on a 4-point scale mapped to {-1 very inappropriate, -1/3 somewhat inappropriate, +1/3 somewhat appropriate, +1 very appropriate}.",
+   "local_refit_feasible": "No for the identified model. In-repo BehaviorBench dictator/ultimatum games record choices but NOT the elicited appropriateness ratings N(a) that the model requires as inputs; a norm-elicitation experiment would be needed. A reduced-form norm proxy could be fit but would not identify the Krupka-Weber model.",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Upgrade norm_compliance from the generic relationship_modulator stand-in to the Krupka-Weber utility U=V(pi)+gamma*N(a); require an elicited norm-rating table as input; expose gamma as fitted/prior; add logit choice over U.",
+   "planned_parameter_packs": [
+    "krupka_weber2013_reference: standard-DG appropriateness ratings (equal-split +0.90, keep-$9 -0.71; scale [-1,+1]) as a reference norm table for allocation frames; gamma as a labeled prior needing per-setting fit"
+   ],
+   "priority": "high",
+   "promotion_blocker": "No elicited-norm inputs in local data; no local validation record; gamma not point-identified without new elicitation; the current registry operator is a generic modulator, not the identified Krupka-Weber norm model.",
+   "registry_id": "norm_compliance",
+   "temporal_scale": "event (single allocation/choice)"
+  },
+  {
+   "best_validation_route": "Retain as the null comparator inside the Higgs held-out survival benchmark; it has already lost to the concave form, which is the intended role.",
+   "cluster": "diffusion",
+   "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.diffusion:contagion_window_predict + test_ref tests/test_diffusion_families.py resolve; fitted comparator on Higgs)",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Higgs Twitter diffusion (De Domenico 2013; local)",
+    "Goldenberg-Libai-Muller cellular-automaton simulations",
+    "generic SI/epidemic and independent-cascade benchmarks"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "high_as_baseline_low_as_predictor",
+   "expected_transport_risk": "low_structural_but_low_value",
+   "family": "Simple contagion (SI / independent cascade baseline)",
+   "formal_model": "Continuous-time survival hazard lambda_i(t) = q * k_i(t), where k_i(t) = number of already-active in-network neighbors (exposures) of ego i at time t; per-exposure transmissions are independent and additive (SI / independent-cascade limit). Adoption read from terminal survival state integrated event-by-event through the diffusion window.",
+   "local_refit_feasible": "yes (already fitted on Higgs; q=0.0224)",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "No new work \u2014 keep as the fitted linear comparator; ensure it remains the reference against which nonlinear forms are scored.",
+   "planned_parameter_packs": [
+    "Higgs local q pack (fitted q=0.0224; comparator/nuisance)"
+   ],
+   "priority": "low",
+   "promotion_blocker": "No held-out WIN: the linear form is a comparator that lost to the concave exposure-response on Higgs (delta +0.00234). Eligible only as software_implemented baseline, not as a standalone validated predictor.",
+   "registry_id": "simple_contagion_hazard",
+   "temporal_scale": "Event-level hazard integrated over a diffusion window (hours to days; Higgs window ~168h)."
+  },
+  {
+   "best_validation_route": "Refit alpha per-cascade on Higgs held-out (done; sublinear). For a true positive test, validate against a dataset with manipulated/measured multi-source reinforcement (Centola-style clustered-vs-random) \u2014 not currently local.",
+   "cluster": "diffusion",
+   "current_executable_status": "executable (code_ref diffusion:contagion_window_predict + test_ref tests/test_diffusion_families.py; Hill form fitted on Higgs)",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Centola 2010 online health-community experiment (artificial clustered vs random networks)",
+    "Twitter political-hashtag diffusion (Romero et al. 2011)",
+    "Higgs Twitter (local; alpha=0.75)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "causal_estimate",
+   "expected_applicability": "high_for_costly_behaviors_low_for_trivial_information",
+   "expected_transport_risk": "high_for_alpha",
+   "family": "Complex contagion (multiple-signal social reinforcement)",
+   "formal_model": "Hill hazard lambda_i(t) = exp(theta0) * k^alpha / (c^alpha + k^alpha). alpha>1 encodes superlinear onset (reinforcement: each additional distinct source raises the marginal effect), saturating at high k. alpha<=1 collapses toward simple/diminishing-returns contagion. Fitted by grid + profile likelihood.",
+   "local_refit_feasible": "yes (already fitted on Higgs; alpha=0.75)",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep Hill hazard; add a distinct-source (not just total-exposure) feature so alpha estimates reinforcement rather than exposure volume; document Higgs alpha<1 as the honest local null.",
+   "planned_parameter_packs": [
+    "Higgs local Hill pack (theta0=-1.299, alpha=0.75; local null, reinforcement not present)"
+   ],
+   "priority": "high",
+   "promotion_blocker": "No local held-out PASS record and no transfer record; moreover Higgs alpha=0.75 fails to reproduce the alpha>1 reinforcement signature, so the Centola causal evidence is not locally realized. Blocked above software_implemented.",
+   "registry_id": "complex_contagion_hazard",
+   "temporal_scale": "Event-level hazard over the diffusion window (hours to days)."
+  },
+  {
+   "best_validation_route": "Posterior-predictive check on Higgs cascade-size distribution under a fitted threshold distribution (calibrate F(phi) to reproduce observed cascade sizes), rather than per-node threshold recovery.",
+   "cluster": "diffusion",
+   "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.social:threshold_adopt + test_ref tests/test_social_families.py)",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Watts 2002 simulated random/scale-free networks (analytic + Monte Carlo)",
+    "Granovetter 1978 stylized applications (riots, innovation, rumor, strikes, voting, migration)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "moderate",
+   "expected_transport_risk": "high",
+   "family": "Threshold adoption (collective-behavior thresholds / global cascades)",
+   "formal_model": "Deterministic threshold rule: node i adopts iff the fraction of its neighbors already active >= phi_i, with phi_i drawn from a heterogeneous threshold distribution F(phi). Watts: a node is 'vulnerable' if phi_i <= 1/degree_i; global cascade iff the vulnerable subgraph percolates (G'(1) >= z boundary).",
+   "local_refit_feasible": "limited (Higgs has neighbor-fraction exposure but no per-user threshold ground truth; baby names have adoption fractions but no network \u2014 thresholds not point-identified locally)",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep the fraction-of-neighbors rule; add a fitted heterogeneous threshold distribution and validate via cascade-size PPC (not point thresholds).",
+   "planned_parameter_packs": [
+    "Structural Granovetter/Watts pack (threshold distribution as a prior; no data-fitted numbers yet)"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "No validation record (validation:[]); thresholds are not identifiable from available local datasets (no per-user threshold ground truth). Blocked above software_implemented until a cascade-size PPC passes.",
+   "registry_id": "threshold_adoption",
+   "temporal_scale": "Discrete adoption rounds / static equilibrium (cascade completes over the update horizon; scale set by updating cadence)."
+  },
+  {
+   "best_validation_route": "Do NOT create a separate family first; validate reinforcement through complex_contagion_hazard alpha (using distinct-source counts) on Higgs held-out, and only split it out if the distinct-source signal is separable from total exposure and improves held-out loss.",
+   "cluster": "diffusion",
+   "current_executable_status": "not_implemented (no code_ref / test_ref; mechanism partially captured by complex_contagion_hazard's Hill exponent alpha)",
+   "current_registry_status": "absent (NO explicit registry family; distinct from reinforcement_learning, which is Q-learning)",
+   "datasets_in_literature": [
+    "Twitter hashtag diffusion (Romero et al. 2011)",
+    "Centola 2010 clustered-vs-random experiment"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "associational",
+   "expected_applicability": "moderate",
+   "expected_transport_risk": "moderate",
+   "family": "Social reinforcement (multi-source repeated-exposure persistence)",
+   "formal_model": "Adoption probability increasing in the number of DISTINCT adopting sources s (not just total exposures k): p_adopt = g(s), g convex/persistent when repeated distinct exposures keep large marginal effect. Operationally equivalent to the complex_contagion Hill hazard when s is used in place of k; 'persistence' = the marginal-effect decay rate of successive exposures (Romero's exposure-curve ratio).",
+   "local_refit_feasible": "yes-but-redundant (Higgs has exposure counts; distinct-source count derivable \u2014 but this reduces to the complex_contagion Hill fit, which gave alpha<1)",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "No standalone family unless justified: fold reinforcement into complex_contagion_hazard by feeding distinct-source count s instead of/alongside k; document Romero persistence and Centola reinforcement as the evidence base for that feature.",
+   "planned_parameter_packs": [
+    "(none standalone) \u2014 reinforcement encoded via complex_contagion Hill pack using distinct-source counts"
+   ],
+   "priority": "low",
+   "promotion_blocker": "No registry entry, no code_ref, no test_ref \u2014 cannot even reach 'implemented'. Mechanism is currently redundant with complex_contagion_hazard; a separate family is not yet justified.",
+   "registry_id": null,
+   "temporal_scale": "Per-exposure, accumulating over hours to days."
+  },
+  {
+   "best_validation_route": "Fit Bass to baby-name adoption trajectories (per-name m, p, q), then TRANSFER-check the fitted p/q against the Sultan-Farley-Lehmann meta-analytic ranges (0.03 / 0.38) as an out-of-sample plausibility gate.",
+   "cluster": "diffusion",
+   "current_executable_status": "executable (code_ref diffusion:closed_form_window_p + test_ref tests/test_diffusion_families.py)",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Bass 1969: 11 consumer durables (e.g., TVs, refrigerators, freezers, air conditioners)",
+    "Sultan-Farley-Lehmann 1990: ~213 applications from 15 studies",
+    "baby names 1880+ (local; cultural adoption trajectories) \u2014 natural local Bass test"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "high",
+   "expected_transport_risk": "moderate",
+   "family": "Finite-population diffusion (Bass innovation/imitation saturation)",
+   "formal_model": "Bass: f(t)/(1-F(t)) = p + q*F(t), giving F(t) = (1 - e^{-(p+q)t}) / (1 + (q/p) e^{-(p+q)t}); adopters at t = m*f(t) with fixed finite susceptible population m. p = external/innovation hazard, q = internal/imitation (word-of-mouth) hazard. Local closed-form window-probability variant closed_form_window_p implements the finite-susceptible saturation.",
+   "local_refit_feasible": "yes (baby-name cumulative adoption curves 1880+ are an ideal local Bass fit; Higgs cumulative cascade is a secondary target)",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Add a published_research Bass pack encoding p ~ (0.03, SD 0.03) and q ~ (0.38, SD 0.35) from Sultan-Farley-Lehmann as informative priors; fit a local baby-names pack and compare to the pack ranges for transfer validation.",
+   "planned_parameter_packs": [
+    "published_research Bass pack: p mean 0.03 (SD 0.03), q mean 0.38 (SD 0.35) [Sultan-Farley-Lehmann 1990]",
+    "local baby-names Bass pack (per-name m,p,q \u2014 to fit)"
+   ],
+   "priority": "high",
+   "promotion_blocker": "No held-out / PPC record yet (validation:[]). Needs a local Bass fit (baby names) with a PASS to reach locally_validated, then a transfer check vs the Sultan-Farley-Lehmann pack to move toward transfer_validated.",
+   "registry_id": "finite_population_saturation",
+   "temporal_scale": "Product/behavior life cycle: months-to-years for durables (Bass); decades for cultural adoption (baby names)."
+  },
+  {
+   "best_validation_route": "Failure preserved on the aggregate 24-72h count forecast (Higgs). The only route toward a lesser status would be a SEPARATE, re-scoped task: per-tweet final-retweet-size prediction on a cascade dataset (SEISMIC benchmark). Until such a scoped test passes, it stays quarantined.",
+   "cluster": "diffusion",
+   "current_executable_status": "executable-but-quarantined (code_ref diffusion:fit_hawkes + test_ref tests/test_diffusion_families.py run; held-out count forecast FAILED vs Poisson on Higgs)",
+   "current_registry_status": "quarantined",
+   "datasets_in_literature": [
+    "Higgs Twitter aggregate activity stream (local; FAILED count forecast)",
+    "SEISMIC: ~166k Twitter cascades (final-size prediction; works)",
+    "Mishra et al.: Twitter/Weibo cascades",
+    "MemeTracker / retweet-cascade benchmarks"
+   ],
+   "disposition": "quarantined",
+   "evidence_type": "structural_model",
+   "expected_applicability": "domain_restricted_to_cascade_size_prediction_only",
+   "expected_transport_risk": "high",
+   "family": "Hawkes / self-excitation (point-process contagion)",
+   "formal_model": "Self-exciting intensity lambda(t) = mu + alpha*omega * sum_{t_i<t} exp(-omega (t - t_i)) (exponential kernel; branching ratio = alpha). Fitted by EM/MLE. Marked variants (SEISMIC/Mishra) scale excitation by user degree/influence for final-size prediction.",
+   "local_refit_feasible": "yes (already fitted on Higgs \u2014 and it FAILED held-out vs Poisson; failure is the record)",
+   "n_sources": 3,
+   "n_verified_sources": 3,
+   "planned_implementation": "Do NOT reuse for aggregate count forecasting (preserve failure). If revisited, re-scope to per-cascade final-size prediction (SEISMIC/marked-Hawkes) as a distinct family/task with its own held-out gate; keep the quarantined aggregate-forecast pack as a recorded negative result.",
+   "planned_parameter_packs": [
+    "Higgs Hawkes pack (mu=0.00322/s, branching_alpha=0.95, omega=0.001667/s) \u2014 QUARANTINED negative result, kept as recorded failure"
+   ],
+   "priority": "low",
+   "promotion_blocker": "QUARANTINED and MUST remain so: held-out 24-72h aggregate count forecast FAILED vs Poisson on Higgs (MAE 1098.9 > 973.0). This preserved failure blocks any promotion. It could be reconsidered as domain_restricted ONLY under a different, re-scoped task (per-cascade final-retweet-size prediction, SEISMIC regime) with its own passing held-out record \u2014 not the aggregate-count task it failed.",
+   "registry_id": "hawkes_self_excitation",
+   "temporal_scale": "Sub-daily event stream (seconds-to-hours); forecast horizon 24-72h in the local test."
+  },
+  {
+   "best_validation_route": "Higgs held-out already run (aging gain marginal); strengthen by fitting the decay on a second local series (e.g., decline phase of dropped baby names) and checking the tau/half-life is consistent with an aging (not depletion) mechanism.",
+   "cluster": "diffusion",
+   "current_executable_status": "executable (code_ref diffusion:fit_aging_tau + test_ref tests/test_diffusion_families.py; tau fitted on Higgs)",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Digg 1M users (Wu & Huberman 2007)",
+    "Twitter retweet cascades (TiDeH; Kobayashi & Lambiotte 2016)",
+    "Higgs Twitter (local; tau=48h)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "descriptive",
+   "expected_applicability": "moderate",
+   "expected_transport_risk": "high",
+   "family": "Information aging / novelty decay",
+   "formal_model": "Age-weighted effective exposure k_eff(t) = sum_j exp(-age_j / tau), where age_j = time since exposure j and tau is a fitted decay (e-folding) time; the hazard uses k_eff instead of raw exposure count. tau fitted on a grid by likelihood.",
+   "local_refit_feasible": "yes (already fitted tau=48h on Higgs; re-fittable per dataset)",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep age-weighted exposure; widen the tau grid beyond 48h (currently boundary-limited); report tau as a per-domain fitted quantity with a wide prior; document Digg ~1h vs Higgs 48h as the transport warning.",
+   "planned_parameter_packs": [
+    "Higgs local aging pack (tau=48h; grid-boundary, treat as lower bound)"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "Aging improvement over the no-aging model is marginal on Higgs (paired delta Brier +0.000281, CI95 includes 0); no PASS held-out record, so it stays 'implemented'. tau is also unidentified at the grid boundary.",
+   "registry_id": "information_aging",
+   "temporal_scale": "Decay time constant spanning minutes-to-hours (Digg news, ~1h) to days (Higgs, tau=48h) to potentially weeks (cultural names)."
+  },
+  {
+   "best_validation_route": "Cannot locally validate the causal job-mobility claim (no local dataset pairs tie strength with labor outcomes; Higgs/Enron lack job-transmission labels). Import the inverted-U functional form as a structural prior only; magnitudes remain unverified until LinkedIn-like or labeled-mobility data is available.",
+   "cluster": "network",
+   "current_executable_status": "none",
+   "current_registry_status": "not_in_registry",
+   "datasets_in_literature": [
+    "LinkedIn People-You-May-Know randomized experiments (~2015-2019); replication code+data on Zenodo (rajkumarkarthik/weak_ties_data_and_code, record 6533898)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "causal_estimate",
+   "expected_applicability": "moderate (opportunity/referral diffusion contexts)",
+   "expected_transport_risk": "high",
+   "family": "Weak ties (strength-of-weak-ties / opportunity transmission)",
+   "formal_model": "Hazard/probability that a social tie transmits a job (or opportunity) is a nonlinear, concave (inverted-U) function of tie strength s: P(transmit | tie) rises as ties get weaker but only up to a point, then declines (diminishing returns to weakness). Which s maximizes transmission is measurement-dependent: moderately weak ties by mutual-connection count vs the weakest ties by interaction-intensity. Effect sign is moderated by industry digitalness.",
+   "local_refit_feasible": false,
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Register a 'weak_tie_transmission' family: opportunity-transmission hazard as an inverted-U function of tie strength, with industry-digitalness modifier. Encode only the DIRECTION from Rajkumar; leave magnitudes null/prior.",
+   "planned_parameter_packs": [
+    "linkedin_direction_pack (qualitative inverted-U + industry modifier; effect magnitudes null/unverified)"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "No local dataset for refit; effect magnitudes not extracted (verified:false) and causal effect not transportable. Cannot exceed structural_candidate_only.",
+   "registry_id": null,
+   "temporal_scale": "multi-year (5-year experimental window)"
+  },
+  {
+   "best_validation_route": "Use Enron (temporal email, attributes) and Higgs (follower graph + diffusion) to reproduce the naive-vs-adjusted contagion gap as a methodological demonstration; adopt Aral's >=50% homophily share and 3-7x overestimation as a prior/guardrail that discounts observational peer-effect estimates. Do NOT promote any local influence coefficient to causal.",
+   "cluster": "network",
+   "current_executable_status": "partial \u2014 homophily edge weight executable via network_rewiring; no peer-influence identification/discount mechanism implemented",
+   "current_registry_status": "partial \u2014 only the homophily-driven edge-formation term exists (inside network_rewiring); the influence-vs-homophily SEPARATION / confounding guardrail is not represented",
+   "datasets_in_literature": [
+    "Aral 2009: global instant-messaging network + adoption of a paid mobile service application (exact n not extracted here)",
+    "McPherson 2001: review synthesizing many homophily studies",
+    "Shalizi-Thomas 2011: methodological (reanalysis/critique, incl. Christakis-Fowler obesity contagion)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "methodological",
+   "expected_applicability": "high as an identification guardrail; low as a point estimator of influence",
+   "expected_transport_risk": "high",
+   "family": "Homophily vs influence (peer-effect identification / confounding)",
+   "formal_model": "Observed co-behavior among tied nodes = peer_influence + latent_homophily (tie formation on shared traits) + external/contextual confounds. From observational tie + behavior data this decomposition is NOT identified (Shalizi-Thomas). Best achievable without randomization: an UPPER BOUND on influence via dynamic matching on time-varying covariates (Aral): influence_share <= ~0.498, homophily_share >= ~0.50.",
+   "local_refit_feasible": "partial \u2014 Enron/Higgs can DEMONSTRATE the confounding (naive contagion estimate >> homophily-adjusted estimate) and refit the homophily edge term, but CANNOT identify a true causal influence coefficient (no randomized exposure locally).",
+   "n_sources": 3,
+   "n_verified_sources": 3,
+   "planned_implementation": "(a) Keep homophily edge-formation term in network_rewiring. (b) Add an 'influence_identification_guard': any peer-effect estimated from observational data is flagged upper-bound and discounted by the Aral homophily share (>=0.5). (c) Optionally refit homophily edge weights on Enron.",
+   "planned_parameter_packs": [
+    "aral_homophily_share_prior (>=0.50 of apparent contagion attributable to homophily; naive-method inflation 3x-7x)"
+   ],
+   "priority": "high",
+   "promotion_blocker": "Causal peer-influence is not identifiable from local observational data; the family can reach locally_validated only for the confounding-DEMONSTRATION / homophily-edge part, never transfer_validated for an influence coefficient.",
+   "registry_id": "network_rewiring",
+   "temporal_scale": "event to multi-month"
+  },
+  {
+   "best_validation_route": "On Higgs (and Enron): (1) confirm friendship paradox (mean friend-degree > mean degree) as a cheap structural check; (2) drive the existing diffusion/exposure family with nomination vs random vs in-degree seed sets and confirm cascade-size ordering; use Kim's +12.2pp only as an external anchor, not a local target.",
+   "cluster": "network",
+   "current_executable_status": "none (a diffusion family exists separately and could host seeding, but no targeting/seed-selection mechanism is registered)",
+   "current_registry_status": "not_in_registry",
+   "datasets_in_literature": [
+    "Kim 2015: 32-village Honduras cluster RCT (NCT01672580), chlorine + multivitamin adoption",
+    "Feld 1991: illustrative (Coleman high-school friendship data)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "causal_estimate",
+   "expected_applicability": "moderate-high for ranking seeding strategies; low for absolute lift transport",
+   "expected_transport_risk": "high (magnitudes); moderate (strategy ranking)",
+   "family": "Network targeting / seeding (friendship-nomination targeting; friendship paradox)",
+   "formal_model": "Seed-set selection rule maps to expected cascade size. Nomination targeting: sample a random individual, seed a randomly named FRIEND of theirs; by the friendship paradox E[degree(nominated friend)] > E[degree(random node)], so seeds are systematically more central, enlarging diffusion. Contrast rules: random seeding; in-degree (highest-degree) seeding. Coupled to a diffusion model, cascade_size(nomination) > cascade_size(random) ~= cascade_size(in-degree) in the Kim RCT.",
+   "local_refit_feasible": "partial \u2014 Higgs follower graph and Enron let you (1) verify the friendship paradox directly and (2) SIMULATE nomination vs random vs in-degree seeding on real topology with the existing diffusion family and compare cascade sizes; there is NO local randomized adoption outcome, so the field effect size cannot be validated locally.",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Register 'friendship_nomination_targeting': seed-selection operator (random-friend nomination) that composes with the diffusion family; expose expected seed-degree inflation from the friendship paradox and cascade-size comparison across rules.",
+   "planned_parameter_packs": [
+    "higgs_friendship_paradox_pack (degree-inflation measured on the real follower graph)",
+    "kim2015_effect_anchor (nomination vs random +12.2pp, CI 6.9-17.9; external, not locally refit)"
+   ],
+   "priority": "high",
+   "promotion_blocker": "No local randomized adoption outcome \u2014 field effect not locally validatable. Can reach locally_validated only for the structural friendship-paradox + simulated cascade-ordering claim; magnitude stays transport-restricted.",
+   "registry_id": null,
+   "temporal_scale": "months (intervention rollout and adoption window)"
+  },
+  {
+   "best_validation_route": "Fit rewire_probability (age-decay + homophily) on the ENRON temporal email network (pairwise timestamped ties -> formation/decay + triadic closure); held-out route: predict future edge formation/persistence on a later time window; add triadic-closure/reciprocity terms toward SAOM and compare against Kossinets-Watts qualitative findings. (Higgs is a STATIC follower snapshot with no edge timestamps -> usable only for static degree/structure, not decay.)",
+   "cluster": "network",
+   "current_executable_status": "implemented \u2014 swm.world_model_v2.registry.families.interaction:rewire_probability; simplified logistic P(edge)=sigmoid(w*(homophily-0.5)+log(age_decay)); NOT full SAOM (no reciprocity/triadic terms); defaults (decay_days=90, homophily_weight=1.0) are UNFITTED priors",
+   "current_registry_status": "implemented (status=implemented; executable transition + tests; NO validation history, NO parameter packs)",
+   "datasets_in_literature": [
+    "SAOM canonical panels: van de Bunt freshman networks; Glasgow 'Teenage Friends and Lifestyle' study (RSiena)",
+    "Kossinets & Watts 2006: university email network (43,553 nodes, 1 academic year)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "moderate-high for timestamped communication/social networks",
+   "expected_transport_risk": "high",
+   "family": "Network rewiring / edge formation & decay (SAOM; triadic closure)",
+   "formal_model": "SAOM: dN(t) as a continuous-time Markov chain; a rate function lambda_i sets when actor i gets a change opportunity, and an objective/evaluation function f_i(x) = sum_k beta_k s_ik(x) (outdegree/density, reciprocity, transitive triads/closure, homophily/covariate similarity) governs which tie change maximizes myopic utility. Repo's current reduced form keeps only homophily + tie-age decay in a logistic; full family adds reciprocity and triadic-closure terms.",
+   "local_refit_feasible": true,
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Extend rewire_probability with triadic-closure and reciprocity terms (move toward a lightweight SAOM evaluation function); fit on Enron; build the first parameter pack from that fit.",
+   "planned_parameter_packs": [
+    "enron_rewire_pack (decay_days, homophily_weight, triadic_closure_weight FITTED on Enron temporal edges \u2014 currently unfitted/null)"
+   ],
+   "priority": "high",
+   "promotion_blocker": "Implemented but has NO validation history and NO packs; defaults are unfitted priors. Blocked from locally_validated until an Enron held-out / posterior-predictive fit record AND a parameter pack exist (per registry promotion gates).",
+   "registry_id": "network_rewiring",
+   "temporal_scale": "event to longitudinal (panel waves)"
+  },
+  {
+   "best_validation_route": "Not locally validatable: Higgs has diffusion events but a STATIC follower graph (no link-creation timestamps -> cannot fit the network-coevolution half); Enron has communication/link events but no separate information-cascade layer. NEITHER dataset supplies both coupled streams. Given the local Hawkes held-out failure, keep gated as a structural candidate; only revisit with Twitter-style joint logs and explicit guards against the known self-excitation overfit.",
+   "cluster": "network",
+   "current_executable_status": "none (separate diffusion families exist; related hawkes_self_excitation is QUARANTINED after failing held-out)",
+   "current_registry_status": "not_in_registry",
+   "datasets_in_literature": [
+    "COEVOLVE paper: Twitter (joint link-creation + retweet event logs) and synthetic simulations"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "structural_model",
+   "expected_applicability": "low-moderate (data-availability constrained)",
+   "expected_transport_risk": "high",
+   "family": "Diffusion-network coevolution (coupled point processes)",
+   "formal_model": "Two interleaved (Hawkes-like) point processes with cross terms: diffusion events (e.g. retweets) have intensity that depends on current edges; link-creation events have intensity boosted by recent diffusion exposure. Each process's conditional intensity is modulated by the other's history, yielding joint (network, cascade) traces. Parameters (base intensities, triggering kernels, diffusion<->link cross-excitation weights) fit by MLE per dataset.",
+   "local_refit_feasible": false,
+   "n_sources": 1,
+   "n_verified_sources": 1,
+   "planned_implementation": "Defer. Register as a structural candidate only. If pursued, reuse point-process infrastructure but REQUIRE joint diffusion+link event data and a held-out check that beats the Poisson/independent-process baseline (which the repo's Hawkes did not).",
+   "planned_parameter_packs": [],
+   "priority": "low",
+   "promotion_blocker": "No local dataset with coupled diffusion+link streams; related Hawkes self-excitation already failed held-out (quarantined). Cannot be locally validated; stays structural_candidate_only.",
+   "registry_id": null,
+   "temporal_scale": "event (continuous time)"
+  },
+  {
+   "best_validation_route": "A designed network-signal experiment (Chandrasekhar style) or an external panel of repeated opinions over a known influence network. NOT achievable with current in-repo data: OpinionQA and GlobalOpinions are cross-sectional (opinion distributions by group, not opinion trajectories over a network), so W and convergence cannot be identified.",
+   "cluster": "opinion",
+   "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.social:degroot_step resolves; test_ref tests/test_social_families.py present)",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Chandrasekhar et al. 2020: Indian-village social-network learning experiment + Mexican-student lab (sequential binary-state guessing over neighbors)",
+    "Golub & Jackson 2010 is theoretical (no dataset)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "structural_model",
+   "expected_applicability": "narrow \u2014 small-group / village deliberation with repeated exchange; partial even there because behavior is a Bayesian/DeGroot mixture",
+   "expected_transport_risk": "high",
+   "family": "DeGroot naive learning (opinion averaging on a network)",
+   "formal_model": "o(t+1) = W o(t), W row-stochastic and time-invariant. Long-run consensus = left Perron eigenvector s of W (s W = s); each agent's asymptotic weight (social influence) is its eigenvector centrality. Registry operator degroot_step implements one round with per-agent self-inclusive weights.",
+   "local_refit_feasible": false,
+   "n_sources": 3,
+   "n_verified_sources": 3,
+   "planned_implementation": "Retain degroot_step as a candidate structural operator; add an optional Bayesian / mixture comparator and a signal-redundancy discount; keep W an explicit required, un-pinned input (no default weights presented as empirical).",
+   "planned_parameter_packs": [],
+   "priority": "medium-low",
+   "promotion_blocker": "No in-repo opinion-dynamics panel to fit or validate W; the strongest external evidence (Chandrasekhar 2020) partially rejects the naive form and is not a transportable parameter calibration.",
+   "registry_id": "degroot_influence",
+   "temporal_scale": "discrete communication rounds (event-level); consensus emerges over many rounds"
+  },
+  {
+   "best_validation_route": "A longitudinal panel of individual opinions with interaction/exposure records (to identify epsilon and the update rule). Absent in repo and largely absent in the literature; OpinionQA/GlobalOpinions are cross-sectional and cannot identify dynamics.",
+   "cluster": "opinion",
+   "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.social:bounded_confidence_step resolves; test_ref tests/test_social_families.py present)",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "none for calibration \u2014 these are agent-based simulation studies; empirical estimation of epsilon from field opinion data is rare and contested"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "structural_model",
+   "expected_applicability": "illustrative / structural only \u2014 use as a qualitative generator for polarization vs consensus scenarios, not as a calibrated predictor",
+   "expected_transport_risk": "high",
+   "family": "Bounded-confidence opinion dynamics (Hegselmann-Krause / Deffuant)",
+   "formal_model": "HK: o_i(t+1) = mean{ o_j : |o_j - o_i| <= epsilon }. Deffuant: for a random pair (i,j), if |o_i - o_j| <= epsilon then o_i += mu (o_j - o_i) and symmetrically for j. epsilon (confidence bound) is the key parameter governing the consensus/fragmentation transition; the registry operator bounded_confidence_step implements the HK rule with an optional neighbor restriction.",
+   "local_refit_feasible": false,
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep bounded_confidence_step as a qualitative structural generator; treat epsilon (and mu) as explicit scenario assumptions run under a sensitivity sweep; do NOT emit calibrated point forecasts.",
+   "planned_parameter_packs": [],
+   "priority": "low",
+   "promotion_blocker": "No empirical identification of epsilon from any available dataset; this is agent-based theory with a thin validation base \u2014 cannot exceed structural-candidate status without a real opinion-trajectory calibration.",
+   "registry_id": "bounded_confidence",
+   "temporal_scale": "discrete rounds (event-level); asymptotic clustering over many rounds"
+  },
+  {
+   "best_validation_route": "Urn-style sequential-decision lab data, or field data with observable adoption order and a proxy for private signals (e.g., sequential product ratings/reviews). Not present in repo.",
+   "cluster": "opinion",
+   "current_executable_status": "not_implemented (no operator; nearest existing generic operator is belief_update_exposure)",
+   "current_registry_status": "not_registered",
+   "datasets_in_literature": [
+    "Anderson & Holt 1997 urn-signal lab",
+    "Chandrasekhar et al. 2020 village + student networks",
+    "numerous cascade-lab replications (Goeree et al., classroom versions)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "structural_model",
+   "expected_applicability": "narrow \u2014 adoption/rating/review sequences, bank-run and herding scenarios",
+   "expected_transport_risk": "high",
+   "family": "Bayesian social learning / observational learning & information cascades",
+   "formal_model": "Sequential Bayesian updating: agent t forms a posterior over a binary state from a private signal plus the observed action history a_1..a_{t-1}; acts to maximize expected payoff. A cascade begins when the public belief implied by the action history dominates any single private signal, so subsequent actions become uninformative and can lock on the wrong state.",
+   "local_refit_feasible": false,
+   "n_sources": 3,
+   "n_verified_sources": 3,
+   "planned_implementation": "Add a Bayesian observational-learning operator plus a cascade detector to sit alongside degroot_influence as a comparator (currently no such family is registered).",
+   "planned_parameter_packs": [],
+   "priority": "low-medium",
+   "promotion_blocker": "Not implemented; no in-repo sequential private-signal + action dataset; and comparative evidence (Chandrasekhar 2020) favors DeGroot averaging over pure Bayesian updating in field settings.",
+   "registry_id": null,
+   "temporal_scale": "sequential / event-level (a decision sequence)"
+  },
+  {
+   "best_validation_route": "A SLANT-style refit needs timestamped message+network event data (absent in repo). Causal falsification needs list-experiment or anonymity-manipulation data (absent). Locally, OpinionQA/GlobalOpinions support only a DESCRIPTIVE expressed-distribution baseline (and a regime-gap association across GlobalOpinions countries), not a causal falsification calibration.",
+   "cluster": "opinion",
+   "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.social:expressed_opinion resolves; test_ref tests/test_social_families.py present)",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "SLANT: Twitter event streams (e.g., Politics, Movie, US election topics) with timestamped messages",
+    "Kuran 1995: historical case studies (no dataset)",
+    "list-experiment / sensitive-question literature (outside these two sources) separately documents expressed-latent gaps"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "structural_model",
+   "expected_applicability": "moderate for describing expressed-opinion distributions by group; weak for any causal preference-falsification claim",
+   "expected_transport_risk": "high",
+   "family": "Latent vs expressed opinion / preference falsification",
+   "formal_model": "Registry operator: expressed = latent when social_pressure <= conviction; otherwise expression is pulled toward the perceived opposite-pole norm by (social_pressure - conviction). SLANT generalization: latent opinion x_i(t) evolves via a jump-diffusion SDE with jumps at neighbors' message events; the expressed sentiment observed at an event is a (noisy) readout of the latent state.",
+   "local_refit_feasible": "partial (descriptive only)",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep expressed_opinion as the operator; optionally add a SLANT-style latent-state variant gated on availability of message-event data; wire OpinionQA as a DESCRIPTIVE expressed-distribution reference (explicitly not a falsification calibration).",
+   "planned_parameter_packs": [],
+   "priority": "medium",
+   "promotion_blocker": "Latent opinion is unobserved locally; no exogenous social-pressure variation or event-stream data to identify conviction/pressure; OpinionQA yields description, not causal falsification.",
+   "registry_id": "latent_expressed_opinion",
+   "temporal_scale": "event-level (individual expression instances); availability cascades unfold over weeks-to-years (Kuran)"
+  },
+  {
+   "best_validation_route": "Refit an argument-level persuasion-success model on the local CMV dataset (781/419, base 0.651; matched-challenger design already used in repo exp021/exp074/exp087) as an ASSOCIATIONAL/predictive persuasion-response mechanism. Anchor external validity to Broockman-Kalla (durable, identity) and Kalla-Broockman 2018 (near-zero generic) as domain-boundary priors \u2014 but treat CMV as its own domain, not as a test of canvassing.",
+   "cluster": "opinion",
+   "current_executable_status": "not_implemented (no dedicated persuasion operator; belief_update_exposure is the nearest generic bounded-update operator)",
+   "current_registry_status": "not_registered",
+   "datasets_in_literature": [
+    "Broockman & Kalla 2016: South-Florida canvassing RCT (n=501)",
+    "Kalla & Broockman 2018: 49 US field experiments (meta-analytic corpus)",
+    "Wood & Porter 2019: large-N survey experiments on factual corrections",
+    "LOCAL: r/ChangeMyView (CMV) matched challenger arguments with delta-success labels (also used in repo exp021/exp074/exp087)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "causal_estimate",
+   "expected_applicability": "domain-bounded \u2014 strong for online-text argument-response persuasion (CMV-like); weak/near-zero for generic political persuasion; durable only for identity perspective-taking",
+   "expected_transport_risk": "high",
+   "family": "Interpersonal persuasion / durable attitude change (with backfire & minimal-effects nulls)",
+   "formal_model": "No closed-form registered. Reduced form is a treatment-effect model: expressed attitude A_i(post) = A_i(pre) + tau * D_i + noise, where D_i is a persuasion-contact indicator and tau is a (small, often ~0, occasionally durable) average treatment effect that decays over time; heterogeneity in tau (message-target fit, perspective-taking vs information) dominates. Continued-influence/backfire is the case tau < 0 on corrected beliefs (found to be rare).",
+   "local_refit_feasible": true,
+   "n_sources": 3,
+   "n_verified_sources": 3,
+   "planned_implementation": "Register a persuasion / attitude-change family with (a) a reduced-form treatment-effect operator (small, decaying, heterogeneous tau; default prior near zero per Kalla-Broockman 2018) and (b) a CMV-fitted argument-response success model as a domain pack; encode the elusive-backfire finding as a guard against assuming automatic backfire.",
+   "planned_parameter_packs": [
+    "cmv_persuasion_success (associational; local refit on cmv_common.json; base rate 0.651)",
+    "generic_campaign_persuasion_nearzero_prior (from Kalla & Broockman 2018 meta-analysis; effect ~ 0)"
+   ],
+   "priority": "high",
+   "promotion_blocker": "No family/operator is registered yet; needs implementation, then a held-out CMV refit for local validation. The strongest causal source (Broockman-Kalla 2016) is domain-specific (canvassing/identity prejudice) and does not transport to online-text persuasion, and its numeric effect size remains unverified this pass.",
+   "registry_id": null,
+   "temporal_scale": "event (single conversation/contact) with follow-up over days-to-months; effects often decay"
+  },
+  {
+   "best_validation_route": "Seed k_* from a turnout micro-dataset or GOTV replication; posterior-predictive check against held-out electorate turnout; explicitly document paradox-of-voting miscalibration as a known failure mode",
+   "cluster": "participation",
+   "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.interaction:turnout_probability resolves; test_ref tests/test_interaction_families.py present); no validation record, no parameter pack",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "CPS Voter Supplement",
+    "ANES",
+    "Catalist/validated voter files",
+    "aggregate national turnout series"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "medium (broad conceptual scope but weak calibrated predictive power)",
+   "expected_transport_risk": "high",
+   "family": "Turnout / calculus of voting",
+   "formal_model": "Calculus of voting: R = P*B - C + D, vote iff R>0, where P=prob the ballot is pivotal, B=candidate differential benefit, C=cost of voting, D=expressive/duty benefit. Registry implementation is a bounded-logit surrogate: p = sigmoid(logit(base_rate) - k_c*cost + k_b*benefit + k_d*duty + k_m*mobilized).",
+   "local_refit_feasible": "partial - structural form is executable, but no turnout micro-dataset is committed on disk; fitting k_* requires importing CPS/ANES or a GOTV experimental voter file",
+   "n_sources": 2,
+   "n_verified_sources": 1,
+   "planned_implementation": "Keep the bounded-logit surrogate; add a duty-dominant parameterization; attach an empirically-anchored duty/mobilization prior sourced from the mobilization and social_pressure packs below",
+   "planned_parameter_packs": [
+    "calculus_of_voting_priors (labeled reference-class; blocked from production until fit)"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "No empirical validation record, no parameter pack, coefficients are unfitted priors, and the mechanism has a known descriptive-fit failure (paradox of voting). Formal model verified; numbers are priors not estimates.",
+   "registry_id": "voting_turnout",
+   "temporal_scale": "event (single election)"
+  },
+  {
+   "best_validation_route": "Attach published_research packs (canvassing +~7pp/contact, commercial phone ~0, mail ~+0.5pp) with broad transport uncertainty; hold out a distinct replication (e.g., Green-Gerber-Nickerson 2003) to test transfer",
+   "cluster": "participation",
+   "current_executable_status": "executable (shares code_ref turnout_probability, mobilized term; test_ref present); no validation record, no pack",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "New Haven 1998 registered-voter file (Gerber-Green 2000)",
+    "Green, Gerber & Nickerson JOP 2003 six-city local-election experiments",
+    "state validated voter files"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "causal_estimate",
+   "expected_applicability": "high (well-identified, repeatedly replicated causal channel)",
+   "expected_transport_risk": "medium",
+   "family": "Mobilization / GOTV (get-out-the-vote contact)",
+   "formal_model": "Mobilized contact adds a positive shift to the turnout logit: p_treated = sigmoid(logit(baseline) + k_m*mobilized). Empirically summarized as an intent-to-treat (ITT) turnout difference and a complier average causal effect (CACE) via IV on contact.",
+   "local_refit_feasible": "no - no GOTV experimental dataset is committed on disk (Upworthy on-disk data is content A/B, not turnout); packs must be seeded from published_research and refit needs an external replication voter file",
+   "n_sources": 2,
+   "n_verified_sources": 1,
+   "planned_implementation": "Bind mobilized term to a published_research pack keyed by contact_type; expose contact_rate so ITT vs CACE is explicit",
+   "planned_parameter_packs": [
+    "gotv_canvassing (ATE ~+7pp per reached contact, wide CI)",
+    "gotv_phone_commercial (~0)",
+    "gotv_direct_mail (~+0.5pp/piece)"
+   ],
+   "priority": "high",
+   "promotion_blocker": "No in-model validation record and no committed dataset for local refit; packs are transferable published_research priors only until a held-out replication passes.",
+   "registry_id": "mobilization",
+   "temporal_scale": "event (one election cycle)"
+  },
+  {
+   "best_validation_route": "Add a social_pressure family (or mobilization sub-pack) with the four-arm gradient; given strong replication, transfer-test the ordering/magnitude across electorates",
+   "cluster": "participation",
+   "current_executable_status": "not_executable (no dedicated code_ref); could be realized as a mobilization parameter pack or a new social_pressure family",
+   "current_registry_status": "not_registered (no dedicated family; conceptually a mobilization sub-mechanism / observability shifter on the turnout logit)",
+   "datasets_in_literature": [
+    "Michigan August 2006 primary registered-voter file (GGL 2008)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "causal_estimate",
+   "expected_applicability": "high (best-identified single causal effect in this cluster)",
+   "expected_transport_risk": "medium",
+   "family": "Social pressure on turnout",
+   "formal_model": "Additive social-pressure term on the turnout logit whose magnitude increases in the observability/publicizing of the individual's vote: \u0394turnout monotone in pressure intensity (Civic Duty < Hawthorne < Self < Neighbors). Equivalent to a large positive shock to the D/mobilization term in the calculus-of-voting surrogate.",
+   "local_refit_feasible": "no on-disk data; effect sizes enter as a published_research pack from GGL 2008",
+   "n_sources": 1,
+   "n_verified_sources": 1,
+   "planned_implementation": "New social_pressure family OR mobilization pack: turnout logit += g(pressure_intensity), calibrated to +1.8/+2.5/+4.9/+8.1pp arms",
+   "planned_parameter_packs": [
+    "social_pressure_mail (Civic Duty +1.8 / Hawthorne +2.5 / Self +4.9 / Neighbors +8.1 pp)"
+   ],
+   "priority": "high",
+   "promotion_blocker": "No executable registry family yet; needs family + pack. Point estimates verified; SEs and baseline not extracted from the primary table (flagged verified:false).",
+   "registry_id": null,
+   "temporal_scale": "event (single primary election)"
+  },
+  {
+   "best_validation_route": "Keep as a published_research pack (direct +0.39pp; per-close-friend +0.224pp) with a strong platform/era transport warning; validate only that model spillover magnitudes stay within this envelope",
+   "cluster": "participation",
+   "current_executable_status": "not_executable (no code_ref)",
+   "current_registry_status": "not_registered (no dedicated family; would combine a direct-treatment term with a peer-contagion term)",
+   "datasets_in_literature": [
+    "Facebook 2010 user activity logs matched to validated public voter records (proprietary; not publicly redistributable)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "causal_estimate",
+   "expected_applicability": "medium (narrow: large online networks only)",
+   "expected_transport_risk": "high",
+   "family": "Online / network mobilization (social contagion)",
+   "formal_model": "Two-component mobilization: (1) direct treatment effect of the social message on ego's turnout; (2) peer-contagion term where ego's turnout probability rises with the number of treated close friends. Contagion concentrated in strong (face-to-face) ties.",
+   "local_refit_feasible": "no - proprietary platform data unavailable; enters only as a published_research pack with an explicit platform-transport caveat",
+   "n_sources": 1,
+   "n_verified_sources": 1,
+   "planned_implementation": "Optional network-mobilization pack layering a direct-message term and a peer-contagion term (scaled by count of treated strong ties) on the turnout family",
+   "planned_parameter_packs": [
+    "online_social_message_direct (+0.39pp)",
+    "close_friend_contagion (+0.224pp per treated close friend)"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "No executable family and no accessible dataset; single-platform/single-election provenance gives high transport risk. All extracted numbers verified.",
+   "registry_id": null,
+   "temporal_scale": "event (single election day)"
+  },
+  {
+   "best_validation_route": "Attach match-offer and social-pressure packs to donation_response; validate on an external fundraising replication as held-out before any local claim",
+   "cluster": "participation",
+   "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.interaction:donation_amount resolves; test_ref present); no validation record, no pack",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Karlan-List nonprofit direct-mail donor file (>50,000 prior donors)",
+    "DLM door-to-door fundraising field data (charity solicitation with flyer randomization)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "causal_estimate",
+   "expected_applicability": "high (well-identified solicited-giving effects)",
+   "expected_transport_risk": "medium",
+   "family": "Donation / charitable giving response to an ask",
+   "formal_model": "Bounded donation response: give-probability and amount increase in ask/match-generosity/affinity/history and saturate at capacity. Structural decomposition (DLM): utility of giving = altruism/warm-glow term minus a social-pressure cost S incurred when declining a face-to-face ask; observed giving = argmax over give/decline including S.",
+   "local_refit_feasible": "no - no donation dataset is committed on disk (Upworthy is content A/B, not giving); packs seed from Karlan-List / DLM published_research",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Bind donation_amount/ P(donate) to packs: match-presence multiplier (+~19% revenue, +~22% response, ratio-insensitive) and a social-pressure cost term S ($3.5/$1.4) for avoidable-vs-unavoidable asks",
+   "planned_parameter_packs": [
+    "match_offer_effect (+19% revenue/solicitation; +22% P(donate); ratio-insensitive)",
+    "door_to_door_social_pressure (S=$3.5 in-state / $1.4 out-of-state; -30% giving when avoidable)"
+   ],
+   "priority": "high",
+   "promotion_blocker": "No committed donation dataset for local refit and no in-model validation record; packs are transferable published_research priors until a held-out fundraising replication passes.",
+   "registry_id": "donation_response",
+   "temporal_scale": "event (single solicitation)"
+  },
+  {
+   "best_validation_route": "Encode as a near-zero persuasion prior with wide-but-zero-centered uncertainty; validate that the world model does NOT over-attribute vote-choice change to campaign contact in general-election scenarios",
+   "cluster": "participation",
+   "current_executable_status": "not_executable (no code_ref)",
+   "current_registry_status": "not_registered (NONE explicit; important as a near-null guardrail prior, distinct from mobilization which moves turnout not choice)",
+   "datasets_in_literature": [
+    "49 pooled campaign field-experiment datasets (Kalla-Broockman)",
+    "media-effects studies surveyed in DellaVigna-Gentzkow 2010"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "meta_analysis",
+   "expected_applicability": "medium-high as a guardrail (prevents over-estimating persuasion)",
+   "expected_transport_risk": "medium",
+   "family": "Political persuasion (campaign contact on vote choice)",
+   "formal_model": "Persuasion-rate framing (DellaVigna-Gentzkow): fraction of the exposed population whose behavior shifts, f = (change in behavior) / (exposure * (persuadable share)). Estimand here is the ATE of campaign contact on candidate choice / vote share; Kalla-Broockman best estimate ~0 in general elections, with rare nonzero regimes.",
+   "local_refit_feasible": "no - meta-analytic near-null; encode as a prior/guardrail rather than a fitted coefficient",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Add a persuasion guardrail: default general-election contact->vote-choice effect ~0 with documented exception regimes; never a large default",
+   "planned_parameter_packs": [
+    "campaign_persuasion_null (general-election ATE ~0)",
+    "persuasion_exception_regimes (small, decaying; unpopular-position + heavy targeting, or early contact)"
+   ],
+   "priority": "medium-high",
+   "promotion_blocker": "No executable family; and the credible 'estimate' is a near-zero prior with strong context-dependence, so it serves as a guardrail rather than a positive mechanism. Central null verified.",
+   "registry_id": null,
+   "temporal_scale": "event (campaign cycle); persuasion effects that do appear tend to decay"
+  },
+  {
+   "best_validation_route": "External IPS/swap estimation on a rank-varying click log. Locally only the structural form is unit-testable; the decay parameter is a prior, unidentifiable from repo datasets.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=families.interaction:position_examination, formal P(examine|rank)=gamma^rank (default gamma=0.8).",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Search-engine click logs with logged/randomized rank (arXiv Full-Text Search, Joachims 2017)",
+    "Eye-tracking lab data (Joachims/Granka 2005)",
+    "Yandex Relevance Prediction click-model benchmark"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model (+ causal_estimate for propensity from swap experiments)",
+   "expected_applicability": "medium-high in ranked-feed/search domains; null in non-ranked settings.",
+   "expected_transport_risk": "high",
+   "family": "Examination / position bias",
+   "formal_model": "Examination hypothesis: P(click|rank,doc)=P(examine|rank)\u00b7P(relevant|doc). Decay forms: (a) Cascade (Craswell 2008): sequential top-down, P(examine r1)=1, P(examine r+1)=P(examine r)\u00b7(1-P(click at r)); (b) Position-Based propensity (Joachims 2017): q_r=(1/r)^eta, content-independent. Repo implements geometric variant P(examine|rank)=gamma^rank.",
+   "local_refit_feasible": "NO. No local dataset varies/logs rank with clicks. Upworthy RANDOMIZES content (headline/image) but NOT position, so it identifies content-response/click-propensity, NOT position/examination bias. StackExchange answer order is not an examination log.",
+   "n_sources": 3,
+   "n_verified_sources": 3,
+   "planned_implementation": "Keep structural family; expose both parameterizations (gamma^rank and (1/r)^eta); add IPS hook for an externally-estimated propensity vector per surface. Do NOT claim local validation.",
+   "planned_parameter_packs": [
+    "prior_pack: gamma=0.8 (labeled prior)",
+    "literature_pack: eta=1.0 (Joachims 2017), rank curve [1,0.5,0.33,0.25,0.2]"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "No position-varying local click log -> examination parameter unidentifiable locally; cannot reach locally_validated. Upworthy explicitly does not identify position bias.",
+   "registry_id": "platform_examination",
+   "temporal_scale": "event (per-impression / per-session)"
+  },
+  {
+   "best_validation_route": "Structural correctness tests (order invariants, capacity). Optionally fit a CTR scorer on Upworthy to exercise the pipeline end-to-end.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=families.interaction:rank_by_score (deterministic sort by score desc -> rank).",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "LTR benchmarks: LETOR, MSLR-WEB10K/30K, Yahoo! LTR Challenge",
+    "Production click logs for counterfactual LTR (Joachims 2017)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model (+ methodological for IPS learning-to-rank)",
+   "expected_applicability": "high (any feed/marketplace/search)",
+   "expected_transport_risk": "low (operator) / high (scorer)",
+   "family": "Ranking allocation",
+   "formal_model": "Attention/slot allocation by ranking: rank(i)=argsort_desc(score_i). Unbiased LTR minimizes IPS-weighted rank risk R_IPS=sum_{clicked i} rankloss/q_{rank(i)} (Joachims 2017). The sort is a deterministic order statistic (structural); learning the score is the fitted part.",
+   "local_refit_feasible": "Operator is structural (no refit). A scorer could be fit on Upworthy CTR but that validates content-response, not the allocation rule.",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Retain as structural operator; document that only the scorer needs data; provide optional IPS-trained scorer pack tied to platform_examination propensities.",
+   "planned_parameter_packs": [
+    "structural_operator (no params)",
+    "optional: Upworthy content-response scorer (identifies click-propensity, not ranking)"
+   ],
+   "priority": "low",
+   "promotion_blocker": "Structural operator has nothing to validate against data; promotion beyond software_implemented not meaningful without a paired validated scorer.",
+   "registry_id": "platform_ranking",
+   "temporal_scale": "event"
+  },
+  {
+   "best_validation_route": "Deterministic-tally unit tests on congress votes; held-out roll-call prediction accuracy for the optional spatial overlay.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=transitions:InstitutionalVoteOperator (deterministic vote execution / tally).",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "US Congress roll-call votes (Voteview / DW-NOMINATE)",
+    "Parliamentary roll calls (EU, UK)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model (rule) + descriptive/associational (spatial-voting classification fit)",
+   "expected_applicability": "high for legislatures/committees/boards with explicit rules.",
+   "expected_transport_risk": "low (rule) / high (fitted ideal points)",
+   "family": "Institutional approval / voting rules",
+   "formal_model": "Two layers: (a) deterministic aggregation R(votes)->outcome (majority/supermajority/weighted) \u2014 structural, exact. (b) Predictive spatial voting P(yea_ij)=F(-||x_i-O_yea||^2+||x_i-O_nay||^2) with ideal points x_i (NOMINATE/DW-NOMINATE), MLE-fit. Registry operator implements (a); (b) is a fittable overlay.",
+   "local_refit_feasible": "PARTIAL. Local congress-votes dataset supports (i) validating the deterministic tally and (ii) fitting/holding-out a spatial-voting predictor. Tally itself is structural.",
+   "n_sources": 1,
+   "n_verified_sources": 1,
+   "planned_implementation": "Keep deterministic operator; add optional spatial-voting predictor validated on held-out congress roll calls (predictive overlay could reach locally_validated while rule stays structural).",
+   "planned_parameter_packs": [
+    "structural_rule (majority/supermajority/quorum)",
+    "optional: congress spatial-voting pack (held-out classification)"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "Rule layer structural (nothing to validate). Predictive overlay has no held-out record yet; needs a hold-out roll-call evaluation to advance.",
+   "registry_id": "institutional_vote",
+   "temporal_scale": "event (discrete decision)"
+  },
+  {
+   "best_validation_route": "Scenario/rule-execution tests: verify gating, quorum, veto, stage transitions on constructed procedural traces.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=institutions:Rule (procedure rule gates actions by stage variable).",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Legislative/committee procedure records",
+    "School-budget referenda (classic Romer-Rosenthal application)",
+    "Veto-player datasets (comparative politics)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model (game-theoretic + rule execution)",
+   "expected_applicability": "high wherever explicit procedure governs action admissibility.",
+   "expected_transport_risk": "low (mechanism) / retrieval-dependent (specific rules)",
+   "family": "Veto / quorum / agenda control / stage transitions",
+   "formal_model": "Rule-based gatekeeping/stage machine: an action is admissible only if stage/quorum/veto predicates hold; transitions deterministic given inputs. Game-theoretic backing (Romer-Rosenthal 1978): setter proposes x, voters compare to reversion q; equilibrium can sit far from the median, bounded by setter monopoly and status-quo. Structural/analytic \u2014 institutional constants, not fitted.",
+   "local_refit_feasible": "N/A (structural). No fitting; validate by rule-execution correctness. Congress data can sanity-check quorum/threshold gating.",
+   "n_sources": 1,
+   "n_verified_sources": 1,
+   "planned_implementation": "Keep as structural rule engine; add a library of encoded procedures (quorum, supermajority, veto, agenda-setter) with correctness tests. No parameter fitting.",
+   "planned_parameter_packs": [
+    "structural procedures (quorum/veto/agenda-setter) \u2014 no fitted params"
+   ],
+   "priority": "low",
+   "promotion_blocker": "Structural family: no statistical validation target, so stays software_implemented by design; 'validation' = procedure-encoding correctness, not held-out fit.",
+   "registry_id": "agenda_stage_control",
+   "temporal_scale": "event / episodic (procedural stages)"
+  },
+  {
+   "best_validation_route": "Implement the family, then validate costly-punishment against Fehr-G\u00e4chter-style experimental data (external); for deterrence, calibrate O(p,f) signs against a crime panel. No local route.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "not_implemented: no code_ref, no registry record, no test_ref.",
+   "current_registry_status": "NONE (no registry family)",
+   "datasets_in_literature": [
+    "Public-goods-with-punishment lab experiments (Fehr-G\u00e4chter; cross-cultural Herrmann/Th\u00f6ni/G\u00e4chter 2008 Science)",
+    "Crime deterrence panels (Becker-tradition econometrics)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "causal_estimate (randomized lab experiment) + structural_model (Becker)",
+   "expected_applicability": "medium-high for norm-enforcement/moderation/sanctioning (conceptually general).",
+   "expected_transport_risk": "high",
+   "family": "Enforcement (deterrence / costly punishment)",
+   "formal_model": "(a) Becker (1968) deterrence: offenses O=O(p,f,u) decreasing in apprehension probability p and sanction severity f; optimal enforcement trades cost vs harm. (b) Fehr-G\u00e4chter costly/altruistic punishment: players pay c(p) to cut a target's payoff; credible punishment threat sustains cooperation. contribution_{t+1} rises with expected punishment for below-average contribution.",
+   "local_refit_feasible": "NO local dataset has a punishment/enforcement treatment (Upworthy/congress/StackExchange lack costly-punishment or deviation-punishment structure). Refit needs public-goods-with-punishment data.",
+   "n_sources": 3,
+   "n_verified_sources": 3,
+   "planned_implementation": "Add 'enforcement' family with two operators: (i) Becker deterrence O(p,f); (ii) costly-punishment update contribution_{t+1}=g(deviation, expected_punishment) with the FG cost schedule as a labeled pack. Ship with external-validation record only (honest: no local data).",
+   "planned_parameter_packs": [
+    "fehr_gachter_2000_pack: impact=0.10/point, c(p)=[0,1,2,4,6,9,12,16,20,25,30], n=4, endow=20, a=0.4 (VERIFIED)",
+    "becker_structural_pack: signs only (no fitted elasticity)"
+   ],
+   "priority": "HIGH (registry gap with the strongest verified numeric evidence in this cluster).",
+   "promotion_blocker": "Not implemented (no code_ref/test_ref) AND no local dataset to identify enforcement parameters -> cannot exceed structural_candidate_only until built + externally validated.",
+   "registry_id": null,
+   "temporal_scale": "event-to-episodic (per-round punishment; deterrence over repeated interaction)"
+  },
+  {
+   "best_validation_route": "Structural: conservation unit tests for depletion; simulate M/M/1 and verify L=\u03bbW. Descriptive: estimate arrival/service rates on StackExchange answer timings and check Little's-Law consistency.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "resource_depletion executable (code_ref=transitions:ResourceUpdateOperator, conservation-checked consumption). capacity/queueing NOT implemented as a mechanism family (EventQueue classes in events.py/simulation are discrete-event ENGINE plumbing, not a fitted queue model).",
+   "current_registry_status": "resource_depletion: implemented; capacity/queueing: NONE",
+   "datasets_in_literature": [
+    "Service-system / call-center logs",
+    "Hospital and network-queue measurements",
+    "Web-server request logs (arrival/service rates)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model / methodological (analytic identities)",
+   "expected_applicability": "high wherever throughput/capacity/backlog matter (moderation queues, support, attention budgets).",
+   "expected_transport_risk": "low (identities) / measured (rates)",
+   "family": "Resource depletion / capacity / queueing",
+   "formal_model": "(a) Resource depletion: conservation accounting r_{t+1}=r_t - consumption + replenishment with non-negativity/conservation checks \u2014 structural. (b) Queueing/capacity: Little's Law L=\u03bbW; M/M/1 stationary results (utilization \u03c1=\u03bb/\u03bc, mean wait W=1/(\u03bc-\u03bb)) \u2014 analytic; Little's Law distribution-free. Parameters (\u03bb,\u03bc,capacity) measured, not regression-fit.",
+   "local_refit_feasible": "PARTIAL. StackExchange answer-arrival is queue-like (response-occurrence timing) and supports DESCRIPTIVE arrival/service-rate estimation and Little's-Law bookkeeping. Depletion is structural (unit-test conservation). Not causal identification.",
+   "n_sources": 1,
+   "n_verified_sources": 1,
+   "planned_implementation": "Add a 'capacity_queue' structural family exposing Little's Law + M/M/1 / M/M/c closed forms and a stability guard; keep resource_depletion as the conservation operator. Parameters measured per setting (labeled measured, not fitted).",
+   "planned_parameter_packs": [
+    "structural_queue: Little's Law + M/M/1 closed forms (no fitted params)",
+    "stackexchange_rate_pack: descriptive arrival/service-rate estimates (associational)"
+   ],
+   "priority": "medium (add explicit capacity/queueing family; depletion already covered).",
+   "promotion_blocker": "Analytic families have no held-out statistical target; capacity/queueing also not yet implemented. Depletion stays software_implemented; queueing needs building (structural_candidate) first.",
+   "registry_id": "resource_depletion",
+   "temporal_scale": "continuous/event (rates over time)"
+  },
+  {
+   "best_validation_route": "Structural: verify Poisson arrival calibration and deadline probabilities. Methodological: fit a 2-state Markov-switching model on an external macro/finance series and check out-of-sample regime recovery. Preserve the existing Hawkes-vs-Poisson failure note.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=transitions:RareEventArrivalOperator (Poisson rare-event arrival by deadline).",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Macroeconomic series (US GNP growth \u2014 Hamilton 1989)",
+    "Financial return/volatility regimes",
+    "Structural-break panels"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model (Poisson) + methodological (Markov-switching estimator)",
+   "expected_applicability": "medium (shocks/regimes common but data-hungry to identify).",
+   "expected_transport_risk": "high (fitted regimes) / medium (arrival rates)",
+   "family": "Exogenous shocks / regime changes",
+   "formal_model": "(a) Rare-event arrival: Poisson process N(t)~Poisson(\u03bbt); P(>=1 by T)=1-e^{-\u03bbT} \u2014 structural. (b) Regime switching (Hamilton 1989): latent state s_t follows a Markov chain with transition matrix P; y_t=\u03bc_{s_t}+\u03b5_t; regimes inferred by MLE + Hamilton filter/smoother \u2014 FITTABLE (methodological), unlike Poisson arrival.",
+   "local_refit_feasible": "LIMITED. No clean local regime/shock series among Upworthy/congress/StackExchange; Poisson arrival is structural (calibrate \u03bb where an arrival stream exists, e.g., StackExchange). Regime-switching needs an external macro/finance series.",
+   "n_sources": 1,
+   "n_verified_sources": 1,
+   "planned_implementation": "Keep Poisson operator; optionally add a Markov-switching operator (Hamilton filter) with parameters fit per external series and clearly labeled non-transportable. Carry forward the Hawkes-failure caveat.",
+   "planned_parameter_packs": [
+    "structural_poisson (measured \u03bb)",
+    "optional: markov_switching_2state (external-series fit, non-transportable)"
+   ],
+   "priority": "low-medium (Poisson done; regime-switching is an optional fittable add).",
+   "promotion_blocker": "Poisson layer structural (no held-out target); regime-switching not implemented and has no local identifying series -> stays software_implemented until a regime operator is built + externally validated.",
+   "registry_id": "rare_event_arrival",
+   "temporal_scale": "event (arrivals) to episodic/long (regime durations)"
+  },
+  {
+   "best_validation_route": "Held-out prediction of trustee return r as a function of investor send s on in-repo BehaviorBench/MobLab trust-game data.",
+   "cluster": "trust_relationship",
+   "current_executable_status": "executable (swm.world_model_v2.registry.families.social:reciprocity_update resolves; test_ref present)",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Berg trust-game lab data (Minnesota)",
+    "Fehr-Gaechter public-goods-with-punishment experiments",
+    "MobLab/BehaviorBench trust game investor/banker (in-repo)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "causal_estimate",
+   "expected_applicability": "high (cooperation/exchange scenarios)",
+   "expected_transport_risk": "medium",
+   "family": "Reciprocity",
+   "formal_model": "Direct dyadic reciprocity. Continuous edge update: e_{t+1}=clip(e_t + rate*(v_other - baseline), 0, 1), where v_other is the signed kindness of the counterpart's last action relative to a fairness/expectation baseline (positive reciprocity for kind acts, negative reciprocity/retaliation for hostile acts). Trust-game operationalization (Berg): investor sends s in [0,E]; experimenter triples it (3s); trustee returns r in [0,3s]; reciprocity = dr/ds > 0. Registry callable: reciprocity_update(edge_strength, other_action_value, rate=0.15, baseline=0.0).",
+   "local_refit_feasible": true,
+   "n_sources": 3,
+   "n_verified_sources": 3,
+   "planned_implementation": "Retain reciprocity_update; add a fitted BehaviorBench pack for the return-as-function-of-sent relationship; record held-out validation to move toward locally_validated.",
+   "planned_parameter_packs": [
+    {
+     "content": "return slope / adaptation rate",
+     "pack_id": "behaviorbench_trustgame_reciprocity",
+     "source": "inferred_from_data (BehaviorBench banker returns)",
+     "status": "planned"
+    }
+   ],
+   "priority": "medium",
+   "promotion_blocker": "No parameter pack and no held-out/posterior-predictive validation record yet (local refit on BehaviorBench feasible but not done).",
+   "registry_id": "reciprocity",
+   "temporal_scale": "event (per-interaction edge update)"
+  },
+  {
+   "best_validation_route": "Posterior-predictive check of the investor-transfer distribution against the Johnson-Mislin prior on in-repo BehaviorBench, then held-out.",
+   "cluster": "trust_relationship",
+   "current_executable_status": "executable (shares swm...social:trust_update, 'cooperated' branch; test_ref present)",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "162 trust-game replications corpus (Johnson-Mislin)",
+    "BehaviorBench/MobLab investor transfers (in-repo)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "meta_analysis",
+   "expected_applicability": "high (exchange/first-encounter trust)",
+   "expected_transport_risk": "medium-high",
+   "family": "Trust formation",
+   "formal_model": "Trust operationalized as the first-mover transfer s = beta * E in the Berg game; meta-analytic mean beta ~= 0.50. As a belief, trust is an expectation of counterpart trustworthiness updated by outcomes. Registry trust_update() 'cooperated' branch: T_{t+1} = T_t + gain*(1 - T_t) (bounded, concave approach to 1) -> trust builds slowly.",
+   "local_refit_feasible": true,
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Add a Johnson-Mislin prior pack (mean transfer 0.50, mean return 0.37) as reference_class_prior with wide uncertainty; refit investor transfer on BehaviorBench and record validation.",
+   "planned_parameter_packs": [
+    {
+     "content": "mean_sent_frac=0.50, mean_return_frac=0.37 (wide priors)",
+     "pack_id": "johnson_mislin_trustgame_prior",
+     "source": "published_research",
+     "status": "planned"
+    },
+    {
+     "content": "fitted transfer distribution",
+     "pack_id": "behaviorbench_investor_transfer",
+     "source": "inferred_from_data",
+     "status": "planned"
+    }
+   ],
+   "priority": "medium",
+   "promotion_blocker": "No pack + no held-out/PPC validation record; published priors exist but are not yet locally fitted/validated.",
+   "registry_id": "trust_formation",
+   "temporal_scale": "event to session (accumulates across interactions)"
+  },
+  {
+   "best_validation_route": "Requires repeated-interaction data with per-event trust ratings and observed defections (external); in-repo single-shot games do not identify a decrement rate.",
+   "cluster": "trust_relationship",
+   "current_executable_status": "executable (shares swm...social:trust_update, 'defected' branch, loss>>gain; test_ref present)",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Slovic risk-perception survey (hypothetical news events)",
+    "Rothbart-Park trait confirm/disconfirm rating experiments",
+    "iterated trust / prisoner's dilemma defection sequences"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "descriptive",
+   "expected_applicability": "medium",
+   "expected_transport_risk": "high",
+   "family": "Trust violation",
+   "formal_model": "Asymmetric trust dynamics: loss steeper than gain. Registry trust_update() 'defected': T_{t+1}=max(0, T_t - loss*T_t - loss*0.5) with loss (0.20) >> gain (0.05). Conceptually: a single violation applies a large multiplicative + additive decrement; recovery (via 'cooperated'/'repaired') is slow and concave. Rothbart-Park: trust as a favorable trait -> disconfirming (violating) behaviors are highly diagnostic and heavily weighted (negativity bias).",
+   "local_refit_feasible": false,
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep the asymmetry-shaped update but expose loss/gain as wide reference_class priors (no unsupported precision); flag that the rate is unfitted; add violation-type coupling to trust_repair.",
+   "planned_parameter_packs": [
+    {
+     "content": "loss/gain ratio ~4 with wide interval",
+     "pack_id": "slovic_asymmetry_prior",
+     "source": "reference_class_prior",
+     "status": "planned"
+    }
+   ],
+   "priority": "medium-low",
+   "promotion_blocker": "Loss/gain rate is an unfitted reference-class prior; no local repeated-interaction data to estimate or validate a decrement.",
+   "registry_id": "trust_violation",
+   "temporal_scale": "event (single violation, persistent effect)"
+  },
+  {
+   "best_validation_route": "Replicate an apology/denial x competence/integrity experimental design (external lab) \u2014 NOT locally feasible; no in-repo dataset manipulates violation type x response.",
+   "cluster": "trust_relationship",
+   "current_executable_status": "executable (shares swm...social:trust_update, 'repaired' branch = single-scalar partial recovery; test_ref present)",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Kim et al. controlled scenario experiments (student/MBA samples, hypothetical employment context)",
+    "Schweitzer et al. repeated trust-game with deception"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "causal_estimate",
+   "expected_applicability": "medium (interpersonal/organizational disputes)",
+   "expected_transport_risk": "high",
+   "family": "Trust repair",
+   "formal_model": "Kim et al. 2004 (PRECISE STRUCTURE): trust repair is NOT a single scalar recovery; it depends on the INTERACTION of violation type x response. (a) COMPETENCE-based violation -> APOLOGY (accepts blame + signals corrigibility) repairs trust better than DENIAL. (b) INTEGRITY-based violation -> DENIAL repairs trust better than APOLOGY, because admitting an integrity lapse is highly diagnostic of enduring bad character (an integrity apology can be worse than the violation). (c) With subsequent evidence of GUILT, apology > denial; with evidence of INNOCENCE, denial > apology. The violation-type x response effect on trusting intentions is mediated by trusting BELIEFS. Schweitzer: deception-based harm is largely irreversible. The registry trust_update() 'repaired' branch (T_{t+1}=T_t + repair*(1-T_t), single scalar) does NOT represent this 2x2 interaction and is a placeholder.",
+   "local_refit_feasible": false,
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "RE-SPECIFY the family: replace the single-scalar 'repaired' branch with a violation-type x response-strategy interaction (competence->apology, integrity->denial) plus a deception-irreversibility flag. Keep the scalar only as a degenerate fallback. Structural until experimental parameters are licensed.",
+   "planned_parameter_packs": [
+    {
+     "content": "interaction DIRECTIONS only (no point estimates -> cannot ship a point pack; qualitative/structural)",
+     "pack_id": "kim2004_violationtype_response",
+     "source": "published_research",
+     "status": "planned"
+    }
+   ],
+   "priority": "medium-high",
+   "promotion_blocker": "Executable model is mis-specified relative to the evidence (single scalar vs required 2x2 interaction); no parameter pack, no validation, and effect magnitudes unverified. The faithful interaction mechanism is only a structural candidate.",
+   "registry_id": "trust_repair",
+   "temporal_scale": "event to weeks (repair over subsequent interactions)"
+  },
+  {
+   "best_validation_route": "Weak local proxy: test whether StackExchange user reputation predicts answer acceptance/engagement (reputation-effect), and/or an indirect-reciprocity simulation validation; strong route is a reputation-premium field replication (external).",
+   "cluster": "trust_relationship",
+   "current_executable_status": "not_implemented (no code_ref, no test_ref)",
+   "current_registry_status": "absent (NOT in registry.json)",
+   "datasets_in_literature": [
+    "Nowak-Sigmund agent-based simulations",
+    "eBay controlled field experiment (Resnick)",
+    "online marketplace/StackExchange reputation scores (in-repo, weak proxy: platform reputation, NOT indirect-reciprocity)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "structural_model",
+   "expected_applicability": "high (platforms, marketplaces, repeated multi-observer social settings)",
+   "expected_transport_risk": "medium",
+   "family": "Reputation updating",
+   "formal_model": "Indirect reciprocity via image scoring (Nowak-Sigmund): each agent has an image score k (e.g., integer in [-5,+5]); helping raises the donor's score by 1, refusing lowers it (bounded). Discriminator strategy: help recipient iff k_recipient >= own threshold. Cooperation via indirect reciprocity is favored when the probability q of knowing a recipient's score exceeds the cost/benefit ratio: q > c/b. Online systems (Resnick) aggregate feedback into a reputation score that shifts counterparties' willingness to transact/pay.",
+   "local_refit_feasible": true,
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "NEW family reputation_updating: executable image-score update (bounded) + discriminator threshold, plus an online-reputation aggregate variant; add a Resnick premium pack (published_research) and a Nowak-Sigmund structural condition. Needs code_ref + tests to even reach 'implemented'.",
+   "planned_parameter_packs": [
+    {
+     "content": "image score range, update +/-1, threshold; q>c/b condition (structural)",
+     "pack_id": "nowak_sigmund_imagescore",
+     "source": "published_research",
+     "status": "planned"
+    },
+    {
+     "content": "reputation WTP premium = 0.081 of price",
+     "pack_id": "resnick_ebay_reputation_premium",
+     "source": "published_research",
+     "status": "planned"
+    }
+   ],
+   "priority": "high",
+   "promotion_blocker": "Family is not implemented at all (no executable transition, no tests); cannot reach 'implemented' until a code_ref + test_ref exist. Strong theory + one clean causal estimate make it a high-priority build.",
+   "registry_id": "reputation_updating",
+   "temporal_scale": "event to long-run (reputation accumulates over many observations)"
+  },
+  {
+   "best_validation_route": "Needs externally tie-strength-labeled communication data; Enron can only validate a communication-intensity proxy, not labeled strength. Best route is survey-labeled interaction data (external).",
+   "cluster": "trust_relationship",
+   "current_executable_status": "executable (swm.world_model_v2.actor_cognition:relationship_strength and swm.world_model_v2.transitions:RelationshipUpdateOperator both resolve; test_refs present)",
+   "current_registry_status": "implemented (two records)",
+   "datasets_in_literature": [
+    "Granovetter job-search survey (282 men)",
+    "communication-log tie-strength studies",
+    "Enron reply timing/frequency (in-repo: a COMMUNICATION-intensity signal, NOT a labeled tie-strength ground truth)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "descriptive",
+   "expected_applicability": "medium",
+   "expected_transport_risk": "medium",
+   "family": "Relationship strengthening",
+   "formal_model": "Granovetter tie strength S = additive/weighted combination of four components: amount of time, emotional intensity, intimacy (mutual confiding), and reciprocal services. Strength rises with interaction frequency and reciprocal exchange; strong ties predict high neighborhood overlap (the forbidden-triad / triadic-closure implication). Registry: relationship_update_bounded moves an edge strength toward observed interaction intensity, bounded to [0,1]; relationship_strength_inference infers latent strength from interaction signals.",
+   "local_refit_feasible": false,
+   "n_sources": 1,
+   "n_verified_sources": 1,
+   "planned_implementation": "Keep relationship_update_bounded; document the Granovetter four-component spec and explicitly label Enron as a proxy, not a label; add a pack only when tie-strength-labeled data is available.",
+   "planned_parameter_packs": [
+    {
+     "content": "4-component structure with WIDE priors (no fitted weights)",
+     "pack_id": "granovetter_tie_strength",
+     "source": "assumed",
+     "status": "planned"
+    }
+   ],
+   "priority": "low-medium",
+   "promotion_blocker": "No parameter pack and no validation; the only in-repo data (Enron) is a communication-intensity proxy, not a tie-strength label, so local validation cannot ground the construct.",
+   "registry_id": "relationship_strength_inference / relationship_update_bounded",
+   "temporal_scale": "weeks to months (ties strengthen gradually)"
+  },
+  {
+   "best_validation_route": "Longitudinal communication data with a relationship outcome (external, Roberts-Dunbar style). In-repo Enron can only support a DESCRIPTIVE communication-decay proxy; telco churn is invalid as a relationship-decay label.",
+   "cluster": "trust_relationship",
+   "current_executable_status": "not_implemented (no code_ref, no test_ref)",
+   "current_registry_status": "absent (NOT in registry.json; no explicit decay family)",
+   "datasets_in_literature": [
+    "Burt banker-colleague 4-year panel",
+    "Roberts-Dunbar 18-month student panel",
+    "Enron temporal communication (in-repo: communication-frequency decline proxy, NOT a relationship-decay label)",
+    "telco churn (in-repo: attrition/dropout, explicitly NOT relationship decay per repo audit)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "associational",
+   "expected_applicability": "medium",
+   "expected_transport_risk": "high",
+   "family": "Relationship decay",
+   "formal_model": "Tie decay: relationship strength / contact probability declines over time absent investment, typically modeled as a hazard/exponential survival of the tie in time-since-last-contact. Burt: decay rate depends on structure \u2014 embedded/homophilous/high-status/strong-prior ties decay slowly; bridges decay fast early (liability of newness) but, conditional on surviving early years, then persist. Roberts-Dunbar: emotional closeness E(t) decays toward a floor when contact frequency f and shared activities a fall; kin ties have a lower maintenance cost (shallower decay) than friendships. No canonical closed-form/parametric rate is extracted here.",
+   "local_refit_feasible": false,
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "NEW family relationship_decay: executable exponential/hazard decay of tie strength vs time-since-contact, with slower decay for embedded/kin/high-status ties; seed priors from Burt/Roberts-Dunbar QUALITATIVE structure (no fitted rate yet). Needs code_ref + tests to reach 'implemented'.",
+   "planned_parameter_packs": [
+    {
+     "content": "decay slower for embedded/kin than bridge/friend; wide priors, NO fitted rate",
+     "pack_id": "burt_roberts_dunbar_decay_prior",
+     "source": "reference_class_prior",
+     "status": "planned"
+    }
+   ],
+   "priority": "medium-high",
+   "promotion_blocker": "Family is not implemented (no executable transition, no tests) AND there is no valid in-repo relationship-decay label (Enron = communication proxy; telco churn = attrition). Cannot reach 'implemented' or be locally validated without an executable + a labeled longitudinal dataset.",
+   "registry_id": "relationship_decay",
+   "temporal_scale": "months to years (Burt 4 yr; Roberts-Dunbar 18 mo)"
+  }
+ ]
+}

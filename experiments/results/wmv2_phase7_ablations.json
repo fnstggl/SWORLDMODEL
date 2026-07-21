@@ -1,0 +1,730 @@
+{
+ "_meta": {
+  "note": "Part-23 ablation ladder"
+ },
+ "datasets": {
+  "telco": {
+   "dataset": "telco",
+   "category": "persistence_attrition",
+   "arm_scores": {
+    "linear_only": {
+     "brier": 0.140367,
+     "logloss": 0.426573,
+     "pred_rate": 0.26149,
+     "real_rate": 0.25586,
+     "n": 1407,
+     "auroc": 0.8289,
+     "calibration": {
+      "ece": 0.02579,
+      "reliability": [
+       {
+        "bin": 0,
+        "n": 517,
+        "conf": 0.0356,
+        "acc": 0.0387
+       },
+       {
+        "bin": 1,
+        "n": 229,
+        "conf": 0.15,
+        "acc": 0.1703
+       },
+       {
+        "bin": 2,
+        "n": 120,
+        "conf": 0.2531,
+        "acc": 0.2583
+       },
+       {
+        "bin": 3,
+        "n": 127,
+        "conf": 0.3494,
+        "acc": 0.3307
+       },
+       {
+        "bin": 4,
+        "n": 126,
+        "conf": 0.4456,
+        "acc": 0.4206
+       },
+       {
+        "bin": 5,
+        "n": 85,
+        "conf": 0.5508,
+        "acc": 0.4353
+       },
+       {
+        "bin": 6,
+        "n": 134,
+        "conf": 0.6475,
+        "acc": 0.597
+       },
+       {
+        "bin": 7,
+        "n": 69,
+        "conf": 0.7348,
+        "acc": 0.8406
+       }
+      ]
+     }
+    },
+    "gam_no_interaction": {
+     "brier": 0.1352,
+     "logloss": 0.413971,
+     "pred_rate": 0.26022,
+     "real_rate": 0.25586,
+     "n": 1407,
+     "auroc": 0.8396,
+     "calibration": {
+      "ece": 0.02307,
+      "reliability": [
+       {
+        "bin": 0,
+        "n": 500,
+        "conf": 0.0378,
+        "acc": 0.036
+       },
+       {
+        "bin": 1,
+        "n": 228,
+        "conf": 0.1479,
+        "acc": 0.136
+       },
+       {
+        "bin": 2,
+        "n": 161,
+        "conf": 0.2481,
+        "acc": 0.2609
+       },
+       {
+        "bin": 3,
+        "n": 123,
+        "conf": 0.3473,
+        "acc": 0.3333
+       },
+       {
+        "bin": 4,
+        "n": 119,
+        "conf": 0.4478,
+        "acc": 0.4706
+       },
+       {
+        "bin": 5,
+        "n": 114,
+        "conf": 0.5467,
+        "acc": 0.4825
+       },
+       {
+        "bin": 6,
+        "n": 78,
+        "conf": 0.6492,
+        "acc": 0.5641
+       },
+       {
+        "bin": 7,
+        "n": 63,
+        "conf": 0.7489,
+        "acc": 0.8571
+       },
+       {
+        "bin": 8,
+        "n": 21,
+        "conf": 0.8296,
+        "acc": 0.9048
+       }
+      ]
+     }
+    },
+    "gam_single_smooth": {
+     "brier": 0.135572,
+     "logloss": 0.41473,
+     "pred_rate": 0.26158,
+     "real_rate": 0.25586,
+     "n": 1407,
+     "auroc": 0.8395,
+     "calibration": {
+      "ece": 0.03331,
+      "reliability": [
+       {
+        "bin": 0,
+        "n": 484,
+        "conf": 0.039,
+        "acc": 0.0331
+       },
+       {
+        "bin": 1,
+        "n": 227,
+        "conf": 0.1444,
+        "acc": 0.1189
+       },
+       {
+        "bin": 2,
+        "n": 180,
+        "conf": 0.2481,
+        "acc": 0.2833
+       },
+       {
+        "bin": 3,
+        "n": 126,
+        "conf": 0.3491,
+        "acc": 0.3095
+       },
+       {
+        "bin": 4,
+        "n": 117,
+        "conf": 0.4465,
+        "acc": 0.4957
+       },
+       {
+        "bin": 5,
+        "n": 110,
+        "conf": 0.5508,
+        "acc": 0.4727
+       },
+       {
+        "bin": 6,
+        "n": 78,
+        "conf": 0.6409,
+        "acc": 0.5769
+       },
+       {
+        "bin": 7,
+        "n": 69,
+        "conf": 0.7492,
+        "acc": 0.8551
+       },
+       {
+        "bin": 8,
+        "n": 16,
+        "conf": 0.8285,
+        "acc": 0.8125
+       }
+      ]
+     }
+    },
+    "full_phase7": {
+     "brier": 0.135095,
+     "logloss": 0.413571,
+     "pred_rate": 0.26013,
+     "real_rate": 0.25586,
+     "n": 1407,
+     "auroc": 0.84,
+     "calibration": {
+      "ece": 0.02113,
+      "reliability": [
+       {
+        "bin": 0,
+        "n": 503,
+        "conf": 0.0372,
+        "acc": 0.0378
+       },
+       {
+        "bin": 1,
+        "n": 226,
+        "conf": 0.1492,
+        "acc": 0.1372
+       },
+       {
+        "bin": 2,
+        "n": 158,
+        "conf": 0.2486,
+        "acc": 0.2595
+       },
+       {
+        "bin": 3,
+        "n": 124,
+        "conf": 0.3476,
+        "acc": 0.3306
+       },
+       {
+        "bin": 4,
+        "n": 121,
+        "conf": 0.4484,
+        "acc": 0.4545
+       },
+       {
+        "bin": 5,
+        "n": 113,
+        "conf": 0.5467,
+        "acc": 0.4956
+       },
+       {
+        "bin": 6,
+        "n": 79,
+        "conf": 0.6491,
+        "acc": 0.557
+       },
+       {
+        "bin": 7,
+        "n": 62,
+        "conf": 0.7491,
+        "acc": 0.871
+       },
+       {
+        "bin": 8,
+        "n": 21,
+        "conf": 0.8293,
+        "acc": 0.9048
+       }
+      ]
+     }
+    }
+   },
+   "incremental_vs_linear": {
+    "gam_no_interaction": {
+     "mean": -0.005168,
+     "ci95": [
+      -0.007897,
+      -0.002422
+     ],
+     "n": 1407
+    },
+    "gam_single_smooth": {
+     "mean": -0.004796,
+     "ci95": [
+      -0.007114,
+      -0.002477
+     ],
+     "n": 1407
+    },
+    "full_phase7": {
+     "mean": -0.005273,
+     "ci95": [
+      -0.008016,
+      -0.002546
+     ],
+     "n": 1407
+    }
+   },
+   "note": "negative \u0394Brier = the nonlinear component helps held-out; a component that never changes held-out is ornamental (Part 23)"
+  },
+  "stackexchange": {
+   "dataset": "stackexchange",
+   "category": "participation_response",
+   "arm_scores": {
+    "linear_only": {
+     "brier": 0.239069,
+     "logloss": 0.671092,
+     "pred_rate": 0.56821,
+     "real_rate": 0.612,
+     "n": 500,
+     "auroc": 0.5381,
+     "calibration": {
+      "ece": 0.04379,
+      "reliability": [
+       {
+        "bin": 4,
+        "n": 27,
+        "conf": 0.487,
+        "acc": 0.7407
+       },
+       {
+        "bin": 5,
+        "n": 391,
+        "conf": 0.5654,
+        "acc": 0.6036
+       },
+       {
+        "bin": 6,
+        "n": 82,
+        "conf": 0.6086,
+        "acc": 0.6098
+       }
+      ]
+     }
+    },
+    "gam_no_interaction": {
+     "brier": 0.24153,
+     "logloss": 0.67635,
+     "pred_rate": 0.56437,
+     "real_rate": 0.612,
+     "n": 500,
+     "auroc": 0.5168,
+     "calibration": {
+      "ece": 0.07769,
+      "reliability": [
+       {
+        "bin": 4,
+        "n": 50,
+        "conf": 0.4794,
+        "acc": 0.58
+       },
+       {
+        "bin": 5,
+        "n": 327,
+        "conf": 0.5526,
+        "acc": 0.633
+       },
+       {
+        "bin": 6,
+        "n": 123,
+        "conf": 0.6302,
+        "acc": 0.5691
+       }
+      ]
+     }
+    },
+    "gam_single_smooth": {
+     "brier": 0.240335,
+     "logloss": 0.673741,
+     "pred_rate": 0.56793,
+     "real_rate": 0.612,
+     "n": 500,
+     "auroc": 0.513,
+     "calibration": {
+      "ece": 0.06497,
+      "reliability": [
+       {
+        "bin": 4,
+        "n": 24,
+        "conf": 0.4865,
+        "acc": 0.5833
+       },
+       {
+        "bin": 5,
+        "n": 390,
+        "conf": 0.5617,
+        "acc": 0.6256
+       },
+       {
+        "bin": 6,
+        "n": 86,
+        "conf": 0.6189,
+        "acc": 0.5581
+       }
+      ]
+     }
+    },
+    "full_phase7": {
+     "brier": 0.240219,
+     "logloss": 0.673433,
+     "pred_rate": 0.56457,
+     "real_rate": 0.612,
+     "n": 500,
+     "auroc": 0.5201,
+     "calibration": {
+      "ece": 0.04743,
+      "reliability": [
+       {
+        "bin": 4,
+        "n": 31,
+        "conf": 0.4825,
+        "acc": 0.6774
+       },
+       {
+        "bin": 5,
+        "n": 345,
+        "conf": 0.5524,
+        "acc": 0.5942
+       },
+       {
+        "bin": 6,
+        "n": 124,
+        "conf": 0.6189,
+        "acc": 0.6452
+       }
+      ]
+     }
+    }
+   },
+   "incremental_vs_linear": {
+    "gam_no_interaction": {
+     "mean": 0.002461,
+     "ci95": [
+      -0.00131,
+      0.005903
+     ],
+     "n": 500
+    },
+    "gam_single_smooth": {
+     "mean": 0.001266,
+     "ci95": [
+      -0.000387,
+      0.002872
+     ],
+     "n": 500
+    },
+    "full_phase7": {
+     "mean": 0.00115,
+     "ci95": [
+      -0.002667,
+      0.004835
+     ],
+     "n": 500
+    }
+   },
+   "note": "negative \u0394Brier = the nonlinear component helps held-out; a component that never changes held-out is ornamental (Part 23)"
+  },
+  "cmv": {
+   "dataset": "cmv",
+   "category": "persuasion_belief",
+   "arm_scores": {
+    "linear_only": {
+     "brier": 0.20993,
+     "logloss": 0.608497,
+     "pred_rate": 0.65085,
+     "real_rate": 0.65417,
+     "n": 240,
+     "auroc": 0.6749,
+     "calibration": {
+      "ece": 0.05176,
+      "reliability": [
+       {
+        "bin": 2,
+        "n": 1,
+        "conf": 0.2136,
+        "acc": 0.0
+       },
+       {
+        "bin": 3,
+        "n": 10,
+        "conf": 0.3535,
+        "acc": 0.7
+       },
+       {
+        "bin": 4,
+        "n": 22,
+        "conf": 0.4637,
+        "acc": 0.4545
+       },
+       {
+        "bin": 5,
+        "n": 45,
+        "conf": 0.5515,
+        "acc": 0.4444
+       },
+       {
+        "bin": 6,
+        "n": 69,
+        "conf": 0.6517,
+        "acc": 0.6667
+       },
+       {
+        "bin": 7,
+        "n": 60,
+        "conf": 0.7417,
+        "acc": 0.7667
+       },
+       {
+        "bin": 8,
+        "n": 28,
+        "conf": 0.8352,
+        "acc": 0.8571
+       },
+       {
+        "bin": 9,
+        "n": 5,
+        "conf": 0.9166,
+        "acc": 0.8
+       }
+      ]
+     }
+    },
+    "gam_no_interaction": {
+     "brier": 0.210896,
+     "logloss": 0.610805,
+     "pred_rate": 0.64854,
+     "real_rate": 0.65417,
+     "n": 240,
+     "auroc": 0.6629,
+     "calibration": {
+      "ece": 0.05693,
+      "reliability": [
+       {
+        "bin": 2,
+        "n": 2,
+        "conf": 0.2733,
+        "acc": 0.0
+       },
+       {
+        "bin": 3,
+        "n": 4,
+        "conf": 0.3843,
+        "acc": 0.75
+       },
+       {
+        "bin": 4,
+        "n": 22,
+        "conf": 0.4627,
+        "acc": 0.5455
+       },
+       {
+        "bin": 5,
+        "n": 48,
+        "conf": 0.5544,
+        "acc": 0.4375
+       },
+       {
+        "bin": 6,
+        "n": 81,
+        "conf": 0.6551,
+        "acc": 0.679
+       },
+       {
+        "bin": 7,
+        "n": 60,
+        "conf": 0.7453,
+        "acc": 0.7833
+       },
+       {
+        "bin": 8,
+        "n": 23,
+        "conf": 0.8258,
+        "acc": 0.8261
+       }
+      ]
+     }
+    },
+    "gam_single_smooth": {
+     "brier": 0.2091,
+     "logloss": 0.607183,
+     "pred_rate": 0.6503,
+     "real_rate": 0.65417,
+     "n": 240,
+     "auroc": 0.6733,
+     "calibration": {
+      "ece": 0.06034,
+      "reliability": [
+       {
+        "bin": 2,
+        "n": 2,
+        "conf": 0.288,
+        "acc": 0.0
+       },
+       {
+        "bin": 3,
+        "n": 3,
+        "conf": 0.3771,
+        "acc": 0.6667
+       },
+       {
+        "bin": 4,
+        "n": 18,
+        "conf": 0.4499,
+        "acc": 0.5
+       },
+       {
+        "bin": 5,
+        "n": 53,
+        "conf": 0.5527,
+        "acc": 0.4528
+       },
+       {
+        "bin": 6,
+        "n": 81,
+        "conf": 0.6552,
+        "acc": 0.6914
+       },
+       {
+        "bin": 7,
+        "n": 60,
+        "conf": 0.7473,
+        "acc": 0.7833
+       },
+       {
+        "bin": 8,
+        "n": 22,
+        "conf": 0.8253,
+        "acc": 0.8636
+       },
+       {
+        "bin": 9,
+        "n": 1,
+        "conf": 0.9061,
+        "acc": 0.0
+       }
+      ]
+     }
+    },
+    "full_phase7": {
+     "brier": 0.208158,
+     "logloss": 0.60485,
+     "pred_rate": 0.65254,
+     "real_rate": 0.65417,
+     "n": 240,
+     "auroc": 0.6842,
+     "calibration": {
+      "ece": 0.07901,
+      "reliability": [
+       {
+        "bin": 2,
+        "n": 1,
+        "conf": 0.2728,
+        "acc": 0.0
+       },
+       {
+        "bin": 3,
+        "n": 6,
+        "conf": 0.3718,
+        "acc": 0.6667
+       },
+       {
+        "bin": 4,
+        "n": 18,
+        "conf": 0.4629,
+        "acc": 0.3333
+       },
+       {
+        "bin": 5,
+        "n": 48,
+        "conf": 0.5575,
+        "acc": 0.4375
+       },
+       {
+        "bin": 6,
+        "n": 85,
+        "conf": 0.6556,
+        "acc": 0.7176
+       },
+       {
+        "bin": 7,
+        "n": 58,
+        "conf": 0.7456,
+        "acc": 0.7586
+       },
+       {
+        "bin": 8,
+        "n": 23,
+        "conf": 0.8316,
+        "acc": 0.913
+       },
+       {
+        "bin": 9,
+        "n": 1,
+        "conf": 0.9193,
+        "acc": 0.0
+       }
+      ]
+     }
+    }
+   },
+   "incremental_vs_linear": {
+    "gam_no_interaction": {
+     "mean": 0.000965,
+     "ci95": [
+      -0.004851,
+      0.00663
+     ],
+     "n": 240
+    },
+    "gam_single_smooth": {
+     "mean": -0.00083,
+     "ci95": [
+      -0.005599,
+      0.004016
+     ],
+     "n": 240
+    },
+    "full_phase7": {
+     "mean": -0.001772,
+     "ci95": [
+      -0.004814,
+      0.001108
+     ],
+     "n": 240
+    }
+   },
+   "note": "negative \u0394Brier = the nonlinear component helps held-out; a component that never changes held-out is ornamental (Part 23)"
+  }
+ }
+}

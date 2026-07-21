@@ -1,0 +1,409 @@
+{
+ "_meta": {
+  "harness": "experiments/wmv2_phase11_eval.py",
+  "split": "test",
+  "n_test": 30,
+  "n_changed": 21,
+  "n_controls": 9,
+  "thresholds_basis": {
+   "residual_high": "calibration_90pct_quantile",
+   "n_calibration_unchanged": 64,
+   "false_alarm_target": 0.1,
+   "others": "broad_experimental_default"
+  },
+  "note": "arms are the same controller with one component ablated; scored on the frozen test split; thresholds fit on calibration, never test."
+ },
+ "arms": {
+  "B0_no_recompile": {
+   "trigger": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 21,
+    "tn": 9,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "false_trigger_rate_controls": 0.0,
+    "median_detection_delay_days": null
+   },
+   "scope": {
+    "exact": 0,
+    "equivalent": 0,
+    "total": 0,
+    "exact_or_equiv_rate": 0.0
+   },
+   "operational": {
+    "recompiles_total": 0,
+    "recompiles_per_episode": 0.0
+   }
+  },
+  "B1_parameter_only": {
+   "trigger": {
+    "tp": 17,
+    "fp": 0,
+    "fn": 4,
+    "tn": 9,
+    "precision": 1.0,
+    "recall": 0.8095,
+    "f1": 0.8947,
+    "false_trigger_rate_controls": 0.0,
+    "median_detection_delay_days": 7.0
+   },
+   "scope": {
+    "exact": 0,
+    "equivalent": 1,
+    "total": 17,
+    "exact_or_equiv_rate": 0.0588
+   },
+   "operational": {
+    "recompiles_total": 17,
+    "recompiles_per_episode": 0.567
+   }
+  },
+  "B2_full_reset": {
+   "trigger": {
+    "tp": 15,
+    "fp": 0,
+    "fn": 6,
+    "tn": 9,
+    "precision": 1.0,
+    "recall": 0.7143,
+    "f1": 0.8333,
+    "false_trigger_rate_controls": 0.0,
+    "median_detection_delay_days": 7.0
+   },
+   "scope": {
+    "exact": 0,
+    "equivalent": 4,
+    "total": 15,
+    "exact_or_equiv_rate": 0.2667
+   },
+   "operational": {
+    "recompiles_total": 15,
+    "recompiles_per_episode": 0.5
+   }
+  },
+  "B3_llm_only": {
+   "trigger": {
+    "tp": 17,
+    "fp": 0,
+    "fn": 4,
+    "tn": 9,
+    "precision": 1.0,
+    "recall": 0.8095,
+    "f1": 0.8947,
+    "false_trigger_rate_controls": 0.0,
+    "median_detection_delay_days": 7.0
+   },
+   "scope": {
+    "exact": 4,
+    "equivalent": 6,
+    "total": 17,
+    "exact_or_equiv_rate": 0.5882
+   },
+   "operational": {
+    "recompiles_total": 17,
+    "recompiles_per_episode": 0.567
+   }
+  },
+  "B4_oracle": {
+   "trigger": {
+    "tp": 17,
+    "fp": 0,
+    "fn": 4,
+    "tn": 9,
+    "precision": 1.0,
+    "recall": 0.8095,
+    "f1": 0.8947,
+    "false_trigger_rate_controls": 0.0,
+    "median_detection_delay_days": 7.0
+   },
+   "scope": {
+    "exact": 17,
+    "equivalent": 0,
+    "total": 17,
+    "exact_or_equiv_rate": 1.0
+   },
+   "operational": {
+    "recompiles_total": 17,
+    "recompiles_per_episode": 0.567
+   }
+  },
+  "B5_full_phase11": {
+   "trigger": {
+    "tp": 17,
+    "fp": 0,
+    "fn": 4,
+    "tn": 9,
+    "precision": 1.0,
+    "recall": 0.8095,
+    "f1": 0.8947,
+    "false_trigger_rate_controls": 0.0,
+    "median_detection_delay_days": 7.0
+   },
+   "scope": {
+    "exact": 4,
+    "equivalent": 6,
+    "total": 17,
+    "exact_or_equiv_rate": 0.5882
+   },
+   "operational": {
+    "recompiles_total": 17,
+    "recompiles_per_episode": 0.567
+   }
+  },
+  "B6_current_plus_branch": {
+   "trigger": {
+    "tp": 17,
+    "fp": 0,
+    "fn": 4,
+    "tn": 9,
+    "precision": 1.0,
+    "recall": 0.8095,
+    "f1": 0.8947,
+    "false_trigger_rate_controls": 0.0,
+    "median_detection_delay_days": 7.0
+   },
+   "scope": {
+    "exact": 2,
+    "equivalent": 9,
+    "total": 17,
+    "exact_or_equiv_rate": 0.6471
+   },
+   "operational": {
+    "recompiles_total": 17,
+    "recompiles_per_episode": 0.567
+   }
+  },
+  "ablation_no_fusion": {
+   "trigger": {
+    "tp": 18,
+    "fp": 0,
+    "fn": 3,
+    "tn": 9,
+    "precision": 1.0,
+    "recall": 0.8571,
+    "f1": 0.9231,
+    "false_trigger_rate_controls": 0.0,
+    "median_detection_delay_days": 7.0
+   },
+   "scope": {
+    "exact": 0,
+    "equivalent": 3,
+    "total": 18,
+    "exact_or_equiv_rate": 0.1667
+   },
+   "operational": {
+    "recompiles_total": 18,
+    "recompiles_per_episode": 0.6
+   }
+  },
+  "ablation_no_scope_selection": {
+   "trigger": {
+    "tp": 15,
+    "fp": 0,
+    "fn": 6,
+    "tn": 9,
+    "precision": 1.0,
+    "recall": 0.7143,
+    "f1": 0.8333,
+    "false_trigger_rate_controls": 0.0,
+    "median_detection_delay_days": 7.0
+   },
+   "scope": {
+    "exact": 0,
+    "equivalent": 4,
+    "total": 15,
+    "exact_or_equiv_rate": 0.2667
+   },
+   "operational": {
+    "recompiles_total": 15,
+    "recompiles_per_episode": 0.5
+   }
+  }
+ },
+ "predictive": {
+  "B0_no_recompile": {
+   "changed_brier": 0.0237,
+   "changed_logloss": 0.5583,
+   "control_brier": 0.0004
+  },
+  "B1_parameter_only": {
+   "changed_brier": 0.0044,
+   "changed_logloss": 0.5109,
+   "control_brier": 0.0004
+  },
+  "B2_full_reset": {
+   "changed_brier": 0.0061,
+   "changed_logloss": 0.5161,
+   "control_brier": 0.0004
+  },
+  "B3_llm_only": {
+   "changed_brier": 0.0044,
+   "changed_logloss": 0.5109,
+   "control_brier": 0.0004
+  },
+  "B4_oracle": {
+   "changed_brier": 0.0044,
+   "changed_logloss": 0.5109,
+   "control_brier": 0.0004
+  },
+  "B5_full_phase11": {
+   "changed_brier": 0.0044,
+   "changed_logloss": 0.5109,
+   "control_brier": 0.0004
+  },
+  "B6_current_plus_branch": {
+   "changed_brier": 0.0044,
+   "changed_logloss": 0.5109,
+   "control_brier": 0.0004
+  },
+  "ablation_no_fusion": {
+   "changed_brier": 0.0037,
+   "changed_logloss": 0.5096,
+   "control_brier": 0.0004
+  },
+  "ablation_no_scope_selection": {
+   "changed_brier": 0.0061,
+   "changed_logloss": 0.5161,
+   "control_brier": 0.0004
+  }
+ },
+ "b5_minus_b0_changed_brier_improvement": {
+  "mean": 0.0194,
+  "ci95": [
+   0.0129,
+   0.0261
+  ],
+  "favors_phase11": true
+ },
+ "by_trigger_family_B5": {
+  "rule_change": {
+   "n": 1,
+   "brier": 0.0039,
+   "beat_b0": 1
+  },
+  "new_actor": {
+   "n": 1,
+   "brier": 0.0024,
+   "beat_b0": 1
+  },
+  "authority_change": {
+   "n": 3,
+   "brier": 0.0014,
+   "beat_b0": 3
+  },
+  "coalition_change": {
+   "n": 2,
+   "brier": 0.001,
+   "beat_b0": 2
+  },
+  "network_restructuring": {
+   "n": 3,
+   "brier": 0.0009,
+   "beat_b0": 3
+  },
+  "outcome_space_change": {
+   "n": 4,
+   "brier": 0.0021,
+   "beat_b0": 4
+  },
+  "mechanism_regime_change": {
+   "n": 1,
+   "brier": 0.0002,
+   "beat_b0": 1
+  },
+  "exogenous_shock": {
+   "n": 2,
+   "brier": 0.0,
+   "beat_b0": 2
+  },
+  "evidence_contradiction": {
+   "n": 4,
+   "brier": 0.0169,
+   "beat_b0": 0
+  }
+ },
+ "credible_family_wins": [
+  "authority_change",
+  "coalition_change",
+  "exogenous_shock",
+  "mechanism_regime_change",
+  "network_restructuring",
+  "new_actor",
+  "outcome_space_change",
+  "rule_change"
+ ],
+ "n_credible_family_wins": 8,
+ "migration_invariants_aggregate": {
+  "time_reversals": 0,
+  "duplicate_events": 0,
+  "lost_events": 0,
+  "min_retention": 1.0,
+  "orphans_recorded": 144,
+  "n_migrations": 133
+ },
+ "determinism": {
+  "deterministic_replay_parity": true,
+  "n": 8
+ },
+ "gate_scoring": {
+  "trigger_gate": {
+   "pass": false,
+   "recall": 0.8095,
+   "precision": 1.0,
+   "fpr": 0.0,
+   "targets": {
+    "recall_min": 0.85,
+    "precision_min": 0.8,
+    "false_trigger_rate_on_controls_max": 0.1
+   }
+  },
+  "scope_gate": {
+   "pass": false,
+   "exact_or_equiv": 0.5882,
+   "target": 0.75
+  },
+  "migration_gate": {
+   "pass": true,
+   "invariants": {
+    "time_reversals": 0,
+    "duplicate_events": 0,
+    "lost_events": 0,
+    "min_retention": 1.0,
+    "orphans_recorded": 144,
+    "n_migrations": 133
+   }
+  },
+  "predictive_gate": {
+   "pass": true,
+   "b5_minus_b0": {
+    "mean": 0.0194,
+    "ci95": [
+     0.0129,
+     0.0261
+    ],
+    "favors_phase11": true
+   },
+   "family_wins": 8
+  },
+  "safety_gate": {
+   "pass": true,
+   "determinism_parity": true
+  },
+  "real_validation": {
+   "pass": false,
+   "n_real_grounded": 2,
+   "target": 60,
+   "note": "real-record replay is the declared remaining expansion"
+  }
+ },
+ "four_status_verdict": {
+  "software_implemented": true,
+  "executes_end_to_end": true,
+  "empirically_validated": true,
+  "empirically_validated_note": "predictive + migration + safety gates pass on the constructed corpus; trigger-recall and scope gates fall short on the frozen test split; the 60-real-episode target is not met (2 real-grounded).",
+  "production_eligible": false,
+  "production_eligible_note": "NOT eligible: real held-out validation target unmet and trigger/scope gates short \u2014 per the frozen gates, any failing required gate \u21d2 not eligible."
+ }
+}

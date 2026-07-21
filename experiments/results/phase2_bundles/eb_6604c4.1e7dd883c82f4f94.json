@@ -1,0 +1,1701 @@
+{
+ "bundle_id": "eb_6604c4",
+ "question": "Will the product-announcement post exceed 100k shares in a week?",
+ "as_of": 1685577600.0,
+ "compiler_plan_hash": "be8bbc8b0cae",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_e930ac1b95",
+   "claim_or_quantity": "If the total share count of the post at 2023-06-08T23:59:59Z is strictly greater than 100,000, then 'exceeds_100k'; otherwise 'does_not_exceed_100k'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "post",
+    "author"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_db321c0c11",
+   "claim_or_quantity": "value/context of author.follower_count",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "author.follower_count",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_fe234df9c7",
+   "claim_or_quantity": "value/context of post.content_virality_factor",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "post.content_virality_factor",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_efd612449b",
+   "claim_or_quantity": "value/context of author.engagement_rate",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "author.engagement_rate",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_37c202beae",
+   "claim_or_quantity": "evidence discriminating structural hypothesis simple_contagion",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:simple_contagion",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5d0fdc0c96",
+   "claim_or_quantity": "evidence discriminating structural hypothesis complex_contagion",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:complex_contagion",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3dff0235e3",
+   "claim_or_quantity": "decision rules / process of platform",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "platform",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_e930ac1b95",
+   "terms": "product announcement post exceed 100k shares post author",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_db321c0c11",
+   "terms": "author follower count",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_fe234df9c7",
+   "terms": "post content virality factor",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_e930ac1b95",
+   "logical_query": "product announcement post exceed 100k shares post author after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=product+announcement+post+exceed+100k+shares+post+author+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783907349.8726292,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:49:10 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1pBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc0zouXmITePFwUyeTknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCkXDjJ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "36624ede314296922f03fa10779ac2a6098c02a1b5b7299aaf14884d2fd91de9",
+   "n_bytes": 1277,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.603
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_db321c0c11",
+   "logical_query": "author follower count after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=author+follower+count+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783907350.4771836,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:49:11 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0pBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwc0zsuXmITuHDmi4SSclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAG2uOHI\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a6a10530e91e6220acdc1c93f4b6e1aac20ed8185b3e09da427378fc5543db69",
+   "n_bytes": 16824,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.513
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_fe234df9c7",
+   "logical_query": "post content virality factor after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=post+content+virality+factor+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783907350.9913392,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:49:11 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw1pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDMb3j4iU2gRtvzyxgUlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAApY83Jg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "37572dd6a1d380d3030853276454275b65a9ff1e607dabe7b60461320ddd9304",
+   "n_bytes": 15065,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.556
+  }
+ ],
+ "raw_content_refs": [
+  "37572dd6a1d380d3030853276454275b65a9ff1e607dabe7b60461320ddd9304",
+  "a6a10530e91e6220acdc1c93f4b6e1aac20ed8185b3e09da427378fc5543db69"
+ ],
+ "documents": [
+  {
+   "id": "e6d8ea1c61891ec3",
+   "source": "Time Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBOckh3SnFpclVvdEJmcVVQSFhtZF9zaGozVXZRQ0ppdzRjWWptdWJnUW0tU2d6QXRRMWlCNE5reXlUNWpWVF80dkxiOWNsMXBjUUpjWGNNSXVYRjVZbjVHeDR6dnZDYkdJcDQ1SEZNUC1MemVMeTNXbXA3Q05XUQ?oc=5",
+   "title": "The Reality TV-to-Social-Influencer Pipeline Has Dried Up - Time Magazine",
+   "text": "The Reality TV-to-Social-Influencer Pipeline Has Dried Up - Time Magazine. The Reality TV-to-Social-Influencer Pipeline Has Dried Up Time Magazine",
+   "content_hash": "0d14815c1d365a2b",
+   "raw_feed_hash": "a6a10530e91e6220acdc1c93f4b6e1aac20ed8185b3e09da427378fc5543db69",
+   "published_at": 1679554800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_db321c0c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4e4c648aec4914e7",
+   "source": "Towards Data Science",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOZTJ5ZHdpNERiRzlZcDdxWTBCZE9kMVhiR21PeTZwSEFkRWxGOTVxNnRKSTc4S2xBd0VoM0xud3ZpTC0wa3YxeFN0azgza19YYTR1ckxTTmlmMzQ1VG0zSDU1dTZ0VTRsWVlkYU5IcjNnY2dzTE9tVHhUZUlfTDg4aDdNbVZSdUp2WmpsaTBzU29renpRbmc?oc=5",
+   "title": "Building a Medium Stats Tracker With Streamlit - Towards Data Science",
+   "text": "Building a Medium Stats Tracker With Streamlit - Towards Data Science. Building a Medium Stats Tracker With Streamlit Towards Data Science",
+   "content_hash": "6f0900ba1da3fdec",
+   "raw_feed_hash": "a6a10530e91e6220acdc1c93f4b6e1aac20ed8185b3e09da427378fc5543db69",
+   "published_at": 1677484800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_db321c0c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "aa84c276b828be56",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPLVF3ODNDUDdsZU9nRS1GaV92c0FVWUpDalZqOEF5SF9LNVBacFhZd3hCNWtVUWRWTjBqUkVLaC1XbzhOTFV6U1MySWJ5Z2JxaE1MN0xxUVlhb2x0aGtkSmg1Y2k4cnlGSlFVWjB4RFEtYVBROGx4UDFiZGh2LXQteElFcmMzYXpLUzh1d09n?oc=5",
+   "title": "I went to adult summer camp last year. A blast from the past was just the vacation I needed. - Business Insider",
+   "text": "I went to adult summer camp last year. A blast from the past was just the vacation I needed. - Business Insider. I went to adult summer camp last year. A blast from the past was just the vacation I needed. Business Insider",
+   "content_hash": "d33fcc7e0a8c7da8",
+   "raw_feed_hash": "a6a10530e91e6220acdc1c93f4b6e1aac20ed8185b3e09da427378fc5543db69",
+   "published_at": 1679727600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_db321c0c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f05118f6ff873624",
+   "source": "Mashed",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPWGZFYWtNQ3E4djQ0cWZkb21kZkZDYlFsd05OeXA4dVBwZk9PVHF0eW5ORlZLalV0ck1jMDlab2ZNa0xmZFh3Q0duWU1GMWNjdzlRSHlYYU0wQUdRZWhjYVp4Y28wWVhhRjhlWlVVQXMwUWpCTDh0WW5mS1RvMURZMmM5X2ZFamVpMnlHNzQ1ZVFXdzVZN0pUd0lLUGRmS1lOcG1TTHdtdEQxeFhaY2c?oc=5",
+   "title": "Katie Lee Biegel Celebrated 1 Million Instagram Followers In The Tastiest Way - Mashed",
+   "text": "Katie Lee Biegel Celebrated 1 Million Instagram Followers In The Tastiest Way - Mashed. Katie Lee Biegel Celebrated 1 Million Instagram Followers In The Tastiest Way Mashed",
+   "content_hash": "be99f637c98d2492",
+   "raw_feed_hash": "a6a10530e91e6220acdc1c93f4b6e1aac20ed8185b3e09da427378fc5543db69",
+   "published_at": 1675584000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_db321c0c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9df8db823d314eb6",
+   "source": "The Verge",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNUGE4U1c3NkRLbENLNk8zVFZZRUJIZlVYOG1xMEV1QVFIWFRpenFPSzdDc25OZ2tQRWRrX1NncEJjX3lOQks1ZExhR3p1R0RQNU9FSnc4a3RXM3NOdXBNd1lQZHdCUHR6NkJ3TlJFZ3NSNlh0T2hlNFBsbUFpdXlBX1VsRDAtbGlxT0l4eHhjWGUwdw?oc=5",
+   "title": "Elon Musk is now the most-followed person on Twitter - The Verge",
+   "text": "Elon Musk is now the most-followed person on Twitter - The Verge. Elon Musk is now the most-followed person on Twitter The Verge",
+   "content_hash": "254fe30d51990116",
+   "raw_feed_hash": "a6a10530e91e6220acdc1c93f4b6e1aac20ed8185b3e09da427378fc5543db69",
+   "published_at": 1680073200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_db321c0c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a43265346edf3171",
+   "source": "Bustle",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNeVNCT1BfXzNrTS16S1RMd3NDOWN2RDUxM0lqZ05VTTg5RC15b1U3MVV1MDdaN1hEb05LNzFqRUpYRjVCVzY2STVmY3V2Y2dwcUY3YmhWamt5ejcycUwxaHIxX296U3liZjd2SDRKX201UndyUWZVNGh5eExhTnFjY19TQk5OQQ?oc=5",
+   "title": "Why Is Everyone Talking About Blood Sugar Spikes? Ask The Glucose Goddess - Bustle",
+   "text": "Why Is Everyone Talking About Blood Sugar Spikes? Ask The Glucose Goddess - Bustle. Why Is Everyone Talking About Blood Sugar Spikes? Ask The Glucose Goddess Bustle",
+   "content_hash": "efd16ef54ccb369e",
+   "raw_feed_hash": "a6a10530e91e6220acdc1c93f4b6e1aac20ed8185b3e09da427378fc5543db69",
+   "published_at": 1682665200.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_db321c0c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e5e70d2ed84fe643",
+   "source": "vox.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOY1BNNm9icHE1NmkzZDI0SWVNSXdJbDhYTkRZNl9MU295TVlTM0F1b2owSzlGU3d3WFU5Vm5CY3lFTDV6d0tNX1JNeWhWMkJBNWRUVDJUa2VVZENPNDE4RkhESmtoVXR3UllZalREb1JGNzkwQ1dtMEw1Z0UyQS1qQ1lPMlhhc2ItTDM5Z3hMekkyb0E?oc=5",
+   "title": "The expensive, unrealistic, and extremely white world of \u201cmomfluencers\u201d - vox.com",
+   "text": "The expensive, unrealistic, and extremely white world of \u201cmomfluencers\u201d - vox.com. The expensive, unrealistic, and extremely white world of \u201cmomfluencers\u201d vox.com",
+   "content_hash": "eabdbca3977f96b4",
+   "raw_feed_hash": "a6a10530e91e6220acdc1c93f4b6e1aac20ed8185b3e09da427378fc5543db69",
+   "published_at": 1682406000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_db321c0c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "26a083d1bbc830df",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPTGx0Ym5NTGJqMURWYmYtWUZyWHUyTXBoWXh2UzIzajZFVFNYUngzTDAzNmRHZzhLR2RuNjY4c1BhTFhlUG1WQm5obXZDbjY1aTFBeHFUUER1T2ZwOHVleXliYXN4bmV3VnRzR0xIZzdHRjEyUVhsMHl3RmJKc2ZRU21aaTdQSXBmSFhJLUpoVmo1RlNlX0pKT2ZabmVCMkJGQmJwdkNR?oc=5",
+   "title": "Brand Engagement on TikTok Is Far Outpacing Instagram: Data - Business Insider",
+   "text": "Brand Engagement on TikTok Is Far Outpacing Instagram: Data - Business Insider. Brand Engagement on TikTok Is Far Outpacing Instagram: Data Business Insider",
+   "content_hash": "65c580aa751398a3",
+   "raw_feed_hash": "a6a10530e91e6220acdc1c93f4b6e1aac20ed8185b3e09da427378fc5543db69",
+   "published_at": 1678176000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_db321c0c11",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "95ca35247be4f16c",
+   "source": "National Institute on Aging (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOZHBDUFZMUkxrYzRISXdSY1FZSExoTHlVWUJ4QlNVZjBVSWpYb2VHcXpoOUZ3RWVIM0s2WEJ5VVlFbXM3YXhMQk9kZEkzR3cweVBNVXlvb1piSjBRTFFta1EtOGpLZnJvQURfSW5vZDlnLUNSNFUxc01ENDVYbTZmcEpQT1lheFcwT1pabVgzWXhYQ2IzbzNRUDVqaVlMa3V1Ym15dU9CRUVQWjRwd1lIcndIcmdUNzdRcjVxY1dvMA?oc=5",
+   "title": "Could a viral illness increase chances of developing Alzheimer\u2019s or other neurodegenerative disease? - National Institute on Aging (.gov)",
+   "text": "Could a viral illness increase chances of developing Alzheimer\u2019s or other neurodegenerative disease? - National Institute on Aging (.gov). Could a viral illness increase chances of developing Alzheimer\u2019s or other neurodegenerative disease? National Institute on Aging (.gov)",
+   "content_hash": "17d544cd3248f599",
+   "raw_feed_hash": "37572dd6a1d380d3030853276454275b65a9ff1e607dabe7b60461320ddd9304",
+   "published_at": 1674115200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_fe234df9c7",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "dd9accda6e900f78",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9IdEpsRWd6X0FQc2tRUjEwbWhWajFyQVU2ZXMtRkFaM2pjeTZ1Q1BkTWpuQTBqcGtlZXZ2d3k1NkZQdzFBUVQ3NUJhTWJMZE9yWjVpR3pacTV3N3Joamow?oc=5",
+   "title": "Factor Xa cleaves SARS-CoV-2 spike protein to block viral entry and infection - Nature",
+   "text": "Factor Xa cleaves SARS-CoV-2 spike protein to block viral entry and infection - Nature. Factor Xa cleaves SARS-CoV-2 spike protein to block viral entry and infection Nature",
+   "content_hash": "4655e2d1e84c5720",
+   "raw_feed_hash": "37572dd6a1d380d3030853276454275b65a9ff1e607dabe7b60461320ddd9304",
+   "published_at": 1680764400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_fe234df9c7",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8f928f1413904fa0",
+   "source": "Sprout Social",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5lZnh2VUN3a3NGb3FHZkxTT05HRTNUVzlxaE5DWEZ2eDZuM292eXBuUFNZYVJRZDJna1RpSXRNOU5YemxCajNkWW5iRGlwOFpYSE1VLVAzZm1ESklPZXM3QmVWbmN3cXPSAWxBVV95cUxNU3RWRzlBUkZoS1JLNmtTMC1GMVJOUlJsQmlna2c3NEFrNUxVNEpxUlQtOWQxV29YVy1JUVU4MlhnaGZmcEVPUzREQlp6b0ZGWWFFaksyVU9IN1pVQnVrejUxczNGandEYVZ5eFU?oc=5",
+   "title": "Understanding and exploring core social media features - Sprout Social",
+   "text": "Understanding and exploring core social media features - Sprout Social. Understanding and exploring core social media features Sprout Social",
+   "content_hash": "b191930174663e08",
+   "raw_feed_hash": "37572dd6a1d380d3030853276454275b65a9ff1e607dabe7b60461320ddd9304",
+   "published_at": 1675670400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_fe234df9c7",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "acb6bb1986236fe7",
+   "source": "USC Today",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPRXdQeEVUNVlUWlNKNEhhcEhYQ1hPQTE4Sm5rb3hUaEo1ZVh1N3pSc2d2UmJ4MC1teHFDbjFHejBLeEpCS3RYTmxIUktRYmY1MUp3RTFZLTM0T2dFMlhIcG5lTy1iaGo4dVNuUUYzUktPeDJHYlIxaGRFV2N4R1lqQXRXbjJVbE54cWNJWHlpYmhHQ0ZDUzAwbg?oc=5",
+   "title": "USC study reveals the key reason why fake news spreads on social media - USC Today",
+   "text": "USC study reveals the key reason why fake news spreads on social media - USC Today. USC study reveals the key reason why fake news spreads on social media USC Today",
+   "content_hash": "432d01757e31394e",
+   "raw_feed_hash": "37572dd6a1d380d3030853276454275b65a9ff1e607dabe7b60461320ddd9304",
+   "published_at": 1673942400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_fe234df9c7",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "657f7e03f282db29",
+   "source": "Hootsuite Blog",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9WVEtZVDdyZ2dfTmQ3NGFmYWEtSVk2UHNodVNUZ21DTGpQRktvcTgxZmVvSS1RU1FmQkJBRTVaa3RaTkJZZEotMDZ1Umk1d0ptZU5GU21XMzAtSkpsYUpfVm1hRQ?oc=5",
+   "title": "How To Go Viral on TikTok: 11 Top Tips (and Why They Work) - Hootsuite Blog",
+   "text": "How To Go Viral on TikTok: 11 Top Tips (and Why They Work) - Hootsuite Blog. How To Go Viral on TikTok: 11 Top Tips (and Why They Work) Hootsuite Blog",
+   "content_hash": "1d01fb561f3f9b70",
+   "raw_feed_hash": "37572dd6a1d380d3030853276454275b65a9ff1e607dabe7b60461320ddd9304",
+   "published_at": 1675152000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_fe234df9c7",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7803e00a4a8b9c37",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPSC1pSzlZUzB4clFqcUxFRFAyMmVLTFJzWFBzUFkyY3EwOWhuUW5hV0xiZzdEODRJRE9IaS03S1lBeU1KekpDa0hyQWlJVFBmWW1UUTJmRmtuQmZJYzVIMVBUUEhJTm4tOHVVeDNGWmZFanQ2SGdjczFVRWVEc1lOWVVHakZiaGdCMVNtSXJmY0U?oc=5",
+   "title": "Fake Tick Infestation Clips Keep Going Viral After Doctors Debunk Them - Business Insider",
+   "text": "Fake Tick Infestation Clips Keep Going Viral After Doctors Debunk Them - Business Insider. Fake Tick Infestation Clips Keep Going Viral After Doctors Debunk Them Business Insider",
+   "content_hash": "d6f80f65c7bb6c55",
+   "raw_feed_hash": "37572dd6a1d380d3030853276454275b65a9ff1e607dabe7b60461320ddd9304",
+   "published_at": 1684825200.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_fe234df9c7",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "be43b842aeb6d8d1",
+   "source": "TechCrunch",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNWHZEME5KQWt2VTdVU0NtQWx4YmhKc1RkRjUtckUwMWtCWlhhMkxjNnpkSW42TDNuQXBOaHdqX3BNc09PZTF1Q05IcW1aYjBPak5xNTBaWTk3SjZUMDVGU1pjd1hfNElGN3BtYnRWWHhNZTVqY1hmT0lleGVZV1E3elEyLW1BUkl4dlowYUx2Y0k?oc=5",
+   "title": "TikTok launches a revamped creator fund called the \u2018Creativity Program\u2019 in beta - TechCrunch",
+   "text": "TikTok launches a revamped creator fund called the \u2018Creativity Program\u2019 in beta - TechCrunch. TikTok launches a revamped creator fund called the \u2018Creativity Program\u2019 in beta TechCrunch",
+   "content_hash": "4cb01f288b17697c",
+   "raw_feed_hash": "37572dd6a1d380d3030853276454275b65a9ff1e607dabe7b60461320ddd9304",
+   "published_at": 1676880000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_fe234df9c7",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "79808fed2a07cf5f",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBDZTJfRTdzX0tnWU9KNUFjaF9aVU5qMWZmWkIzYUxQY0hLRGJVajd6YXI5VWwxTGRCaC1lNjVfUTk5S3dFT3J5WnZrcDJpZS0waWctNW80cTBvTEZSMFdj?oc=5",
+   "title": "An updated suite of viral vectors for in vivo calcium imaging using intracerebral and retro-orbital injections in male mice - Nature",
+   "text": "An updated suite of viral vectors for in vivo calcium imaging using intracerebral and retro-orbital injections in male mice - Nature. An updated suite of viral vectors for in vivo calcium imaging using intracerebral and retro-orbital injections in male mice Nature",
+   "content_hash": "1d1506a8ab92dec9",
+   "raw_feed_hash": "37572dd6a1d380d3030853276454275b65a9ff1e607dabe7b60461320ddd9304",
+   "published_at": 1675497600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_fe234df9c7",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "e6d8ea1c61891ec3:c0",
+   "source_id": "e6d8ea1c61891ec3",
+   "subject": "The Reality TV-to-Social-Influencer Pipeline",
+   "predicate": "has dried up",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Reality TV-to-Social-Influencer Pipeline Has Dried Up",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679554800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Reality TV-to-Social-Influencer Pipeline"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_17e781c3ca",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_db321c0c11"
+   }
+  },
+  {
+   "claim_id": "95ca35247be4f16c:c0",
+   "source_id": "95ca35247be4f16c",
+   "subject": "a viral illness",
+   "predicate": "could increase chances of developing",
+   "object": "Alzheimer\u2019s or other neurodegenerative disease",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "speculative",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "Could a viral illness increase chances of developing Alzheimer\u2019s or other neurodegenerative disease?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674115200.0,
+   "extraction_confidence": 0.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "viral illness",
+    "Alzheimer\u2019s",
+    "neurodegenerative disease"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_391a8ba6b5",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_fe234df9c7"
+   }
+  },
+  {
+   "claim_id": "4e4c648aec4914e7:c0",
+   "source_id": "4e4c648aec4914e7",
+   "subject": "Building a Medium Stats Tracker With Streamlit",
+   "predicate": "is",
+   "object": "a project or article",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Building a Medium Stats Tracker With Streamlit - Towards Data Science",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677484800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Medium Stats Tracker",
+    "Streamlit",
+    "Towards Data Science"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_b75b1f1212",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_db321c0c11"
+   }
+  },
+  {
+   "claim_id": "dd9accda6e900f78:c0",
+   "source_id": "dd9accda6e900f78",
+   "subject": "Factor Xa",
+   "predicate": "cleaves",
+   "object": "SARS-CoV-2 spike protein",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Factor Xa cleaves SARS-CoV-2 spike protein to block viral entry and infection",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680764400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Factor Xa",
+    "SARS-CoV-2 spike protein"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_975a15ff21",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_fe234df9c7"
+   }
+  },
+  {
+   "claim_id": "dd9accda6e900f78:c1",
+   "source_id": "dd9accda6e900f78",
+   "subject": "Factor Xa",
+   "predicate": "blocks",
+   "object": "viral entry and infection",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Factor Xa cleaves SARS-CoV-2 spike protein to block viral entry and infection",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680764400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Factor Xa",
+    "SARS-CoV-2 spike protein"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_975a15ff21",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_fe234df9c7"
+   }
+  },
+  {
+   "claim_id": "aa84c276b828be56:c0",
+   "source_id": "aa84c276b828be56",
+   "subject": "I",
+   "predicate": "went to",
+   "object": "adult summer camp",
+   "value": "",
+   "units": "",
+   "qualifiers": "last year",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "I went to adult summer camp last year.",
+   "span_verified": true,
+   "event_time": "last year",
+   "publication_time": 1679727600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "adult summer camp"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9041d7bbe6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_db321c0c11"
+   }
+  },
+  {
+   "claim_id": "aa84c276b828be56:c1",
+   "source_id": "aa84c276b828be56",
+   "subject": "A blast from the past",
+   "predicate": "was",
+   "object": "just the vacation I needed",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "A blast from the past was just the vacation I needed.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679727600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_9041d7bbe6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_db321c0c11"
+   }
+  },
+  {
+   "claim_id": "8f928f1413904fa0:c0",
+   "source_id": "8f928f1413904fa0",
+   "subject": "Understanding and exploring core social media features",
+   "predicate": "is a resource from",
+   "object": "Sprout Social",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Understanding and exploring core social media features - Sprout Social",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675670400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Sprout Social"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_becae73a7d",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_fe234df9c7"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Reality TV-to-Social-Influencer Pipeline",
+   "normalized": "reality tv-to-social-influencer pipeline",
+   "candidates": [
+    {
+     "entity_id": "ent_2182e31e44",
+     "canonical": "reality tv-to-social-influencer pipeline",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Reality TV-to-Social-Influencer Pipeline"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "viral illness",
+   "normalized": "viral illness",
+   "candidates": [
+    {
+     "entity_id": "ent_65cc46f811",
+     "canonical": "viral illness",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "viral illness"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Alzheimer\u2019s",
+   "normalized": "alzheimer\u2019s",
+   "candidates": [
+    {
+     "entity_id": "ent_ef68173f0e",
+     "canonical": "alzheimer\u2019s",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Alzheimer\u2019s"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "neurodegenerative disease",
+   "normalized": "neurodegenerative disease",
+   "candidates": [
+    {
+     "entity_id": "ent_2cc7696af0",
+     "canonical": "neurodegenerative disease",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "neurodegenerative disease"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Medium Stats Tracker",
+   "normalized": "medium stats tracker",
+   "candidates": [
+    {
+     "entity_id": "ent_042143c394",
+     "canonical": "medium stats tracker",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Medium Stats Tracker"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Streamlit",
+   "normalized": "streamlit",
+   "candidates": [
+    {
+     "entity_id": "ent_bd3de87d71",
+     "canonical": "streamlit",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Streamlit"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Towards Data Science",
+   "normalized": "towards data science",
+   "candidates": [
+    {
+     "entity_id": "ent_6e5646c24f",
+     "canonical": "towards data science",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Towards Data Science"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Factor Xa",
+   "normalized": "factor xa",
+   "candidates": [
+    {
+     "entity_id": "ent_ecab6e5736",
+     "canonical": "factor xa",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Factor Xa",
+      "Factor Xa"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "SARS-CoV-2 spike protein",
+   "normalized": "sars-cov-2 spike protein",
+   "candidates": [
+    {
+     "entity_id": "ent_6475854907",
+     "canonical": "sars-cov-2 spike protein",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "SARS-CoV-2 spike protein",
+      "SARS-CoV-2 spike protein"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Factor Xa",
+   "normalized": "factor xa",
+   "candidates": [
+    {
+     "entity_id": "ent_ecab6e5736",
+     "canonical": "factor xa",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Factor Xa",
+      "Factor Xa"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "SARS-CoV-2 spike protein",
+   "normalized": "sars-cov-2 spike protein",
+   "candidates": [
+    {
+     "entity_id": "ent_6475854907",
+     "canonical": "sars-cov-2 spike protein",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "SARS-CoV-2 spike protein",
+      "SARS-CoV-2 spike protein"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "adult summer camp",
+   "normalized": "adult summer camp",
+   "candidates": [
+    {
+     "entity_id": "ent_057b3719b0",
+     "canonical": "adult summer camp",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "adult summer camp"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Sprout Social",
+   "normalized": "sprout social",
+   "candidates": [
+    {
+     "entity_id": "ent_1517e8f4b8",
+     "canonical": "sprout social",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Sprout Social"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "e6d8ea1c61891ec3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1679554800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679554800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4e4c648aec4914e7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1677484800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677484800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "aa84c276b828be56": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1679727600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679727600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f05118f6ff873624": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675584000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675584000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9df8db823d314eb6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1680073200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680073200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a43265346edf3171": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1682665200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682665200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e5e70d2ed84fe643": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1682406000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682406000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "26a083d1bbc830df": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1678176000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678176000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "95ca35247be4f16c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1674115200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674115200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "dd9accda6e900f78": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1680764400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680764400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8f928f1413904fa0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675670400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675670400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "acb6bb1986236fe7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1673942400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673942400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "657f7e03f282db29": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675152000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675152000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7803e00a4a8b9c37": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1684825200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684825200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "be43b842aeb6d8d1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1676880000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676880000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "79808fed2a07cf5f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675497600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675497600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_17e781c3ca",
+   "member_ids": [
+    "e6d8ea1c61891ec3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Time Magazine",
+   "primary_source": "Time Magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b75b1f1212",
+   "member_ids": [
+    "4e4c648aec4914e7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Towards Data Science",
+   "primary_source": "Towards Data Science",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9041d7bbe6",
+   "member_ids": [
+    "aa84c276b828be56"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d53e075a0d",
+   "member_ids": [
+    "f05118f6ff873624"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Mashed",
+   "primary_source": "Mashed",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2c8c53c490",
+   "member_ids": [
+    "9df8db823d314eb6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Verge",
+   "primary_source": "The Verge",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_16b1dffc38",
+   "member_ids": [
+    "a43265346edf3171"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Bustle",
+   "primary_source": "Bustle",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2671776a8a",
+   "member_ids": [
+    "e5e70d2ed84fe643"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "vox.com",
+   "primary_source": "vox.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a0cf45131f",
+   "member_ids": [
+    "26a083d1bbc830df"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_391a8ba6b5",
+   "member_ids": [
+    "95ca35247be4f16c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "National Institute on Aging (.gov)",
+   "primary_source": "National Institute on Aging (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_975a15ff21",
+   "member_ids": [
+    "dd9accda6e900f78"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_becae73a7d",
+   "member_ids": [
+    "8f928f1413904fa0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Sprout Social",
+   "primary_source": "Sprout Social",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_40bff9fb70",
+   "member_ids": [
+    "acb6bb1986236fe7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "USC Today",
+   "primary_source": "USC Today",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_153e86c01a",
+   "member_ids": [
+    "657f7e03f282db29"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Hootsuite Blog",
+   "primary_source": "Hootsuite Blog",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8f3c1d16e0",
+   "member_ids": [
+    "7803e00a4a8b9c37"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e4b95a4c28",
+   "member_ids": [
+    "be43b842aeb6d8d1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "TechCrunch",
+   "primary_source": "TechCrunch",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0e64d75327",
+   "member_ids": [
+    "79808fed2a07cf5f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "e6d8ea1c61891ec3:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679554800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "95ca35247be4f16c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674115200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4e4c648aec4914e7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677484800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "dd9accda6e900f78:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680764400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "dd9accda6e900f78:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680764400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "aa84c276b828be56:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679727600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "aa84c276b828be56:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679727600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8f928f1413904fa0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675670400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "e6d8ea1c61891ec3:c0",
+  "95ca35247be4f16c:c0",
+  "4e4c648aec4914e7:c0",
+  "dd9accda6e900f78:c0",
+  "dd9accda6e900f78:c1",
+  "aa84c276b828be56:c0",
+  "aa84c276b828be56:c1",
+  "8f928f1413904fa0:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_e930ac1b95": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_db321c0c11": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_fe234df9c7": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_efd612449b": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_37c202beae": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_5d0fdc0c96": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_3dff0235e3": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_e930ac1b95",
+  "req_efd612449b",
+  "req_37c202beae",
+  "req_5d0fdc0c96",
+  "req_3dff0235e3"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.76,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "1e7dd883c82f4f94",
+ "bundle_hash": "1e7dd883c82f4f94",
+ "_persisted_at": "2026-07-13T01:49:25Z"
+}

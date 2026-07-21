@@ -1,0 +1,54 @@
+{
+  "base_commit": "627352f",
+  "method": "compiled real questions and inspected plan fields + runtime instantiation contracts",
+  "phases": {
+    "phase4_actor_policy": {
+      "compiler_field": "actor_decisions + accepted_mechanisms[operator=production_actor_policy]",
+      "emitted_example": "Senate confirmation Q: production_actor_policy IS named",
+      "runtime_operator": "production_actor_policy / agent_decision / fitted_decision (registered)",
+      "chain_break": "conditional: emitted for clearly-strategic Qs; the 75% gap is Qs where the compiler does not identify a strategic actor or name the operator",
+      "fix": "requirement-inference ensures actor-required Qs get an actor operator + a decision_opportunity event",
+      "acceptance_test": "activation recall >=95% on actor-required labels; false<=10% on actor-free controls"
+    },
+    "phase6_registry": {
+      "compiler_field": "accepted_mechanisms[operator=<registry family>]",
+      "chain_break": "compiler rarely names a registry mechanism operator for general Qs; falls back to generic_outcome_prior",
+      "runtime_operator": "registry families registered; fire iff named",
+      "fix": "map causal process -> applicable registry family + operator; add to accepted_mechanisms",
+      "acceptance_test": "recall>=95% on mechanism-required; StateDelta in >=90%"
+    },
+    "phase7_nonlinear": {
+      "compiler_field": "accepted_mechanisms[operator in {nonlinear_mechanism,nonlinear_contagion,nonlinear_state_step}] + scheduled_events",
+      "chain_break": "operators runtime-registered but compiler never names them; no matching scheduled event",
+      "fix": "detect nonlinear causal structure -> add nonlinear operator + a matching event",
+      "acceptance_test": "recall>=95% on nonlinear-required; differs from matched linear comparator in >=90%"
+    },
+    "phase9_populations": {
+      "compiler_field": "populations[{id,segments}]",
+      "emitted_example": "Senate Q emitted 2 populations; economic Qs emitted 0",
+      "chain_break": "EMISSION is question-dependent AND no operator aggregates population state into the terminal (no causal consumer)",
+      "fix": "emit PopulationSpec for aggregate-behavior Qs + a population-aggregation consumer that affects the terminal",
+      "acceptance_test": "emit>=95% on population-required; removing heterogeneity changes terminal in >=90%"
+    },
+    "phase9_networks": {
+      "compiler_field": "relations[{src,rel,dst}]",
+      "emitted_example": "Senate Q emitted 5 relations",
+      "chain_break": "relations added to world.network but distinct semantic layers are not modeled and no layer-specific causal consumer exists",
+      "fix": "emit typed multilayer layers (communication/exposure/trust/influence/authority/alliance) with layer-specific consumers",
+      "acceptance_test": "multilayer emit>=95% on network-required; layer rewiring changes terminal in >=90%"
+    },
+    "phase10_institutions": {
+      "compiler_field": "institutions[{id,rules:[{kind,params}]}]",
+      "emitted_example": "Senate Q emitted senate+judiciary_committee with rules",
+      "chain_break": "ROOT CAUSE: rule kinds emitted (voting_rule/confirmation_process/committee_vote) are NOT in EXECUTABLE_RULE_KINDS {budget,capacity,deadline,decision_right,eligibility,procedure,quorum} -> materialize DROPS them -> empty RuleSystem (ornamental). AND no institution_action operator named + no institutional_action event carrying an InstitutionRuntime.",
+      "fix": "normalize rule kinds to the executable set; add institution_action operator + institutional_action event with an InstitutionRuntime",
+      "acceptance_test": "executable rules >0 on institution-required; institution StateDelta in >=90%; removing changes terminal in >=90%"
+    },
+    "phase11_recompilation": {
+      "compiler_field": "controller runs over observations (unified runtime)",
+      "chain_break": "runs on all executions but only fires on genuine surprise; not validated on adversarial shock/migration scenarios",
+      "fix": "adversarial shock corpus with injected structural changes; verify trigger->revision->migration->continuation",
+      "acceptance_test": "trigger recall>=90% on injected shocks; false<=10% on stable controls; migration integrity>=98%"
+    }
+  }
+}
