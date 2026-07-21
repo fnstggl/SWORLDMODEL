@@ -133,6 +133,30 @@ class TemplateExecutor:
                                    f"mechanical options {opts}")
         return True, ""
 
+    def _negative_terminal_choice(self, tmpl: ConsequenceTemplate, binding: dict) -> bool:
+        """True when a terminal-writing DECISION was resolved to its negative/decline option, so the
+        event did NOT occur. The affirmative option is the resolution's YES label (options[0], the
+        codebase-wide YES convention); the vote is negative if it matches the NO label, matches a
+        record_vote's non-first option, or reads as a decline. Absent a vote, the action is taken at
+        face value (the event occurred)."""
+        vote = norm(binding.get("vote_option"), 60).lower()
+        if not vote:
+            return False
+        opts = (self.bp.resolution.get("options") or []) if self.bp.resolution else []
+        yes_label = norm(opts[0], 60).lower() if len(opts) >= 1 else ""
+        no_label = norm(opts[1], 60).lower() if len(opts) >= 2 else ""
+        if yes_label and vote == yes_label:
+            return False
+        if no_label and vote == no_label:
+            return True
+        for e in tmpl.effects:
+            if e["kind"] == "record_vote":
+                vopts = [norm(o, 60).lower() for o in (e["params"].get("options") or [])]
+                if len(vopts) >= 2 and vote in vopts and vote != vopts[0]:
+                    return True
+        return any(tok in vote for tok in ("no reply", "no ", "not ", "decline", "ignore",
+                                           "none", "abstain", "skip", "delete", "dismiss"))
+
     def execute(self, tmpl: ConsequenceTemplate, *, node, actor_id: str, binding: dict,
                 day: str) -> dict:
         """Apply mechanical effects to the node's state. Returns the execution record. The
@@ -185,6 +209,25 @@ class TemplateExecutor:
             node.emitted_events.append({"etype": em["etype"], "observers":
                                         list(em["observers"]), "source": actor_id, "day": day})
             rec["events_emitted"].append(em["etype"])
+        # ---- terminal binding (general): an EVENT_OCCURS terminal resolves YES the moment the
+        # event actually happens. An action the blueprint declared a terminal writer
+        # (written_by_action_ids) OR carrying writes_terminal is that occurrence — so it must
+        # mechanically set the terminal predicate. Without this, `_evaluate_terminal` reads
+        # world_state[yes_when], which no effect kind ever wrote, and EVERY event_occurs world
+        # resolved a spurious NO.
+        # BUT a terminal-writing action may be a DECISION with an affirmative and a negative option
+        # (record_vote [Reply, No reply]); choosing the negative option is the actor declining to
+        # produce the event. Only the affirmative choice sets the predicate — otherwise a "No reply"
+        # decision would be miscounted as a reply.
+        term = self.bp.terminal or {}
+        if str(term.get("kind")) == "event_occurs":
+            writers = {str(w) for w in (term.get("written_by_action_ids") or [])}
+            if tmpl.writes_terminal or tmpl.action_id in writers:
+                if not self._negative_terminal_choice(tmpl, binding):
+                    key = norm(term.get("yes_when"), 80) or "occurred"
+                    node.world_state[key] = True
+                    rec["effects_applied"].append({"kind": "terminal_event", "predicate": key,
+                                                   "by": tmpl.action_id})
         self.hits += 1
         return rec
 
@@ -245,6 +288,18 @@ def compile_novel_action(*, chosen: str, intended: str, actor_id: str, day: str,
                        "observers": list(e.get("observers") or [])}
                       for e in (r.get("emits_events") or []) if isinstance(e, dict)],
         writes_terminal=bool(r.get("writes_terminal")), source="novel_compiled")
+    # A novel action reached through DELIBERATION is almost always a refinement of the action the
+    # actor first chose (e.g. "send_reply" -> "reply_with_request_for_more_info"): still a reply,
+    # still the terminal-writing act. If this actor already owns a terminal-writing template, the
+    # refinement inherits its terminal semantics — otherwise an actor who genuinely acts (replied!)
+    # is silently censored to NO because the compiler defaulted writes_terminal=false.
+    if not tmpl.writes_terminal:
+        parent = next((t for t in executor.templates.values()
+                       if t.writes_terminal and actor_id in (t.actor_ids or [])), None)
+        if parent is not None:
+            tmpl.writes_terminal = True
+            if not tmpl.emits_events:
+                tmpl.emits_events = [dict(e) for e in parent.emits_events]
     executor.templates[tmpl.action_id] = tmpl
     return tmpl
 

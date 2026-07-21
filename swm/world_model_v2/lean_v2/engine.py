@@ -44,6 +44,17 @@ from swm.world_model_v2.lean_v2.worlds import WeightedBranchCoalescer, WeightedW
 
 _TERMINAL_EVENT = "__terminal_eval__"
 
+
+def _valid_prevalence(x):
+    """A usable evidence-conditioned prevalence: a real number in (0, 1]. None otherwise, so the
+    weight law transparently falls back to the support-tier midpoint (never invents a weight)."""
+    try:
+        v = float(x)
+    except (TypeError, ValueError):
+        return None
+    return v if 0.0 < v <= 1.0 else None
+
+
 _DECISION_SCHEMA = """{
  "attention": {"noticed": [{"obs_id": "<id>", "why": "..."}],
                "ignored": [{"obs_id": "<id>", "why": "..."}]},
@@ -174,9 +185,24 @@ class WaveEngine:
             if not variants:
                 continue
             rows = []
+            # EVIDENCE-CONDITIONED weighting: `prevalence` is the fraction of times THIS person is
+            # actually in this private state GIVEN this evidence — a real conditional probability, not
+            # epistemic confidence. When the blueprint supplies it, it is the point weight and the
+            # support tier only sets the +/- uncertainty band. Two same-support variants are then
+            # weighted by how well each fits the actual message, never forced to a content-blind 50/50.
+            # Absent prevalence (older artifacts / tests), the support-tier midpoint governs unchanged.
+            have_prev = any(_valid_prevalence(v.get("prevalence")) is not None
+                            for v in variants[:3])
             for v in variants[:3]:
                 lo, mid, hi = SUPPORT_WEIGHT_RANGES[str(v.get("support", "speculative"))]
-                rows.append((str(v.get("variant_id") or f"v{len(rows)}"), lo, mid, hi))
+                vid = str(v.get("variant_id") or f"v{len(rows)}")
+                prev = _valid_prevalence(v.get("prevalence"))
+                if have_prev:
+                    point = prev if prev is not None else mid
+                    half = (hi - lo) / 2.0
+                    rows.append((vid, max(0.0, point - half), point, min(1.0, point + half)))
+                else:
+                    rows.append((vid, lo, mid, hi))
             zmid = sum(r[2] for r in rows) or 1.0
             self.variant_mid[a["id"]] = {vid: mid / zmid for vid, _lo, mid, _hi in rows}
             self.variant_rng[a["id"]] = {vid: (lo, mid / zmid, hi)

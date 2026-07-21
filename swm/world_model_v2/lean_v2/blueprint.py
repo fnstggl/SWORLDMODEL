@@ -111,6 +111,9 @@ _BLUEPRINT_SCHEMA = """{
      "state": {"beliefs": ["..."], "goals": ["..."], "pressures": "...",
                "stances": ["..."], "relationships": {}},
      "evidence_basis": "<verbatim quote from evidence, or 'unstated'>",
+     "prevalence": "<0..1: fraction of times THIS person is actually in this state GIVEN this "
+                   "specific evidence; a real conditional probability, must ~sum to 1 across the "
+                   "actor's variants; read the actual content, do NOT default to an even split>",
      "support": "well_supported|plausible|speculative"}]}],
  "institutions": [{"id": "<snake_case>", "name": "...", "aliases": ["..."],
    "members": ["<actor ids>"], "decision_rule": "unanimity|majority|single|all_option|threshold",
@@ -156,6 +159,10 @@ actions capable of changing the answer. Rules:
 - Include EVERY actor holding genuine discretion over the outcome; mark purely ceremonial roles.
 - Give each decisive actor 1-3 GENUINELY DIFFERENT plausible private-state variants. Ground each in a
   verbatim evidence quote where possible; otherwise evidence_basis="unstated" and support="speculative".
+- For EACH variant set `prevalence`: the fraction of times this person is REALLY in this state given the
+  specific evidence, summing to ~1 across the actor's variants. Read the actual content and let it move the
+  weights — a strong, specific, credible message makes the engaged state more prevalent; a generic or weak
+  one makes it rare. Do NOT hedge to an even split; a content-blind 50/50 is a failure, not caution.
 - record_vote actions MUST list every real option a voter could choose.
 - The terminal block must name the mechanical rule that decides YES vs NO and the actions that write it.
 - Numbers: ONLY inside grounded_rates, each with a VERBATIM basis_quote copied from the evidence.
@@ -417,11 +424,28 @@ def validate_blueprint(bp: ConsumerWorldBlueprint, *, as_of: str, horizon: str,
                  "why": "basis_quote not found verbatim in evidence" if not ok_quote
                  else "malformed value_range"})
 
-    # variant support classes normalize deterministically
+    # variant support classes normalize deterministically; prevalence is normalized to sum to 1
+    # across an actor's variants ONLY when every variant carries a usable value (else it is dropped
+    # entirely and the engine falls back to the support-tier midpoint — never a partial invention).
     for a in bp.actors:
-        for v in a.get("private_state_variants") or []:
+        vs = a.get("private_state_variants") or []
+        for v in vs:
             if str(v.get("support")) not in SUPPORT_WEIGHT_RANGES:
                 v["support"] = "speculative"
+        prevs = []
+        for v in vs:
+            try:
+                p = float(v.get("prevalence"))
+            except (TypeError, ValueError):
+                p = None
+            prevs.append(p if (p is not None and 0.0 < p <= 1.0) else None)
+        if len(vs) > 1 and all(p is not None for p in prevs) and sum(prevs) > 0:
+            z = sum(prevs)
+            for v, p in zip(vs, prevs):
+                v["prevalence"] = round(p / z, 4)
+        else:
+            for v in vs:                              # incomplete → drop, do not half-invent
+                v.pop("prevalence", None)
     return fails
 
 

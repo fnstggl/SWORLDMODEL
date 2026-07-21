@@ -434,3 +434,83 @@ def test_15_genuinely_unstable_scoreable_result_may_still_escalate():
     assert llm.calls["decision"] == 5
     bud = res.provenance["lean_v2"]["budget"]
     assert bud["structural_models"] == 2
+
+
+# ------------------------------------------------ 16-18: terminal binding + evidence weighting
+def _reply_bp():
+    """Minimal event_occurs world: one decisive actor whose reply/no-reply DECISION writes an
+    event_occurs terminal via a record_vote [Reply, No reply]."""
+    from swm.world_model_v2.lean_v2.blueprint import blueprint_from_dict
+    return blueprint_from_dict({
+        "resolution": {"interpretation": "recipient replies", "yes_means": "reply sent",
+                       "no_means": "no reply", "options": ["Reply", "No reply"],
+                       "resolution_day": "2025-08-31"},
+        "actors": [{"id": "vip", "name": "VIP", "authority": ["Decides to reply"],
+                    "discretion": "decisive"}],
+        "action_templates": [{"action_id": "send_reply", "actor_ids": ["vip"],
+                              "targets": ["sender"],
+                              "effects": [{"kind": "record_vote",
+                                           "params": {"options": ["Reply", "No reply"]}}],
+                              "emits_events": [{"etype": "reply_sent", "observers": ["sender"]}],
+                              "writes_terminal": True}],
+        "terminal": {"kind": "event_occurs", "yes_when": "reply sent",
+                     "no_when": "no reply", "written_by_action_ids": ["send_reply"],
+                     "evaluation_day": "2025-08-31"}})
+
+
+def _reply_executor(bp):
+    from swm.world_model_v2.lean_v2.consequences import TemplateExecutor, precompile_templates
+    # deterministic precompile path (no LLM) — blueprint already carries the template
+    return TemplateExecutor(precompile_templates(bp, cache=None), bp)
+
+
+def test_16_event_occurs_terminal_set_by_affirmative_reply():
+    """An actor who actually replies MUST resolve YES — the event_occurs predicate is set
+    mechanically by the terminal-writing action (regression: it was never set → spurious NO)."""
+    bp = _reply_bp()
+    ex = _reply_executor(bp)
+    nd = WeightedWorldNode(node_id="w0", weight=1.0, day="2025-08-17")
+    ex.execute(ex.find("send_reply"), node=nd, actor_id="vip",
+               binding={"vote_option": "Reply", "targets": ["sender"]}, day="2025-08-18")
+    key = "reply sent"
+    assert nd.world_state.get(key) is True
+
+
+def test_17_negative_reply_choice_does_not_set_terminal_event():
+    """The SAME terminal-writing action bound to the negative option ('No reply') must NOT set
+    the event (regression: a decline was miscounted as a reply → spurious YES)."""
+    bp = _reply_bp()
+    ex = _reply_executor(bp)
+    nd = WeightedWorldNode(node_id="w0", weight=1.0, day="2025-08-17")
+    ex.execute(ex.find("send_reply"), node=nd, actor_id="vip",
+               binding={"vote_option": "No reply", "targets": ["sender"]}, day="2025-08-18")
+    assert nd.world_state.get("reply sent") in (None, False)
+
+
+def test_18_evidence_conditioned_prevalence_breaks_content_blind_split():
+    """Two SAME-support variants must weight by evidence-grounded prevalence, not a forced 50/50;
+    absent prevalence they fall back to the support-tier midpoint unchanged."""
+    from swm.world_model_v2.lean_v2.engine import WaveEngine, EngineConfig
+    class _GW:  # only backend_fingerprint is read during __init__
+        backend_fingerprint = "test"
+    gw = _GW()
+    bp = _reply_bp()
+    bp.actors[0]["private_state_variants"] = [
+        {"variant_id": "engaged", "support": "speculative", "prevalence": 0.15},
+        {"variant_id": "filtered", "support": "speculative", "prevalence": 0.85}]
+    eng = WaveEngine(bp=bp, kept_actors={"vip"}, promotable=set(),
+                     executor=_reply_executor(bp), gateway=gw, budget_ledger=None,
+                     compile_cache=None, config=EngineConfig(),
+                     coalescer=WeightedBranchCoalescer(max_nodes=16),
+                     decision_cache=None, structural_model="primary")
+    w = eng.variant_mid["vip"]
+    assert abs(w["engaged"] - 0.15) < 1e-6 and abs(w["filtered"] - 0.85) < 1e-6
+    # no prevalence -> equal support -> content-blind 0.5/0.5 (documented fallback)
+    for v in bp.actors[0]["private_state_variants"]:
+        v.pop("prevalence")
+    eng2 = WaveEngine(bp=bp, kept_actors={"vip"}, promotable=set(),
+                      executor=_reply_executor(bp), gateway=gw, budget_ledger=None,
+                      compile_cache=None, config=EngineConfig(),
+                      coalescer=WeightedBranchCoalescer(max_nodes=16),
+                      decision_cache=None, structural_model="primary")
+    assert abs(eng2.variant_mid["vip"]["engaged"] - 0.5) < 1e-6
