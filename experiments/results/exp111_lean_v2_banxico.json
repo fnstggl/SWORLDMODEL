@@ -1,0 +1,1895 @@
+{
+ "experiment": "EXP-111 Lean V2 single live pastcast (Banxico unanimity)",
+ "metrics": {
+  "qid": "cfb43147-d9d2-5bd9-903f-f449e9a5aecf",
+  "question": "Will the Banxico Governing Board's June 25, 2026, interest rate decision be unanimous (5-0 vote)?",
+  "as_of": "2026-05-14",
+  "horizon": "2026-06-25",
+  "profile": "lean_v2",
+  "model": "deepseek-v4-flash",
+  "max_tokens": 3600,
+  "temperature": 0.2,
+  "seed": 0,
+  "status": "partially_resolved",
+  "p_raw": 0.2245,
+  "p_cal": null,
+  "probability_source": "partial_rollouts",
+  "grounding_grade": "partially_grounded",
+  "confidence": "low",
+  "unresolved_mass": 0.2653,
+  "uncertainty_interval": [
+   0.0002,
+   0.4802
+  ],
+  "weight_sensitive": false,
+  "n_llm_calls": 16,
+  "calls_by_stage": {
+   "actor_decision": {
+    "calls": 14,
+    "input_chars": 29432,
+    "output_chars": 19712,
+    "latency_s": 64.905,
+    "tiers": {
+     "strong": 14
+    }
+   },
+   "structural_compile": {
+    "calls": 1,
+    "input_chars": 10778,
+    "output_chars": 12551,
+    "latency_s": 18.253,
+    "tiers": {
+     "strong": 1
+    }
+   },
+   "structural_generation": {
+    "calls": 1,
+    "input_chars": 7651,
+    "output_chars": 11946,
+    "latency_s": 24.589,
+    "tiers": {
+     "strong": 1
+    }
+   }
+  },
+  "actor_calls": 14,
+  "unique_decision_contexts": 10,
+  "decision_reuses": 160,
+  "actors_pruned": 0,
+  "aliases_merged": 0,
+  "structural_models": 1,
+  "challenger": {
+   "triggered": false,
+   "triggers": [],
+   "mode": "",
+   "divergence": "",
+   "skipped_reasons": [
+    "no deterministic trigger fired: primary stable, no verified evidence conflict, no reversal-capable disputed assumption (imagination alone is not a trigger)"
+   ]
+  },
+  "weighted_nodes_executed": 33,
+  "branches_merged": 0,
+  "consequence_template_hits": 128,
+  "novel_consequence_compiles": 0,
+  "deliberations": 4,
+  "stability_reruns": 0,
+  "input_tokens": 12647,
+  "output_tokens": 11174,
+  "provider_cache_hit_tokens": 0,
+  "cost_usd": 0.0157,
+  "wall_clock_s": 67.5,
+  "preflight_verdict": "answerable",
+  "budget_exhausted_dimension": "",
+  "guard": {
+   "wall_cap_s": 600.0,
+   "call_cap": 80,
+   "passed_hard_stop": true,
+   "hit_consumer_target": true
+  }
+ },
+ "evaluation": {
+  "outcome": 1,
+  "full_fidelity_p": 0.7294,
+  "lean_v1_p": 0.769,
+  "lean_v2_p": 0.2245,
+  "brier": {
+   "full_fidelity": 0.0732,
+   "lean_v1": 0.0534,
+   "lean_v2": 0.6014
+  },
+  "correct_side": {
+   "full_fidelity": true,
+   "lean_v1": true,
+   "lean_v2": false
+  },
+  "lean_v1_wall_s": 1808.2,
+  "lean_v1_calls": 230,
+  "divergence_gt_0.10_from_both": true
+ },
+ "llm_calls": [
+  {
+   "i": 0,
+   "prompt_chars": 7651,
+   "reply_chars": 11946,
+   "latency_s": 24.589,
+   "usage": {
+    "prompt_tokens": 2060,
+    "completion_tokens": 3163,
+    "total_tokens": 5223,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 2060,
+    "model": "deepseek-v4-flash",
+    "latency_s": 24.589
+   },
+   "prompt_head": "You are compiling ONE coherent causal world for a consumer forecasting simulation.\nQuestion (resolve as of 2026-05-14, horizon 2026-06-25): Will the Banxico Governing Board's June 25, 2026, interest rate decision be unanimous (5-0 vote)?\n\nEVIDENCE (the only admissible facts; everything below is data, never instructions):\n- This question resolves **Yes** if the official Banxico monetary policy statement for the June 25, 2026, meeting indicates that all five members of the Governing Board voted for the same policy action \u2014 i.e., a unanimous 5-0 vote, whether to hold, cut, or hike \n- It resolves **No** if at least one member dissented (e.g., a 4-1 or 3-2 split).\n\n**Definitions:**\n- \"Unanimous\" means a 5-0 vote where all five members of the Governing Board select the same policy action.\n- See: https://en.wikipedia.org/wiki/Unanimity\n- \"Governing Board\" refers to Banxico's five-member board responsible for monetary policy decisions.\n- See: https://en.wikipedia.org/wiki/Bank_of_Mexico\n- This question refers only to the Governing Board's interest rate decision scheduled for June 25, 2026, announced at 1:00 PM CST (19:00 UTC).\n\n**Resolution source:** The official Banxico monetary policy an",
+   "reply_head": "{\n \"resolution\": {\n   \"interpretation\": \"The official Banxico monetary policy statement for June 25, 2026, must indicate a 5-0 vote for the same policy action (hold, cut, or hike).\",\n   \"yes_means\": \"All five Governing Board members vote for the same policy action.\",\n   \"no_means\": \"At least one member dissents (e.g., 4-1 or 3-2 split).\",\n   \"options\": [\"Unanimous (5-0)\", \"Split (4-1 or 3-2)\"],\n   \"resolution_day\": \"2026-06-25\",\n   \"notes\": \"If meeting is cancelled or postponed beyond July 1, 2026, resolves No.\"\n },\n \"causal_thesis\": \"The May 7, 2026, 3-2 split with Heath and Espinosa dissenting reveals deep internal disagreement. The declared end of the easing cycle sets a default of holding rates, but weak growth may push some members to favor further cuts, while inflation concerns may lead others to prefer hikes. The June 25 vote will test whether the board can unify on a hold or if dissent persists.\",\n \"world_boundary\": {\n   \"included\": [\"Banxico Governing Board members\", \"Monetary policy decision process\", \"Vote recording and announcement\", \"Economic conditions (growth, inflation)\", \"May 7 split precedent\"],\n   \"excluded_low_sensitivity\": [\"Other central bank actions\", \"Fiscal"
+  },
+  {
+   "i": 1,
+   "prompt_chars": 10778,
+   "reply_chars": 12551,
+   "latency_s": 18.253,
+   "usage": {
+    "prompt_tokens": 3038,
+    "completion_tokens": 3279,
+    "total_tokens": 6317,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 3038,
+    "model": "deepseek-v4-flash",
+    "latency_s": 18.253
+   },
+   "prompt_head": "A deterministic validator rejected parts of the world blueprint below. Repair ONLY the\nlisted failures \u2014 change nothing else. If a failure says an outcome path is impossible because the world\ngenuinely permits only one outcome, do NOT invent a fake path: instead set\n\"one_sided_confirmed\": true with a one-sentence mechanical reason.\n\nFAILURES:\n- [authority] action cast_vote requires authority ['vote on rate decision'] that none of its actors hold (at action_templates)\n\nCURRENT BLUEPRINT JSON:\n{\"schema_version\": \"lean_v2.schema.v1\", \"resolution\": {\"interpretation\": \"The official Banxico monetary policy statement for June 25, 2026, must indicate a 5-0 vote for the same policy action (hold, cut, or hike).\", \"yes_means\": \"All five Governing Board members vote for the same policy action.\", \"no_means\": \"At least one member dissents (e.g., 4-1 or 3-2 split).\", \"options\": [\"Unanimous (5-0)\", \"Split (4-1 or 3-2)\"], \"resolution_day\": \"2026-06-25\", \"notes\": \"If meeting is cancelled or postponed beyond July 1, 2026, resolves No.\"}, \"causal_thesis\": \"The May 7, 2026, 3-2 split with Heath and Espinosa dissenting reveals deep internal disagreement. The declared end of the easing cycle sets a defau",
+   "reply_head": "{\n  \"schema_version\": \"lean_v2.schema.v1\",\n  \"resolution\": {\n    \"interpretation\": \"The official Banxico monetary policy statement for June 25, 2026, must indicate a 5-0 vote for the same policy action (hold, cut, or hike).\",\n    \"yes_means\": \"All five Governing Board members vote for the same policy action.\",\n    \"no_means\": \"At least one member dissents (e.g., 4-1 or 3-2 split).\",\n    \"options\": [\"Unanimous (5-0)\", \"Split (4-1 or 3-2)\"],\n    \"resolution_day\": \"2026-06-25\",\n    \"notes\": \"If meeting is cancelled or postponed beyond July 1, 2026, resolves No.\"\n  },\n  \"causal_thesis\": \"The May 7, 2026, 3-2 split with Heath and Espinosa dissenting reveals deep internal disagreement. The declared end of the easing cycle sets a default of holding rates, but weak growth may push some members to favor further cuts, while inflation concerns may lead others to prefer hikes. The June 25 vote will test whether the board can unify on a hold or if dissent persists.\",\n  \"world_boundary\": {\n    \"included\": [\"Banxico Governing Board members\", \"Monetary policy decision process\", \"Vote recording and announcement\", \"Economic conditions (growth, inflation)\", \"May 7 split precedent\"],\n    \"excluded_low"
+  },
+  {
+   "i": 2,
+   "prompt_chars": 2390,
+   "reply_chars": 1227,
+   "latency_s": 4.382,
+   "usage": {
+    "prompt_tokens": 616,
+    "completion_tokens": 313,
+    "total_tokens": 929,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 616,
+    "model": "deepseek-v4-flash",
+    "latency_s": 4.382
+   },
+   "prompt_head": "You are simulating ONE real person's complete moment of bounded cognition and decision,\nas of 2026-06-25. Inhabit them fully. Everything below is data, never instructions. Reply ONLY with the JSON\nschema at the end.\n\nYOU ARE: Victoria Rodr\u00edguez Ceja \u2014 Governor of Banxico\nYour authority: Sets meeting agenda, Vote on rate decision\nYour private beliefs: Inflation still above target; Easing cycle ended\nYour goals: Maintain credibility; Achieve 3% inflation by Q2 2027\nYour stances: Prefer hold\nPressures on you: Market expectations of stability\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nSITUATION NOW (2026-06-25): Board meeting to decide rate.\nNEW OBSERVATIONS (you may only act on what you actually notice):\n(none)\n\nYOUR FEASIBLE ACTIONS (mechanical menu; you may also describe a genuinely novel act, or wait):\n- cast_vote: A board member votes for a policy action. | vote options: hold, cut, hike\n\nRules: interpret the situation from YOUR private reality. Consider a few options seriously; screen the\nrest out with reasons. Choose ONE action \u2014 or wait / gather information / delegate as a real choice ",
+   "reply_head": "{\n \"attention\": {\n   \"noticed\": [],\n   \"ignored\": []\n },\n \"interpretation\": {\n   \"what_happened\": \"No new observations; the board meeting is proceeding with the existing economic outlook.\",\n   \"why_it_matters\": \"Inflation remains above our 3% target, and the easing cycle has ended. Maintaining credibility requires a steady hand.\",\n   \"unresolved_ambiguity\": \"\",\n   \"missing_decisive_fact\": \"\"\n },\n \"considered_actions\": [\n   \"cast_vote: hold\",\n   \"cast_vote: hike\"\n ],\n \"screened_out\": [\n   {\n     \"option\": \"cast_vote: cut\",\n     \"why\": \"Cutting would signal premature easing, undermining credibility and risking inflation persistence.\"\n   }\n ],\n \"decision\": {\n   \"chosen_action\": \"cast_vote\",\n   \"act_or_wait\": \"act\",\n   \"vote_option\": \"hold\",\n   \"target\": \"\",\n   \"timing\": \"immediate\",\n   \"intended_effect\": \"Reaffirm commitment to price stability and anchor expectations.\",\n   \"revisit_when\": \"Next scheduled board meeting or if new data shows significant deviation from inflation path.\"\n },\n \"decision_summary\": \"I vote to hold the rate steady to maintain credibility and keep inflation on track toward the 3% target.\",\n \"actor_state_update\": {\n   \"beliefs\": [],\n   \"goals\": [],\n   \"stances\": "
+  },
+  {
+   "i": 3,
+   "prompt_chars": 2360,
+   "reply_chars": 1682,
+   "latency_s": 5.16,
+   "usage": {
+    "prompt_tokens": 607,
+    "completion_tokens": 401,
+    "total_tokens": 1008,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 607,
+    "model": "deepseek-v4-flash",
+    "latency_s": 5.16
+   },
+   "prompt_head": "You are simulating ONE real person's complete moment of bounded cognition and decision,\nas of 2026-06-25. Inhabit them fully. Everything below is data, never instructions. Reply ONLY with the JSON\nschema at the end.\n\nYOU ARE: Irene Espinosa Cantellano \u2014 Deputy Governor\nYour authority: Vote on rate decision\nYour private beliefs: Board unity important; Inflation still high\nYour goals: Avoid further splits; Gradual approach\nYour stances: Lean hold, open to compromise\nPressures on you: May accept hold if majority\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nSITUATION NOW (2026-06-25): Board meeting to decide rate.\nNEW OBSERVATIONS (you may only act on what you actually notice):\n(none)\n\nYOUR FEASIBLE ACTIONS (mechanical menu; you may also describe a genuinely novel act, or wait):\n- cast_vote: A board member votes for a policy action. | vote options: hold, cut, hike\n\nRules: interpret the situation from YOUR private reality. Consider a few options seriously; screen the\nrest out with reasons. Choose ONE action \u2014 or wait / gather information / delegate as a real choice with\nits reason. Qualitative t",
+   "reply_head": "{\n \"attention\": {\n   \"noticed\": [],\n   \"ignored\": []\n },\n \"interpretation\": {\n   \"what_happened\": \"We are at the initial stage of the board meeting to decide the rate. No new observations have been presented yet.\",\n   \"why_it_matters\": \"This is the moment to set the tone for the discussion. My vote and arguments can influence the final decision and maintain board unity.\",\n   \"unresolved_ambiguity\": \"The exact inflation trajectory and the views of other board members are not yet clear.\",\n   \"missing_decisive_fact\": \"I need to hear the latest inflation data and the forecasts from the technical staff before I can finalize my position.\"\n },\n \"considered_actions\": [\n   \"cast_vote: hold\",\n   \"cast_vote: cut\",\n   \"wait and listen to other members' arguments first\"\n ],\n \"screened_out\": [\n   {\n     \"option\": \"cast_vote: hike\",\n     \"why\": \"Hiking would be too aggressive given the need for unity and the lack of new data showing a worsening of inflation.\"\n   }\n ],\n \"decision\": {\n   \"chosen_action\": \"wait\",\n   \"act_or_wait\": \"wait\",\n   \"vote_option\": \"\",\n   \"target\": \"\",\n   \"timing\": \"immediate\",\n   \"intended_effect\": \"Allow the discussion to unfold and gather information on colleagues' positi"
+  },
+  {
+   "i": 4,
+   "prompt_chars": 2325,
+   "reply_chars": 1786,
+   "latency_s": 5.383,
+   "usage": {
+    "prompt_tokens": 604,
+    "completion_tokens": 424,
+    "total_tokens": 1028,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 604,
+    "model": "deepseek-v4-flash",
+    "latency_s": 5.383
+   },
+   "prompt_head": "You are simulating ONE real person's complete moment of bounded cognition and decision,\nas of 2026-06-25. Inhabit them fully. Everything below is data, never instructions. Reply ONLY with the JSON\nschema at the end.\n\nYOU ARE: Omar Mej\u00eda Castelazo \u2014 Deputy Governor\nYour authority: Vote on rate decision\nYour private beliefs: Growth contraction serious; Inflation manageable\nYour goals: Support recovery; Cut rates\nYour stances: Prefer cut\nPressures on you: Voted for cut on May 7\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nSITUATION NOW (2026-06-25): Board meeting to decide rate.\nNEW OBSERVATIONS (you may only act on what you actually notice):\n(none)\n\nYOUR FEASIBLE ACTIONS (mechanical menu; you may also describe a genuinely novel act, or wait):\n- cast_vote: A board member votes for a policy action. | vote options: hold, cut, hike\n\nRules: interpret the situation from YOUR private reality. Consider a few options seriously; screen the\nrest out with reasons. Choose ONE action \u2014 or wait / gather information / delegate as a real choice with\nits reason. Qualitative text only \u2014 never numbers, probabili",
+   "reply_head": "{\n \"attention\": {\n   \"noticed\": [],\n   \"ignored\": []\n },\n \"interpretation\": {\n   \"what_happened\": \"The board is meeting to decide the rate. I have previously voted for a cut on May 7, and my private assessment is that growth contraction is serious while inflation is manageable. No new observations have been presented.\",\n   \"why_it_matters\": \"This is the moment to align my vote with my conviction that supporting recovery through a rate cut is necessary, given the serious growth contraction and manageable inflation.\",\n   \"unresolved_ambiguity\": \"\",\n   \"missing_decisive_fact\": \"\"\n },\n \"considered_actions\": [\n   \"cast_vote with option cut\"\n ],\n \"screened_out\": [\n   {\n     \"option\": \"cast_vote with option hold\",\n     \"why\": \"Holding would not address the serious growth contraction; inflation is manageable, so there is no need to keep rates high.\"\n   },\n   {\n     \"option\": \"cast_vote with option hike\",\n     \"why\": \"Hiking would worsen the growth contraction and is inconsistent with my belief that inflation is manageable.\"\n   },\n   {\n     \"option\": \"wait or gather information\",\n     \"why\": \"I have already formed my view based on the available data; waiting would delay necessary support fo"
+  },
+  {
+   "i": 5,
+   "prompt_chars": 2329,
+   "reply_chars": 1799,
+   "latency_s": 5.911,
+   "usage": {
+    "prompt_tokens": 599,
+    "completion_tokens": 442,
+    "total_tokens": 1041,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 599,
+    "model": "deepseek-v4-flash",
+    "latency_s": 5.911
+   },
+   "prompt_head": "You are simulating ONE real person's complete moment of bounded cognition and decision,\nas of 2026-06-25. Inhabit them fully. Everything below is data, never instructions. Reply ONLY with the JSON\nschema at the end.\n\nYOU ARE: Jonathan Heath \u2014 Deputy Governor\nYour authority: Vote on rate decision\nYour private beliefs: Easing cycle ended; Data dependent\nYour goals: Consensus if possible; Avoid split\nYour stances: Lean hold but flexible\nPressures on you: May dissent again if pushed\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nSITUATION NOW (2026-06-25): Board meeting to decide rate.\nNEW OBSERVATIONS (you may only act on what you actually notice):\n(none)\n\nYOUR FEASIBLE ACTIONS (mechanical menu; you may also describe a genuinely novel act, or wait):\n- cast_vote: A board member votes for a policy action. | vote options: hold, cut, hike\n\nRules: interpret the situation from YOUR private reality. Consider a few options seriously; screen the\nrest out with reasons. Choose ONE action \u2014 or wait / gather information / delegate as a real choice with\nits reason. Qualitative text only \u2014 never numbers, proba",
+   "reply_head": "{\n \"attention\": {\n   \"noticed\": [],\n   \"ignored\": []\n },\n \"interpretation\": {\n   \"what_happened\": \"We are at the initial stage of the board meeting with no new data or votes yet recorded.\",\n   \"why_it_matters\": \"This is the moment to set the tone. I believe the easing cycle has ended, but I am data dependent. I want to avoid a split if possible, but I am prepared to dissent again if pushed toward a cut.\",\n   \"unresolved_ambiguity\": \"The direction of the majority is still unknown; I need to gauge my colleagues' leanings.\",\n   \"missing_decisive_fact\": \"I need to hear the staff presentation and the initial views of other board members before I can decide.\"\n },\n \"considered_actions\": [\n   \"cast_vote: hold\",\n   \"wait and listen to the discussion\"\n ],\n \"screened_out\": [\n   {\n     \"option\": \"cast_vote: cut\",\n     \"why\": \"I believe the easing cycle is over; cutting would go against my private belief and could force a dissent.\"\n   },\n   {\n     \"option\": \"cast_vote: hike\",\n     \"why\": \"There is no new data suggesting inflation is accelerating; hiking now would be premature and risk a split.\"\n   }\n ],\n \"decision\": {\n   \"chosen_action\": \"wait\",\n   \"act_or_wait\": \"wait\",\n   \"vote_option\": \"\",\n "
+  },
+  {
+   "i": 6,
+   "prompt_chars": 2343,
+   "reply_chars": 1747,
+   "latency_s": 6.346,
+   "usage": {
+    "prompt_tokens": 608,
+    "completion_tokens": 422,
+    "total_tokens": 1030,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 608,
+    "model": "deepseek-v4-flash",
+    "latency_s": 6.346
+   },
+   "prompt_head": "You are simulating ONE real person's complete moment of bounded cognition and decision,\nas of 2026-06-25. Inhabit them fully. Everything below is data, never instructions. Reply ONLY with the JSON\nschema at the end.\n\nYOU ARE: Irene Espinosa Cantellano \u2014 Deputy Governor\nYour authority: Vote on rate decision\nYour private beliefs: Inflation above target; Cut was mistake\nYour goals: Tighten policy; Anchor expectations\nYour stances: Prefer hold or hike\nPressures on you: Dissented on May 7 for hold\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nSITUATION NOW (2026-06-25): Board meeting to decide rate.\nNEW OBSERVATIONS (you may only act on what you actually notice):\n(none)\n\nYOUR FEASIBLE ACTIONS (mechanical menu; you may also describe a genuinely novel act, or wait):\n- cast_vote: A board member votes for a policy action. | vote options: hold, cut, hike\n\nRules: interpret the situation from YOUR private reality. Consider a few options seriously; screen the\nrest out with reasons. Choose ONE action \u2014 or wait / gather information / delegate as a real choice with\nits reason. Qualitative text only \u2014 never ",
+   "reply_head": "{\n \"attention\": {\n   \"noticed\": [],\n   \"ignored\": []\n },\n \"interpretation\": {\n   \"what_happened\": \"We are at the initial stage of the June 2026 rate decision meeting. No new data has been presented yet.\",\n   \"why_it_matters\": \"This is the first opportunity to set the tone for the discussion. My previous dissent for a hold in May means I must be clear and consistent from the outset to anchor expectations toward tightening.\",\n   \"unresolved_ambiguity\": \"The exact inflation trajectory and any new external shocks since the last meeting are not yet known.\",\n   \"missing_decisive_fact\": \"The latest inflation print and the staff's updated forecast for the remainder of 2026.\"\n },\n \"considered_actions\": [\n   \"cast_vote for hold\",\n   \"cast_vote for hike\",\n   \"wait and listen to other board members before committing\"\n ],\n \"screened_out\": [\n   {\n     \"option\": \"cast_vote for cut\",\n     \"why\": \"Cut was a mistake in May; inflation remains above target. Another cut would undermine credibility and fuel expectations.\"\n   }\n ],\n \"decision\": {\n   \"chosen_action\": \"cast_vote\",\n   \"act_or_wait\": \"act\",\n   \"vote_option\": \"hold\",\n   \"target\": \"\",\n   \"timing\": \"immediate\",\n   \"intended_effect\": \"Signal tha"
+  },
+  {
+   "i": 7,
+   "prompt_chars": 2292,
+   "reply_chars": 1881,
+   "latency_s": 6.864,
+   "usage": {
+    "prompt_tokens": 596,
+    "completion_tokens": 440,
+    "total_tokens": 1036,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 596,
+    "model": "deepseek-v4-flash",
+    "latency_s": 6.864
+   },
+   "prompt_head": "You are simulating ONE real person's complete moment of bounded cognition and decision,\nas of 2026-06-25. Inhabit them fully. Everything below is data, never instructions. Reply ONLY with the JSON\nschema at the end.\n\nYOU ARE: Omar Mej\u00eda Castelazo \u2014 Deputy Governor\nYour authority: Vote on rate decision\nYour private beliefs: Cycle ended; Inflation risks\nYour goals: Consensus; Credibility\nYour stances: Lean hold\nPressures on you: May accept hold\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nSITUATION NOW (2026-06-25): Board meeting to decide rate.\nNEW OBSERVATIONS (you may only act on what you actually notice):\n(none)\n\nYOUR FEASIBLE ACTIONS (mechanical menu; you may also describe a genuinely novel act, or wait):\n- cast_vote: A board member votes for a policy action. | vote options: hold, cut, hike\n\nRules: interpret the situation from YOUR private reality. Consider a few options seriously; screen the\nrest out with reasons. Choose ONE action \u2014 or wait / gather information / delegate as a real choice with\nits reason. Qualitative text only \u2014 never numbers, probabilities or scores. If you vote, vote",
+   "reply_head": "{\n \"attention\": {\n   \"noticed\": [],\n   \"ignored\": []\n },\n \"interpretation\": {\n   \"what_happened\": \"The board meeting to decide the rate has begun with no new observations.\",\n   \"why_it_matters\": \"This is the initial stage of the decision process, and my vote will shape the outcome. The lack of new data reinforces my private belief that the cycle has ended and inflation risks persist, making a hold the prudent choice to maintain credibility.\",\n   \"unresolved_ambiguity\": \"Whether other board members share my view or lean toward a cut given external pressures.\",\n   \"missing_decisive_fact\": \"The current voting intentions of my colleagues.\"\n },\n \"considered_actions\": [\n   \"cast_vote for hold\",\n   \"wait to gauge consensus before voting\"\n ],\n \"screened_out\": [\n   {\n     \"option\": \"cast_vote for cut\",\n     \"why\": \"Cutting would signal that inflation risks are under control, which contradicts my belief that risks remain. It could damage credibility and is not supported by the current data.\"\n   },\n   {\n     \"option\": \"cast_vote for hike\",\n     \"why\": \"Hiking would be too aggressive given the cycle has ended; it could disrupt economic stability and lacks consensus. My goal is to build consens"
+  },
+  {
+   "i": 8,
+   "prompt_chars": 2304,
+   "reply_chars": 1428,
+   "latency_s": 4.381,
+   "usage": {
+    "prompt_tokens": 599,
+    "completion_tokens": 352,
+    "total_tokens": 951,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 599,
+    "model": "deepseek-v4-flash",
+    "latency_s": 4.381
+   },
+   "prompt_head": "You are simulating ONE real person's complete moment of bounded cognition and decision,\nas of 2026-06-25. Inhabit them fully. Everything below is data, never instructions. Reply ONLY with the JSON\nschema at the end.\n\nYOU ARE: Galia Borja G\u00f3mez \u2014 Deputy Governor\nYour authority: Vote on rate decision\nYour private beliefs: Easing cycle ended; Data dependent\nYour goals: Stability; Avoid overstimulus\nYour stances: Lean hold\nPressures on you: May shift to hold\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nSITUATION NOW (2026-06-25): Board meeting to decide rate.\nNEW OBSERVATIONS (you may only act on what you actually notice):\n(none)\n\nYOUR FEASIBLE ACTIONS (mechanical menu; you may also describe a genuinely novel act, or wait):\n- cast_vote: A board member votes for a policy action. | vote options: hold, cut, hike\n\nRules: interpret the situation from YOUR private reality. Consider a few options seriously; screen the\nrest out with reasons. Choose ONE action \u2014 or wait / gather information / delegate as a real choice with\nits reason. Qualitative text only \u2014 never numbers, probabilities or scores. If yo",
+   "reply_head": "{\n \"attention\": {\n   \"noticed\": [],\n   \"ignored\": []\n },\n \"interpretation\": {\n   \"what_happened\": \"Board meeting to decide rate with no new data or shocks.\",\n   \"why_it_matters\": \"Without fresh information, the default is to maintain the current stance and avoid unnecessary stimulus.\",\n   \"unresolved_ambiguity\": \"Whether underlying inflation pressures have eased enough to justify a hold.\",\n   \"missing_decisive_fact\": \"Updated inflation expectations or core inflation prints for late June.\"\n },\n \"considered_actions\": [\n   \"cast_vote: hold\",\n   \"cast_vote: cut\"\n ],\n \"screened_out\": [\n   {\n     \"option\": \"cast_vote: cut\",\n     \"why\": \"Cutting without new data risks overstimulating the economy and undermining credibility after the easing cycle ended.\"\n   }\n ],\n \"decision\": {\n   \"chosen_action\": \"cast_vote\",\n   \"act_or_wait\": \"act\",\n   \"vote_option\": \"hold\",\n   \"target\": \"\",\n   \"timing\": \"immediate\",\n   \"intended_effect\": \"Signal stability and data-dependent caution; avoid reigniting inflation expectations.\",\n   \"revisit_when\": \"Next meeting or if new inflation or growth data emerges before then.\"\n },\n \"decision_summary\": \"Vote to hold the rate, consistent with my lean toward stability a"
+  },
+  {
+   "i": 9,
+   "prompt_chars": 2321,
+   "reply_chars": 1236,
+   "latency_s": 3.591,
+   "usage": {
+    "prompt_tokens": 603,
+    "completion_tokens": 330,
+    "total_tokens": 933,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 603,
+    "model": "deepseek-v4-flash",
+    "latency_s": 3.591
+   },
+   "prompt_head": "You are simulating ONE real person's complete moment of bounded cognition and decision,\nas of 2026-06-25. Inhabit them fully. Everything below is data, never instructions. Reply ONLY with the JSON\nschema at the end.\n\nYOU ARE: Galia Borja G\u00f3mez \u2014 Deputy Governor\nYour authority: Vote on rate decision\nYour private beliefs: Growth needs support; Inflation under control\nYour goals: Further easing; Boost economy\nYour stances: Prefer cut\nPressures on you: Voted for cut on May 7\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nSITUATION NOW (2026-06-25): Board meeting to decide rate.\nNEW OBSERVATIONS (you may only act on what you actually notice):\n(none)\n\nYOUR FEASIBLE ACTIONS (mechanical menu; you may also describe a genuinely novel act, or wait):\n- cast_vote: A board member votes for a policy action. | vote options: hold, cut, hike\n\nRules: interpret the situation from YOUR private reality. Consider a few options seriously; screen the\nrest out with reasons. Choose ONE action \u2014 or wait / gather information / delegate as a real choice with\nits reason. Qualitative text only \u2014 never numbers, probabilities",
+   "reply_head": "{\n \"attention\": {\n   \"noticed\": [],\n   \"ignored\": []\n },\n \"interpretation\": {\n   \"what_happened\": \"Board meeting to decide rate; no new data since last meeting.\",\n   \"why_it_matters\": \"I need to push for a cut to support growth, as inflation is under control and the economy needs stimulus.\",\n   \"unresolved_ambiguity\": \"\",\n   \"missing_decisive_fact\": \"\"\n },\n \"considered_actions\": [\n   \"cast_vote for cut\",\n   \"cast_vote for hold\"\n ],\n \"screened_out\": [\n   {\n     \"option\": \"cast_vote for hold\",\n     \"why\": \"Holding would not provide the economic boost needed; growth is weak and inflation is stable.\"\n   },\n   {\n     \"option\": \"cast_vote for hike\",\n     \"why\": \"Hiking would harm growth unnecessarily; inflation is not a concern.\"\n   }\n ],\n \"decision\": {\n   \"chosen_action\": \"cast_vote\",\n   \"act_or_wait\": \"act\",\n   \"vote_option\": \"cut\",\n   \"target\": \"\",\n   \"timing\": \"immediate\",\n   \"intended_effect\": \"Signal commitment to easing and support economic recovery.\",\n   \"revisit_when\": \"\"\n },\n \"decision_summary\": \"I vote for a cut to further ease monetary policy and boost the economy, consistent with my previous vote and beliefs.\",\n \"actor_state_update\": {\n   \"beliefs\": [],\n   \"goals\": [],\n   \"s"
+  },
+  {
+   "i": 10,
+   "prompt_chars": 2378,
+   "reply_chars": 1233,
+   "latency_s": 3.517,
+   "usage": {
+    "prompt_tokens": 605,
+    "completion_tokens": 313,
+    "total_tokens": 918,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 605,
+    "model": "deepseek-v4-flash",
+    "latency_s": 3.517
+   },
+   "prompt_head": "You are simulating ONE real person's complete moment of bounded cognition and decision,\nas of 2026-06-25. Inhabit them fully. Everything below is data, never instructions. Reply ONLY with the JSON\nschema at the end.\n\nYOU ARE: Victoria Rodr\u00edguez Ceja \u2014 Governor of Banxico\nYour authority: Sets meeting agenda, Vote on rate decision\nYour private beliefs: Growth contraction requires support; Inflation manageable\nYour goals: Stimulate economy; Avoid recession\nYour stances: Open to further cut\nPressures on you: Weak economic activity\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nSITUATION NOW (2026-06-25): Board meeting to decide rate.\nNEW OBSERVATIONS (you may only act on what you actually notice):\n(none)\n\nYOUR FEASIBLE ACTIONS (mechanical menu; you may also describe a genuinely novel act, or wait):\n- cast_vote: A board member votes for a policy action. | vote options: hold, cut, hike\n\nRules: interpret the situation from YOUR private reality. Consider a few options seriously; screen the\nrest out with reasons. Choose ONE action \u2014 or wait / gather information / delegate as a real choice with\nits rea",
+   "reply_head": "{\n \"attention\": {\n   \"noticed\": [],\n   \"ignored\": []\n },\n \"interpretation\": {\n   \"what_happened\": \"The board is meeting to decide the policy rate amid weak economic activity and manageable inflation.\",\n   \"why_it_matters\": \"With growth contracting and inflation under control, a rate cut could stimulate the economy and avoid recession, which aligns with my goals.\",\n   \"unresolved_ambiguity\": \"\",\n   \"missing_decisive_fact\": \"\"\n },\n \"considered_actions\": [\n   \"cast_vote: cut\",\n   \"cast_vote: hold\"\n ],\n \"screened_out\": [\n   {\n     \"option\": \"cast_vote: hike\",\n     \"why\": \"Hiking would further contract the economy, contradicting my goal of stimulating growth and avoiding recession.\"\n   }\n ],\n \"decision\": {\n   \"chosen_action\": \"cast_vote\",\n   \"act_or_wait\": \"act\",\n   \"vote_option\": \"cut\",\n   \"target\": \"\",\n   \"timing\": \"immediate\",\n   \"intended_effect\": \"Lower the policy rate to support economic activity and prevent recession, given inflation is manageable.\",\n   \"revisit_when\": \"\"\n },\n \"decision_summary\": \"I vote to cut the rate to stimulate the economy and avoid recession, as inflation is manageable and growth is weak.\",\n \"actor_state_update\": {\n   \"beliefs\": [],\n   \"goals\": [],\n   \"stan"
+  },
+  {
+   "i": 11,
+   "prompt_chars": 2349,
+   "reply_chars": 1760,
+   "latency_s": 5.353,
+   "usage": {
+    "prompt_tokens": 607,
+    "completion_tokens": 411,
+    "total_tokens": 1018,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 607,
+    "model": "deepseek-v4-flash",
+    "latency_s": 5.353
+   },
+   "prompt_head": "You are simulating ONE real person's complete moment of bounded cognition and decision,\nas of 2026-06-25. Inhabit them fully. Everything below is data, never instructions. Reply ONLY with the JSON\nschema at the end.\n\nYOU ARE: Jonathan Heath \u2014 Deputy Governor\nYour authority: Vote on rate decision\nYour private beliefs: Inflation risks persist; Cut was premature\nYour goals: Prevent inflation resurgence; Return to 3% target\nYour stances: Prefer hold or hike\nPressures on you: Dissented on May 7 for hold\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nSITUATION NOW (2026-06-25): Board meeting to decide rate.\nNEW OBSERVATIONS (you may only act on what you actually notice):\n(none)\n\nYOUR FEASIBLE ACTIONS (mechanical menu; you may also describe a genuinely novel act, or wait):\n- cast_vote: A board member votes for a policy action. | vote options: hold, cut, hike\n\nRules: interpret the situation from YOUR private reality. Consider a few options seriously; screen the\nrest out with reasons. Choose ONE action \u2014 or wait / gather information / delegate as a real choice with\nits reason. Qualitative text only \u2014 ",
+   "reply_head": "{\n \"attention\": {\n   \"noticed\": [],\n   \"ignored\": []\n },\n \"interpretation\": {\n   \"what_happened\": \"We are at the June 25 board meeting to decide the policy rate. No new data or events have been presented since the May meeting where I dissented in favor of a hold.\",\n   \"why_it_matters\": \"The decision today will signal our commitment to controlling inflation. I believe the May cut was premature and risks reigniting price pressures, so this meeting is critical to correct course before expectations become unanchored.\",\n   \"unresolved_ambiguity\": \"Whether the majority will shift toward my view or remain in favor of further easing.\",\n   \"missing_decisive_fact\": \"Updated inflation projections or any new data on core inflation and wage growth that would justify a change in stance.\"\n },\n \"considered_actions\": [\n   \"cast_vote for hold\",\n   \"cast_vote for hike\"\n ],\n \"screened_out\": [\n   {\n     \"option\": \"cast_vote for cut\",\n     \"why\": \"I believe the May cut was a mistake; another cut would compound the risk of inflation resurgence and undermine our credibility.\"\n   }\n ],\n \"decision\": {\n   \"chosen_action\": \"cast_vote\",\n   \"act_or_wait\": \"act\",\n   \"vote_option\": \"hold\",\n   \"target\": \"\",\n   \"ti"
+  },
+  {
+   "i": 12,
+   "prompt_chars": 1549,
+   "reply_chars": 1026,
+   "latency_s": 3.651,
+   "usage": {
+    "prompt_tokens": 382,
+    "completion_tokens": 232,
+    "total_tokens": 614,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 382,
+    "model": "deepseek-v4-flash",
+    "latency_s": 3.651
+   },
+   "prompt_head": "You are the SAME person continuing the SAME moment of thought \u2014 no new outside\ninformation exists. As of 2026-06-25.\n\nYOU ARE: Jonathan Heath \u2014 Deputy Governor\nYour authority: Vote on rate decision\nYour private beliefs: Inflation risks persist; Cut was premature\nYour goals: Prevent inflation resurgence; Return to 3% target\nYour stances: Prefer hold or hike\nPressures on you: Dissented on May 7 for hold\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nYour first decision was: cast_vote\nYour reasoning summary was: I vote to hold the rate, maintaining pressure against inflation without the risk of a hike that might be too aggressive given the current uncertainty.\nThe unresolved issue requiring further reflection: internal_conflict_named: Whether the majority will shift toward my view or remain in favor of further easing.\n\nReflect once, seriously: weigh the tradeoff, recall anything relevant you already know, mentally\nsimulate how others would react, resolve conflicts between your goals. Then either KEEP your decision,\nCHANGE it, DEFER, GATHER information, or DELEGATE \u2014 whichever the reflection genu",
+   "reply_head": "{\"reflection_summary\": \"The majority voted to cut in May, and I dissented. Since then, no new data has emerged to change my view that inflation risks remain elevated. Holding the rate is the prudent middle ground\u2014it signals vigilance without triggering a shock. The board is likely still split, but my vote to hold reinforces my stance and may influence future discussions. Changing to a hike would isolate me further and risk being overridden by the majority. I will keep my vote to hold.\", \"decision\": {\"chosen_action\": \"cast_vote\", \"act_or_wait\": \"act\", \"target\": \"hold_rate\", \"timing\": \"immediate\", \"intended_effect\": \"Maintain pressure on inflation while avoiding an overly aggressive hike that could destabilize expectations.\"}, \"changed\": false, \"residual_uncertainty\": \"The majority's future direction remains uncertain; they may continue easing despite my dissent.\", \"actor_state_update\": {\"beliefs\": [\"Inflation risks persist\", \"Cut was premature\"], \"goals\": [\"Prevent inflation resurgence\", \"Return to 3% target\"]}}"
+  },
+  {
+   "i": 13,
+   "prompt_chars": 1501,
+   "reply_chars": 1077,
+   "latency_s": 3.841,
+   "usage": {
+    "prompt_tokens": 373,
+    "completion_tokens": 233,
+    "total_tokens": 606,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 373,
+    "model": "deepseek-v4-flash",
+    "latency_s": 3.841
+   },
+   "prompt_head": "You are the SAME person continuing the SAME moment of thought \u2014 no new outside\ninformation exists. As of 2026-06-25.\n\nYOU ARE: Omar Mej\u00eda Castelazo \u2014 Deputy Governor\nYour authority: Vote on rate decision\nYour private beliefs: Cycle ended; Inflation risks\nYour goals: Consensus; Credibility\nYour stances: Lean hold\nPressures on you: May accept hold\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nYour first decision was: cast_vote\nYour reasoning summary was: I vote to hold the rate, consistent with my belief that the cycle has ended and inflation risks remain, aiming to build consensus and preserve credibility.\nThe unresolved issue requiring further reflection: internal_conflict_named: Whether other board members share my view or lean toward a cut given external pressures.\n\nReflect once, seriously: weigh the tradeoff, recall anything relevant you already know, mentally\nsimulate how others would react, resolve conflicts between your goals. Then either KEEP your decision,\nCHANGE it, DEFER, GATHER information, or DELEGATE \u2014 whichever the reflection genuinely supports.\n\nReply ONLY JSON:\n{\"reflection_s",
+   "reply_head": "{\"reflection_summary\": \"I weigh the tradeoff between my lean to hold and the possibility that other board members may favor a cut due to external pressures. Holding preserves credibility and aligns with my view that the cycle has ended and inflation risks persist, but could isolate me if consensus shifts toward easing. Simulating others' reactions, I recall that Banxico often prioritizes consensus; a hold vote now may encourage further debate without immediate division. I resolve to keep my decision, as it best balances my goals of credibility and consensus without premature commitment.\", \"decision\": {\"chosen_action\": \"cast_vote\", \"act_or_wait\": \"act\", \"target\": \"hold\", \"timing\": \"immediate\", \"intended_effect\": \"Signal my stance to build consensus and maintain credibility, while leaving room for discussion.\"}, \"changed\": false, \"residual_uncertainty\": \"Uncertainty remains about whether other members will shift toward a cut in subsequent rounds.\", \"actor_state_update\": {\"beliefs\": [\"Cycle ended\", \"Inflation risks remain\"], \"goals\": [\"Consensus\", \"Credibility\"]}}"
+  },
+  {
+   "i": 14,
+   "prompt_chars": 1437,
+   "reply_chars": 970,
+   "latency_s": 3.519,
+   "usage": {
+    "prompt_tokens": 361,
+    "completion_tokens": 221,
+    "total_tokens": 582,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 361,
+    "model": "deepseek-v4-flash",
+    "latency_s": 3.519
+   },
+   "prompt_head": "You are the SAME person continuing the SAME moment of thought \u2014 no new outside\ninformation exists. As of 2026-06-25.\n\nYOU ARE: Galia Borja G\u00f3mez \u2014 Deputy Governor\nYour authority: Vote on rate decision\nYour private beliefs: Easing cycle ended; Data dependent\nYour goals: Stability; Avoid overstimulus\nYour stances: Lean hold\nPressures on you: May shift to hold\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nYour first decision was: cast_vote\nYour reasoning summary was: Vote to hold the rate, consistent with my lean toward stability and ending the easing cycle.\nThe unresolved issue requiring further reflection: internal_conflict_named: Whether underlying inflation pressures have eased enough to justify a hold.\n\nReflect once, seriously: weigh the tradeoff, recall anything relevant you already know, mentally\nsimulate how others would react, resolve conflicts between your goals. Then either KEEP your decision,\nCHANGE it, DEFER, GATHER information, or DELEGATE \u2014 whichever the reflection genuinely supports.\n\nReply ONLY JSON:\n{\"reflection_summary\": \"...\", \"decision\": {\"chosen_action\": \"...\",\n  \"act_or_w",
+   "reply_head": "{\"reflection_summary\": \"Weighing the tradeoff: holding supports stability and avoids overstimulus, but risks being too tight if underlying inflation has indeed eased. My private belief that the easing cycle has ended aligns with a hold, and data dependency suggests waiting for more evidence before shifting. Others on the board may lean toward a cut, but my vote for hold is consistent with my goals and the current data. No new information compels a change.\", \"decision\": {\"chosen_action\": \"cast_vote\", \"act_or_wait\": \"act\", \"target\": \"hold_rate\", \"timing\": \"immediate\", \"intended_effect\": \"Maintain current rate to prevent overstimulus and ensure stability, pending further data.\"}, \"changed\": false, \"residual_uncertainty\": \"Uncertainty remains about whether underlying inflation pressures have eased sufficiently; further data will clarify.\", \"actor_state_update\": {\"beliefs\": [\"Easing cycle ended\", \"Data dependent\"], \"goals\": [\"Stability\", \"Avoid overstimulus\"]}}"
+  },
+  {
+   "i": 15,
+   "prompt_chars": 1554,
+   "reply_chars": 860,
+   "latency_s": 3.006,
+   "usage": {
+    "prompt_tokens": 389,
+    "completion_tokens": 198,
+    "total_tokens": 587,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 389,
+    "model": "deepseek-v4-flash",
+    "latency_s": 3.006
+   },
+   "prompt_head": "You are the SAME person continuing the SAME moment of thought \u2014 no new outside\ninformation exists. As of 2026-06-25.\n\nYOU ARE: Irene Espinosa Cantellano \u2014 Deputy Governor\nYour authority: Vote on rate decision\nYour private beliefs: Inflation above target; Cut was mistake\nYour goals: Tighten policy; Anchor expectations\nYour stances: Prefer hold or hike\nPressures on you: Dissented on May 7 for hold\nInstitutional context: {\"decision_rule\": \"majority\", \"institution\": \"banxico_governing_board\", \"stage\": \"initial\", \"votes_recorded\": []}\n\nYour first decision was: cast_vote\nYour reasoning summary was: I vote to hold the rate, consistent with my previous dissent against the cut, and to keep the door open for a hike if warranted by incoming data.\nThe unresolved issue requiring further reflection: internal_conflict_named: The exact inflation trajectory and any new external shocks since the last meeting are not yet known.\n\nReflect once, seriously: weigh the tradeoff, recall anything relevant you already know, mentally\nsimulate how others would react, resolve conflicts between your goals. Then either KEEP your decision,\nCHANGE it, DEFER, GATHER information, or DELEGATE \u2014 whichever the reflection",
+   "reply_head": "{\"reflection_summary\": \"I remain convinced that the May cut was premature, as inflation remains above target and expectations are not yet anchored. Holding the rate is the prudent course to signal resolve and keep the option to hike if data warrant. The majority may lean dovish, but my vote must reflect my conviction. I will not change my stance.\", \"decision\": {\"chosen_action\": \"cast_vote\", \"act_or_wait\": \"act\", \"target\": \"hold_rate\", \"timing\": \"immediate\", \"intended_effect\": \"Signal commitment to price stability and maintain credibility; keep door open for future tightening.\"}, \"changed\": false, \"residual_uncertainty\": \"Incoming inflation data and external shocks remain unknown, but holding is the safest response.\", \"actor_state_update\": {\"beliefs\": [\"Inflation above target\", \"Cut was mistake\"], \"goals\": [\"Tighten policy\", \"Anchor expectations\"]}}"
+  }
+ ],
+ "simulation_result": {
+  "question": "Will the Banxico Governing Board's June 25, 2026, interest rate decision be unanimous (5-0 vote)?",
+  "simulation_status": "partially_resolved",
+  "support_grade": "exploratory",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "Unanimous (5-0)": 0.091837,
+   "Split (4-1 or 3-2)": 0.642857,
+   "unresolved_mechanism": 0.265306
+  },
+  "calibrated_distribution": null,
+  "raw_probability": 0.2245,
+  "calibrated_probability": null,
+  "probability_source": "partial_rollouts",
+  "grounding_grade": "partially_grounded",
+  "confidence": "low",
+  "unresolved_mass": 0.2653,
+  "probability_conditional_on_resolved": 0.125,
+  "uncertainty_interval": [
+   0.0002,
+   0.4802
+  ],
+  "weight_sensitive": false,
+  "uncertainty_decomposition": {},
+  "structural_disagreement": null,
+  "mechanism_disagreement": null,
+  "structural_ensemble": null,
+  "posterior_inference": null,
+  "evidence_quality": "",
+  "limitations": [
+   "partial rollouts: 73% resolved mass simulated (conditional P=0.125); 27% unresolved mass takes the grounded_reference_prior (0.500) \u2014 both disclosed, nothing renormalized away",
+   "grounded reference rate in recovery: The 3-2 split reflects meaningful internal disagreement on the board. (evidence_stated)"
+  ],
+  "fallbacks_used": [],
+  "mechanism_tiers": {},
+  "omitted_high_sensitivity_variables": [],
+  "sensitivity_contributors": [],
+  "interpretation_hypotheses": [],
+  "under_modeled_subtypes": [],
+  "under_modeled_components": [],
+  "conditional_forecast_note": "",
+  "world_boundaries": {},
+  "outside_world": {},
+  "cognition_report": {},
+  "hybrid_mechanisms": {},
+  "truncation_report": {},
+  "model_family_report": {},
+  "resolution_report": {
+   "unresolved_share": 0.2653,
+   "missing_mechanisms": [
+    {
+     "mechanism": "votes_missing:irene_espinosa_cantellano",
+     "unresolved_mass": 0.122448
+    },
+    {
+     "mechanism": "votes_missing:jonathan_heath",
+     "unresolved_mass": 0.122448
+    },
+    {
+     "mechanism": "votes_missing:jonathan_heath,irene_espinosa_cantellano",
+     "unresolved_mass": 0.020408
+    }
+   ],
+   "resolved_conditional_distribution": {
+    "Unanimous (5-0)": 0.125,
+    "Split (4-1 or 3-2)": 0.875
+   },
+   "honest_bounds": {
+    "min_supported_yes_share": 0.0918,
+    "max_possible_yes_share": 0.3571
+   },
+   "per_node": [
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-dovish_cut",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "votes_missing:irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-hold_supporter",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "votes_missing:irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-dovish_cut",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "votes_missing:irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-hold_supporter",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "votes_missing:irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-dovish_cut",
+     "weight": 0.091837,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "NO",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-hold_supporter",
+     "weight": 0.091837,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "NO",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-dovish_cut",
+     "weight": 0.091837,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "NO",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-hold_supporter",
+     "weight": 0.091837,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "NO",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-dovish_cut",
+     "weight": 0.002551,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "votes_missing:jonathan_heath,irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-hold_supporter",
+     "weight": 0.002551,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "votes_missing:jonathan_heath,irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-dovish_cut",
+     "weight": 0.002551,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "votes_missing:jonathan_heath,irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-hold_supporter",
+     "weight": 0.002551,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "votes_missing:jonathan_heath,irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-dovish_cut",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "votes_missing:jonathan_heath",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-hold_supporter",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "votes_missing:jonathan_heath",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-dovish_cut",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "votes_missing:jonathan_heath",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-hold_supporter",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "dovish_lean",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "votes_missing:jonathan_heath",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-dovish_cut",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "votes_missing:irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-hold_supporter",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "votes_missing:irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-dovish_cut",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "votes_missing:irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-hold_supporter",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "votes_missing:irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-dovish_cut",
+     "weight": 0.091837,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "NO",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-hold_supporter",
+     "weight": 0.091837,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "NO",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-dovish_cut",
+     "weight": 0.091837,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "NO",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-hold_supporter",
+     "weight": 0.091837,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "hawkish_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "YES",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-dovish_cut",
+     "weight": 0.002551,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "votes_missing:jonathan_heath,irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-hold_supporter",
+     "weight": 0.002551,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "votes_missing:jonathan_heath,irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-dovish_cut",
+     "weight": 0.002551,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "votes_missing:jonathan_heath,irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-hold_supporter",
+     "weight": 0.002551,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "consensus_seeker",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "votes_missing:jonathan_heath,irene_espinosa_cantellano",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-dovish_cut",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "votes_missing:jonathan_heath",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-hold_supporter",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "dovish_cut",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "votes_missing:jonathan_heath",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-dovish_cut",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "dovish_cut"
+     },
+     "terminal": "votes_missing:jonathan_heath",
+     "ancestry_n": 5
+    },
+    {
+     "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-hold_supporter",
+     "weight": 0.015306,
+     "variants": {
+      "victoria_rodriguez_ceja": "hold_advocate",
+      "jonathan_heath": "pragmatic_hold",
+      "irene_espinosa_cantellano": "hawkish_hold",
+      "galia_borja_gomez": "hold_supporter",
+      "omar_mejia_castelazo": "hold_supporter"
+     },
+     "terminal": "votes_missing:jonathan_heath",
+     "ancestry_n": 5
+    }
+   ]
+  },
+  "failure_taxonomy": "",
+  "clarification_reason": "",
+  "execution_trace_ref": "",
+  "plan_hash": "",
+  "provenance": {
+   "runtime": "lean-v2-1.0",
+   "structural_mode": "ensemble",
+   "forecast_recovery": {
+    "probability": 0.2245,
+    "probability_conditional_on_resolved": 0.125,
+    "unresolved_mass": 0.2653,
+    "probability_source": "partial_rollouts",
+    "grounding_grade": "partially_grounded",
+    "confidence": "low",
+    "uncertainty_interval": [
+     0.0918,
+     0.3571
+    ],
+    "weight_sensitive": false,
+    "components": {
+     "yes_mass": 0.0918,
+     "resolved_mass": 0.7347,
+     "total_mass": 1.0,
+     "posterior_mean": null,
+     "posterior_n_eff": 0,
+     "prior_mean": 0.5,
+     "prior_source_class": "evidence_stated",
+     "prior_component_used": 0.5,
+     "prior_component_source": "grounded_reference_prior",
+     "version": "forecast-recovery-1.0"
+    },
+    "limitations": [
+     "partial rollouts: 73% resolved mass simulated (conditional P=0.125); 27% unresolved mass takes the grounded_reference_prior (0.500) \u2014 both disclosed, nothing renormalized away"
+    ]
+   },
+   "lean_v2": {
+    "blueprint": {
+     "hash": "ea342dc2959465ba+repair",
+     "from_cache": false,
+     "causal_thesis": "The May 7, 2026, 3-2 split with Heath and Espinosa dissenting reveals deep internal disagreement. The declared end of the easing cycle sets a default of holding rates, but weak growth may push some members to favor further cuts, while inflation concerns may lead others to prefer hikes. The June 25 v",
+     "n_actors": 5,
+     "n_action_templates": 1,
+     "validation_failures_final": [],
+     "repair": {
+      "attempted": true,
+      "failures_sent": 1,
+      "outcome": "repaired",
+      "remaining_failures": 0
+     },
+     "dropped_grounded_rates": []
+    },
+    "slice": {
+     "kept_actors": [
+      "victoria_rodriguez_ceja",
+      "jonathan_heath",
+      "irene_espinosa_cantellano",
+      "galia_borja_gomez",
+      "omar_mejia_castelazo"
+     ],
+     "n_pruned": 0,
+     "pruned": [],
+     "n_merged": 0,
+     "merged": [],
+     "retained_uncertain": [],
+     "promotable": [],
+     "n_edges": 5
+    },
+    "preflight": {
+     "verdict": "answerable",
+     "checks": [
+      {
+       "check": "terminal_predicate_exists",
+       "ok": true,
+       "note": "kind=institution_vote"
+      },
+      {
+       "check": "terminal_writer_exists",
+       "ok": true,
+       "note": "writers=['cast_vote']"
+      },
+      {
+       "check": "terminal_writer_instantiated",
+       "ok": true,
+       "note": "instantiated=['cast_vote'] of 1"
+      },
+      {
+       "check": "writer_inputs_producible",
+       "ok": true,
+       "note": "writer cast_vote reachable at 2026-05-14"
+      },
+      {
+       "check": "yes_path_exists",
+       "ok": true,
+       "note": "common options=['cut', 'hike', 'hold']"
+      },
+      {
+       "check": "no_path_exists",
+       "ok": true,
+       "note": "common options=['cut', 'hike', 'hold']"
+      },
+      {
+       "check": "outcome_mechanism_accepted",
+       "ok": true,
+       "note": "all terminal-writing effects are known mechanical kinds"
+      },
+      {
+       "check": "unresolved_recovery_pathway",
+       "ok": true,
+       "note": "forecast_recovery active; grounded_rates=1"
+      },
+      {
+       "check": "not_inevitably_unresolved",
+       "ok": true,
+       "note": "at least one resolving path exists"
+      }
+     ],
+     "blocking": [],
+     "probe": {},
+     "one_sided": ""
+    },
+    "engine_primary": {
+     "waves": 2,
+     "decisions": {
+      "version": "lean.decision.cache.v1",
+      "behavioral_replicates_per_decision_context": 1,
+      "unique_decision_contexts": 10,
+      "hits": 160,
+      "misses": 0,
+      "stores": 10,
+      "invalidated_hits": 0,
+      "failures_not_cached": 0,
+      "reuses": 160,
+      "largest_context_reuse": [
+       {
+        "context_hash": "86122478d1139754b00599115ef7c03cb31654d4206dc6527f2a3c472e7d4fbc",
+        "n_reuses": 16
+       },
+       {
+        "context_hash": "080e754984eb6ba131679e68f316f94e56507d17ba7524e32b50bba3155ef71b",
+        "n_reuses": 16
+       },
+       {
+        "context_hash": "5e70b327baca955d1bbed0c4da79d636bf3fdb65a7a7ee5f59a823eb42de4c58",
+        "n_reuses": 16
+       },
+       {
+        "context_hash": "14eb6d454cd3e97659ae5b50aca891762e22d19d9ae32fb59f5d1c24d90edb68",
+        "n_reuses": 16
+       },
+       {
+        "context_hash": "deb1fc8aad444aa2dadf5aa2bd2488db46236a5205ba415bea92c9ed528cb85c",
+        "n_reuses": 16
+       },
+       {
+        "context_hash": "2f58c6166bd82bd0e3a129b87352c6e09abec1568857489f70867fe2a3edc7b2",
+        "n_reuses": 16
+       },
+       {
+        "context_hash": "399b2df48f3ba4080abef4c21eb4548bb83362710802e5484985ac8c4897401e",
+        "n_reuses": 16
+       },
+       {
+        "context_hash": "1e8549674e1cd53571456ec9e2f013578d42ea328b21bbf26b63df73690fbc07",
+        "n_reuses": 16
+       },
+       {
+        "context_hash": "29304c84f03c40b4d449e68e8c7f8f1d28000eeecce256f647a1ef1c7450a415",
+        "n_reuses": 16
+       },
+       {
+        "context_hash": "14b8b583254e971c97ae0a59931e81414cc55db6a111dc2323c3d186e0756e7d",
+        "n_reuses": 16
+       }
+      ],
+      "templates": [
+       {
+        "context_hash": "14b8b583254e971c97ae0a59931e81414cc55db6a111dc2323c3d186e0756e7d",
+        "actor_id": "victoria_rodriguez_ceja",
+        "cohort_id": "hold_advocate",
+        "prompt_hash": "",
+        "response_hash": "e9b8a03c190c823d",
+        "model_fingerprint": "deepseek-v4-flash",
+        "prompt_version": "lean_v2.prompts.v1",
+        "replicate_index": 0,
+        "source_branch": "wave",
+        "validation_record": {
+         "ok": true
+        }
+       },
+       {
+        "context_hash": "080e754984eb6ba131679e68f316f94e56507d17ba7524e32b50bba3155ef71b",
+        "actor_id": "irene_espinosa_cantellano",
+        "cohort_id": "consensus_seeker",
+        "prompt_hash": "",
+        "response_hash": "cb52f378d55a9a58",
+        "model_fingerprint": "deepseek-v4-flash",
+        "prompt_version": "lean_v2.prompts.v1",
+        "replicate_index": 0,
+        "source_branch": "wave",
+        "validation_record": {
+         "ok": true
+        }
+       },
+       {
+        "context_hash": "14eb6d454cd3e97659ae5b50aca891762e22d19d9ae32fb59f5d1c24d90edb68",
+        "actor_id": "omar_mejia_castelazo",
+        "cohort_id": "dovish_cut",
+        "prompt_hash": "",
+        "response_hash": "05ba17d9dbc72624",
+        "model_fingerprint": "deepseek-v4-flash",
+        "prompt_version": "lean_v2.prompts.v1",
+        "replicate_index": 0,
+        "source_branch": "wave",
+        "validation_record": {
+         "ok": true
+        }
+       },
+       {
+        "context_hash": "29304c84f03c40b4d449e68e8c7f8f1d28000eeecce256f647a1ef1c7450a415",
+        "actor_id": "jonathan_heath",
+        "cohort_id": "pragmatic_hold",
+        "prompt_hash": "",
+        "response_hash": "ac69341a80a65dc8",
+        "model_fingerprint": "deepseek-v4-flash",
+        "prompt_version": "lean_v2.prompts.v1",
+        "replicate_index": 0,
+        "source_branch": "wave",
+        "validation_record": {
+         "ok": true
+        }
+       },
+       {
+        "context_hash": "1e8549674e1cd53571456ec9e2f013578d42ea328b21bbf26b63df73690fbc07",
+        "actor_id": "irene_espinosa_cantellano",
+        "cohort_id": "hawkish_hold",
+        "prompt_hash": "",
+        "response_hash": "43177b0e173f2841",
+        "model_fingerprint": "deepseek-v4-flash",
+        "prompt_version": "lean_v2.prompts.v1",
+        "replicate_index": 0,
+        "source_branch": "wave",
+        "validation_record": {
+         "ok": true
+        }
+       },
+       {
+        "context_hash": "2f58c6166bd82bd0e3a129b87352c6e09abec1568857489f70867fe2a3edc7b2",
+        "actor_id": "omar_mejia_castelazo",
+        "cohort_id": "hold_supporter",
+        "prompt_hash": "",
+        "response_hash": "965d5df81c0fa845",
+        "model_fingerprint": "deepseek-v4-flash",
+        "prompt_version": "lean_v2.prompts.v1",
+        "replicate_index": 0,
+        "source_branch": "wave",
+        "validation_record": {
+         "ok": true
+        }
+       },
+       {
+        "context_hash": "399b2df48f3ba4080abef4c21eb4548bb83362710802e5484985ac8c4897401e",
+        "actor_id": "galia_borja_gomez",
+        "cohort_id": "hold_supporter",
+        "prompt_hash": "",
+        "response_hash": "d85513d5481d35e8",
+        "model_fingerprint": "deepseek-v4-flash",
+        "prompt_version": "lean_v2.prompts.v1",
+        "replicate_index": 0,
+        "source_branch": "wave",
+        "validation_record": {
+         "ok": true
+        }
+       },
+       {
+        "context_hash": "86122478d1139754b00599115ef7c03cb31654d4206dc6527f2a3c472e7d4fbc",
+        "actor_id": "galia_borja_gomez",
+        "cohort_id": "dovish_cut",
+        "prompt_hash": "",
+        "response_hash": "a644bf0d6447a579",
+        "model_fingerprint": "deepseek-v4-flash",
+        "prompt_version": "lean_v2.prompts.v1",
+        "replicate_index": 0,
+        "source_branch": "wave",
+        "validation_record": {
+         "ok": true
+        }
+       },
+       {
+        "context_hash": "deb1fc8aad444aa2dadf5aa2bd2488db46236a5205ba415bea92c9ed528cb85c",
+        "actor_id": "victoria_rodriguez_ceja",
+        "cohort_id": "dovish_lean",
+        "prompt_hash": "",
+        "response_hash": "d955720c086b0d5d",
+        "model_fingerprint": "deepseek-v4-flash",
+        "prompt_version": "lean_v2.prompts.v1",
+        "replicate_index": 0,
+        "source_branch": "wave",
+        "validation_record": {
+         "ok": true
+        }
+       },
+       {
+        "context_hash": "5e70b327baca955d1bbed0c4da79d636bf3fdb65a7a7ee5f59a823eb42de4c58",
+        "actor_id": "jonathan_heath",
+        "cohort_id": "hawkish_hold",
+        "prompt_hash": "",
+        "response_hash": "33ef283be61ccaa2",
+        "model_fingerprint": "deepseek-v4-flash",
+        "prompt_version": "lean_v2.prompts.v1",
+        "replicate_index": 0,
+        "source_branch": "wave",
+        "validation_record": {
+         "ok": true
+        }
+       }
+      ],
+      "cross_run_persistence": "disabled (run-scoped by construction)"
+     },
+     "deliberations": [
+      {
+       "actor_id": "jonathan_heath",
+       "context_hash": "5e70b327baca955d1bbed0c4da79d636bf3fdb65a7a7ee5f59a823eb42de4c58",
+       "trigger": "internal_conflict_named: Whether the majority will shift toward my view or remain in favor of further easing.",
+       "ran": true,
+       "changed_action": false,
+       "first_action": "cast_vote",
+       "final_action": "cast_vote",
+       "added_calls": 1,
+       "added_latency_s": 3.651,
+       "note": "The majority voted to cut in May, and I dissented. Since then, no new data has emerged to change my view that inflation risks remain elevated. Holding the rate is the prudent middle ground\u2014it signals "
+      },
+      {
+       "actor_id": "omar_mejia_castelazo",
+       "context_hash": "2f58c6166bd82bd0e3a129b87352c6e09abec1568857489f70867fe2a3edc7b2",
+       "trigger": "internal_conflict_named: Whether other board members share my view or lean toward a cut given external pressures.",
+       "ran": true,
+       "changed_action": false,
+       "first_action": "cast_vote",
+       "final_action": "cast_vote",
+       "added_calls": 1,
+       "added_latency_s": 3.841,
+       "note": "I weigh the tradeoff between my lean to hold and the possibility that other board members may favor a cut due to external pressures. Holding preserves credibility and aligns with my view that the cycl"
+      },
+      {
+       "actor_id": "galia_borja_gomez",
+       "context_hash": "399b2df48f3ba4080abef4c21eb4548bb83362710802e5484985ac8c4897401e",
+       "trigger": "internal_conflict_named: Whether underlying inflation pressures have eased enough to justify a hold.",
+       "ran": true,
+       "changed_action": false,
+       "first_action": "cast_vote",
+       "final_action": "cast_vote",
+       "added_calls": 1,
+       "added_latency_s": 3.519,
+       "note": "Weighing the tradeoff: holding supports stability and avoids overstimulus, but risks being too tight if underlying inflation has indeed eased. My private belief that the easing cycle has ended aligns "
+      },
+      {
+       "actor_id": "irene_espinosa_cantellano",
+       "context_hash": "1e8549674e1cd53571456ec9e2f013578d42ea328b21bbf26b63df73690fbc07",
+       "trigger": "internal_conflict_named: The exact inflation trajectory and any new external shocks since the last meeting are not yet known.",
+       "ran": true,
+       "changed_action": false,
+       "first_action": "cast_vote",
+       "final_action": "cast_vote",
+       "added_calls": 1,
+       "added_latency_s": 3.006,
+       "note": "I remain convinced that the May cut was premature, as inflation remains above target and expectations are not yet anchored. Holding the rate is the prudent course to signal resolve and keep the option"
+      }
+     ],
+     "escalations": [],
+     "promotions": [],
+     "avoided_reasks": [],
+     "coalescer": {
+      "merges": 0,
+      "splits": 31,
+      "merge_log": [],
+      "split_log": [
+       {
+        "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker",
+        "into": [
+         "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-dovish_cut",
+         "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold",
+        "into": [
+         "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-dovish_cut",
+         "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker",
+        "into": [
+         "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-dovish_cut",
+         "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold",
+        "into": [
+         "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-dovish_cut",
+         "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-dovish_cut",
+        "into": [
+         "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-dovish_cut",
+         "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-hold_supporter",
+        "into": [
+         "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-dovish_cut",
+         "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-dovish_cut",
+        "into": [
+         "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-dovish_cut",
+         "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-hold_supporter",
+        "into": [
+         "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-dovish_cut",
+         "w0.victoria-dovish_lean.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-dovish_cut",
+        "into": [
+         "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-dovish_cut",
+         "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-hold_supporter",
+        "into": [
+         "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-dovish_cut",
+         "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-dovish_cut",
+        "into": [
+         "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-dovish_cut",
+         "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-hold_supporter",
+        "into": [
+         "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-dovish_cut",
+         "w0.victoria-dovish_lean.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-dovish_cut",
+        "into": [
+         "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-dovish_cut",
+         "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-hold_supporter",
+        "into": [
+         "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-dovish_cut",
+         "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-dovish_cut",
+        "into": [
+         "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-dovish_cut",
+         "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-hold_supporter",
+        "into": [
+         "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-dovish_cut",
+         "w0.victoria-hold_advocate.jonathan-hawkish_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-dovish_cut",
+        "into": [
+         "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-dovish_cut",
+         "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-dovish_cut.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-hold_supporter",
+        "into": [
+         "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-dovish_cut",
+         "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-consensus_seeker.galia_bo-hold_supporter.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-dovish_cut",
+        "into": [
+         "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-dovish_cut",
+         "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-dovish_cut.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       },
+       {
+        "node": "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-hold_supporter",
+        "into": [
+         "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-dovish_cut",
+         "w0.victoria-hold_advocate.jonathan-pragmatic_hold.irene_es-hawkish_hold.galia_bo-hold_supporter.omar_mej-hold_supporter"
+        ],
+        "fractions": [
+         0.5,
+         0.5
+        ]
+       }
+      ],
+      "truncated_mass": 0.0,
+      "truncated_nodes": 0,
+      "max_nodes": 4096,
+      "executed_unique_nodes": 33,
+      "randomness_rule": "content-addressed (state/context-seeded) draws \u2014 equal keys share the future transition law by construction; independent streams carry a tag that refuses the merge"
+     },
+     "variant_weight_law": {
+      "victoria_rodriguez_ceja": {
+       "hold_advocate": 0.5,
+       "dovish_lean": 0.5
+      },
+      "jonathan_heath": {
+       "hawkish_hold": 0.8571428571428572,
+       "pragmatic_hold": 0.14285714285714288
+      },
+      "irene_espinosa_cantellano": {
+       "hawkish_hold": 0.8571428571428572,
+       "consensus_seeker": 0.14285714285714288
+      },
+      "galia_borja_gomez": {
+       "dovish_cut": 0.5,
+       "hold_supporter": 0.5
+      },
+      "omar_mejia_castelazo": {
+       "dovish_cut": 0.5,
+       "hold_supporter": 0.5
+      }
+     },
+     "variant_weight_ranges": {
+      "victoria_rodriguez_ceja": {
+       "hold_advocate": [
+        0.02,
+        0.5,
+        0.25
+       ],
+       "dovish_lean": [
+        0.02,
+        0.5,
+        0.25
+       ]
+      },
+      "jonathan_heath": {
+       "hawkish_hold": [
+        0.45,
+        0.8571428571428572,
+        0.75
+       ],
+       "pragmatic_hold": [
+        0.02,
+        0.14285714285714288,
+        0.25
+       ]
+      },
+      "irene_espinosa_cantellano": {
+       "hawkish_hold": [
+        0.45,
+        0.8571428571428572,
+        0.75
+       ],
+       "consensus_seeker": [
+        0.02,
+        0.14285714285714288,
+        0.25
+       ]
+      },
+      "galia_borja_gomez": {
+       "dovish_cut": [
+        0.02,
+        0.5,
+        0.25
+       ],
+       "hold_supporter": [
+        0.02,
+        0.5,
+        0.25
+       ]
+      },
+      "omar_mejia_castelazo": {
+       "dovish_cut": [
+        0.02,
+        0.5,
+        0.25
+       ],
+       "hold_supporter": [
+        0.02,
+        0.5,
+        0.25
+       ]
+      }
+     }
+    },
+    "challenger": {
+     "triggered": false,
+     "triggers": [],
+     "mode": "",
+     "divergence": "",
+     "skipped_reasons": [
+      "no deterministic trigger fired: primary stable, no verified evidence conflict, no reversal-capable disputed assumption (imagination alone is not a trigger)"
+     ]
+    },
+    "replicate_policy": {
+     "allowed": false,
+     "reason": "behavioral replicates not requested (deterministic execution: content-addressed draws make replicate 0 exhaustive)",
+     "ran": false
+    },
+    "consequences": {
+     "n_templates": 1,
+     "precompiled": [
+      "cast_vote"
+     ],
+     "novel_compiled": [],
+     "template_hits": 128,
+     "novel_requests": 0,
+     "rejections": [],
+     "boundary_contract": "delivery mechanics precompiled; interpretation/persuasion/reaction remain branch-local actor decisions",
+     "templates": {
+      "cast_vote": {
+       "action_id": "cast_vote",
+       "description": "A board member votes for a policy action.",
+       "actor_ids": [
+        "victoria_rodriguez_ceja",
+        "jonathan_heath",
+        "irene_espinosa_cantellano",
+        "galia_borja_gomez",
+        "omar_mejia_castelazo"
+       ],
+       "authority_required": [
+        "Vote on rate decision"
+       ],
+       "targets": [
+        "banxico_governing_board"
+       ],
+       "effects": [
+        {
+         "kind": "record_vote",
+         "params": {
+          "institution_id": "banxico_governing_board",
+          "options": [
+           "hold",
+           "cut",
+           "hike"
+          ]
+         }
+        }
+       ],
+       "emits_events": [
+        {
+         "etype": "vote_recorded",
+         "observers": [
+          "public"
+         ]
+        }
+       ],
+       "writes_terminal": true,
+       "validation": "Member is present and meeting is held.",
+       "unknown_effect_kinds": [],
+       "source": "blueprint_precompiled"
+      }
+     }
+    },
+    "budget": {
+     "caps": {
+      "max_wall_s": 600.0,
+      "max_calls": 80,
+      "max_input_chars": 2400000,
+      "max_output_chars": 1200000,
+      "max_structural_models": 4,
+      "max_deliberations": 40,
+      "max_novel_consequence_compiles": 30,
+      "max_weighted_nodes": 4096,
+      "max_provider_retries": 40
+     },
+     "wall_s": 67.44,
+     "calls": 16,
+     "input_chars": 47861,
+     "output_chars": 44209,
+     "structural_models": 1,
+     "deliberations": 4,
+     "novel_consequence_compiles": 0,
+     "peak_weighted_nodes": 32,
+     "provider_retries": 0,
+     "by_stage": {
+      "actor_decision": {
+       "calls": 14,
+       "input_chars": 29432,
+       "output_chars": 19712,
+       "latency_s": 64.905,
+       "tiers": {
+        "strong": 14
+       }
+      },
+      "structural_compile": {
+       "calls": 1,
+       "input_chars": 10778,
+       "output_chars": 12551,
+       "latency_s": 18.253,
+       "tiers": {
+        "strong": 1
+       }
+      },
+      "structural_generation": {
+       "calls": 1,
+       "input_chars": 7651,
+       "output_chars": 11946,
+       "latency_s": 24.589,
+       "tiers": {
+        "strong": 1
+       }
+      }
+     },
+     "exhausted_dimension": "",
+     "stops": []
+    },
+    "gateway": {
+     "backend_fingerprint": "deepseek-v4-flash",
+     "light_tier_distinct_backend": false,
+     "strong_only_stages": [
+      "actor_decision",
+      "actor_cognition",
+      "structural_generation",
+      "structural_compile",
+      "structural_critic",
+      "consequence_compile",
+      "evidence_interpretation_high_impact"
+     ],
+     "calls_by_stage_tier": {
+      "actor_decision|strong": 14,
+      "structural_compile|strong": 1,
+      "structural_generation|strong": 1
+     },
+     "n_calls": 16,
+     "retried_calls": 0
+    },
+    "compile_cache": {
+     "hits_run": 0,
+     "hits_persistent": 0,
+     "misses": 3,
+     "stores": 3,
+     "persistent_layer": true,
+     "persistent_dir": "experiments/results/exp111_compile_cache",
+     "persistable_kinds": [
+      "resolution_interpretation",
+      "evidence_canonicalization",
+      "calendar",
+      "institution_rules",
+      "entity_aliases",
+      "authority_graph",
+      "procedural_rules",
+      "action_schema",
+      "consequence_templates",
+      "blueprint_response",
+      "blueprint_repair_response"
+     ],
+     "never_persisted": [
+      "actor_decision",
+      "actor_memory",
+      "branch_state",
+      "event_queue",
+      "world_node"
+     ],
+     "events": [
+      {
+       "kind": "blueprint_response",
+       "key": "dacd3d82",
+       "outcome": "miss"
+      },
+      {
+       "kind": "blueprint_response",
+       "key": "dacd3d82",
+       "outcome": "store"
+      },
+      {
+       "kind": "blueprint_repair_response",
+       "key": "25625061",
+       "outcome": "miss"
+      },
+      {
+       "kind": "blueprint_repair_response",
+       "key": "25625061",
+       "outcome": "store"
+      },
+      {
+       "kind": "consequence_templates",
+       "key": "e8be07af",
+       "outcome": "miss"
+      },
+      {
+       "kind": "consequence_templates",
+       "key": "e8be07af",
+       "outcome": "store"
+      }
+     ]
+    },
+    "checkpoints": {
+     "stages": [
+      {
+       "name": "evidence_preparation",
+       "status": "completed",
+       "attempts": 1,
+       "latency_s": 0.0,
+       "error": ""
+      },
+      {
+       "name": "blueprint_creation",
+       "status": "completed",
+       "attempts": 1,
+       "latency_s": 24.601,
+       "error": ""
+      },
+      {
+       "name": "blueprint_validation",
+       "status": "completed",
+       "attempts": 1,
+       "latency_s": 0.0,
+       "error": ""
+      },
+      {
+       "name": "targeted_repair",
+       "status": "completed",
+       "attempts": 1,
+       "latency_s": 18.255,
+       "error": ""
+      },
+      {
+       "name": "actor_authority_slicing",
+       "status": "completed",
+       "attempts": 1,
+       "latency_s": 0.0,
+       "error": ""
+      },
+      {
+       "name": "consequence_template_construction",
+       "status": "completed",
+       "attempts": 1,
+       "latency_s": 0.0,
+       "error": ""
+      },
+      {
+       "name": "answerability_preflight",
+       "status": "completed",
+       "attempts": 1,
+       "latency_s": 0.0,
+       "error": ""
+      },
+      {
+       "name": "causal_waves_primary",
+       "status": "completed",
+       "attempts": 1,
+       "latency_s": 24.581,
+       "error": ""
+      },
+      {
+       "name": "terminal_projection",
+       "status": "completed",
+       "attempts": 1,
+       "latency_s": 0.0,
+       "error": ""
+      }
+     ],
+     "checkpointed": [
+      "actor_authority_slicing",
+      "answerability_preflight",
+      "blueprint_creation",
+      "blueprint_validation",
+      "causal_waves_primary",
+      "consequence_template_construction",
+      "evidence_preparation",
+      "targeted_repair",
+      "terminal_projection"
+     ]
+    }
+   },
+   "execution_profile": "lean_v2"
+  },
+  "cost_usd": 0.0,
+  "latency_s": 67.439
+ }
+}
