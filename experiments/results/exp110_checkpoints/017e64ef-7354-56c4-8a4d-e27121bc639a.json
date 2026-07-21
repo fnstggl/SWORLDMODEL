@@ -1,0 +1,178 @@
+{
+ "label": "Hormuz",
+ "qid": "017e64ef-7354-56c4-8a4d-e27121bc639a",
+ "question": "Will daily oil tanker transits through the Strait of Hormuz reach 50 or more on any day between April 29 and J",
+ "horizon_days": 31.5,
+ "A1_grounded_prior": {
+  "reference_class": "daily maritime traffic through strategic chokepoints (e.g., Hormuz, Malacca, Suez) in non-crisis periods",
+  "stage": "unknown",
+  "base_rate": 0.85,
+  "status_quo": "If no major disruption occurs, daily transits typically remain well above 50, as the strait sees routine high-volume tanker traffic; the status quo is the likely outcome.",
+  "is_recurrence": false,
+  "transport_risk": "low",
+  "evidence_quality": "model_memory"
+ },
+ "A2_evidence_sufficiency": null,
+ "A2_posterior_consumed": true,
+ "A3_operator_census": {
+  "production_actor_policy": 1509,
+  "scheduled_fact": 648,
+  "evidence_observation": 1568,
+  "background_dynamics": 792,
+  "scenario_mechanism_runtime": 225,
+  "first_passage": 5,
+  "absorption_monitor": 5,
+  "actor_action_aggregation": 2,
+  "persistence_update": 235,
+  "institutional_decision": 20,
+  "outside_world_entry": 55,
+  "generated_semantic_event_router": 55,
+  "nonlinear_state_step": 114,
+  "scheduled_attempt_runtime": 1
+ },
+ "A4_status": "under_modeled",
+ "A4_has_forecast": true,
+ "A4_under_modeled_subtypes": [
+  "under_modeled_boundary",
+  "under_modeled_external_process",
+  "under_modeled_nonhuman_mechanism"
+ ],
+ "A5_grounded_outside_view_fallback": null,
+ "A6_n_models": 4,
+ "A6_aggregation": "grounded_weighted_simulation",
+ "A6_structural_sensitivity": "ensemble_execution_incomplete",
+ "W_outside_view": 0.1371,
+ "W_simulation_derived": 0.0,
+ "W_final_combined": 0.087854,
+ "W_final_source": "weighted_simulation",
+ "W_final_reason": "4 valid simulated world(s) produced a grounded weighted forecast (headline=0.0); outside-view baseline 0.1371 reported; combined=0.087854 (alpha=0.3592 shrink toward baseline)",
+ "W_confidence_alpha": 0.3592,
+ "W_n_worlds_valid": 4,
+ "W_world_weights": [
+  {
+   "model_id": "m0_actor_relationship",
+   "weight": 0.216012,
+   "p_yes": 0.0,
+   "plausibility": 0.3,
+   "objective_quality": 0.2961,
+   "rationale": "Setup plausible as Iran-US strategic calculus is relevant, but high unresolved share (0.204) and zero 'yes' outcomes suggest simulation may have missed plausible escalation scenarios; historical base ",
+   "citations": [
+    "Historical base rate: Iran has seized tankers in the Strait (e.g., 2019, 2023) but rarely causes sustained high transit counts.",
+    "Known actor state: Iran's IRGC Navy uses harassment as leverage, but full blockade is unlikely without broader conflict."
+   ],
+   "unsupported_assumptions": [
+    "Assumes strategic calculus alone determines transit counts without considering market-driven rerouting effects.",
+    "Assumes no scenario where Iranian threats actually reduce transits below 50, yet model predicts 0% 'yes'."
+   ],
+   "merged_from": []
+  },
+  {
+   "model_id": "m1_institutional_procedural",
+   "weight": 0.17319,
+   "p_yes": 0.0,
+   "plausibility": 0.25,
+   "objective_quality": 0.2849,
+   "rationale": "Institutional focus is plausible but overemphasizes formal scheduling; real-world Strait traffic is largely market-driven and informal. Zero 'yes' outcomes ignore possibility of routine high traffic d",
+   "citations": [
+    "Institutional rule: Strait of Hormuz transit scheduling is voluntary, not mandatory; UNCLOS guarantees transit passage without prior authorization.",
+    "Known actor state: Tanker operators prioritize cost and risk, not scheduling queues, for route choice."
+   ],
+   "unsupported_assumptions": [
+    "Assumes a formal traffic control authority with enforcement power, which does not exist in practice.",
+    "Assumes OPEC+ quota enforcement directly affects tanker demand in a way that suppresses spikes."
+   ],
+   "merged_from": []
+  },
+  {
+   "model_id": "m3_information_distribution",
+   "weight": 0.275055,
+   "p_yes": 0.0,
+   "plausibility": 0.35,
+   "objective_quality": 0.3232,
+   "rationale": "Information cascade mechanism is plausible for short-term spikes, but zero 'yes' outcomes contradict the model's own thesis that herding could produce spikes. Unresolved share is low (0.071), suggesti",
+   "citations": [
+    "Known actor state: Tanker operators use AIS and broker signals, but herding is limited by long-term contracts and risk aversion.",
+    "Historical base rate: Transit counts fluctuate daily but rarely exceed 50 except during oil price shocks."
+   ],
+   "unsupported_assumptions": [
+    "Assumes information cascades can drive transits to 50+ without fundamental supply-demand shift.",
+    "Assumes insurance premium feedback loop is strong enough to create self-fulfilling spikes."
+   ],
+   "merged_from": []
+  },
+  {
+   "model_id": "m4_adversarial_alternative",
+   "weight": 0.335743,
+   "p_yes": 0.0,
+   "plausibility": 0.4,
+   "objective_quality": 0.3452,
+   "rationale": "Market-driven supply-demand balance is the most fundamental driver of tanker transits, consistent with historical patterns. However, the truncated thesis and lack of simulated outcome data prevent ful",
+   "citations": [
+    "Historical base rate: Tanker transits through Hormuz are primarily determined by global oil demand and OPEC production, not geopolitical theater.",
+    "Known actor state: Charter brokers and oil traders respond to freight rates and arbitrage, not strategic posturing."
+   ],
+   "unsupported_assumptions": [
+    "Assumes charter rate fluctuations alone determine transit counts without considering geopolitical risk premiums.",
+    "Assumes OPEC+ production decisions are independent of Strait security, which is not always true."
+   ],
+   "merged_from": []
+  }
+ ],
+ "W_spread": 0.0,
+ "W_rejected_worlds": [],
+ "W_merge_records": [],
+ "W_interpretation_hypotheses": [
+  {
+   "model_id": "m0_actor_relationship",
+   "thesis": "The outcome is determined by the strategic calculus of Iran and its willingness to escalate or de-escalate threats against tanker traffic, mediated by the operational capacity of the US Navy and allied forces to ensure safe passage, and constrained by the global oil market's demand and tanker availability."
+  },
+  {
+   "model_id": "m1_institutional_procedural",
+   "thesis": "The outcome is determined by whether the formal scheduling and capacity management procedures of the Strait of Hormuz transit system, enforced by regional naval authorities, can accommodate the projected tanker demand without exceeding the procedural limit of 50 transits per day."
+  },
+  {
+   "model_id": "m3_information_distribution",
+   "thesis": "The outcome is determined by whether information flows through tanker scheduling networks and attention dynamics in shipping markets produce a coordination spike, rather than by physical capacity or geopolitical events alone."
+  },
+  {
+   "model_id": "m4_adversarial_alternative",
+   "thesis": "The outcome is determined by the global tanker supply-demand balance and charter rate fluctuations, which drive operators to seek or avoid the Strait regardless of local conditions."
+  }
+ ],
+ "p": 0.0,
+ "raw_distribution": {
+  "Yes, at least one day between April 29 and June 1, 2026 has 50 or more transits": 0.0,
+  "No, all days in that period have fewer than 50 transits": 1.0
+ },
+ "A8_wall_s": 7615.8,
+ "A8_timing_wrapper": {
+  "true_backend_calls": 796,
+  "llm_wall_s_total": 5241.4,
+  "call_s_mean": 6.58,
+  "call_s_median": 5.34,
+  "call_s_max": 43.27
+ },
+ "A8_ledger_total_calls": 782,
+ "A8_calls_by_stage": {
+  "structural_generation": 5,
+  "structural_critic": 7,
+  "structural_compile": 5,
+  "model_conditioning": 99,
+  "actor_rollout": 666
+ },
+ "A8_calls_by_model": {
+  "m0_actor_relationship": 175,
+  "m1_institutional_procedural": 189,
+  "m2_resource_constraint": 26,
+  "m3_information_distribution": 185,
+  "m4_adversarial_alternative": 195
+ },
+ "A8_incremental_multiplier": 5.08,
+ "limitations": [
+  "omitted (negligible-sensitivity): Iran domestic politics",
+  "omitted (negligible-sensitivity): US Congress",
+  "omitted (negligible-sensitivity): informal_bribery",
+  "omitted (negligible-sensitivity): smuggling_operations",
+  "omitted (negligible-sensitivity): OPEC+ quota changes"
+ ]
+}
