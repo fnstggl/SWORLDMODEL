@@ -142,9 +142,14 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
                         "temporal_runtime": result.get("temporal_runtime") or None,
                         "n_particles": plan.compute_plan.get("n_particles")},
             latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
-        rec = recover_forecast(distribution=dist, options=plan.outcome_contract.options,
-                               unresolved_mass=unresolved_mass, **_prior_inputs)
-        return attach_recovery(res_u, rec, override_probability=True)
+        try:
+            rec = recover_forecast(distribution=dist, options=plan.outcome_contract.options,
+                                   unresolved_mass=unresolved_mass, **_prior_inputs)
+            return attach_recovery(res_u, rec, override_probability=True)
+        except Exception as _rec_e:  # noqa: BLE001 — labels lost, refusal intact
+            res_u.provenance["forecast_recovery_error"] = \
+                f"{type(_rec_e).__name__}: {_rec_e}"[:200]
+            return res_u
     # §28: when the DEFAULT runtime refused a broad-prior terminal resolution (no validated
     # mechanism, no posterior), the run classifies under_modeled_nonhuman_mechanism, naming the
     # missing mechanism — and the layered recovery still serves the best defensible probability
@@ -168,9 +173,14 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
             provenance={"temporal_runtime": _temporal_pre or None,
                         "n_particles": plan.compute_plan.get("n_particles")},
             latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
-        rec = recover_forecast(distribution={}, options=plan.outcome_contract.options,
-                               unresolved_mass=1.0, **_prior_inputs)
-        return attach_recovery(res_um, rec, override_probability=True)
+        try:
+            rec = recover_forecast(distribution={}, options=plan.outcome_contract.options,
+                                   unresolved_mass=1.0, **_prior_inputs)
+            return attach_recovery(res_um, rec, override_probability=True)
+        except Exception as _rec_e:  # noqa: BLE001 — labels lost, refusal intact
+            res_um.provenance["forecast_recovery_error"] = \
+                f"{type(_rec_e).__name__}: {_rec_e}"[:200]
+            return res_um
     # INVARIANT: a completed simulation must carry a forecast. If the rollout produced NO binnable terminal
     # distribution AND no quantiles (every terminal world fell outside the declared option space), the
     # terminal readout is technically unbindable — an ENGINEERING failure (execution_failed), never a
@@ -309,13 +319,18 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
     # the explicit unresolved-mass treatment (resolved mass keeps its simulated frequency AND
     # weights; unresolved mass takes the best prior — both disclosed; the raw yes-mass projection
     # stays in provenance as legacy_binary_projection). completed paths keep their numbers and
-    # only gain labels.
-    rec = recover_forecast(distribution=dist, options=plan.outcome_contract.options,
-                           unresolved_mass=unresolved_mass, **_prior_inputs)
-    if status == "partially_resolved" and rec is not None and rec.probability is not None:
-        res.provenance["legacy_binary_projection"] = raw_p
-        return attach_recovery(res, rec, override_probability=True)
-    return attach_recovery(res, rec, override_probability=False)
+    # only gain labels. RECOVERY IS FAILURE-PROOF: a recovery defect may cost labels on this
+    # result, it may never cost the forecast or kill a finalize (EXP-107 Hormuz lesson).
+    try:
+        rec = recover_forecast(distribution=dist, options=plan.outcome_contract.options,
+                               unresolved_mass=unresolved_mass, **_prior_inputs)
+        if status == "partially_resolved" and rec is not None and rec.probability is not None:
+            res.provenance["legacy_binary_projection"] = raw_p
+            return attach_recovery(res, rec, override_probability=True)
+        return attach_recovery(res, rec, override_probability=False)
+    except Exception as _rec_e:  # noqa: BLE001 — labels lost, forecast intact, loudly recorded
+        res.provenance["forecast_recovery_error"] = f"{type(_rec_e).__name__}: {_rec_e}"[:200]
+        return res
 
 
 def harden_general_path(plan, question: str, *, llm=None, evidence="", as_of: str = "",

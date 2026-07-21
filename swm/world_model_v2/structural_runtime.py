@@ -233,7 +233,10 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
     if not promoted:
         return _fail("runtime_exception",
                      "every promoted structural model failed terminal projection",
-                     {"structural_ensemble_generation": ens.as_dict()})
+                     {"structural_ensemble_generation": ens.as_dict(),
+                      "per_model_finalize_errors": {m: {"error": r.get("error"),
+                                                        "traceback": r.get("error_traceback")}
+                                                    for m, r in runs.items() if r.get("error")}})
 
     # ---------- budget invariant: promoted models carry >= their full single-model budget ----------
     for cand in promoted:
@@ -495,7 +498,11 @@ def _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t
         res, _artifacts = finalize_persistence_run(handle, rec["branches"],
                                                    intervention=intervention, t0=t0, seed=seed)
     except Exception as e:  # noqa: BLE001
+        import traceback as _tb
         rec["error"] = f"finalize: {type(e).__name__}: {e}"[:200]
+        rec["error_traceback"] = _tb.format_exc()[-1500:]
+        print(f"[finalize {cand.model_id}] {rec['error']}\n{rec['error_traceback']}",
+              flush=True)
         return None
     # ROLLOUT RETRY (per structural model): the persistence-aware rollout is stochastic; an
     # INTERMITTENT empty rollout (EXP-106 BoJ: one run's operator census came up empty → no absorber →
