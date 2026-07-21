@@ -177,7 +177,11 @@ fixed blend; unresolved separated by cause; no leakage; no unsafe merge; no term
 removed; Lean V2 materially faster than Lean V1; five-question accuracy did NOT degrade (it
 improved 4.5×); every material difference is causally explained.
 
-**Decision: `lean_v2` stays opt-in; `lean_adaptive` (Lean V1) remains the public default;
-`full_fidelity` remains permanently available.** The accuracy result is strong enough to
-justify prioritizing the two blockers (train the combiner; enrich the simulation's counted
-grounding) before a future switch.
+**Recommendation (§16 rule): keep Lean V1 as default until the two blockers close.**
+
+**Owner decision (override): `lean_v2` is now the public default** (`DEFAULT_EXECUTION_PROFILE
+= "lean_v2"`); `lean_adaptive` (Lean V1) and `full_fidelity` remain explicitly selectable, and
+the per-question hard maximum is raised to 25 min / 200 external calls. The two §16 caveats —
+the reliability combiner is not yet trained, and the five-question accuracy (mean Brier 0.074,
+best on 4/5) is prior-dominated rather than simulation-driven — stand as the prioritized
+follow-up work, not as blockers on the default per the owner's call.
