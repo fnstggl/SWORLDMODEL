@@ -48,6 +48,44 @@ def _native_row(d: dict, r: dict) -> dict | None:
             "recovered_by": "native_runtime_recovery"}
 
 
+GRADE_ORDER = ["grounded", "partially_grounded", "exploratory", "ungrounded"]
+
+
+def per_model_runtime_row(per_model_provenance: dict) -> dict | None:
+    """Middle precedence layer: checkpoints from the transition image computed per-model
+    recoveries NATIVELY (structured `forecast_recovery` blocks in each model's provenance,
+    full runtime inputs) but their ensemble assembly still wrote the status-suppressed
+    legacy headline (0.0 with empty source) instead of mixing them — the post-assembly
+    rescue only fired on None. The faithful recovery applies the runtime's OWN ensemble
+    rule to the runtime's OWN per-model blocks: equal-weight mixture, min/max interval,
+    worst grade, sources disclosed. Strictly better-informed than any artifact-side
+    recomputation; used only when the ensemble-level native fields are absent."""
+    blocks = {mid: mp["forecast_recovery"] for mid, mp in (per_model_provenance or {}).items()
+              if isinstance(mp, dict) and isinstance(mp.get("forecast_recovery"), dict)
+              and mp["forecast_recovery"].get("probability") is not None}
+    if not blocks:
+        return None
+    ps = [float(b["probability"]) for b in blocks.values()]
+    srcs = sorted({b.get("probability_source") for b in blocks.values()
+                   if b.get("probability_source")})
+    grades = [b.get("grounding_grade") for b in blocks.values() if b.get("grounding_grade")]
+    return {"recovered_probability": round(sum(ps) / len(ps), 4),
+            "recovered_interval": [round(min(ps), 4), round(max(ps), 4)],
+            "weight_sensitive": (min(ps) < 0.5 < max(ps))
+                or any(b.get("weight_sensitive") for b in blocks.values()),
+            "probability_source": srcs[0] if len(srcs) == 1 else "mixed:" + "+".join(srcs),
+            "grounding_grade": (max(grades, key=lambda g: GRADE_ORDER.index(g)
+                                    if g in GRADE_ORDER else 2) if grades else ""),
+            "per_model_runtime_blocks": {
+                mid: {k: b.get(k) for k in ("probability", "probability_source",
+                                            "grounding_grade", "unresolved_mass",
+                                            "uncertainty_interval", "weight_sensitive")}
+                for mid, b in blocks.items()},
+            "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities "
+                           "(same rule as the runtime's ensemble recovery)",
+            "recovered_by": "per_model_runtime_recovery_mixture"}
+
+
 def _posterior_mean(model_prov: dict):
     """The phase-3 posterior mean as recorded by the manifest ('N eff obs; prior a→post b')."""
     ph3 = ((model_prov.get("active_component_manifest") or {}).get("phase3_posterior") or {})
@@ -106,18 +144,21 @@ def recover_checkpoint(path: Path) -> dict:
             recomputed["aggregation"] = \
                 "equal_weight_mixture_of_per_model_recovered_probabilities " \
                 "(same rule as the runtime's ensemble recovery)"
-    if native is not None:
-        # post-contract checkpoint: the runtime's own recovery is authoritative
-        row.update(native)
+    runtime_blocks = per_model_runtime_row(pm) if native is None else None
+    authoritative = native if native is not None else runtime_blocks
+    if authoritative is not None:
+        # the runtime's own recovery (ensemble-level fields, else its per-model blocks
+        # mixed by its own ensemble rule) is authoritative over any recomputation
+        row.update(authoritative)
         if recomputed.get("recovered_probability") is not None:
             row["artifact_recomputation"] = recomputed
             if abs(recomputed["recovered_probability"]
-                   - native["recovered_probability"]) > 1e-6:
+                   - authoritative["recovered_probability"]) > 1e-6:
                 row["artifact_recomputation"]["discrepancy"] = (
-                    "artifact-side recomputation differs from the native runtime recovery "
+                    "artifact-side recomputation differs from the runtime's own recovery "
                     "(it reconstructs from a SUBSET of the runtime's inputs — per-model "
                     "priors/posterior specs are not fully recoverable from the artifact); "
-                    "the native value is served")
+                    "the runtime's value is served")
     else:
         row.update(recomputed)
         if recomputed.get("recovered_probability") is not None:

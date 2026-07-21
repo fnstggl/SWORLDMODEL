@@ -280,7 +280,7 @@
     "probability_source": "partial_rollouts",
     "grounding_grade": "exploratory",
     "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
-    "discrepancy": "artifact-side recomputation differs from the native runtime recovery (it reconstructs from a SUBSET of the runtime's inputs \u2014 per-model priors/posterior specs are not fully recoverable from the artifact); the native value is served"
+    "discrepancy": "artifact-side recomputation differs from the runtime's own recovery (it reconstructs from a SUBSET of the runtime's inputs \u2014 per-model priors/posterior specs are not fully recoverable from the artifact); the runtime's value is served"
    }
   },
   {
@@ -371,6 +371,105 @@
     "probability_source": "mixed:completed_rollouts+partial_rollouts",
     "grounding_grade": "exploratory",
     "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+   }
+  },
+  {
+   "qid": "cfb43147-d9d2-5bd9-903f-f449e9a5aecf",
+   "question": "Will the Banxico Governing Board's June 25, 2026, interest rate decision be unanimous (5-0 vote)?",
+   "original_status": "under_modeled",
+   "original_p_raw": 0.0,
+   "per_model": {
+    "m3_information_distribution": {
+     "probability": 0.3146,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 0.3146,
+     "unresolved_mass": 0.0632,
+     "interval": [
+      0.2947,
+      0.3579
+     ],
+     "weight_sensitive": false
+    }
+   },
+   "recovered_probability": 0.7294,
+   "recovered_interval": [
+    0.3468,
+    0.825
+   ],
+   "weight_sensitive": true,
+   "probability_source": "mixed:grounded_reference_prior+partial_rollouts",
+   "grounding_grade": "exploratory",
+   "per_model_runtime_blocks": {
+    "m0_actor_relationship": {
+     "probability": 0.825,
+     "probability_source": "grounded_reference_prior",
+     "grounding_grade": "exploratory",
+     "unresolved_mass": 1.0,
+     "uncertainty_interval": [
+      0.0,
+      1.0
+     ],
+     "weight_sensitive": true
+    },
+    "m1_institutional_procedural": {
+     "probability": 0.825,
+     "probability_source": "grounded_reference_prior",
+     "grounding_grade": "exploratory",
+     "unresolved_mass": 1.0,
+     "uncertainty_interval": [
+      0.0,
+      1.0
+     ],
+     "weight_sensitive": true
+    },
+    "m2_resource_constraint": {
+     "probability": 0.825,
+     "probability_source": "grounded_reference_prior",
+     "grounding_grade": "exploratory",
+     "unresolved_mass": 1.0,
+     "uncertainty_interval": [
+      0.0,
+      1.0
+     ],
+     "weight_sensitive": true
+    },
+    "m3_information_distribution": {
+     "probability": 0.3468,
+     "probability_source": "partial_rollouts",
+     "grounding_grade": "partially_grounded",
+     "unresolved_mass": 0.0632,
+     "uncertainty_interval": [
+      0.2947,
+      0.3579
+     ],
+     "weight_sensitive": false
+    },
+    "m4_adversarial_alternative": {
+     "probability": 0.825,
+     "probability_source": "grounded_reference_prior",
+     "grounding_grade": "exploratory",
+     "unresolved_mass": 1.0,
+     "uncertainty_interval": [
+      0.0,
+      1.0
+     ],
+     "weight_sensitive": true
+    }
+   },
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "per_model_runtime_recovery_mixture",
+   "artifact_recomputation": {
+    "recovered_probability": 0.3146,
+    "recovered_interval": [
+     0.3146,
+     0.3146
+    ],
+    "weight_sensitive": false,
+    "probability_source": "partial_rollouts",
+    "grounding_grade": "exploratory",
+    "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+    "discrepancy": "artifact-side recomputation differs from the runtime's own recovery (it reconstructs from a SUBSET of the runtime's inputs \u2014 per-model priors/posterior specs are not fully recoverable from the artifact); the runtime's value is served"
    }
   }
  ]

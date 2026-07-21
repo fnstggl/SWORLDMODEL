@@ -37,7 +37,7 @@ contract: availability preserved, weakness disclosed). Context: pre-#127 EXP-104
 the same frozen set: Brier 0.393, 1/5; FutureSearch SOTA 0.165. Five questions are an
 architecture/performance diagnostic, not an accuracy claim.
 
-## Full-fidelity baseline (EXP-107) — 3/5 completed in this environment
+## Full-fidelity baseline (EXP-107) — 4/5 completed in this environment
 
 * **visionOS 27 (completed)**: 2,411 calls, 2.60M in / 1.12M out tokens (737k provider-cached),
   **212.0 min**, status unresolved, recovered p **0.834** (✓, Brier 0.028,
@@ -50,22 +50,30 @@ architecture/performance diagnostic, not an accuracy claim.
   provider-cached, 39%), **261.2 min**, status under_modeled, native-contract p **0.22** (✗,
   Brier 0.608, `mixed:grounded_reference_prior+partial_rollouts`, exploratory, interval
   [0.13, 0.37]).
+* **Banxico unanimity (completed)**: 5,709 calls, 6.29M in / 2.69M out tokens (2.55M
+  provider-cached, 41%), **909.1 min (15.2 h)**, status under_modeled. Its transition-image
+  assembly wrote the status-suppressed legacy `p=0.0`, but the SAME checkpoint carries the
+  runtime's structured per-model recoveries (4 models `grounded_reference_prior` 0.825 + 1
+  model `partial_rollouts` 0.347); the runtime's own ensemble rule over its own blocks gives
+  p **0.729** (✓, Brier 0.073, `mixed:grounded_reference_prior+partial_rollouts`,
+  exploratory, interval [0.35, 0.83], `per_model_runtime_recovery_mixture`).
 * **Hormuz (one full attempt finished `execution_failed`)**: 3,050 calls / 251 min — both
   promoted models failed terminal projection on the pre-hardening image; the per-model error
   was unrecoverable from the artifact (that diagnosability gap + the recovery-can-never-kill-
   finalize hardening are now fixed and regression-pinned).
-* **Banxico (+ Hormuz rerun): still running at report time.** The execution environment
-  terminates long processes (observed lifetimes ≈2.5–8 h; three restarts during this work);
-  these questions' serial full-fidelity runtimes repeatedly exceeded every window — cumulative
-  burned attempts ≈45 worker-hours for the arm (BoJ ~11 h over 3 attempts before the 4.4 h
-  fourth completed, Banxico ~17 h over 4, Wale ~14 h over 3 before the 11.5 h fourth
-  completed, Hormuz ~12 h over 3). Ensemble rollouts pass a particle scope, which forces the
-  serial path, so branch-threading cannot shorten them without touching canonical CRN
-  semantics — declined by policy ("do not silently alter full fidelity").
-* If the remaining checkpoints land, `exp109`/`exp110` regenerate in seconds and the numbers
+* **Hormuz rerun: still running at report time.** The execution environment terminates long
+  processes (observed lifetimes ≈2.5–8 h; three restarts during this work); these questions'
+  serial full-fidelity runtimes repeatedly exceeded windows — cumulative burned attempts
+  ≈45 worker-hours for the arm (BoJ ~11 h over 3 attempts before the 4.4 h fourth completed,
+  Banxico ~17 h over 4 before the 15.2 h fifth completed, Wale ~14 h over 3 before the
+  11.5 h fourth completed, Hormuz ~12 h over 3). Ensemble rollouts pass a particle scope,
+  which forces the serial path, so branch-threading cannot shorten them without touching
+  canonical CRN semantics — declined by policy ("do not silently alter full fidelity").
+* If the last checkpoint lands, `exp109`/`exp110` regenerate in seconds and the numbers
   below update mechanically.
 
-**The paired-question comparisons that did complete** (visionOS, Wale, BoJ; all outcomes 1):
+**The paired-question comparisons that did complete** (visionOS, Wale, BoJ, Banxico; all
+outcomes 1):
 
 * visionOS: full fidelity 2,411 calls / 3.72M tokens / $1.01 / 212 min vs lean 119 calls /
   252K tokens / $0.07 / 17.3 min — **20× fewer calls, ~15× fewer tokens, ~14× cheaper,
@@ -84,29 +92,37 @@ architecture/performance diagnostic, not an accuracy claim.
   `mixed:grounded_reference_prior+partial_rollouts`) vs lean 0.565 ✓ (Brier 0.190,
   `mixed:completed_rollouts+evidence_conditioned_prior`) — lean's rollouts resolved
   hike-leaning mass; FF's readout leaned on a no-leaning reference prior plus partial mass.
+* Banxico: full fidelity 5,709 calls / 8.98M tokens / $2.25 / 909 min vs lean 230 calls /
+  501K tokens / $0.16 / 30.1 min — **25× fewer calls, ~18× fewer tokens, ~14× cheaper,
+  30× faster**. Both correct side and close: FF 0.729 ✓ (Brier 0.073) vs lean 0.769 ✓
+  (Brier 0.053) — the one pair where the two arms substantially AGREE (both readouts are
+  dominated by the same grounded 0.825-family prior; FF's is pulled down by one model's
+  no-leaning resolved mass).
 
-Across all three pairs the source of divergence is the same disclosed mechanism — which layer
+Across all four pairs the source of divergence is the same disclosed mechanism — which layer
 of the forecast-recovery ladder each arm's resolved mass selects — not silent behavior drift;
-each row carries `probability_source`, grade, and interval. Paired-3 Brier: FF 0.448 vs lean
-0.283; correct side 1/3 each. One pair favors FF, two favor lean; three pairs still decide
-nothing about accuracy at this sample size.
+each row carries `probability_source`, grade, and interval. Paired-4 Brier: FF 0.354 vs lean
+0.226; correct side 2/4 each. One pair favors FF (visionOS), three favor lean; four pairs
+still decide nothing about accuracy at this sample size.
 
-*(Scoring-integrity note: exp110 initially recomputed FF BoJ from artifacts as 1.0, which
-would have flattered FF's Brier; the recomputation reads a strict SUBSET of the runtime's
-recovery inputs. Fixed with native-precedence — a post-contract checkpoint's own recovery
-fields are authoritative; artifact recomputation is attached as a diagnostic with any
-discrepancy disclosed.)*
+*(Scoring-integrity notes. (1) exp110 initially recomputed FF BoJ from artifacts as 1.0,
+which would have flattered FF's Brier; the recomputation reads a strict SUBSET of the
+runtime's recovery inputs. (2) FF Banxico's transition-image assembly wrote a
+status-suppressed 0.0 — scoring it raw would have given FF Brier 1.0 on a question its own
+per-model recoveries essentially got right. Both fixed by one precedence ladder,
+regression-pinned: native ensemble fields > the runtime's structured per-model recovery
+blocks mixed by the runtime's own rule > artifact recomputation; every recovered row records
+`recovered_by`, and recomputation discrepancies are disclosed, never silently resolved.)*
 
 ## The 30 answers (§27)
 
-1. **FF five-question wall-clock**: not fully measurable in this environment — 3/5 completed
-   (212.0 + 692.4 + 261.2 min = 19.4 h); the other two exceeded every process-lifetime window
-   so far (≈45 worker-hours burned; relaunches still running).
+1. **FF five-question wall-clock**: 4/5 completed — 212.0 + 692.4 + 261.2 + 909.1 min =
+   **34.6 h** for four questions (Hormuz still running; ≈45 worker-hours additionally burned
+   on window-killed attempts).
 2. **Lean wall-clock**: 134.0 min summed; 43.9 min worst question; every question fits a window.
 3. **Total LLM calls removed**: paired questions — visionOS 2,411 → 119 (95%), Wale
-   5,897 → 418 (93%), BoJ 2,687 → 115 (96%). Arm-vs-arm totals are not honestly comparable
-   while 2 FF questions are incomplete; the lean arm total is 1,052 vs 10,995 for the three
-   completed FF questions alone.
+   5,897 → 418 (93%), BoJ 2,687 → 115 (96%), Banxico 5,709 → 230 (96%). The lean arm total
+   is 1,052 vs 16,704 for the four completed FF questions (94% fewer on a 4-vs-5 undercount).
 4. **Actor calls removed**: lean spent 151 fresh decision computations (82 one-call + 69
    escalated-staged) for 1,528 decision invocations — 1,488 invocations (97%) served by reuse.
    The FF staged path spends ~4–5 calls per invocation.
@@ -134,19 +150,20 @@ discrepancy disclosed.)*
 18. **Genuinely load-bearing calls**: structural generation/critic/compile, world boundary,
     per-model conditioning, the 151 unique decision contexts, 95 consequence compiles,
     finalization. Everything else was reuse.
-19. **Did predictions materially change?** On all three paired questions, yes — visionOS
-    0.834 vs 0.417, Wale 0.158 vs 0.435, BoJ 0.22 vs 0.565 — with no consistent direction.
+19. **Did predictions materially change?** On three of four paired questions — visionOS
+    0.834 vs 0.417, Wale 0.158 vs 0.435, BoJ 0.22 vs 0.565 — with no consistent direction;
+    on Banxico the arms substantially agree (0.729 vs 0.769, same prior family).
 20. **Why**: the same disclosed mechanism every time — which forecast-recovery layer each
     arm's resolved mass selects. visionOS: FF read the evidence-conditioned prior (rollouts
     fully unresolved) while lean blended a small no-leaning resolved mass into it. Wale and
     BoJ: the inversion — FF's rollouts/reference prior leaned no while lean's resolved mass
-    (BoJ) or prior readout (Wale) sat nearer the outcome. Disclosed per row via
-    `probability_source`.
-21. **Brier**: lean 0.337 (5 scored); FF 0.448 (3 scored; paired-3 lean is 0.283) — small
+    (BoJ) or prior readout (Wale) sat nearer the outcome. Banxico: both dominated by the
+    same grounded prior. Disclosed per row via `probability_source`.
+21. **Brier**: lean 0.337 (5 scored); FF 0.354 (4 scored; paired-4 lean is 0.226) — small
     samples, no accuracy claim is made from five questions; what the pairs do show is no
     evidence of systematic lean degradation.
-22. **Wrong side of 0.5**: lean 3/5 wrong (visionOS, Wale, Hormuz); FF 2/3 wrong (Wale,
-    BoJ); unknown for the 2 incomplete FF questions.
+22. **Wrong side of 0.5**: lean 3/5 wrong (visionOS, Wale, Hormuz); FF 2/4 wrong (Wale,
+    BoJ); unknown for the incomplete FF Hormuz.
 23. **ensure_outcome_pathway repairs in lean**: none needed (validated on every prepared
     model inside `prepare_persistence_run`).
 24. **Did any lean optimization attempt to remove the terminal pathway?** No; no empty
@@ -155,8 +172,8 @@ discrepancy disclosed.)*
 26. **Cost reduction**: paired question $1.01 → $0.066 (93%); lean arm total $0.66 (recorded
     price assumptions).
 27. **Wall-clock reduction**: paired questions 212 → 17.3 min (92%), 692 → 43.9 min (94%),
-    261 → 20.3 min (92%); lean worst-case 44 min vs FF questions that repeatedly outlive the
-    environment's process windows.
+    261 → 20.3 min (92%), 909 → 30.1 min (97%); lean total 134 min vs FF 34.6 h for one
+    fewer question.
 28. **Largest safe improvement**: the decision-equivalence cache (1,488 reuses, 0
     invalidations, parity-gated); consequence-response reuse (620) second; progressive
     particles (208) third.
@@ -170,12 +187,13 @@ discrepancy disclosed.)*
 
 **`world_model_v2` keeps `execution_profile="full_fidelity"` as the default.** The switch
 conditions are not all met: "no catastrophic forecast degradation appears on the five
-questions" requires five PAIRED completions, and this environment has completed three FF
-questions. On those three the estimates differ materially with no consistent direction (FF
-closer on visionOS; lean closer on Wale and BoJ — all via the same disclosed
-probability-source mechanism; paired-3 Brier FF 0.448 vs lean 0.283). The paired evidence
-shows no lean degradation so far but remains insufficient at 3/5. Safety invariants,
-cache-parity, escalation and savings legs all PASS.
+questions" requires five PAIRED completions, and this environment has completed four FF
+questions. On those four the estimates differ materially on three with no consistent
+direction and agree on one (FF closer on visionOS; lean closer on Wale, BoJ, and marginally
+Banxico — all via the same disclosed probability-source mechanism; paired-4 Brier FF 0.354
+vs lean 0.226, correct side 2/4 each). The paired evidence shows no lean degradation so far
+but remains insufficient at 4/5 — one question short of the stated criterion. Safety
+invariants, cache-parity, escalation and savings legs all PASS.
 
 **Safe to enable independently today** (each parity/test-gated, semantics-preserving by
 construction): run-shared artifacts; actor-state cohorting; decision-context caching +

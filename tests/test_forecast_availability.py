@@ -174,6 +174,34 @@ def test_all_five_lean_btf3_runs_recovered_scoreable_probabilities():
             "a bare neutral default is not a source"
 
 
+def test_exp110_precedence_ladder_prefers_runtime_over_recomputation():
+    """Regression (EXP-107 BoJ 1.0-vs-0.22, Banxico 0.0-suppression): the recovery harness
+    serves, in order — (1) the checkpoint's native ensemble recovery fields; (2) the
+    runtime's structured per-model forecast_recovery blocks mixed by the runtime's own
+    ensemble rule (transition-image checkpoints whose assembly zeroed the headline);
+    (3) artifact recomputation, last resort only. Artifact-side recomputation reads a strict
+    subset of the runtime's inputs and must never override a runtime-computed value."""
+    from experiments.exp110_recover_lean_forecasts import per_model_runtime_row
+    pm = {"m0": {"forecast_recovery": {"probability": 0.825,
+                                       "probability_source": "grounded_reference_prior",
+                                       "grounding_grade": "exploratory",
+                                       "weight_sensitive": True}},
+          "m1": {"forecast_recovery": {"probability": 0.3468,
+                                       "probability_source": "partial_rollouts",
+                                       "grounding_grade": "partially_grounded",
+                                       "weight_sensitive": False}},
+          "m2_no_block": {"other": 1}}
+    row = per_model_runtime_row(pm)
+    assert row["recovered_probability"] == round((0.825 + 0.3468) / 2, 4)
+    assert row["recovered_interval"] == [0.3468, 0.825]
+    assert row["weight_sensitive"] is True                    # interval crosses 0.5
+    assert row["probability_source"] == "mixed:grounded_reference_prior+partial_rollouts"
+    assert row["grounding_grade"] == "exploratory"            # worst grade wins
+    assert row["recovered_by"] == "per_model_runtime_recovery_mixture"
+    assert per_model_runtime_row({"m": {"no_block": True}}) is None
+    assert per_model_runtime_row({}) is None
+
+
 def test_plan_prior_inputs_never_raises_on_tuple_particles():
     """Regression (EXP-107 Hormuz, two multi-hour finalizes lost): event-time plans carry
     TUPLES in posterior_rate_particles — input gathering must filter to numerics and may never

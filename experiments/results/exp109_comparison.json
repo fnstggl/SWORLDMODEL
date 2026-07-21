@@ -9,15 +9,15 @@
  },
  "totals": {
   "full_fidelity": {
-   "n_llm_calls": 10995,
-   "input_tokens": 12095169,
-   "output_tokens": 5128983,
-   "provider_cache_hit_tokens": 4168704,
-   "wall_clock_s": 69936.3,
-   "cost_usd": 4.4903,
-   "n_scored": 3,
-   "brier": 0.4481,
-   "accuracy_at_0.5": 0.3333
+   "n_llm_calls": 16704,
+   "input_tokens": 18382371,
+   "output_tokens": 7823398,
+   "provider_cache_hit_tokens": 6720384,
+   "wall_clock_s": 124479.9,
+   "cost_usd": 6.7393,
+   "n_scored": 4,
+   "brier": 0.3544,
+   "accuracy_at_0.5": 0.5
   },
   "lean_adaptive": {
    "n_llm_calls": 1052,
@@ -1110,29 +1110,38 @@
    "question": "Will the Banxico Governing Board's June 25, 2026, interest rate decision be unanimous (5-0 vote)?",
    "outcome": 1,
    "full_fidelity": {
-    "prediction": null,
-    "status": null,
-    "brier": null,
-    "side_of_0.5": "no_forecast",
-    "correct_side": null,
-    "llm_calls": null,
+    "prediction": 0.7294,
+    "status": "under_modeled",
+    "brier": 0.0732,
+    "side_of_0.5": "yes",
+    "correct_side": true,
+    "llm_calls": 5709,
     "calls_by_stage": {},
     "actor_calls": null,
     "structural_models_generated": null,
     "structural_models_simulated": null,
     "particles_by_model": null,
-    "input_tokens": null,
-    "output_tokens": null,
-    "provider_cache_hit_tokens": null,
-    "wall_clock_s": null,
-    "cost_usd": null,
-    "truncation": 0,
-    "limitation_heads": [],
-    "grounding_grade": null,
-    "probability_source": null,
-    "uncertainty_interval": null,
-    "weight_sensitive": null,
-    "probability_recovered_by": null
+    "input_tokens": 6287202,
+    "output_tokens": 2694415,
+    "provider_cache_hit_tokens": 2551680,
+    "wall_clock_s": 54543.6,
+    "cost_usd": 2.249,
+    "truncation": 6,
+    "limitation_heads": [
+     "Outcome unresolved under the current model: no validated causal mechanism resolv",
+     "no resolved rollout mass: the headline is the grounded_reference_prior (0.825) \u2014",
+     "Outcome unresolved under the current model: no validated causal mechanism resolv",
+     "no resolved rollout mass: the headline is the grounded_reference_prior (0.825) \u2014",
+     "Outcome unresolved under the current model: no validated causal mechanism resolv"
+    ],
+    "grounding_grade": "exploratory",
+    "probability_source": "mixed:grounded_reference_prior+partial_rollouts",
+    "uncertainty_interval": [
+     0.3468,
+     0.825
+    ],
+    "weight_sensitive": true,
+    "probability_recovered_by": "per_model_runtime_recovery_mixture"
    },
    "lean_adaptive": {
     "prediction": 0.769,
@@ -1361,12 +1370,12 @@
     "frontier_skips": 0
    },
    "deltas": {
-    "llm_calls_removed": null,
-    "prediction_moved": null,
-    "side_changed": null,
-    "wall_clock_saved_s": null,
-    "input_tokens_saved": null,
-    "output_tokens_saved": null
+    "llm_calls_removed": 5479,
+    "prediction_moved": 0.0396,
+    "side_changed": false,
+    "wall_clock_saved_s": 52735.4,
+    "input_tokens_saved": 5973304,
+    "output_tokens_saved": 2507739
    }
   }
  ]
