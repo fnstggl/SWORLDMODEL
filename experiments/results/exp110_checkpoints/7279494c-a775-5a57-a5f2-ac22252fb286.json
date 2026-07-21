@@ -1,0 +1,184 @@
+{
+ "label": "BoJ",
+ "qid": "7279494c-a775-5a57-a5f2-ac22252fb286",
+ "question": "Will the Bank of Japan raise its short-term policy interest rate at the June 15\u201316, 2026 Monetary Policy Meeti",
+ "horizon_days": 33.0,
+ "A1_grounded_prior": {
+  "reference_class": "BOJ policy rate changes at scheduled meetings",
+  "stage": "scheduled_or_on_calendar",
+  "base_rate": 0.15,
+  "status_quo": "If no change is decided, the policy rate remains at its current level; the BOJ typically holds rates steady at most meetings, making no change the modal outcome.",
+  "is_recurrence": true,
+  "transport_risk": "low",
+  "evidence_quality": "model_memory"
+ },
+ "A2_evidence_sufficiency": null,
+ "A2_posterior_consumed": true,
+ "A3_operator_census": {
+  "evidence_observation": 2656,
+  "scheduled_fact": 1004,
+  "background_dynamics": 1102,
+  "production_actor_policy": 538,
+  "institutional_decision": 123,
+  "outside_world_entry": 130,
+  "generated_attention": 332,
+  "absorption_monitor": 19,
+  "actor_action_aggregation": 1,
+  "nonlinear_state_step": 1463,
+  "scheduled_attempt_runtime": 2
+ },
+ "A4_status": "under_modeled",
+ "A4_has_forecast": true,
+ "A4_under_modeled_subtypes": [
+  "under_modeled_boundary",
+  "under_modeled_external_process",
+  "under_modeled_nonhuman_mechanism"
+ ],
+ "A5_grounded_outside_view_fallback": null,
+ "A6_n_models": 5,
+ "A6_aggregation": "grounded_weighted_simulation",
+ "A6_structural_sensitivity": "materially_structurally_sensitive",
+ "W_outside_view": 0.2456,
+ "W_simulation_derived": 0.199341,
+ "W_final_combined": 0.237796,
+ "W_final_source": "weighted_simulation",
+ "W_final_reason": "4 valid simulated world(s) produced a grounded weighted forecast (headline=0.199341); outside-view baseline 0.2456 reported; combined=0.237796 (alpha=0.1687 shrink toward baseline)",
+ "W_confidence_alpha": 0.1687,
+ "W_n_worlds_valid": 4,
+ "W_world_weights": [
+  {
+   "model_id": "m0_actor_relationship",
+   "weight": 0.169949,
+   "p_yes": 0.011591,
+   "plausibility": 0.15,
+   "objective_quality": 0.3858,
+   "rationale": "Setup plausible but behavior inconsistent: dovish majority blocking via majority vote is realistic, but near-zero raise rate (0.011) contradicts historical BOJ willingness to act when conditions met; ",
+   "citations": [
+    "BOJ board majority composition known from public records (dovish members historically outnumber hawks)",
+    "Government-BOJ joint statement (2013) allows government influence via informal channels"
+   ],
+   "unsupported_assumptions": [
+    "Assumes dovish members will uniformly block any rate hike regardless of economic data",
+    "Assumes market expectations alone can prevent a rate hike without other constraints",
+    "No evidence that government signals preference for status quo at this specific meeting"
+   ],
+   "merged_from": []
+  },
+  {
+   "model_id": "m1_institutional_procedural",
+   "weight": 0.197371,
+   "p_yes": 1.0,
+   "plausibility": 0.35,
+   "objective_quality": 0.192,
+   "rationale": "Setup plausible with strong institutional grounding, but behavior unrealistic: 85.4% unresolved rate is too high for a binary decision; formal voting procedures are real but the model fails to produce",
+   "citations": [
+    "BOJ Act Article 15, 19, 22 govern voting procedures and Governor's tie-breaking role",
+    "BOJ's Outlook Report is a known quarterly publication that can telegraph policy intentions"
+   ],
+   "unsupported_assumptions": [
+    "Assumes that forward guidance and Outlook Report commitments create near-irreversible path dependence",
+    "Assumes that a supermajority is required to reverse a telegraphed hike, which is not in BOJ rules",
+    "Unresolved share of 0.854 implies procedural deadlock, which is rare in actual BOJ meetings"
+   ],
+   "merged_from": []
+  },
+  {
+   "model_id": "m2_resource_constraint",
+   "weight": 0.594706,
+   "p_yes": 0.0,
+   "plausibility": 0.6,
+   "objective_quality": 0.3375,
+   "rationale": "Setup plausible and behavior consistent: zero raise rate aligns with historical BOJ caution and data-dependent approach; mechanisms like requiring wage-price spiral confirmation are grounded in BOJ st",
+   "citations": [
+    "BOJ has historically avoided surprise moves without clear consensus (e.g., 2022-2023 yield curve control adjustments)",
+    "BOJ Governor Ueda has emphasized data-dependent decision-making in public remarks"
+   ],
+   "unsupported_assumptions": [
+    "Assumes that sustainable inflation is not verifiable by June 2026 without specific economic projections",
+    "Assumes forward guidance inertia will persist unchanged despite potential new data"
+   ],
+   "merged_from": []
+  },
+  {
+   "model_id": "m4_adversarial_alternative",
+   "weight": 0.037974,
+   "p_yes": 0.0,
+   "plausibility": 0.05,
+   "objective_quality": 0.2586,
+   "rationale": "Setup incomplete and behavior unknown: thesis truncated, no simulated outcome provided, making it impossible to assess consistency; lacks any evidence or institutional grounding.",
+   "citations": [],
+   "unsupported_assumptions": [
+    "Thesis is incomplete, so all assumptions are unsupported",
+    "No simulated outcome to evaluate behavior"
+   ],
+   "merged_from": []
+  }
+ ],
+ "W_spread": 1.0,
+ "W_rejected_worlds": [
+  {
+   "model_id": "m3_information_distribution",
+   "reason": "no_simulated_distribution"
+  }
+ ],
+ "W_merge_records": [],
+ "W_interpretation_hypotheses": [
+  {
+   "model_id": "m0_actor_relationship",
+   "thesis": "The Bank of Japan's decision is determined by the strategic calculus of its dovish board majority, who prioritize maintaining accommodative conditions to support fiscal stability and wage growth, overriding external pressure for normalization."
+  },
+  {
+   "model_id": "m1_institutional_procedural",
+   "thesis": "The Bank of Japan will raise its short-term policy interest rate at the June 15\u201316, 2026 Monetary Policy Meeting if and only if the formal decision-making procedure\u2014specifically the Policy Board's voting rule and the Governor's agenda-setting power\u2014aligns with a pre-announced normalization path, overriding any residual institutional inertia from the prior zero-rate regime."
+  },
+  {
+   "model_id": "m2_resource_constraint",
+   "thesis": "The Bank of Japan will not raise its short-term policy rate at the June 2026 meeting because binding operational and timing constraints\u2014specifically the need to verify sustained wage-price dynamics through the spring wage negotiations and the capacity limitations of the monetary policy committee to process new data before the meeting\u2014prevent a decisive move, overriding any forward guidance or inflation targets."
+  },
+  {
+   "model_id": "m3_information_distribution",
+   "thesis": "The Bank of Japan's rate decision is determined by the flow of information through its communication channels and the attention dynamics among board members, which amplify or dampen the influence of external economic signals and internal consensus-building."
+  },
+  {
+   "model_id": "m4_adversarial_alternative",
+   "thesis": "The Bank of Japan's rate decision is determined by the interplay of global financial conditions and domestic market stability, where a sustained yen depreciation below 160/USD forces a rate hike to prevent import-led inflation and capital flight, overriding domestic political preferences."
+  }
+ ],
+ "p": 0.199341,
+ "raw_distribution": {
+  "raise": 0.199341,
+  "no_raise": 0.800659
+ },
+ "A8_wall_s": 7108.0,
+ "A8_timing_wrapper": {
+  "true_backend_calls": 508,
+  "llm_wall_s_total": 4890.1,
+  "call_s_mean": 9.63,
+  "call_s_median": 7.96,
+  "call_s_max": 45.92
+ },
+ "A8_ledger_total_calls": 490,
+ "A8_calls_by_stage": {
+  "structural_generation": 5,
+  "structural_critic": 7,
+  "structural_compile": 5,
+  "structural_repair": 1,
+  "model_conditioning": 99,
+  "actor_rollout": 373
+ },
+ "A8_calls_by_model": {
+  "m0_actor_relationship": 126,
+  "m1_institutional_procedural": 26,
+  "m2_resource_constraint": 95,
+  "m3_information_distribution": 25,
+  "m4_adversarial_alternative": 206
+ },
+ "A8_incremental_multiplier": 5.16,
+ "limitations": [
+  "omitted (negligible-sensitivity): global_central_bank_interactions",
+  "omitted (negligible-sensitivity): geopolitical_shocks",
+  "omitted (negligible-sensitivity): informal political pressure from LDP",
+  "omitted (negligible-sensitivity): media narratives and public opinion",
+  "omitted (negligible-sensitivity): global_financial_market_reactions"
+ ]
+}
