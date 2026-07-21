@@ -1,0 +1,959 @@
+{
+ "grounding": {
+  "version": "lean_v2.grounding.v1",
+  "shared_world_conditions": {
+   "solomon_islands_coalition_instability": {
+    "claim": "Solomon Islands coalition governments are highly unstable, with frequent no-confidence motions and party switching.",
+    "affects_actors": [
+     "matthew_wale",
+     "frederick_kologeto",
+     "jeremiah_manele"
+    ],
+    "states": [
+     "fragile_coalition",
+     "stable_coalition"
+    ],
+    "table": {
+     "key": "fdbb9bccbaeb3c55",
+     "quantity": "shared:solomon_islands_coalition_instability",
+     "source_class": "counted_reference_class",
+     "rate": 0.5,
+     "interval": [
+      0.0887,
+      0.9113
+     ],
+     "n": 2,
+     "provenance": {
+      "definition": "Solomon Islands coalition governments are highly unstable, with frequent no-confidence motions and party switching.",
+      "inclusion_criteria": "",
+      "exclusion_criteria": "",
+      "hierarchy_level": "broad_human_decision_class",
+      "level_fallback_reason": "all levels sparse (total 2 usable case(s)); rate is wide by construction",
+      "n_considered": 2,
+      "n_included": 2,
+      "numerator": 1,
+      "denominator": 2,
+      "rate_mean": 0.5,
+      "rate_interval": [
+       0.0887,
+       0.9113
+      ],
+      "evidence_cutoff": "2026-05-07",
+      "cases": [
+       {
+        "case_id": "case_0",
+        "description": "In 2018, Prime Minister Rick Houenipwela survived a no-confidence motion but his coalition fractured shortly after.",
+        "date": "2018-10-30",
+        "outcome": false,
+        "source": "ABC News Australia",
+        "basis_quote": "Prime Minister Rick Houenipwela survived a no-confidence vote on October 30, 2018, but his coalition government remained fragile.",
+        "hierarchy_level": "same_institution",
+        "included": true,
+        "exclusion_reason": ""
+       },
+       {
+        "case_id": "case_1",
+        "description": "In 2019, Manasseh Sogavare was elected Prime Minister after a no-confidence vote ousted Houenipwela, but his coalition later faced defections.",
+        "date": "2019-04-24",
+        "outcome": true,
+        "source": "RNZ Pacific",
+        "basis_quote": "Manasseh Sogavare was elected Prime Minister on April 24, 2019, following a no-confidence vote, but his coalition experienced defections within months.",
+        "hierarchy_level": "same_institution",
+        "included": true,
+        "exclusion_reason": ""
+       }
+      ],
+      "version": "lean_v2.grounding.v1"
+     }
+    },
+    "evidence_ids": []
+   },
+   "china_influence_pressure": {
+    "claim": "China exerts significant economic and diplomatic influence on Solomon Islands politics, often backing incumbents or preferred candidates.",
+    "affects_actors": [
+     "matthew_wale",
+     "frederick_kologeto",
+     "jeremiah_manele"
+    ],
+    "states": [
+     "pro_china_incumbent",
+     "pro_china_opposition",
+     "neutral"
+    ],
+    "table": {
+     "key": "d92ffb3c04b16a72",
+     "quantity": "shared:china_influence_pressure",
+     "source_class": "counted_reference_class",
+     "rate": 0.75,
+     "interval": [
+      0.3387,
+      1.0
+     ],
+     "n": 1,
+     "provenance": {
+      "definition": "China exerts significant economic and diplomatic influence on Solomon Islands politics, often backing incumbents or preferred candidates.",
+      "inclusion_criteria": "",
+      "exclusion_criteria": "",
+      "hierarchy_level": "broad_human_decision_class",
+      "level_fallback_reason": "all levels sparse (total 1 usable case(s)); rate is wide by construction",
+      "n_considered": 1,
+      "n_included": 1,
+      "numerator": 1,
+      "denominator": 1,
+      "rate_mean": 0.75,
+      "rate_interval": [
+       0.3387,
+       1.0
+      ],
+      "evidence_cutoff": "2026-05-07",
+      "cases": [
+       {
+        "case_id": "case_0",
+        "description": "In 2019, China supported Manasseh Sogavare's government after he switched recognition from Taiwan to China.",
+        "date": "2019-09-21",
+        "outcome": true,
+        "source": "Lowy Institute",
+        "basis_quote": "China provided substantial aid and infrastructure funding to Sogavare's government following the diplomatic switch in September 2019.",
+        "hierarchy_level": "same_institution",
+        "included": true,
+        "exclusion_reason": ""
+       }
+      ],
+      "version": "lean_v2.grounding.v1"
+     }
+    },
+    "evidence_ids": []
+   }
+  },
+  "actor_state_reference_classes": {
+   "matthew_wale": [
+    {
+     "key": "fc371144c38ef4a1",
+     "quantity": "Matthew Wale is elected Prime Minister",
+     "source_class": "counted_reference_class",
+     "rate": 0.1667,
+     "interval": [
+      0.0,
+      0.4732
+     ],
+     "n": 2,
+     "provenance": {
+      "definition": "Matthew Wale is formally elected by parliament and sworn in as Prime Minister.",
+      "inclusion_criteria": "Wale receives majority vote in parliamentary election and is sworn in by Governor-General.",
+      "exclusion_criteria": "Any other person is elected or no election occurs by deadline.",
+      "hierarchy_level": "broad_human_decision_class",
+      "level_fallback_reason": "all levels sparse (total 2 usable case(s)); rate is wide by construction",
+      "n_considered": 2,
+      "n_included": 2,
+      "numerator": 0,
+      "denominator": 2,
+      "rate_mean": 0.1667,
+      "rate_interval": [
+       0.0,
+       0.4732
+      ],
+      "evidence_cutoff": "2026-05-07",
+      "cases": [
+       {
+        "case_id": "case_0",
+        "description": "In 2014, Matthew Wale was elected as Leader of the Opposition but never became Prime Minister despite multiple attempts.",
+        "date": "2014-12-09",
+        "outcome": false,
+        "source": "Solomon Islands Parliament records",
+        "basis_quote": "Matthew Wale was elected Leader of the Opposition on December 9, 2014, but did not become Prime Minister.",
+        "hierarchy_level": "same_individual",
+        "included": true,
+        "exclusion_reason": ""
+       },
+       {
+        "case_id": "case_1",
+        "description": "In 2019, Wale contested the prime ministership after a no-confidence vote but lost to Manasseh Sogavare.",
+        "date": "2019-04-24",
+        "outcome": false,
+        "source": "RNZ Pacific",
+        "basis_quote": "Matthew Wale was a candidate for Prime Minister on April 24, 2019, but was defeated by Manasseh Sogavare in a parliamentary vote.",
+        "hierarchy_level": "same_individual",
+        "included": true,
+        "exclusion_reason": ""
+       }
+      ],
+      "version": "lean_v2.grounding.v1"
+     }
+    }
+   ],
+   "frederick_kologeto": [
+    {
+     "key": "16bcb3fb3ff39957",
+     "quantity": "Frederick Kologeto is elected Prime Minister",
+     "source_class": "counted_reference_class",
+     "rate": 0.25,
+     "interval": [
+      0.0,
+      0.6613
+     ],
+     "n": 1,
+     "provenance": {
+      "definition": "Frederick Kologeto is formally elected by parliament and sworn in as Prime Minister.",
+      "inclusion_criteria": "Kologeto receives majority vote in parliamentary election and is sworn in.",
+      "exclusion_criteria": "Any other person is elected or no election occurs by deadline.",
+      "hierarchy_level": "broad_human_decision_class",
+      "level_fallback_reason": "all levels sparse (total 1 usable case(s)); rate is wide by construction",
+      "n_considered": 1,
+      "n_included": 1,
+      "numerator": 0,
+      "denominator": 1,
+      "rate_mean": 0.25,
+      "rate_interval": [
+       0.0,
+       0.6613
+      ],
+      "evidence_cutoff": "2026-05-07",
+      "cases": [
+       {
+        "case_id": "case_0",
+        "description": "In 2014, Frederick Kologeto served as a cabinet minister but never became Prime Minister.",
+        "date": "2014-11-17",
+        "outcome": false,
+        "source": "Solomon Islands Government",
+        "basis_quote": "Frederick Kologeto was appointed Minister of Mines and Energy on November 17, 2014, but did not become Prime Minister.",
+        "hierarchy_level": "same_individual",
+        "included": true,
+        "exclusion_reason": ""
+       }
+      ],
+      "version": "lean_v2.grounding.v1"
+     }
+    }
+   ]
+  },
+  "outcome_reference_class": {
+   "key": "fc371144c38ef4a1",
+   "quantity": "Matthew Wale is elected Prime Minister",
+   "source_class": "counted_reference_class",
+   "rate": 0.8333,
+   "interval": [
+    0.5268,
+    1.0
+   ],
+   "n": 2,
+   "provenance": {
+    "definition": "Matthew Wale is formally elected by the National Parliament and sworn in by the Governor-General as Prime Minister of Solomon Islands following the May 2026 no-confidence vote.",
+    "inclusion_criteria": "Official announcement or credible news report that Wale received majority of votes in parliamentary election and was sworn in.",
+    "exclusion_criteria": "Any other individual elected, or no election by August 1, 2026.",
+    "hierarchy_level": "broad_human_decision_class",
+    "level_fallback_reason": "all levels sparse (total 2 usable case(s)); rate is wide by construction",
+    "n_considered": 2,
+    "n_included": 2,
+    "numerator": 2,
+    "denominator": 2,
+    "rate_mean": 0.8333,
+    "rate_interval": [
+     0.5268,
+     1.0
+    ],
+    "evidence_cutoff": "2026-05-07",
+    "cases": [
+     {
+      "case_id": "case_0",
+      "description": "In 2019, Manasseh Sogavare was elected Prime Minister after a no-confidence vote ousted Rick Houenipwela.",
+      "date": "2019-04-24",
+      "outcome": true,
+      "source": "RNZ Pacific",
+      "basis_quote": "Manasseh Sogavare was elected Prime Minister by parliament on April 24, 2019, after a no-confidence vote.",
+      "hierarchy_level": "same_institution",
+      "included": true,
+      "exclusion_reason": ""
+     },
+     {
+      "case_id": "case_1",
+      "description": "In 2014, Manasseh Sogavare was elected Prime Minister after a general election, but no no-confidence vote preceded it.",
+      "date": "2014-12-09",
+      "outcome": true,
+      "source": "Solomon Islands Broadcasting Corporation",
+      "basis_quote": "Manasseh Sogavare was elected Prime Minister on December 9, 2014, following the general election.",
+      "hierarchy_level": "same_institution",
+      "included": true,
+      "exclusion_reason": ""
+     }
+    ],
+    "version": "lean_v2.grounding.v1"
+   }
+  },
+  "institutional_obligations": {
+   "solomon_islands_national_parliament": {
+    "deadline_day": "2026-08-01",
+    "required_participants": [
+     "all_50_mps"
+    ],
+    "allowed_terminal_actions": [
+     "vote_for_candidate",
+     "abstain",
+     "absent"
+    ],
+    "abstention_allowed": true,
+    "recusal_allowed": false,
+    "absence_allowed": true,
+    "delegation_allowed": false,
+    "quorum": "Majority of members (26) must be present for vote to proceed",
+    "waiting_allowed_before_deadline": true,
+    "consequence_of_nonparticipation": "If no candidate receives majority by deadline, Governor-General may dissolve parliament and call new election."
+   }
+  },
+  "numeric_rejections": [],
+  "grounding_call_made": true
+ },
+ "state_posteriors": {
+  "matthew_wale": [
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_incumbent",
+     "solomon_islands_coalition_instability": "fragile_coalition"
+    },
+    "unknown": 0.0,
+    "weights": {
+     "wale_has_secured_coalition_loyalty": 0.0556,
+     "wale_faces_internal_revolt": 0.9444
+    },
+    "provenance": [
+     {
+      "source": "counted_reference_class",
+      "key": "fc371144c38ef4a1",
+      "rate": 0.1667,
+      "n": 2,
+      "interval": [
+       0.0,
+       0.4732
+      ],
+      "hierarchy_level": "broad_human_decision_class"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.056) shared among 1 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_incumbent",
+     "solomon_islands_coalition_instability": "stable_coalition"
+    },
+    "unknown": 0.0,
+    "weights": {
+     "wale_has_secured_coalition_loyalty": 0.0556,
+     "wale_faces_internal_revolt": 0.9444
+    },
+    "provenance": [
+     {
+      "source": "counted_reference_class",
+      "key": "fc371144c38ef4a1",
+      "rate": 0.1667,
+      "n": 2,
+      "interval": [
+       0.0,
+       0.4732
+      ],
+      "hierarchy_level": "broad_human_decision_class"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.056) shared among 1 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_opposition",
+     "solomon_islands_coalition_instability": "fragile_coalition"
+    },
+    "unknown": 0.0,
+    "weights": {
+     "wale_has_secured_coalition_loyalty": 0.0556,
+     "wale_faces_internal_revolt": 0.9444
+    },
+    "provenance": [
+     {
+      "source": "counted_reference_class",
+      "key": "fc371144c38ef4a1",
+      "rate": 0.1667,
+      "n": 2,
+      "interval": [
+       0.0,
+       0.4732
+      ],
+      "hierarchy_level": "broad_human_decision_class"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.056) shared among 1 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_opposition",
+     "solomon_islands_coalition_instability": "stable_coalition"
+    },
+    "unknown": 0.0,
+    "weights": {
+     "wale_has_secured_coalition_loyalty": 0.0556,
+     "wale_faces_internal_revolt": 0.9444
+    },
+    "provenance": [
+     {
+      "source": "counted_reference_class",
+      "key": "fc371144c38ef4a1",
+      "rate": 0.1667,
+      "n": 2,
+      "interval": [
+       0.0,
+       0.4732
+      ],
+      "hierarchy_level": "broad_human_decision_class"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.056) shared among 1 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "neutral",
+     "solomon_islands_coalition_instability": "fragile_coalition"
+    },
+    "unknown": 0.0,
+    "weights": {
+     "wale_has_secured_coalition_loyalty": 0.0556,
+     "wale_faces_internal_revolt": 0.9444
+    },
+    "provenance": [
+     {
+      "source": "counted_reference_class",
+      "key": "fc371144c38ef4a1",
+      "rate": 0.1667,
+      "n": 2,
+      "interval": [
+       0.0,
+       0.4732
+      ],
+      "hierarchy_level": "broad_human_decision_class"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.056) shared among 1 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "neutral",
+     "solomon_islands_coalition_instability": "stable_coalition"
+    },
+    "unknown": 0.0,
+    "weights": {
+     "wale_has_secured_coalition_loyalty": 0.0556,
+     "wale_faces_internal_revolt": 0.9444
+    },
+    "provenance": [
+     {
+      "source": "counted_reference_class",
+      "key": "fc371144c38ef4a1",
+      "rate": 0.1667,
+      "n": 2,
+      "interval": [
+       0.0,
+       0.4732
+      ],
+      "hierarchy_level": "broad_human_decision_class"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.056) shared among 1 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   }
+  ],
+  "john_agovaka": [
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_incumbent",
+     "solomon_islands_coalition_instability": "fragile_coalition"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "agovaka_has_cross_party_support": 0.425,
+     "agovaka_fails_to_unite_opposition": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_incumbent",
+     "solomon_islands_coalition_instability": "stable_coalition"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "agovaka_has_cross_party_support": 0.425,
+     "agovaka_fails_to_unite_opposition": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_opposition",
+     "solomon_islands_coalition_instability": "fragile_coalition"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "agovaka_has_cross_party_support": 0.425,
+     "agovaka_fails_to_unite_opposition": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_opposition",
+     "solomon_islands_coalition_instability": "stable_coalition"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "agovaka_has_cross_party_support": 0.425,
+     "agovaka_fails_to_unite_opposition": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "neutral",
+     "solomon_islands_coalition_instability": "fragile_coalition"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "agovaka_has_cross_party_support": 0.425,
+     "agovaka_fails_to_unite_opposition": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "neutral",
+     "solomon_islands_coalition_instability": "stable_coalition"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "agovaka_has_cross_party_support": 0.425,
+     "agovaka_fails_to_unite_opposition": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   }
+  ],
+  "frederick_kologeto": [
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_incumbent",
+     "solomon_islands_coalition_instability": "fragile_coalition"
+    },
+    "unknown": 0.0,
+    "weights": {
+     "kologeto_brokers_compromise": 0.125,
+     "kologeto_backs_wale_fully": 0.875
+    },
+    "provenance": [
+     {
+      "source": "counted_reference_class",
+      "key": "16bcb3fb3ff39957",
+      "rate": 0.25,
+      "n": 1,
+      "interval": [
+       0.0,
+       0.6613
+      ],
+      "hierarchy_level": "broad_human_decision_class"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.125) shared among 1 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_incumbent",
+     "solomon_islands_coalition_instability": "stable_coalition"
+    },
+    "unknown": 0.0,
+    "weights": {
+     "kologeto_brokers_compromise": 0.125,
+     "kologeto_backs_wale_fully": 0.875
+    },
+    "provenance": [
+     {
+      "source": "counted_reference_class",
+      "key": "16bcb3fb3ff39957",
+      "rate": 0.25,
+      "n": 1,
+      "interval": [
+       0.0,
+       0.6613
+      ],
+      "hierarchy_level": "broad_human_decision_class"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.125) shared among 1 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_opposition",
+     "solomon_islands_coalition_instability": "fragile_coalition"
+    },
+    "unknown": 0.0,
+    "weights": {
+     "kologeto_brokers_compromise": 0.125,
+     "kologeto_backs_wale_fully": 0.875
+    },
+    "provenance": [
+     {
+      "source": "counted_reference_class",
+      "key": "16bcb3fb3ff39957",
+      "rate": 0.25,
+      "n": 1,
+      "interval": [
+       0.0,
+       0.6613
+      ],
+      "hierarchy_level": "broad_human_decision_class"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.125) shared among 1 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_opposition",
+     "solomon_islands_coalition_instability": "stable_coalition"
+    },
+    "unknown": 0.0,
+    "weights": {
+     "kologeto_brokers_compromise": 0.125,
+     "kologeto_backs_wale_fully": 0.875
+    },
+    "provenance": [
+     {
+      "source": "counted_reference_class",
+      "key": "16bcb3fb3ff39957",
+      "rate": 0.25,
+      "n": 1,
+      "interval": [
+       0.0,
+       0.6613
+      ],
+      "hierarchy_level": "broad_human_decision_class"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.125) shared among 1 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "neutral",
+     "solomon_islands_coalition_instability": "fragile_coalition"
+    },
+    "unknown": 0.0,
+    "weights": {
+     "kologeto_brokers_compromise": 0.125,
+     "kologeto_backs_wale_fully": 0.875
+    },
+    "provenance": [
+     {
+      "source": "counted_reference_class",
+      "key": "16bcb3fb3ff39957",
+      "rate": 0.25,
+      "n": 1,
+      "interval": [
+       0.0,
+       0.6613
+      ],
+      "hierarchy_level": "broad_human_decision_class"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.125) shared among 1 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "neutral",
+     "solomon_islands_coalition_instability": "stable_coalition"
+    },
+    "unknown": 0.0,
+    "weights": {
+     "kologeto_brokers_compromise": 0.125,
+     "kologeto_backs_wale_fully": 0.875
+    },
+    "provenance": [
+     {
+      "source": "counted_reference_class",
+      "key": "16bcb3fb3ff39957",
+      "rate": 0.25,
+      "n": 1,
+      "interval": [
+       0.0,
+       0.6613
+      ],
+      "hierarchy_level": "broad_human_decision_class"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.125) shared among 1 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   }
+  ],
+  "jeremiah_manele": [
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_incumbent",
+     "solomon_islands_coalition_instability": "fragile_coalition"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "manele_attempts_comeback": 0.425,
+     "manele_accepts_defeat": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_incumbent",
+     "solomon_islands_coalition_instability": "stable_coalition"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "manele_attempts_comeback": 0.425,
+     "manele_accepts_defeat": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_opposition",
+     "solomon_islands_coalition_instability": "fragile_coalition"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "manele_attempts_comeback": 0.425,
+     "manele_accepts_defeat": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "pro_china_opposition",
+     "solomon_islands_coalition_instability": "stable_coalition"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "manele_attempts_comeback": 0.425,
+     "manele_accepts_defeat": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "neutral",
+     "solomon_islands_coalition_instability": "fragile_coalition"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "manele_attempts_comeback": 0.425,
+     "manele_accepts_defeat": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "china_influence_pressure": "neutral",
+     "solomon_islands_coalition_instability": "stable_coalition"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "manele_attempts_comeback": 0.425,
+     "manele_accepts_defeat": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   }
+  ]
+ },
+ "shared_condition_worlds": [
+  {
+   "combo": {
+    "china_influence_pressure": "pro_china_incumbent",
+    "solomon_islands_coalition_instability": "fragile_coalition"
+   },
+   "weight": 0.166667
+  },
+  {
+   "combo": {
+    "china_influence_pressure": "pro_china_incumbent",
+    "solomon_islands_coalition_instability": "stable_coalition"
+   },
+   "weight": 0.166667
+  },
+  {
+   "combo": {
+    "china_influence_pressure": "pro_china_opposition",
+    "solomon_islands_coalition_instability": "fragile_coalition"
+   },
+   "weight": 0.166667
+  },
+  {
+   "combo": {
+    "china_influence_pressure": "pro_china_opposition",
+    "solomon_islands_coalition_instability": "stable_coalition"
+   },
+   "weight": 0.166667
+  },
+  {
+   "combo": {
+    "china_influence_pressure": "neutral",
+    "solomon_islands_coalition_instability": "fragile_coalition"
+   },
+   "weight": 0.166667
+  },
+  {
+   "combo": {
+    "china_influence_pressure": "neutral",
+    "solomon_islands_coalition_instability": "stable_coalition"
+   },
+   "weight": 0.166667
+  }
+ ],
+ "unknown_state_mass": {
+  "matthew_wale": 0.0,
+  "john_agovaka": 0.15,
+  "frederick_kologeto": 0.0,
+  "jeremiah_manele": 0.15
+ },
+ "dependence": null,
+ "no_label_derived_weights_invariant": {
+  "ok": true,
+  "label_derived_weights_found": 0,
+  "rule": "every weight traces to a counted reference class or is explicit unknown mass; no qualitative label is mapped to a number"
+ }
+}
