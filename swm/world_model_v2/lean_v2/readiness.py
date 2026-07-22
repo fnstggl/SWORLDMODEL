@@ -52,18 +52,28 @@ def pure_terminal_outcome(bp, *, votes: dict = None, world_state: dict = None,
         substantive = {m: v for m, v in votes.items() if not str(v).startswith("__")}
         non_substantive = [m for m in members if str(votes.get(m, "")).startswith("__")]
         vals = [substantive[m] for m in members if m in substantive]
+        nvals = [norm_key(v) for v in vals]         # case/whitespace-normalized comparison
+        rp = term.get("rule_params") or {}
         if rule == "unanimity":
             yes = (not non_substantive and len(vals) == len(members)
-                   and len(set(vals)) == 1)
+                   and len(set(nvals)) == 1)
         elif rule in ("all_option", "single"):
-            opt = str((term.get("rule_params") or {}).get("option") or "")
+            opt = norm_key(rp.get("option"))
             yes = (not non_substantive
-                   and (all(v == opt for v in vals) if opt else len(set(vals)) == 1))
+                   and (all(v == opt for v in nvals) if opt else len(set(nvals)) == 1))
         elif rule in ("majority", "threshold"):
-            opt = str((term.get("rule_params") or {}).get("option")
-                      or (max(set(vals), key=vals.count) if vals else ""))
-            need = float((term.get("rule_params") or {}).get("threshold") or 0.5)
-            yes = (vals.count(opt) / max(1, len(members))) > need
+            # the target option: the rule's option (normalized), else the most-common vote
+            opt = norm_key(rp.get("option")) or (max(set(nvals), key=nvals.count)
+                                                 if nvals else "")
+            count = sum(1 for v in nvals if v == opt)
+            thr = rp.get("threshold")
+            if thr is None or str(thr) == "":
+                yes = count / max(1, len(members)) > 0.5
+            else:
+                thr = float(thr)
+                # a threshold >= 1 is an ABSOLUTE vote count ("at least 5 votes"); a
+                # threshold < 1 is a FRACTION of the members ("more than 50%")
+                yes = count >= thr if thr >= 1.0 else count / max(1, len(members)) > thr
         else:
             return {"resolved": False, "cause": f"unknown_rule:{rule}"}
         return {"resolved": True, "outcome": "YES" if yes else "NO",
@@ -146,12 +156,26 @@ def synthetic_terminal_states(bp, obligations: dict = None) -> tuple:
         rule = str(term.get("decision_rule") or inst.get("decision_rule") or "unanimity")
         target = str((term.get("rule_params") or {}).get("option") or "")
         common = target or (opts[0] if opts else "option_a")
+        # an alternative option distinct from `common`, drawn from the members' feasible sets
+        alt = None
+        for mmb in members:
+            for o in feasible_options_for(bp, mmb):
+                if norm_key(o) != norm_key(common):
+                    alt = o
+                    break
+            if alt:
+                break
+        alt = alt or f"not_{common}"
         yes_votes = {m: common for m in members}
-        no_votes = dict(yes_votes)
-        if members:
-            pool = feasible_options_for(bp, members[-1])
-            alt = next((o for o in pool if o != common), None) or f"not_{common}"
-            no_votes[members[-1]] = alt
+        if rule in ("majority", "threshold", "all_option", "single"):
+            # YES = enough of the target option; NO = clearly below it → everyone votes
+            # the alternative (a single flip may still clear an "at least N" threshold)
+            no_votes = {m: alt for m in members}
+        else:
+            # unanimity: YES = all the same; NO = a genuine split (one member differs)
+            no_votes = dict(yes_votes)
+            if members:
+                no_votes[members[-1]] = alt
         return {"votes": yes_votes}, {"votes": no_votes}
     return ({"world_state": {CANONICAL_TERMINAL_KEY: True}},
             {"world_state": {CANONICAL_TERMINAL_KEY: False}})

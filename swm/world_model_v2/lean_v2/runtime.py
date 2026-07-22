@@ -259,6 +259,12 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
         re_ready = _readiness()
         re_ready.repairs_applied = applied
         ready = re_ready
+    # a terminal round-trip that STAYS broken after repair is a HARD stop: a simulation whose
+    # completed distribution cannot map to the measured answer must never silently proceed
+    # and fall back to the prior (the BoJ/visionOS class). The exact failing checks are
+    # reported; rollout is refused.
+    if not (ready.round_trip or {}).get("ok"):
+        ready.verdict = "not_ready"
     lean_v2_prov["readiness"] = ready.as_dict()
     if ready.verdict == "not_ready":
         return _finish(_stopped_not_ready(question, bp, ready, pre,
