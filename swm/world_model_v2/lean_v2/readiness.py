@@ -34,7 +34,7 @@ CANONICAL_TERMINAL_KEY = "__terminal_yes__"
 # ------------------------------------------------------------------ pure terminal evaluator
 def pure_terminal_outcome(bp, *, votes: dict = None, world_state: dict = None,
                           obligations: dict = None, mechanism: dict = None,
-                          world_conditions: dict = None) -> dict:
+                          world_conditions: dict = None, terminal_kind: str = "") -> dict:
     """The ONE terminal evaluation law, pure and testable (the engine calls this; the
     round-trip proves it). Returns {"resolved", "outcome" ('YES'|'NO'), "detail"} or
     {"resolved": False, "cause": ...}."""
@@ -52,7 +52,10 @@ def pure_terminal_outcome(bp, *, votes: dict = None, world_state: dict = None,
         substantive = {m: v for m, v in votes.items() if not str(v).startswith("__")}
         non_substantive = [m for m in members if str(votes.get(m, "")).startswith("__")]
         vals = [substantive[m] for m in members if m in substantive]
-        nvals = [norm_key(v) for v in vals]         # case/whitespace-normalized comparison
+        # D1: strip any `vote:`/`cast_vote:` menu prefix and normalize case/whitespace before
+        # comparison so a valid cast is never miscounted on formatting
+        from swm.world_model_v2.lean_v2.canonical_options import strip_menu_prefix
+        nvals = [norm_key(strip_menu_prefix(v)) for v in vals]
         rp = term.get("rule_params") or {}
         if rule == "unanimity":
             yes = (not non_substantive and len(vals) == len(members)
@@ -103,11 +106,27 @@ def pure_terminal_outcome(bp, *, votes: dict = None, world_state: dict = None,
             yes = bool(world_state[key])
             return {"resolved": True, "outcome": "YES" if yes else "NO",
                     "detail": {"predicate": key}}
-        if tk == "event_occurs":
+        # D6 event-absence writer: a BOOLEAN deadline-bounded event that did not occur resolves
+        # NO — the mechanical complement, not a missing mechanism. This covers BOTH event_occurs
+        # AND a state_predicate that the resolution parser classifies as a boolean event (the
+        # visionOS class: YES-writers exist but no positive NO-writer). A genuinely NUMERIC /
+        # first-passage / categorical predicate with no mechanism stays honestly unresolved.
+        from swm.world_model_v2.lean_v2.resolution_spec import (BOOLEAN_EVENT, DEADLINE_ABSENCE,
+                                                                NUMERIC_THRESHOLD, FIRST_PASSAGE,
+                                                                parse_resolution)
+        kind = terminal_kind or parse_resolution(
+            bp.resolution.get("interpretation") or bp.resolution.get("yes_means")
+            or term.get("yes_when") or "",
+            terminal_kind_hint=BOOLEAN_EVENT if tk == "event_occurs" else "").terminal_kind
+        if tk == "event_occurs" or kind in (BOOLEAN_EVENT, DEADLINE_ABSENCE):
             return {"resolved": True, "outcome": "NO",
-                    "detail": {"predicate": key,
-                               "note": "non-occurrence by evaluation day resolves NO"}}
-        return {"resolved": False, "cause": "state_predicate_not_mechanically_bound"}
+                    "detail": {"predicate": key, "terminal_kind": kind,
+                               "note": "event_absent: non-occurrence by the deadline resolves "
+                                       "NO (deterministic deadline complement)"}}
+        return {"resolved": False,
+                "cause": "numeric_terminal_not_mechanically_bound"
+                if kind in (NUMERIC_THRESHOLD, FIRST_PASSAGE)
+                else "state_predicate_not_mechanically_bound"}
     return {"resolved": False, "cause": f"unknown_terminal_kind:{tk}"}
 
 
@@ -219,12 +238,30 @@ def terminal_round_trip(bp, *, obligations: dict = None, mechanism: dict = None)
 
 
 def canonicalize_terminal_writers(bp) -> dict:
-    """Repair (the visionOS class, at the source): for predicate terminals, every
+    """Repair (the visionOS class, at the source): for BOOLEAN-EVENT predicate terminals, every
     terminal-writing template must SET the canonical terminal key — rewrite writers whose
-    set_state key differs from what the terminal reads. Returns the repair record."""
+    set_state key differs from what the terminal reads.
+
+    TYPE-SAFE (D4): boolean-event canonicalization runs ONLY when the resolution is a boolean
+    deadline event. It must never collapse a NUMERIC_THRESHOLD / FIRST_PASSAGE / CATEGORICAL
+    terminal into a boolean OR — that is the Hormuz failure (a `daily_transit_count >= 50`
+    predicate was rewritten to `__terminal_yes__`, so a de-escalation flag satisfied YES). For a
+    non-boolean terminal this returns without touching any numeric writer."""
+    from swm.world_model_v2.lean_v2.resolution_spec import (BOOLEAN_EVENT, DEADLINE_ABSENCE,
+                                                            parse_resolution)
     term = bp.terminal
     if term.get("kind") == "institution_vote":
         return {"needed": False, "why": "vote terminals read the tally directly"}
+    spec = parse_resolution(bp.resolution.get("interpretation") or bp.resolution.get("yes_means")
+                            or term.get("yes_when") or "",
+                            question=getattr(bp, "question", ""),
+                            terminal_kind_hint=BOOLEAN_EVENT
+                            if term.get("kind") == "event_occurs" else "")
+    if spec.terminal_kind not in (BOOLEAN_EVENT, DEADLINE_ABSENCE):
+        return {"needed": False, "type_safe_skip": True,
+                "terminal_kind": spec.terminal_kind,
+                "why": f"resolution is {spec.terminal_kind}; boolean canonicalization would "
+                       f"collapse a numeric/categorical terminal — skipped (D4)"}
     rewritten = []
     for t in bp.action_templates:
         if not (t.get("writes_terminal") or any(e.get("kind") == "set_state"

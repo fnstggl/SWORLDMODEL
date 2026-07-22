@@ -311,14 +311,26 @@ def test_15_terminal_round_trip_yes1_no0():
 
 # 16 — the visionOS class at the source: mismatched terminal writer keys are canonicalized
 def test_16_terminal_writer_canonicalization():
+    # D4 (real-world fidelity): _predicate_bp has a NUMERIC-threshold resolution, so boolean
+    # canonicalization must be TYPE-SAFE-SKIPPED — it must never collapse the numeric writer
+    # into a boolean key (the Hormuz failure). The numeric terminal is resolved by the
+    # bounded-mechanism path instead.
     bp = _predicate_bp()
     rec = canonicalize_terminal_writers(bp)
-    assert rec["needed"] is True
-    assert rec["rewritten"][0]["old_key"] == "some_other_key"
-    eff = bp.action_templates[0]["effects"][0]["params"]
-    assert eff["key"] == CANONICAL_TERMINAL_KEY
-    # and the pure law reads exactly that key
-    out = pure_terminal_outcome(bp, world_state={CANONICAL_TERMINAL_KEY: True})
+    assert rec.get("type_safe_skip") is True
+    assert bp.action_templates[0]["effects"][0]["params"]["key"] == "some_other_key"
+    # a genuinely BOOLEAN event terminal still gets canonicalized (the visionOS keeper)
+    ev = ConsumerWorldBlueprint(
+        resolution={"interpretation": "Apple announces visionOS at WWDC", "options": ["Yes", "No"]},
+        actors=[{"id": "c", "private_state_variants": []}],
+        action_templates=[{"action_id": "ann", "actor_ids": ["c"], "writes_terminal": True,
+                           "effects": [{"kind": "set_state",
+                                        "params": {"key": "some_other_key", "value": "true"}}]}],
+        terminal={"kind": "event_occurs", "yes_when": "announced", "evaluation_day": "2026-06-12"})
+    rec2 = canonicalize_terminal_writers(ev)
+    assert rec2["needed"] is True
+    assert ev.action_templates[0]["effects"][0]["params"]["key"] == CANONICAL_TERMINAL_KEY
+    out = pure_terminal_outcome(ev, world_state={CANONICAL_TERMINAL_KEY: True})
     assert out["resolved"] and out["outcome"] == "YES"
 
 
@@ -508,7 +520,9 @@ def test_25_resume_with_mechanism_completes_unresolved_only():
                      consequential_actors=[])
     res = eng.run(as_of=AS_OF, horizon="2026-06-20")
     assert res.unresolved_mass == 1.0
-    assert "state_predicate_not_mechanically_bound" in res.unresolved_reasons
+    # D6: a NUMERIC-threshold predicate with no mechanism stays honestly unresolved under the
+    # numeric cause (a boolean event would instead resolve NO via event_absent)
+    assert "numeric_terminal_not_mechanically_bound" in res.unresolved_reasons
     mech = {"kind": "bounded_numeric_process", "variable": "transits", "threshold": 80.0,
             "comparator": ">=", "aggregation": "any_day", "min_rate": 81.0,
             "central_rate": 82.0, "max_rate": 85.0,
