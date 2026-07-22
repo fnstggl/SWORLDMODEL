@@ -42,6 +42,7 @@ class BudgetLedger:
         self.t0 = time.time()
         self._lock = threading.RLock()
         self.calls = 0
+        self.inflight = 0                      # admitted but not yet recorded (atomic reserve)
         self.input_chars = 0
         self.output_chars = 0
         self.structural_models = 0
@@ -62,16 +63,19 @@ class BudgetLedger:
 
     # ---- gate: hard external-call admission ---------------------------------------
     def allow_call(self, stage: str, prompt_chars: int) -> tuple:
-        """(allowed, reason). Refusals are recorded — they are result-visible facts."""
+        """(allowed, reason). Refusals are recorded — they are result-visible facts.
+        Admission RESERVES the slot atomically (inflight), so N concurrent workers can
+        never race past the hard call cap between the check and the record."""
         with self._lock:
             if self.wall_s() > self.budget.max_wall_s:
                 return self._refuse(stage, "wall_clock_exhausted")
-            if self.calls >= self.budget.max_calls:
+            if self.calls + self.inflight >= self.budget.max_calls:
                 return self._refuse(stage, "call_budget_exhausted")
             if self.input_chars + prompt_chars > self.budget.max_input_chars:
                 return self._refuse(stage, "input_char_budget_exhausted")
             if self.output_chars > self.budget.max_output_chars:
                 return self._refuse(stage, "output_char_budget_exhausted")
+            self.inflight += 1
             return True, ""
 
     def _refuse(self, stage: str, why: str) -> tuple:
@@ -108,6 +112,7 @@ class BudgetLedger:
     def record_call(self, stage: str, *, prompt_chars: int, reply_chars: int, latency_s: float,
                     tier: str = "strong", retried: bool = False):
         with self._lock:
+            self.inflight = max(0, self.inflight - 1)
             self.calls += 1
             self.input_chars += prompt_chars
             self.output_chars += reply_chars
@@ -121,6 +126,12 @@ class BudgetLedger:
             row["output_chars"] += reply_chars
             row["latency_s"] = round(row["latency_s"] + latency_s, 3)
             row["tiers"][tier] = row["tiers"].get(tier, 0) + 1
+
+    def release_reservation(self):
+        """A call admitted but never completed (provider raised through both attempts)
+        releases its reserved slot so the budget is not silently starved."""
+        with self._lock:
+            self.inflight = max(0, self.inflight - 1)
 
     def record_structural_model(self):
         with self._lock:

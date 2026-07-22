@@ -76,6 +76,12 @@ def classify_unresolved_reason(reason: str) -> str:
     r = str(reason or "").lower()
     if "votes_missing" in r or "vote" in r and "missing" in r:
         return "unresolved_future_decision"
+    if "no_terminal_action" in r:
+        # a required participant who refused every procedurally-allowed terminal action —
+        # rare, disclosed; still a decision that failed to complete
+        return "unresolved_future_decision"
+    if "unknown_terminal_kind" in r:
+        return "unresolved_missing_mechanism"
     if "abstain" in r:
         return "unresolved_valid_abstention"
     if "absent" in r or "absence" in r:
