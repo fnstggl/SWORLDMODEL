@@ -121,6 +121,13 @@ missing-mechanism diagnosis; no silent prior fallback; exact prompt/reply gatewa
   roster** — the threshold is never rescaled to fit an omitted roster.
 - **Tests:** 19–27,72–75.
 - **Acceptance:** every acceptance-criteria roster bullet in §23.
+- **Status: IMPLEMENTED.** `lean_v2/representation.py` (typed `WorldRepresentationSpec`,
+  individual vs seat-weighted bloc `DecisionUnit`, candidate≠voter typing, `validate_representation`
+  reconciling real==represented==threshold, `repair_representation` expanding the roster, no
+  decisive-actor cap). The threshold-rescaling branch in `readiness.pure_terminal_outcome` is
+  DELETED (now defers with `representation_incomplete:threshold_exceeds_modeled_roster`). Wired into
+  the runtime via `institution_terminal.py`. Tests: `test_lean_v2_representation.py` (14),
+  `test_lean_v2_institution_terminal.py` (5).
 
 ### D8. State-count drives probability + auto equal split (anti-consensus foundation)
 - **Root cause:** `states`/engine give each generated variant ~1/N weight and branch actors
@@ -134,6 +141,15 @@ missing-mechanism diagnosis; no silent prior fallback; exact prompt/reply gatewa
   state↔condition alignment (`condition_id, condition_state_id, direction`), validated.
 - **Tests:** 28–35.
 - **Acceptance:** state count cannot change probability; no auto equal split; typed alignment.
+- **Status: IMPLEMENTED.** `lean_v2/action_baseline.py` (`ActorActionBaseline`,
+  `partial_pool_categorical` — hierarchical Dirichlet-multinomial with the global Jeffreys prior
+  separated from the cross-level shrinkage `tau`, so a single counted level reproduces its
+  beta-binomial rate; disclosed uniform over *classes* when uncounted). `states.py
+  weight_actor_states` now allocates mass to action tendencies first via
+  `_allocate_by_action_class` (typed `action_option_id` seed, raw counts, world-conditional) and
+  splits within a tendency — the `residual/len(states)` equal split is gone; the bounded
+  completeness residual is preserved. Tests: `test_lean_v2_action_baseline.py` (18 incl. story-count
+  invariance).
 
 ### D9. Fabricated external facts inside private states
 - **Root cause:** `ActorStateHypothesis` mixes latent mindset with invented external events (secret
@@ -193,6 +209,19 @@ missing-mechanism diagnosis; no silent prior fallback; exact prompt/reply gatewa
   bounded rounds; call only changed contexts.
 - **Tests:** 36–45,72.
 - **Acceptance:** consensus neither forced nor suppressed; message content delivered.
+- **Status: IMPLEMENTED** (in `institution_deliberation.py`, not `deliberation.py` — that name was
+  already the actor-reflection module). Typed archetypes (`consensus`/`coalition`/`independent`/
+  `hierarchical`) converge by DIFFERENT grounded forces; `classify_institution` derives every force
+  from counts or typed structure (reference settling rate, consensus norm, leadership authority,
+  coalition discipline, procedure), and an ungrounded force is 0.0 → independent baseline (never
+  invented convergence). `run_institution_deliberation` is a bounded-round mean-field process with a
+  material-change gate; the fixed point is set by grounded pull weights, not the step size, so it can
+  never be a fixed consensus bonus. `seat_weighted_yes_prob` is an exact convolution against the REAL
+  absolute threshold (blocs are Binomial). The calibrated consensus mixture
+  `(1-w)·independent + w·collective_lean` lets a unanimity/supermajority body reach a high threshold
+  independent voting almost never would, without over-sharpening. Composed end-to-end in
+  `institution_terminal.py` and wired into the runtime as the authoritative institution-vote
+  forecast. Tests: `test_lean_v2_institution_deliberation.py` (15), `test_lean_v2_institution_terminal.py` (5).
 
 ### D15. Conservative decision caching
 - **Module:** `lean_context`/`engine` — `DecisionRelevantContext` includes every material field
