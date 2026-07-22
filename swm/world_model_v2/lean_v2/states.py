@@ -81,6 +81,18 @@ class ActorStateHypothesis:
     eliminated: bool = False
     elimination_reason: str = ""
     is_unknown: bool = False
+    #: D9 — the actor's LATENT MINDSET (internal, freely hypothesized) kept SEPARATE from claimed
+    #: EXTERNAL EVENTS. `evidence_supported_observations` are external claims backed by a real fact;
+    #: `hypothetical_assumptions` are unsupported external claims carried as SIMULATED POSSIBILITY,
+    #: never handed to the actor as established reality.
+    latent_beliefs: list = field(default_factory=list)
+    latent_goals: list = field(default_factory=list)
+    latent_preferences: list = field(default_factory=list)
+    latent_risk_tolerance: str = ""
+    known_commitments: list = field(default_factory=list)
+    evidence_supported_observations: list = field(default_factory=list)
+    hypothetical_assumptions: list = field(default_factory=list)
+    mindset_separated: bool = False
 
     def as_dict(self) -> dict:
         return asdict(self)
@@ -131,6 +143,103 @@ def reject_numeric_state_weights(raw_state: dict) -> list:
                 walk(x, f"{path}[{i}]")
     walk(dict(raw_state))
     return rejected
+
+
+# ------------------------------------------------------------------ D9: mindset vs external events
+import re as _re  # noqa: E402
+
+#: an assertion that an EXTERNAL EVENT occurred (a communication/action by someone/something) —
+#: a claim about the world that, unless evidence-backed, must not be handed to the actor as fact
+_EXTERNAL_EVENT_MARKERS = _re.compile(
+    r"\b(received|sent|told|informed|met with|call(?:ed)? from|called on|phoned|threatened|"
+    r"promised|warned|leaked|memo|message from|deal|struck an agreement|signed|announced|"
+    r"instructed|ordered|demanded|offered|assured|briefed|contacted|pressured by|was asked|"
+    r"was pushed|handed|delivered|secret\w*|behind closed doors|backchannel|tipped off|"
+    r"urged|publicly|pressed|criticized|endorsed|opposed|rejected|blocked|resigned|appointed|"
+    r"nominated|vetoed|published|unveiled|filed|sued|fired|hired)\b", _re.I)
+
+#: framing that marks the sentence as the actor's OWN latent mindset (a belief ABOUT a possible
+#: event is fine to simulate; an assertion that the event happened is not)
+_LATENT_MARKERS = _re.compile(
+    r"\b(believ\w+|think\w*|want\w*|prefer\w*|fear\w*|worri\w+|hop\w+|intend\w*|inclin\w+|"
+    r"valu\w+|distrust\w*|trust\w*|feel\w*|expect\w*|suspect\w*|assum\w+|is (?:risk-averse|"
+    r"risk-tolerant|cautious|confident|hawkish|dovish|skeptical|reluctant|eager)|priorit\w+|"
+    r"committed to|goal|aim\w*)\b", _re.I)
+
+
+def classify_assertion(text: str) -> str:
+    """'latent' (the actor's mindset) vs 'external_event' (a claim the world did something). An
+    event framed as a belief/fear/expectation is LATENT; a bare assertion that the event occurred
+    is EXTERNAL and needs evidence. Deterministic, content-based, universal."""
+    t = str(text or "")
+    if not t.strip():
+        return "latent"
+    ext = bool(_EXTERNAL_EVENT_MARKERS.search(t))
+    lat = bool(_LATENT_MARKERS.search(t))
+    if ext and not lat:
+        return "external_event"          # asserts an occurrence with no belief-framing
+    return "latent"
+
+
+def _fact_supports(claim: str, evidence_store) -> bool:
+    if evidence_store is None:
+        return False
+    ck = norm_key(claim)
+    ctoks = [w for w in ck.split() if len(w) > 3]
+    if not ctoks:
+        return False
+    for f in getattr(evidence_store, "facts", []):
+        ftoks = set(norm_key(f.content).split())
+        if sum(1 for w in ctoks if w in ftoks) / len(ctoks) >= 0.6:
+            return True
+    return False
+
+
+def separate_mindset_from_events(h: "ActorStateHypothesis", *, evidence_store=None) -> dict:
+    """D9: split the actor's latent mindset from claimed external events. Latent statements
+    (beliefs/goals/preferences/risk tolerance) populate the `latent_*` fields freely. Each external
+    event claim is routed by support: an evidence-backed claim becomes an
+    `evidence_supported_observation`; an UNSUPPORTED claim becomes a `hypothetical_assumption`
+    (simulated possibility) and is removed from the belief stream so it is never rendered to the
+    actor as established fact. Returns a manifest of what moved and why."""
+    moved_supported, moved_hypothetical, kept_latent = [], [], []
+    # goals / stances are intrinsically latent
+    h.latent_goals = list(h.goals)
+    h.latent_preferences = [s for s in h.stances]
+    h.known_commitments = list(h.commitments)
+    # risk tolerance surfaced from stances/pressures if named
+    rt = ""
+    for s in list(h.stances) + [h.pressures]:
+        m = _re.search(r"risk-(averse|tolerant|neutral)|cautious|aggressive", str(s or ""), _re.I)
+        if m:
+            rt = m.group(0).lower()
+            break
+    h.latent_risk_tolerance = rt
+    # classify each belief-stream statement (beliefs + claim + pressures sentences)
+    stream = list(h.beliefs)
+    for extra in (h.claim, h.pressures):
+        for sent in _re.split(r"(?<=[.;])\s+", str(extra or "")):
+            if sent.strip():
+                stream.append(sent.strip())
+    for stmt in stream:
+        if classify_assertion(stmt) == "external_event":
+            if h.supporting_evidence_ids or _fact_supports(stmt, evidence_store):
+                h.evidence_supported_observations.append(stmt)
+                moved_supported.append(stmt)
+            else:
+                h.hypothetical_assumptions.append(f"[simulated possibility, unverified] {stmt}")
+                moved_hypothetical.append(stmt)
+        else:
+            h.latent_beliefs.append(stmt)
+            kept_latent.append(stmt)
+    # the belief stream the actor is shown is now ONLY latent mindset + supported observations;
+    # unsupported external events live in hypothetical_assumptions, never asserted as fact
+    h.beliefs = list(h.latent_beliefs)
+    h.mindset_separated = True
+    return {"actor_id": h.actor_id, "state_id": h.state_id,
+            "latent_beliefs": len(kept_latent), "supported_observations": moved_supported,
+            "unsupported_external_events_relabeled": moved_hypothetical,
+            "risk_tolerance": rt}
 
 
 # ------------------------------------------------------------------ hypothesis-set validation

@@ -208,6 +208,24 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
     validated, grounded_weights, gw_by_combo, shared_combos, state_prov = \
         _build_grounded_weights(bp, states_by_actor, posterior_engine, grounding,
                                 hard_evidence_ids)
+    # ---------------- 6d-bis. D9: split latent mindset from unobserved external events ------
+    # before any state reaches an actor, separate the actor's LATENT mindset from claimed
+    # EXTERNAL events; an unsupported external claim (a secret memo, a private threat) is
+    # relabeled a simulated possibility and removed from the belief stream, never asserted as fact.
+    from swm.world_model_v2.lean_v2.states import separate_mindset_from_events
+    _mindset_manifest = []
+    for _aid, _hs in validated.items():
+        for _h in _hs:
+            if not getattr(_h, "mindset_separated", False):
+                rec = separate_mindset_from_events(_h, evidence_store=evidence_store)
+                if rec.get("unsupported_external_events_relabeled"):
+                    _mindset_manifest.append(rec)
+        # refresh the installed blueprint variants so the relabeled beliefs are what actors see
+        _a = bp.actor_by_id(_aid)
+        if _a is not None and _hs:
+            _a["private_state_variants"] = [h.to_variant() for h in _hs]
+    lean_v2_prov["mindset_separation"] = {"states_relabeled": len(_mindset_manifest),
+                                          "detail": _mindset_manifest[:20]}
     lean_v2_prov["actor_states"] = {aid: [h.as_dict() for h in hs]
                                     for aid, hs in validated.items()}
     lean_v2_prov["state_posteriors"] = state_prov
