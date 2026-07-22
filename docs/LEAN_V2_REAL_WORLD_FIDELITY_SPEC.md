@@ -161,6 +161,11 @@ missing-mechanism diagnosis; no silent prior fallback; exact prompt/reply gatewa
   fact.
 - **Tests:** 18.
 - **Acceptance:** unsupported external events never presented as known.
+- **Status: IMPLEMENTED.** `states.py` classify_assertion + separate_mindset_from_events split the
+  actor's LATENT mindset (latent_beliefs/goals/preferences/risk_tolerance) from claimed EXTERNAL
+  events; an evidence-backed claim becomes an evidence_supported_observation, an UNSUPPORTED one a
+  hypothetical_assumption (simulated possibility) removed from the belief stream. Wired into the
+  runtime with the D11 store. Tests: `test_lean_v2_mindset_separation.py` (5).
 
 ### D10. Verified reference cases + separated prior/behavior layers
 - **Module:** `grounding.py` — `VerifiedReferenceCase {case_id, source, source_available,
@@ -172,6 +177,11 @@ missing-mechanism diagnosis; no silent prior fallback; exact prompt/reply gatewa
   `ActorStateHypothesis` — never use outcome history as private-state evidence.
 - **Tests:** 16,17,33.
 - **Acceptance:** every numerical case verified; layers separated.
+- **Status: IMPLEMENTED.** `reference_verification.py` (verify_reference_case: source_available /
+  quote_verified against the permitted evidence / date_verified pre-as_of / action_typed; three
+  layers tagged and kept distinct). Integrated into gather_grounding — each actor class is typed
+  with its verified action_option_id (lights up D8's typed path). Tests:
+  `test_lean_v2_reference_verification.py` (7).
 
 ### D11. Evidence truncation loses decisive facts; actors get hashes not facts
 - **Module:** new `evidence_store.py` — `CanonicalFact {fact_id, content, date, sources,
@@ -181,6 +191,10 @@ missing-mechanism diagnosis; no silent prior fallback; exact prompt/reply gatewa
   packets). Actor prompts render real fact content, not a hash.
 - **Tests:** 11–15.
 - **Acceptance:** decisive facts survive; actors receive fact content.
+- **Status: IMPLEMENTED.** `evidence_store.py` (CanonicalFact with content/credibility/visibility/
+  contradiction_group/numeric_values+units/as_of leakage guard; EvidenceStore.facts_for_actor by
+  typed relevance, never a char budget). build_evidence_store from grounding + grounded rates;
+  wired into the runtime. Tests: `test_lean_v2_evidence_store.py` (7).
 
 ### D12. Shared uncertainty independence + tail pruning
 - **Module:** `states`/new `shared_conditions.py` — `SharedConditionGraph` (shared causes,
@@ -190,6 +204,12 @@ missing-mechanism diagnosis; no silent prior fallback; exact prompt/reply gatewa
   tail mass and bounds its terminal effect; expand the tail when it could reverse the answer.
 - **Tests:** 34,35 (+ dependence assertions).
 - **Acceptance:** no independent multiplication under a common cause; tail preserved.
+- **Status: IMPLEMENTED.** `shared_conditions.py` (SharedConditionGraph: ConditionNodes correlate
+  their affected actors; depends_on conditional tables enumerate correlated pairs jointly;
+  mutually_exclusive groups block impossible worlds; unidentified dependence → independent+comonotonic
+  sensitivity). joint_worlds preserves every above-floor tail world and bounds the sub-floor
+  discarded mass. Replaces _shared_combos in the runtime. Tests:
+  `test_lean_v2_shared_conditions.py` (7).
 
 ### D13. Actor knowledge packets (real facts, real messages, real institution state)
 - **Module:** `engine.py` — `ActorKnowledgePacket` renders identity/role/authority/private mindset/
@@ -198,6 +218,10 @@ missing-mechanism diagnosis; no silent prior fallback; exact prompt/reply gatewa
   contradictions. Never expose another actor's private state / future / post-as_of / secret ballots.
 - **Tests:** 14,36,43,44,45.
 - **Acceptance:** actors reason from the real researched facts, not labels/hashes.
+- **Status: IMPLEMENTED.** `knowledge_packet.py` (ActorKnowledgePacket composes D9 mindset + D11
+  facts + D12 world + D14 process, renders real content; hard leakage guards: no other actor's
+  private state, no secret ballot, no future/post-as_of fact, no self-position echo). Built per
+  consequential actor in the runtime. Tests: `test_lean_v2_knowledge_packet.py` (5).
 
 ### D14. Real interaction + deliberative convergence (the dominant defect)
 - **Module:** new `deliberation.py` engine — typed institutional process `initial positions →
@@ -231,6 +255,10 @@ missing-mechanism diagnosis; no silent prior fallback; exact prompt/reply gatewa
   any material change misses; only UUID/ordering/duplicate-wording/unrelated objects excluded.
 - **Tests:** 37–39,59–64.
 - **Acceptance:** false cache hit rejected; final-decision context never stripped for hit-rate.
+- **Status: IMPLEMENTED.** `lean_context.py` DecisionRelevantContext gained the material process
+  fields (proposal, stage, decision_rule, visible_tally, substantive_messages, fact_credibility,
+  deadline) — all in signature() and _DIFF_FIELDS, so any material change misses the cache. Tests:
+  `test_lean_v2_decision_cache_key.py` (5).
 
 ### D16. Dimensional outcome mechanisms
 - **Module:** `mechanisms.py` — `OutcomeMechanismSpec {inputs+units, transitions, output+unit,
@@ -242,12 +270,21 @@ missing-mechanism diagnosis; no silent prior fallback; exact prompt/reply gatewa
   boolean.
 - **Tests:** 53–58.
 - **Acceptance:** every mechanism produces the exact required variable+unit; units match.
+- **Status: IMPLEMENTED.** `outcome_mechanism.py` (infer_dimension; OutcomeMechanismSpec typing the
+  inputs→transitions→output→comparator/threshold pathway; validate_outcome_mechanism enforces
+  output-dimension==required, no boolean collapse, threshold-in-output-dimension, legal transition
+  ops, unbroken backward chain). dimensional_check_mechanism adapts recovered processes; wired into
+  the runtime. Tests: `test_lean_v2_outcome_mechanism.py` (9).
 
 ### D17. Readiness = structurally faithful (not merely executable)
 - **Module:** `readiness.py` — extend gate with resolution/institution/evidence/behavior/outcome
   checks (§14). `ready|repairable|not_ready`; never repair an invalid institution by changing the
   real threshold.
 - **Tests:** 10,26,57,72–77.
+- **Status: IMPLEMENTED.** `readiness.py` assess_structural_fidelity aggregates the five dimension
+  verdicts (worst wins); an impossible/collapsed institution is repairable by roster expansion or
+  not_ready, never made ready by rescaling the threshold. Wired into the runtime. Tests:
+  `test_lean_v2_structural_fidelity.py` (6).
 
 ### D18. Self-contained traces + persistent-cache provenance
 - **Module:** `gateway`/`traces`/`compile_cache` — per call store model/tier/exact prompt+reply/
@@ -256,6 +293,23 @@ missing-mechanism diagnosis; no silent prior fallback; exact prompt/reply gatewa
   decision templates keep context/reply/reuse recipients/branch count/mass; full trajectory trace
   uncapped (a separate human sample may cap at 200).
 - **Tests:** 65–71.
+- **Status: IMPLEMENTED.** `trace_provenance.py` (CallTraceRecord keeps exact prompt+reply,
+  truncation flag, cache source/key/source run+call; verify_self_contained checks every call has
+  its text and every id reference resolves to content; build_self_contained_trace carries all
+  fidelity artifacts). Wired into write_traces as self_contained_trace.json. Tests:
+  `test_lean_v2_trace_provenance.py` (7).
+
+## Implementation status summary
+
+All eighteen defect classes are implemented, tested, and wired into the canonical
+`unified_runtime.simulate_world(..., execution_profile="lean_v2")` path: **D1–D6** (direct
+correctness), **D7** (faithful representation), **D8** (action-grounded weighting), **D9** (mindset
+vs external events), **D10** (verified reference cases), **D11** (canonical fact store), **D12**
+(shared-condition graph + tail), **D13** (actor knowledge packets), **D14** (deliberative
+convergence — the dominant defect), **D15** (conservative cache key), **D16** (dimensional outcome
+mechanism), **D17** (structural-fidelity readiness), **D18** (self-contained traces). Remaining:
+Phase C structural dry-audit, Phase D freeze, and the §19 cold-cache rerun with the §21–22
+measurement — sequenced after the architecture is complete.
 
 ## Efficiency invariants kept (§16)
 
