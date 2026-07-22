@@ -206,7 +206,9 @@ datasets:
     download_method: hf
     checksum_method: sha256
     dataset_role: TRAIN_CANDIDATE
-    supported_tasks: [PREDICT_NEXT_ACTION, PREDICT_RESPONSE_OR_NONRESPONSE, PREDICT_TIME_TO_ACTION, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+    # reconciled to DOC.tasks_produced: FINAL_OUTCOME dropped (raw behavior stream has no explicit
+    # per-user terminal/session outcome label; inventing one would fabricate a target).
+    supported_tasks: [PREDICT_NEXT_ACTION, PREDICT_RESPONSE_OR_NONRESPONSE, PREDICT_TIME_TO_ACTION, PREDICT_TRAJECTORY_CONTINUATION]
     split_unit: platform_user
     conversion_status: CONVERTER_READY_STORAGE_BLOCKED
     blockers: "6.37GB > safe working disk here. Streaming converter implemented + fixture-tested; sample normalized. Full run resume: python -m machine_learning.cli datasets acquire omnibehavior --allow-large (on a >=20GB volume) then normalize. NON-COMMERCIAL license: excluded from any commercial training view."
@@ -295,7 +297,9 @@ datasets:
     download_method: hf
     checksum_method: sha256
     dataset_role: TRAIN_CANDIDATE
-    supported_tasks: [PREDICT_NEXT_CHOICE, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+    # reconciled to DOC.tasks_produced: FINAL_OUTCOME dropped (a trial sequence has no single
+    # downstream outcome to predict without inventing one).
+    supported_tasks: [PREDICT_NEXT_CHOICE, PREDICT_TRAJECTORY_CONTINUATION]
     split_unit: participant   # hold out participants + experiments + tasks
     conversion_status: CONVERTER_READY_STORAGE_BLOCKED
     blockers: "859MB fits, but the converter must parse choices out of NL transcripts (response markers) per-experiment — non-trivial. Streaming converter implemented + fixture-tested on the documented transcript format; sample normalized. Full run resume: acquire --allow-large then normalize psych101."
@@ -327,7 +331,9 @@ datasets:
     download_method: hf
     checksum_method: sha256
     dataset_role: LICENSE_RESTRICTED_EVAL_ONLY
-    supported_tasks: [PREDICT_NEXT_CHOICE, PREDICT_POPULATION_RESPONSE, PREDICT_INTERVENTION_EFFECT, RANK_CANDIDATE_ACTIONS]
+    # reconciled to DOC.tasks_produced: RANK_CANDIDATE_ACTIONS dropped (no candidate action set
+    # with a recoverable ranking).
+    supported_tasks: [PREDICT_NEXT_CHOICE, PREDICT_POPULATION_RESPONSE, PREDICT_INTERVENTION_EFFECT]
     split_unit: participant   # ships participant/task/condition split-mapping JSONs
     conversion_status: CONVERTER_READY_STORAGE_BLOCKED
     blockers: "License unspecified on the official card -> keep OUT of training (eval-only) until authors clarify. Streaming converter implemented + fixture-tested; sample normalized as eval-only. Resume: acquire --allow-large then normalize socsci210."
@@ -358,7 +364,9 @@ datasets:
     download_method: http
     checksum_method: sha256
     dataset_role: TRAIN_CANDIDATE
-    supported_tasks: [PREDICT_NEXT_ACTION, PREDICT_RESPONSE_OR_NONRESPONSE, PREDICT_TIME_TO_ACTION, PREDICT_INTERVENTION_EFFECT, PREDICT_POLICY_VALUE]
+    # reconciled to converter DOC.tasks_produced: INTERVENTION_EFFECT dropped (a per-interaction
+    # log has no matched treated/control unit; randomized exposure is served via POLICY_VALUE).
+    supported_tasks: [PREDICT_NEXT_ACTION, PREDICT_RESPONSE_OR_NONRESPONSE, PREDICT_TIME_TO_ACTION, PREDICT_POLICY_VALUE]
     split_unit: platform_user
     conversion_status: CONVERTER_READY_STORAGE_BLOCKED
     blockers: "KuaiRand-Pure (~194MB) is acquirable but tar.gz extraction + CSV normalization is disk-heavy; keep randomized-exposure (is_rand=1) separate from organic. Converter implemented + fixture-tested. Resume: acquire kuairand --allow-large (Pure) then normalize. Do NOT let its size dominate the sampler (per-dataset cap set)."
@@ -487,7 +495,9 @@ datasets:
     download_method: git
     checksum_method: sha256
     dataset_role: TRAIN_CANDIDATE
-    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_RESPONSE_OR_NONRESPONSE, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME, RANK_CANDIDATE_ACTIONS]
+    # reconciled to DOC.tasks_produced: RANK_CANDIDATE_ACTIONS dropped (no candidate-action set
+    # to rank). Worker id (B3) is stable across dialogues -> persistent identity preserved.
+    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_RESPONSE_OR_NONRESPONSE, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
     split_unit: conversation   # also hold out workers
     conversion_status: PENDING
     blockers: ""
@@ -614,7 +624,10 @@ datasets:
     download_method: hf
     checksum_method: sha256
     dataset_role: TRAIN_CANDIDATE
-    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_NEXT_ACTION, PREDICT_BELIEF_CHANGE, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+    # reconciled to DOC.tasks_produced: BELIEF_CHANGE dropped (no player's private belief is
+    # recorded before AND after; only observed votes + revealed roles). Roles appear ONLY in the
+    # FINAL_OUTCOME target, never in inputs.
+    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_NEXT_ACTION, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
     split_unit: group   # by game; hold out whole games
     conversion_status: PENDING
     blockers: ""
@@ -677,7 +690,9 @@ datasets:
     download_method: hf
     checksum_method: sha256
     dataset_role: LICENSE_RESTRICTED_EVAL_ONLY
-    supported_tasks: [PREDICT_NEXT_CHOICE, PREDICT_FINAL_OUTCOME, RANK_CANDIDATE_ACTIONS]
+    # reconciled to DOC.tasks_produced: RANK dropped (options are embedded in prompt text, not an
+    # enumerated candidate list).
+    supported_tasks: [PREDICT_NEXT_CHOICE, PREDICT_FINAL_OUTCOME]
     split_unit: experiment
     conversion_status: CONVERTER_READY_STORAGE_BLOCKED
     blockers: "CC-BY-NC-ND: No-Derivatives forbids training (which produces a derivative). Normalize for EVALUATION only; never place in a training manifest. Converter implemented + fixture-tested. Resume (eval): acquire behaviorbench --allow-large then normalize (eval-only)."
@@ -708,14 +723,18 @@ datasets:
     download_method: hf
     checksum_method: sha256
     dataset_role: CROSS_DATASET_EVAL_ONLY   # held-out population-response transfer test
-    supported_tasks: [PREDICT_POPULATION_RESPONSE, PREDICT_NEXT_CHOICE]
+    # reconciled to DOC.tasks_produced: NEXT_CHOICE dropped (SimBench ships only aggregate human
+    # response DISTRIBUTIONS, no individual-level responses).
+    supported_tasks: [PREDICT_POPULATION_RESPONSE]
     split_unit: study   # by source dataset
     conversion_status: CONVERTER_READY_STORAGE_BLOCKED
     blockers: "Reserved as the held-out population-response cross-dataset transfer test; excluded from training manifests by design. NC-SA (non-commercial). Converter implemented + fixture-tested. Resume (eval): acquire simbench --allow-large then normalize (eval-only)."
     last_verified_at: "2026-07-22"
     verification: {confidence: high, sources: ["https://huggingface.co/datasets/pitehu/SimBench", "https://arxiv.org/abs/2510.17516"]}
     acquire:
+      # SimBench ships loose CSV/pkl (SimBenchPop/SimBenchGrouped) with NO `train` split, so a
+      # snapshot (not a streamed split) is the correct pull.
       method: hf
-      estimated_bytes: 20000000
-      hf: {repo_id: "pitehu/SimBench", mode: stream, split: train, stream_rows: 300}
+      estimated_bytes: 12000000
+      hf: {repo_id: "pitehu/SimBench", mode: snapshot, repo_type: dataset, allow_patterns: ["*.csv", "*.md", "LICENSE*"]}
     converter: machine_learning.normalization.converters.simbench.Converter

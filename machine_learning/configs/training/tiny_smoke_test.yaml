@@ -1,0 +1,38 @@
+# Training config. The base model is CONFIGURABLE here (not hard-coded in code).
+# Launch:  python -m machine_learning.cli train run tiny_smoke_test
+# The 8B configs use 4-bit QLoRA and require a CUDA GPU; on CPU the loader
+# transparently downgrades to full-precision LoRA (used by the smoke test).
+name: tiny_smoke_test
+model:
+  # Small PRETRAINED model chosen for CPU speed: distilgpt2 (82M) overfits a tiny subset in
+  # ~60 steps in ~1 min on CPU. It uses GPT2 attention (target `c_attn`); the ONLY difference
+  # from the 8B Qwen/Llama configs is the LoRA target-module NAME — the LoRA / target-only-loss
+  # / checkpoint / resume / export code path is byte-for-byte identical. Swap for SmolLM2-135M
+  # (q_proj/v_proj, slower on CPU) if you want to also exercise the Llama module names.
+  base_model: distilgpt2
+  revision: null
+  tokenizer: distilgpt2
+  quantization: none
+  dtype: float32
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.0
+  target_modules:
+  - c_attn
+gradient_checkpointing: false
+data:
+  dataset_id: casino
+train:
+  seed: 42
+  batch_size: 4
+  grad_accum: 1
+  learning_rate: 0.001
+  epochs: 8
+  max_steps: 60
+  max_seq_len: 256
+  save_steps: 30
+  eval_steps: 30
+  warmup_steps: 2
+  early_stopping_patience: 0
+  max_grad_norm: 1.0

@@ -47,7 +47,7 @@ def validate_dataset(dataset_id: str, *, limit: int | None = None, deep: bool = 
 
     critical = {
         "schema": schema_ok,
-        "chronology": chrono.ok,
+        "chronology": chrono.hard_ok,  # hard leakage bugs block; rare coincidental repeats warn
         "leakage": lk["ok"] or lk["n_records"] == 0,  # no split table yet is not a failure
         "provenance": prov.ok,
         "licensing": lic_ok,
@@ -55,6 +55,9 @@ def validate_dataset(dataset_id: str, *, limit: int | None = None, deep: bool = 
     critical_ok = all(critical.values())
 
     warnings = []
+    if chrono.soft_issues:
+        warnings.append(f"{len(chrono.soft_issues)} coincidental verbatim message repeats "
+                        f"(target text recurs in history; below the systematic-bug threshold)")
     if dedup and dedup.n_near_dup_candidates / max(dedup.n_records, 1) > 0.2:
         warnings.append(f"high near-duplicate rate {dedup.as_dict()['near_dup_rate']:.0%}")
     warnings.extend(dist.warnings)

@@ -81,37 +81,59 @@ def compute_weights(counts: dict[tuple[str, str], int], cfg: SamplingConfig) -> 
 
 
 def _enforce_dominance(weights: dict[tuple[str, str], float], ceiling: float) -> dict[tuple[str, str], float]:
+    """Cap each dataset's total share at ``ceiling``, redistributing the excess to the
+    others proportionally. Mass-conserving, so the sum is unchanged and repeated capping
+    converges to <= ceiling for every dataset."""
     if ceiling >= 1.0:
         return dict(weights)
     out = dict(weights)
-    for _ in range(20):
+    for _ in range(200):
+        total = sum(out.values()) or 1.0
         by_ds: dict[str, float] = {}
         for (ds, _t), w in out.items():
             by_ds[ds] = by_ds.get(ds, 0.0) + w
-        total = sum(out.values()) or 1.0
-        over = {ds: s / total for ds, s in by_ds.items() if s / total > ceiling + 1e-9}
-        if not over:
+        worst = max(by_ds, key=lambda d: by_ds[d])
+        if by_ds[worst] / total <= ceiling + 1e-9:
             break
-        for ds, frac in over.items():
-            scale = (ceiling * total) / (frac * total)
-            for k in list(out):
-                if k[0] == ds:
-                    out[k] *= scale
+        excess = by_ds[worst] - ceiling * total
+        factor = (ceiling * total) / by_ds[worst]
+        for k in out:
+            if k[0] == worst:
+                out[k] *= factor
+        others_sum = total - by_ds[worst]
+        if others_sum > 0:
+            for k in out:
+                if k[0] != worst:
+                    out[k] += excess * (out[k] / others_sum)
     return out
 
 
 def _enforce_rare_task_min(weights: dict[tuple[str, str], float], min_frac: float) -> dict[tuple[str, str], float]:
+    """Floor each task's total share at ``min_frac``, taking the deficit from the other
+    tasks proportionally. Mass-conserving + iterative to convergence."""
     if min_frac <= 0:
         return dict(weights)
     out = dict(weights)
-    total = sum(out.values()) or 1.0
-    by_task: dict[str, float] = {}
-    for (_d, t), w in out.items():
-        by_task[t] = by_task.get(t, 0.0) + w
-    for t, s in by_task.items():
-        if s / total < min_frac and s > 0:
-            boost = (min_frac * total) / s
-            for k in list(out):
-                if k[1] == t:
-                    out[k] *= boost
+    n_tasks = len({t for _d, t in out})
+    if min_frac * n_tasks > 1.0 + 1e-9:  # infeasible; back off to equal shares
+        min_frac = 1.0 / n_tasks
+    for _ in range(200):
+        total = sum(out.values()) or 1.0
+        by_task: dict[str, float] = {}
+        for (_d, t), w in out.items():
+            by_task[t] = by_task.get(t, 0.0) + w
+        low = [t for t, s in by_task.items() if s / total < min_frac - 1e-9 and s > 0]
+        if not low:
+            break
+        t0 = min(low, key=lambda t: by_task[t])
+        deficit = min_frac * total - by_task[t0]
+        factor = (min_frac * total) / by_task[t0]
+        for k in out:
+            if k[1] == t0:
+                out[k] *= factor
+        others_sum = total - by_task[t0]
+        if others_sum > 0:
+            for k in out:
+                if k[1] != t0:
+                    out[k] -= deficit * (out[k] / others_sum)
     return out

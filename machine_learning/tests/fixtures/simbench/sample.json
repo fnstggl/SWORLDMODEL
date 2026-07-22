@@ -1,0 +1,40 @@
+[
+  {
+    "_split": "SimBenchPop",
+    "dataset_name": "WisdomOfCrowds",
+    "group_prompt_template": "You are an Amazon Mechanical Turk worker from the United States.",
+    "group_prompt_variable_map": {},
+    "input_template": "An analogy compares the relationship between two things or ideas. Which pair of words has the same relationship as PAINTER : BRUSH?\n(A) sculptor : chisel\n(B) writer : book\n(C) singer : song\n(D) chef : knife",
+    "auxiliary": {"correct_answer": "A", "user_id": 2825, "task_id": 10038, "domain_id": 99, "domain_name": "analogies"},
+    "group_size": 516,
+    "human_answer": {"A": 86.62790697674419, "B": 2.3255813953488373, "C": 2.7131782945736433, "D": 8.333333333333332}
+  },
+  {
+    "_split": "SimBenchGrouped",
+    "dataset_name": "OpinionQA",
+    "group_prompt_template": "You are from the United States. The year is 2017.",
+    "group_prompt_variable_map": {},
+    "input_template": "Which statement comes closer to your views, even if neither is exactly right?\n\nOptions:\n(A): Whether someone is a man or a woman is determined by the sex they were assigned at birth\n(B): Someone can be a man or a woman even if that is different from the sex they were assigned at birth\n(C): Refused",
+    "input_variable_map": {},
+    "output_format": "choice",
+    "answer_options": {"A": "Whether someone is a man or a woman is determined by the sex they were assigned at birth", "B": "Someone can be a man or a woman even if that is different from the sex they were assigned at birth", "C": "Refused"},
+    "auxiliary": {},
+    "group_size": 4553,
+    "human_answer": {"A": 54.40195278565966, "B": 44.008878395768605, "C": 1.589168818571747},
+    "wave": 29.0
+  },
+  {
+    "_split": "SimBenchGrouped",
+    "dataset_name": "Afrobarometer",
+    "group_prompt_template": "You are a {age_group} person from {country}.",
+    "group_prompt_variable_map": {"age_group": "30-49", "country": "Kenya"},
+    "input_template": "How much do you trust the police?\n\nOptions:\n(A): Not at all\n(B): Just a little\n(C): Somewhat\n(D): A lot",
+    "input_variable_map": {},
+    "output_format": "choice",
+    "answer_options": {"A": "Not at all", "B": "Just a little", "C": "Somewhat", "D": "A lot"},
+    "auxiliary": {"question_id_original": "Q52A"},
+    "group_size": 1203,
+    "human_answer": {"A": 28.4, "B": 24.1, "C": 22.5, "D": 25.0},
+    "wave": 8.0
+  }
+]

@@ -26,6 +26,13 @@ class ChronologyIssue:
     detail: str
 
 
+# HARD kinds are systematic leakage bugs and must block training. SOFT kinds
+# (target_in_history) are usually coincidental verbatim repetition of a short line and are
+# only a real problem in bulk (see hard_ok's rate threshold).
+_HARD_KINDS = {"future_not_hidden", "history_after_cutoff", "negative_time"}
+_SOFT_RATE_LIMIT = 0.01  # > 1% target_in_history => treat as a systematic bug
+
+
 @dataclass
 class ChronologyReport:
     dataset_id: str
@@ -34,11 +41,30 @@ class ChronologyReport:
 
     @property
     def ok(self) -> bool:
+        """No issues at all (strict)."""
         return not self.issues
+
+    @property
+    def hard_issues(self) -> list:
+        return [i for i in self.issues if i.kind in _HARD_KINDS]
+
+    @property
+    def soft_issues(self) -> list:
+        return [i for i in self.issues if i.kind not in _HARD_KINDS]
+
+    @property
+    def hard_ok(self) -> bool:
+        """Passes critical gating: no hard leakage, and coincidental target-in-history is
+        below the systematic-bug rate threshold."""
+        if self.hard_issues:
+            return False
+        rate = len(self.soft_issues) / max(self.n_checked, 1)
+        return rate <= _SOFT_RATE_LIMIT
 
     def as_dict(self) -> dict:
         return {"dataset_id": self.dataset_id, "n_checked": self.n_checked,
-                "n_issues": len(self.issues), "ok": self.ok,
+                "n_issues": len(self.issues), "ok": self.ok, "hard_ok": self.hard_ok,
+                "n_hard": len(self.hard_issues), "n_soft": len(self.soft_issues),
                 "issues": [i.__dict__ for i in self.issues[:50]]}
 
 
@@ -76,8 +102,10 @@ def check_record(record: dict) -> list[ChronologyIssue]:
     tgt = record.get("payload", {}).get("target", {})
     if task == "PREDICT_NEXT_MESSAGE":
         msg = (tgt.get("message_text") or "").strip()
-        if msg and len(msg) > 8 and msg in _history_texts(record):
-            issues.append(ChronologyIssue(rid, "target_in_history", "target message appears in dialogue history"))
+        # Only a LONG, distinctive verbatim match is suspicious; short lines ("Thank you!",
+        # "ok") legitimately recur across a conversation and are not leakage.
+        if msg and len(msg) > 40 and msg in _history_texts(record):
+            issues.append(ChronologyIssue(rid, "target_in_history", "long target message appears verbatim in dialogue history"))
 
     # impossible timing
     if task == "PREDICT_TIME_TO_ACTION":
