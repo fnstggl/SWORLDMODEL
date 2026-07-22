@@ -1,0 +1,256 @@
+{
+ "experiment": "EXP-113 Lean V2 simulation-completion five-question evaluation",
+ "n": 5,
+ "mean_brier": {
+  "exp113_lean_v2": 0.6387,
+  "exp112_lean_v2": 0.0743,
+  "lean_v1": 0.3369,
+  "full_fidelity": 0.4403
+ },
+ "mean_sim_forecast_brier": 0.6995,
+ "sim_moved_toward_outcome_count": "1/5",
+ "mean_resolved_mass": 0.8833,
+ "acceptance_all_ok_count": "3/5",
+ "resolved_target_met_count": "3/5",
+ "unknown_state_zero_count": "5/5",
+ "total_calls": 143,
+ "total_wall_s": 756.8,
+ "total_cost": 0.1223,
+ "guard_passed_all": true,
+ "per_question": [
+  {
+   "name": "Banxico",
+   "status": "completed",
+   "prior_forecast": 0.8333,
+   "simulation_forecast": 0.0988,
+   "headline_forecast": 0.0988,
+   "headline_source": "mass_weighted:completed_rollouts+grounded_prior",
+   "resolved_simulation_mass": 1.0,
+   "unresolved_mass_by_cause": {},
+   "simulation_probability_bounds": [
+    0.0,
+    0.5236
+   ],
+   "completion_acceptance": {
+    "terminal_unknown_state_mass": 0.0,
+    "terminal_unknown_state_ok": true,
+    "terminal_missing_mechanism_mass": 0.0,
+    "terminal_missing_mechanism_ok": true,
+    "provider_failure_mass": 0.0,
+    "provider_failure_ok": true,
+    "resolved_share": 1.0,
+    "resolved_target_met": true,
+    "resolved_hard_floor_met": true,
+    "all_ok": true
+   },
+   "readiness_verdict": "repairable",
+   "n_llm_calls": 33,
+   "wall_clock_s": 184.9,
+   "evaluation": {
+    "outcome": 1,
+    "ff_p": 0.7294,
+    "l1_p": 0.769,
+    "exp112_p": 0.75,
+    "exp113_p": 0.0988,
+    "brier": {
+     "full_fidelity": 0.0732,
+     "lean_v1": 0.0534,
+     "exp112_lean_v2": 0.0625,
+     "exp113_lean_v2": 0.8122
+    },
+    "sim_forecast_brier": 0.8122,
+    "prior_brier": 0.0278,
+    "sim_moved_toward_outcome": false,
+    "correct_side": false
+   }
+  },
+  {
+   "name": "BoJ",
+   "status": "completed",
+   "prior_forecast": 0.875,
+   "simulation_forecast": 0.0364,
+   "headline_forecast": 0.0364,
+   "headline_source": "mass_weighted:completed_rollouts+grounded_prior",
+   "resolved_simulation_mass": 1.0,
+   "unresolved_mass_by_cause": {},
+   "simulation_probability_bounds": [
+    0.0,
+    0.7153
+   ],
+   "completion_acceptance": {
+    "terminal_unknown_state_mass": 0.0,
+    "terminal_unknown_state_ok": true,
+    "terminal_missing_mechanism_mass": 0.0,
+    "terminal_missing_mechanism_ok": true,
+    "provider_failure_mass": 0.0,
+    "provider_failure_ok": true,
+    "resolved_share": 1.0,
+    "resolved_target_met": true,
+    "resolved_hard_floor_met": true,
+    "all_ok": true
+   },
+   "readiness_verdict": "ready",
+   "n_llm_calls": 41,
+   "wall_clock_s": 190.0,
+   "evaluation": {
+    "outcome": 1,
+    "ff_p": 0.22,
+    "l1_p": 0.5645,
+    "exp112_p": 0.875,
+    "exp113_p": 0.0364,
+    "brier": {
+     "full_fidelity": 0.6084,
+     "lean_v1": 0.1897,
+     "exp112_lean_v2": 0.0156,
+     "exp113_lean_v2": 0.9285
+    },
+    "sim_forecast_brier": 0.9285,
+    "prior_brier": 0.0156,
+    "sim_moved_toward_outcome": false,
+    "correct_side": false
+   }
+  },
+  {
+   "name": "visionOS",
+   "status": "partially_resolved",
+   "prior_forecast": 0.8333,
+   "simulation_forecast": 1.0,
+   "headline_forecast": 0.9583,
+   "headline_source": "mass_weighted:partial_rollouts+grounded_prior",
+   "resolved_simulation_mass": 0.75,
+   "unresolved_mass_by_cause": {
+    "unresolved_missing_mechanism": 0.25
+   },
+   "simulation_probability_bounds": [
+    0.722,
+    1.0
+   ],
+   "completion_acceptance": {
+    "terminal_unknown_state_mass": 0.0,
+    "terminal_unknown_state_ok": true,
+    "terminal_missing_mechanism_mass": 0.25,
+    "terminal_missing_mechanism_ok": true,
+    "provider_failure_mass": 0.0,
+    "provider_failure_ok": true,
+    "resolved_share": 0.75,
+    "resolved_target_met": false,
+    "resolved_hard_floor_met": true,
+    "all_ok": false
+   },
+   "readiness_verdict": "repairable",
+   "n_llm_calls": 21,
+   "wall_clock_s": 111.8,
+   "evaluation": {
+    "outcome": 1,
+    "ff_p": 0.834,
+    "l1_p": 0.417,
+    "exp112_p": 0.875,
+    "exp113_p": 0.9583,
+    "brier": {
+     "full_fidelity": 0.0276,
+     "lean_v1": 0.3399,
+     "exp112_lean_v2": 0.0156,
+     "exp113_lean_v2": 0.0017
+    },
+    "sim_forecast_brier": 0.0,
+    "prior_brier": 0.0278,
+    "sim_moved_toward_outcome": true,
+    "correct_side": true
+   }
+  },
+  {
+   "name": "Wale",
+   "status": "completed",
+   "prior_forecast": 0.1667,
+   "simulation_forecast": 0.1302,
+   "headline_forecast": 0.1302,
+   "headline_source": "mass_weighted:completed_rollouts+grounded_prior",
+   "resolved_simulation_mass": 1.0,
+   "unresolved_mass_by_cause": {},
+   "simulation_probability_bounds": [
+    0.0,
+    0.8607
+   ],
+   "completion_acceptance": {
+    "terminal_unknown_state_mass": 0.0,
+    "terminal_unknown_state_ok": true,
+    "terminal_missing_mechanism_mass": 0.0,
+    "terminal_missing_mechanism_ok": true,
+    "provider_failure_mass": 0.0,
+    "provider_failure_ok": true,
+    "resolved_share": 1.0,
+    "resolved_target_met": true,
+    "resolved_hard_floor_met": true,
+    "all_ok": true
+   },
+   "readiness_verdict": "ready",
+   "n_llm_calls": 30,
+   "wall_clock_s": 168.9,
+   "evaluation": {
+    "outcome": 1,
+    "ff_p": 0.1584,
+    "l1_p": 0.435,
+    "exp112_p": 0.8333,
+    "exp113_p": 0.1302,
+    "brier": {
+     "full_fidelity": 0.7083,
+     "lean_v1": 0.3192,
+     "exp112_lean_v2": 0.0278,
+     "exp113_lean_v2": 0.7566
+    },
+    "sim_forecast_brier": 0.7566,
+    "prior_brier": 0.6944,
+    "sim_moved_toward_outcome": false,
+    "correct_side": false
+   }
+  },
+  {
+   "name": "Hormuz",
+   "status": "partially_resolved",
+   "prior_forecast": 0.5,
+   "simulation_forecast": 1.0,
+   "headline_forecast": 0.8333,
+   "headline_source": "mass_weighted:partial_rollouts+grounded_prior",
+   "resolved_simulation_mass": 0.6667,
+   "unresolved_mass_by_cause": {
+    "unresolved_missing_mechanism": 0.333336
+   },
+   "simulation_probability_bounds": [
+    0.6859,
+    1.0
+   ],
+   "completion_acceptance": {
+    "terminal_unknown_state_mass": 0.0,
+    "terminal_unknown_state_ok": true,
+    "terminal_missing_mechanism_mass": 0.333336,
+    "terminal_missing_mechanism_ok": true,
+    "provider_failure_mass": 0.0,
+    "provider_failure_ok": true,
+    "resolved_share": 0.6667,
+    "resolved_target_met": false,
+    "resolved_hard_floor_met": true,
+    "all_ok": false
+   },
+   "readiness_verdict": "repairable",
+   "n_llm_calls": 18,
+   "wall_clock_s": 101.2,
+   "evaluation": {
+    "outcome": 0,
+    "ff_p": 0.8853,
+    "l1_p": 0.8845,
+    "exp112_p": 0.5,
+    "exp113_p": 0.8333,
+    "brier": {
+     "full_fidelity": 0.7838,
+     "lean_v1": 0.7823,
+     "exp112_lean_v2": 0.25,
+     "exp113_lean_v2": 0.6944
+    },
+    "sim_forecast_brier": 1.0,
+    "prior_brier": 0.25,
+    "sim_moved_toward_outcome": false,
+    "correct_side": false
+   }
+  }
+ ]
+}
