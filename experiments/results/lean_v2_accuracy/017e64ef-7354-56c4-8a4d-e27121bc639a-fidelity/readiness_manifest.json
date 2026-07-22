@@ -1,0 +1,217 @@
+{
+ "readiness": {
+  "verdict": "ready",
+  "checks": [
+   {
+    "check": "actor_states:iranian_supreme_leader",
+    "ok": true,
+    "note": "2 state(s)"
+   },
+   {
+    "check": "actor_weights:iranian_supreme_leader",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "actor_states:us_naval_commander",
+    "ok": true,
+    "note": "2 state(s)"
+   },
+   {
+    "check": "actor_weights:us_naval_commander",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "actor_states:tanker_operators",
+    "ok": true,
+    "note": "2 state(s)"
+   },
+   {
+    "check": "actor_weights:tanker_operators",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "shared_conditions_exist",
+    "ok": true,
+    "note": "9 combo(s)"
+   },
+   {
+    "check": "actor_trigger:iranian_supreme_leader",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:iranian_supreme_leader",
+    "ok": true,
+    "note": "1 option(s)"
+   },
+   {
+    "check": "actor_trigger:us_naval_commander",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:us_naval_commander",
+    "ok": true,
+    "note": "1 option(s)"
+   },
+   {
+    "check": "actor_trigger:tanker_operators",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:tanker_operators",
+    "ok": true,
+    "note": "1 option(s)"
+   },
+   {
+    "check": "terminal_writer",
+    "ok": true,
+    "note": "canonical-key writer or bounded mechanism"
+   },
+   {
+    "check": "terminal_units",
+    "ok": true,
+    "note": "numeric predicates need a bounded mechanism in question units"
+   },
+   {
+    "check": "terminal_round_trip",
+    "ok": true,
+    "note": "synthetic YES\u21921 / NO\u21920 through the live path"
+   }
+  ],
+  "repairs_needed": [],
+  "repairs_applied": [
+   {
+    "repair": "schedule_mandatory_trigger",
+    "actor": "tanker_operators",
+    "day": "2026-06-01"
+   }
+  ],
+  "round_trip": {
+   "mapping": {
+    "yes_label": "YES",
+    "no_label": "NO",
+    "aliases_yes": [
+     "1",
+     "tanker_transit_surge event occurs on any day in [2026-04-29,",
+     "true",
+     "yes"
+    ],
+    "aliases_no": [
+     "0",
+     "false",
+     "no",
+     "no tanker_transit_surge event by 2026-06-01 23:59 utc"
+    ]
+   },
+   "checks": [
+    {
+     "case": "known_yes",
+     "evaluator_ok": true,
+     "evaluator_out": {
+      "resolved": true,
+      "outcome": "YES",
+      "detail": {
+       "predicate": "__terminal_yes__"
+      }
+     },
+     "recovery_p": 1.0,
+     "mapping_ok": true
+    },
+    {
+     "case": "known_no",
+     "evaluator_ok": true,
+     "evaluator_out": {
+      "resolved": true,
+      "outcome": "NO",
+      "detail": {
+       "predicate": "__terminal_yes__"
+      }
+     },
+     "recovery_p": 0.0,
+     "mapping_ok": true
+    }
+   ],
+   "ok": true
+  },
+  "version": "lean_v2.readiness.v1"
+ },
+ "terminal_canonicalization": {
+  "needed": true,
+  "rewritten": [
+   {
+    "action_id": "iran_clear_mines",
+    "old_key": "mines_cleared",
+    "new_key": "__terminal_yes__"
+   },
+   {
+    "action_id": "us_lift_blockade",
+    "old_key": "blockade_active",
+    "new_key": "__terminal_yes__"
+   },
+   {
+    "action_id": "tankers_transit",
+    "old_key": "daily_tanker_count",
+    "new_key": "__terminal_yes__"
+   }
+  ],
+  "canonical_key": "__terminal_yes__"
+ },
+ "preflight": {
+  "verdict": "answerable",
+  "checks": [
+   {
+    "check": "terminal_predicate_exists",
+    "ok": true,
+    "note": "kind=event_occurs"
+   },
+   {
+    "check": "terminal_writer_exists",
+    "ok": true,
+    "note": "writers=['tankers_transit', 'iran_clear_mines', 'us_lift_blockade']"
+   },
+   {
+    "check": "terminal_writer_instantiated",
+    "ok": true,
+    "note": "instantiated=['tankers_transit', 'iran_clear_mines', 'us_lift_blockade'] of 3"
+   },
+   {
+    "check": "writer_inputs_producible",
+    "ok": true,
+    "note": "writer tankers_transit reachable at 2026-04-29"
+   },
+   {
+    "check": "yes_path_exists",
+    "ok": true,
+    "note": "event_occurs: NO = censoring at horizon"
+   },
+   {
+    "check": "no_path_exists",
+    "ok": true,
+    "note": "event_occurs: NO = censoring at horizon"
+   },
+   {
+    "check": "outcome_mechanism_accepted",
+    "ok": true,
+    "note": "all terminal-writing effects are known mechanical kinds"
+   },
+   {
+    "check": "unresolved_recovery_pathway",
+    "ok": true,
+    "note": "forecast_recovery active; grounded_rates=2"
+   },
+   {
+    "check": "not_inevitably_unresolved",
+    "ok": true,
+    "note": "at least one resolving path exists"
+   }
+  ],
+  "blocking": [],
+  "probe": {},
+  "one_sided": ""
+ }
+}

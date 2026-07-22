@@ -1,0 +1,257 @@
+{
+ "readiness": {
+  "verdict": "ready",
+  "checks": [
+   {
+    "check": "actor_states:victoria_rodriguez_ceja",
+    "ok": true,
+    "note": "3 state(s)"
+   },
+   {
+    "check": "actor_weights:victoria_rodriguez_ceja",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "actor_states:jonathan_heath",
+    "ok": true,
+    "note": "3 state(s)"
+   },
+   {
+    "check": "actor_weights:jonathan_heath",
+    "ok": true,
+    "note": "weight sum 0.9999"
+   },
+   {
+    "check": "actor_states:irene_espinosa_cantellano",
+    "ok": true,
+    "note": "3 state(s)"
+   },
+   {
+    "check": "actor_weights:irene_espinosa_cantellano",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "actor_states:galia_borja_gomez",
+    "ok": true,
+    "note": "3 state(s)"
+   },
+   {
+    "check": "actor_weights:galia_borja_gomez",
+    "ok": true,
+    "note": "weight sum 0.9999"
+   },
+   {
+    "check": "actor_states:omar_mejia_castelazo",
+    "ok": true,
+    "note": "3 state(s)"
+   },
+   {
+    "check": "actor_weights:omar_mejia_castelazo",
+    "ok": true,
+    "note": "weight sum 0.9999"
+   },
+   {
+    "check": "shared_conditions_exist",
+    "ok": true,
+    "note": "8 combo(s)"
+   },
+   {
+    "check": "actor_trigger:victoria_rodriguez_ceja",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:victoria_rodriguez_ceja",
+    "ok": true,
+    "note": "3 option(s)"
+   },
+   {
+    "check": "actor_trigger:jonathan_heath",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:jonathan_heath",
+    "ok": true,
+    "note": "3 option(s)"
+   },
+   {
+    "check": "actor_trigger:irene_espinosa_cantellano",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:irene_espinosa_cantellano",
+    "ok": true,
+    "note": "3 option(s)"
+   },
+   {
+    "check": "actor_trigger:galia_borja_gomez",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:galia_borja_gomez",
+    "ok": true,
+    "note": "3 option(s)"
+   },
+   {
+    "check": "actor_trigger:omar_mejia_castelazo",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:omar_mejia_castelazo",
+    "ok": true,
+    "note": "3 option(s)"
+   },
+   {
+    "check": "institution_deadline:banxico_governing_board",
+    "ok": true,
+    "note": "2026-06-25"
+   },
+   {
+    "check": "terminal_writer",
+    "ok": true,
+    "note": "vote writers"
+   },
+   {
+    "check": "terminal_units",
+    "ok": true,
+    "note": "vote tally in members \u2014 exact units"
+   },
+   {
+    "check": "terminal_round_trip",
+    "ok": true,
+    "note": "synthetic YES\u21921 / NO\u21920 through the live path"
+   }
+  ],
+  "repairs_needed": [],
+  "repairs_applied": [],
+  "round_trip": {
+   "mapping": {
+    "yes_label": "Unanimous (5-0)",
+    "no_label": "Split (4-1 or 3-2)",
+    "aliases_yes": [
+     "1",
+     "all five votes are for the same policy action (hold, cut, or",
+     "true",
+     "unanimous (5-0)",
+     "yes"
+    ],
+    "aliases_no": [
+     "0",
+     "at least one vote differs from the others.",
+     "false",
+     "no",
+     "split (4-1 or 3-2)"
+    ]
+   },
+   "checks": [
+    {
+     "case": "known_yes",
+     "evaluator_ok": true,
+     "evaluator_out": {
+      "resolved": true,
+      "outcome": "YES",
+      "detail": {
+       "votes": {
+        "victoria_rodriguez_ceja": "identical_vote",
+        "jonathan_heath": "identical_vote",
+        "irene_espinosa_cantellano": "identical_vote",
+        "galia_borja_gomez": "identical_vote",
+        "omar_mejia_castelazo": "identical_vote"
+       },
+       "rule": "unanimity",
+       "non_substantive": []
+      }
+     },
+     "recovery_p": 1.0,
+     "mapping_ok": true
+    },
+    {
+     "case": "known_no",
+     "evaluator_ok": true,
+     "evaluator_out": {
+      "resolved": true,
+      "outcome": "NO",
+      "detail": {
+       "votes": {
+        "victoria_rodriguez_ceja": "identical_vote",
+        "jonathan_heath": "identical_vote",
+        "irene_espinosa_cantellano": "identical_vote",
+        "galia_borja_gomez": "identical_vote",
+        "omar_mejia_castelazo": "cut"
+       },
+       "rule": "unanimity",
+       "non_substantive": []
+      }
+     },
+     "recovery_p": 0.0,
+     "mapping_ok": true
+    }
+   ],
+   "ok": true
+  },
+  "version": "lean_v2.readiness.v1"
+ },
+ "terminal_canonicalization": {
+  "needed": false,
+  "why": "vote terminals read the tally directly"
+ },
+ "preflight": {
+  "verdict": "answerable",
+  "checks": [
+   {
+    "check": "terminal_predicate_exists",
+    "ok": true,
+    "note": "kind=institution_vote"
+   },
+   {
+    "check": "terminal_writer_exists",
+    "ok": true,
+    "note": "writers=['record_vote', 'publish_statement']"
+   },
+   {
+    "check": "terminal_writer_instantiated",
+    "ok": true,
+    "note": "instantiated=['record_vote', 'publish_statement'] of 2"
+   },
+   {
+    "check": "writer_inputs_producible",
+    "ok": true,
+    "note": "writer record_vote reachable at 2026-05-07"
+   },
+   {
+    "check": "yes_path_exists",
+    "ok": true,
+    "note": "common options=['cut', 'hike', 'hold']"
+   },
+   {
+    "check": "no_path_exists",
+    "ok": true,
+    "note": "common options=['cut', 'hike', 'hold']"
+   },
+   {
+    "check": "outcome_mechanism_accepted",
+    "ok": true,
+    "note": "all terminal-writing effects are known mechanical kinds"
+   },
+   {
+    "check": "unresolved_recovery_pathway",
+    "ok": true,
+    "note": "forecast_recovery active; grounded_rates=1"
+   },
+   {
+    "check": "not_inevitably_unresolved",
+    "ok": true,
+    "note": "at least one resolving path exists"
+   }
+  ],
+  "blocking": [],
+  "probe": {},
+  "one_sided": ""
+ }
+}

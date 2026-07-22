@@ -1,0 +1,805 @@
+{
+ "decisions": {
+  "version": "lean.decision.cache.v1",
+  "behavioral_replicates_per_decision_context": 1,
+  "unique_decision_contexts": 5,
+  "hits": 63,
+  "misses": 0,
+  "stores": 5,
+  "invalidated_hits": 0,
+  "failures_not_cached": 0,
+  "reuses": 63,
+  "largest_context_reuse": [
+   {
+    "context_hash": "b933be7a5fd88154bf07052bf5241b3a64c8f2f27c73e5128a476d0b340291b6",
+    "n_reuses": 21
+   },
+   {
+    "context_hash": "db96e513bd69c0c29326754073188a6e4f67a496b2b7e537ecd7deee384ed17c",
+    "n_reuses": 21
+   },
+   {
+    "context_hash": "6d413c7df330bfff2f932e5e886376f32840456d97d8ac80ae78adba7e18da4e",
+    "n_reuses": 7
+   },
+   {
+    "context_hash": "1804ea8ece1a2267bc6861096afed28bfba101a340f9ee1fd0ec74ff33382fd8",
+    "n_reuses": 7
+   },
+   {
+    "context_hash": "e831441c16e0d2bf25311b84b66763065a571248e3d634fae7f3d97caf4acf32",
+    "n_reuses": 7
+   }
+  ],
+  "templates": [
+   {
+    "context_hash": "1804ea8ece1a2267bc6861096afed28bfba101a340f9ee1fd0ec74ff33382fd8",
+    "actor_id": "apple_executive_team",
+    "cohort_id": "collective_announce",
+    "prompt_hash": "",
+    "response_hash": "6e307dab52f91266",
+    "model_fingerprint": "deepseek-v4-flash",
+    "prompt_version": "lean_v2.prompts.v1",
+    "replicate_index": 0,
+    "source_branch": "wave",
+    "validation_record": {
+     "ok": true
+    }
+   },
+   {
+    "context_hash": "6d413c7df330bfff2f932e5e886376f32840456d97d8ac80ae78adba7e18da4e",
+    "actor_id": "apple_executive_team",
+    "cohort_id": "collective_abandon",
+    "prompt_hash": "",
+    "response_hash": "b27fcd1385befb03",
+    "model_fingerprint": "deepseek-v4-flash",
+    "prompt_version": "lean_v2.prompts.v1",
+    "replicate_index": 0,
+    "source_branch": "wave",
+    "validation_record": {
+     "ok": true
+    }
+   },
+   {
+    "context_hash": "e831441c16e0d2bf25311b84b66763065a571248e3d634fae7f3d97caf4acf32",
+    "actor_id": "apple_executive_team",
+    "cohort_id": "collective_minor_update",
+    "prompt_hash": "",
+    "response_hash": "f4529877f464c0b5",
+    "model_fingerprint": "deepseek-v4-flash",
+    "prompt_version": "lean_v2.prompts.v1",
+    "replicate_index": 0,
+    "source_branch": "wave",
+    "validation_record": {
+     "ok": true
+    }
+   },
+   {
+    "context_hash": "b933be7a5fd88154bf07052bf5241b3a64c8f2f27c73e5128a476d0b340291b6",
+    "actor_id": "greg_joswiak",
+    "cohort_id": "marketing_go",
+    "prompt_hash": "",
+    "response_hash": "8633c4aee1f694ea",
+    "model_fingerprint": "deepseek-v4-flash",
+    "prompt_version": "lean_v2.prompts.v1",
+    "replicate_index": 0,
+    "source_branch": "wave",
+    "validation_record": {
+     "ok": true
+    }
+   },
+   {
+    "context_hash": "db96e513bd69c0c29326754073188a6e4f67a496b2b7e537ecd7deee384ed17c",
+    "actor_id": "greg_joswiak",
+    "cohort_id": "marketing_no_go",
+    "prompt_hash": "",
+    "response_hash": "2ab23a73b16a15d4",
+    "model_fingerprint": "deepseek-v4-flash",
+    "prompt_version": "lean_v2.prompts.v1",
+    "replicate_index": 0,
+    "source_branch": "wave",
+    "validation_record": {
+     "ok": true
+    }
+   }
+  ],
+  "cross_run_persistence": "disabled (run-scoped by construction)"
+ },
+ "decision_trace": [
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw0.apple_ex-collective_abandon",
+   "day": "2026-06-01",
+   "variant": "collective_abandon",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "6d413c7df330bfff"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw0.apple_ex-collective_announce",
+   "day": "2026-06-01",
+   "variant": "collective_announce",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "include_in_keynote",
+   "vote_option": "include_in_keynote",
+   "context_hash": "1804ea8ece1a2267"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw0.apple_ex-collective_minor_update",
+   "day": "2026-06-01",
+   "variant": "collective_minor_update",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "e831441c16e0d2bf"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw1.apple_ex-collective_abandon",
+   "day": "2026-06-01",
+   "variant": "collective_abandon",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "6d413c7df330bfff"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw1.apple_ex-collective_announce",
+   "day": "2026-06-01",
+   "variant": "collective_announce",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "include_in_keynote",
+   "vote_option": "include_in_keynote",
+   "context_hash": "1804ea8ece1a2267"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw1.apple_ex-collective_minor_update",
+   "day": "2026-06-01",
+   "variant": "collective_minor_update",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "e831441c16e0d2bf"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw2.apple_ex-collective_abandon",
+   "day": "2026-06-01",
+   "variant": "collective_abandon",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "6d413c7df330bfff"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw2.apple_ex-collective_announce",
+   "day": "2026-06-01",
+   "variant": "collective_announce",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "include_in_keynote",
+   "vote_option": "include_in_keynote",
+   "context_hash": "1804ea8ece1a2267"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw2.apple_ex-collective_minor_update",
+   "day": "2026-06-01",
+   "variant": "collective_minor_update",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "e831441c16e0d2bf"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw3.apple_ex-collective_abandon",
+   "day": "2026-06-01",
+   "variant": "collective_abandon",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "6d413c7df330bfff"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw3.apple_ex-collective_announce",
+   "day": "2026-06-01",
+   "variant": "collective_announce",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "include_in_keynote",
+   "vote_option": "include_in_keynote",
+   "context_hash": "1804ea8ece1a2267"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw3.apple_ex-collective_minor_update",
+   "day": "2026-06-01",
+   "variant": "collective_minor_update",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "e831441c16e0d2bf"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw4.apple_ex-collective_abandon",
+   "day": "2026-06-01",
+   "variant": "collective_abandon",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "6d413c7df330bfff"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw4.apple_ex-collective_announce",
+   "day": "2026-06-01",
+   "variant": "collective_announce",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "include_in_keynote",
+   "vote_option": "include_in_keynote",
+   "context_hash": "1804ea8ece1a2267"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw4.apple_ex-collective_minor_update",
+   "day": "2026-06-01",
+   "variant": "collective_minor_update",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "e831441c16e0d2bf"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw5.apple_ex-collective_abandon",
+   "day": "2026-06-01",
+   "variant": "collective_abandon",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "6d413c7df330bfff"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw5.apple_ex-collective_announce",
+   "day": "2026-06-01",
+   "variant": "collective_announce",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "include_in_keynote",
+   "vote_option": "include_in_keynote",
+   "context_hash": "1804ea8ece1a2267"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw5.apple_ex-collective_minor_update",
+   "day": "2026-06-01",
+   "variant": "collective_minor_update",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "e831441c16e0d2bf"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw6.apple_ex-collective_abandon",
+   "day": "2026-06-01",
+   "variant": "collective_abandon",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "6d413c7df330bfff"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw6.apple_ex-collective_announce",
+   "day": "2026-06-01",
+   "variant": "collective_announce",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "include_in_keynote",
+   "vote_option": "include_in_keynote",
+   "context_hash": "1804ea8ece1a2267"
+  },
+  {
+   "actor": "apple_executive_team",
+   "node": "w0_sw6.apple_ex-collective_minor_update",
+   "day": "2026-06-01",
+   "variant": "collective_minor_update",
+   "trigger": "keynote_script_finalized",
+   "act_or_wait": "act",
+   "chosen": "omit_from_keynote",
+   "vote_option": "omit_from_keynote",
+   "context_hash": "e831441c16e0d2bf"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw0.apple_ex-collective_abandon.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw0.apple_ex-collective_abandon.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw0.apple_ex-collective_announce.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw0.apple_ex-collective_announce.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw0.apple_ex-collective_minor_update.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw0.apple_ex-collective_minor_update.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw1.apple_ex-collective_abandon.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw1.apple_ex-collective_abandon.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw1.apple_ex-collective_announce.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw1.apple_ex-collective_announce.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw1.apple_ex-collective_minor_update.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw1.apple_ex-collective_minor_update.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw2.apple_ex-collective_abandon.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw2.apple_ex-collective_abandon.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw2.apple_ex-collective_announce.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw2.apple_ex-collective_announce.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw2.apple_ex-collective_minor_update.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw2.apple_ex-collective_minor_update.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw3.apple_ex-collective_abandon.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw3.apple_ex-collective_abandon.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw3.apple_ex-collective_announce.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw3.apple_ex-collective_announce.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw3.apple_ex-collective_minor_update.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw3.apple_ex-collective_minor_update.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw4.apple_ex-collective_abandon.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw4.apple_ex-collective_abandon.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw4.apple_ex-collective_announce.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw4.apple_ex-collective_announce.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw4.apple_ex-collective_minor_update.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw4.apple_ex-collective_minor_update.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw5.apple_ex-collective_abandon.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw5.apple_ex-collective_abandon.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw5.apple_ex-collective_announce.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw5.apple_ex-collective_announce.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw5.apple_ex-collective_minor_update.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw5.apple_ex-collective_minor_update.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw6.apple_ex-collective_abandon.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw6.apple_ex-collective_abandon.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw6.apple_ex-collective_announce.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw6.apple_ex-collective_announce.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw6.apple_ex-collective_minor_update.greg_jos-marketing_go",
+   "day": "2026-06-12",
+   "variant": "marketing_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "announce visionOS 27",
+   "context_hash": "b933be7a5fd88154"
+  },
+  {
+   "actor": "greg_joswiak",
+   "node": "w0_sw6.apple_ex-collective_minor_update.greg_jos-marketing_no_go",
+   "day": "2026-06-12",
+   "variant": "marketing_no_go",
+   "trigger": "mandatory_terminal",
+   "act_or_wait": "act",
+   "chosen": "cast_vote",
+   "vote_option": "no_announcement",
+   "context_hash": "db96e513bd69c0c2"
+  }
+ ],
+ "escalations": [],
+ "avoided_reasks": []
+}
