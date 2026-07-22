@@ -3,7 +3,7 @@
  "version": "lean_v2.completeness.v1",
  "empty_sets_detected": 0,
  "cache_invalidations": 0,
- "total_recovery_calls": 3,
+ "total_recovery_calls": 5,
  "reversal_search": {
   "ran": false,
   "why": "every actor already holds a reversal-capable state"
@@ -11,10 +11,24 @@
  "actors": {
   "ueda_kazuo": {
    "actor_id": "ueda_kazuo",
-   "initial_state_count": 2,
-   "attempts": [],
-   "final_state_count": 2,
-   "final_source": "generated",
+   "initial_state_count": 1,
+   "attempts": [
+    {
+     "attempt": 1,
+     "action": "deterministic_alias_parse_repair",
+     "outcome": "nothing_to_repair",
+     "calls": 0
+    },
+    {
+     "attempt": 2,
+     "action": "targeted_regeneration",
+     "outcome": "generated 3 state(s)",
+     "calls": 1,
+     "note": ""
+    }
+   ],
+   "final_state_count": 4,
+   "final_source": "regenerated",
    "residual_r": 0.2,
    "residual_provenance": "counted out-of-set frequency 1/1 (capped)",
    "under_modeled": false
@@ -93,10 +107,24 @@
   },
   "other_members": {
    "actor_id": "other_members",
-   "initial_state_count": 2,
-   "attempts": [],
-   "final_state_count": 2,
-   "final_source": "generated",
+   "initial_state_count": 1,
+   "attempts": [
+    {
+     "attempt": 1,
+     "action": "deterministic_alias_parse_repair",
+     "outcome": "nothing_to_repair",
+     "calls": 0
+    },
+    {
+     "attempt": 2,
+     "action": "targeted_regeneration",
+     "outcome": "generated 3 state(s)",
+     "calls": 1,
+     "note": ""
+    }
+   ],
+   "final_state_count": 4,
+   "final_source": "regenerated",
    "residual_r": 0.1,
    "residual_provenance": "uncovered feasible option(s) ['maintain at 0.75%', 'raise to 1.0%'] with no counted cases \u2014 bounded per option",
    "under_modeled": false

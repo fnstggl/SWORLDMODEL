@@ -5,12 +5,12 @@
    {
     "check": "actor_states:ueda_kazuo",
     "ok": true,
-    "note": "2 state(s)"
+    "note": "4 state(s)"
    },
    {
     "check": "actor_weights:ueda_kazuo",
-    "ok": true,
-    "note": "weight sum 1.0000"
+    "ok": false,
+    "note": "weight sum 0.9999"
    },
    {
     "check": "actor_states:nakagawa_junko",
@@ -45,7 +45,7 @@
    {
     "check": "actor_states:other_members",
     "ok": true,
-    "note": "2 state(s)"
+    "note": "4 state(s)"
    },
    {
     "check": "actor_weights:other_members",
@@ -129,6 +129,10 @@
    }
   ],
   "repairs_needed": [
+   {
+    "check": "actor_weights:ueda_kazuo",
+    "repair": "renormalize_represented_weights"
+   },
    {
     "check": "actor_weights:nakagawa_junko",
     "repair": "renormalize_represented_weights"
