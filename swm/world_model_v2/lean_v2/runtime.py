@@ -205,9 +205,18 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
     lean_v2_prov["state_recovery"] = completeness.manifest()
 
     posterior_engine = ActorStatePosteriorEngine(grounding)
+    # ---------------- 6c-bis. SHARED CONDITION GRAPH (D12) ------------------------------
+    # correlated actors share a latent cause and are enumerated THROUGH it (never independently
+    # multiplied); dependencies/exclusivity give the true joint worlds; the low-probability tail
+    # is PRESERVED as a bounded interval widener instead of being pruned and renormalized to zero.
+    from swm.world_model_v2.lean_v2.shared_conditions import build_shared_condition_graph
+    _scg = build_shared_condition_graph(posterior_engine, grounding)
+    _jw = _scg.joint_worlds()
+    lean_v2_prov["shared_condition_graph"] = _scg.manifest()
+    lean_v2_prov["preserved_tail_mass"] = _jw["tail_mass"]
     validated, grounded_weights, gw_by_combo, shared_combos, state_prov = \
         _build_grounded_weights(bp, states_by_actor, posterior_engine, grounding,
-                                hard_evidence_ids)
+                                hard_evidence_ids, shared_world_combos=_jw["worlds"])
     # ---------------- 6d-bis. D9: split latent mindset from unobserved external events ------
     # before any state reaches an actor, separate the actor's LATENT mindset from claimed
     # EXTERNAL events; an unsupported external claim (a secret memo, a private threat) is
@@ -638,10 +647,12 @@ def _shared_combos(posterior_engine, cap: int = 6) -> list:
 
 
 def _build_grounded_weights(bp, states_by_actor, posterior_engine, grounding,
-                            hard_evidence_ids, *, install_variants: bool = True):
+                            hard_evidence_ids, *, install_variants: bool = True,
+                            shared_world_combos: list = None):
     """Validate hypotheses, install them as blueprint variants, and compute COUNTED per-actor
     weights for the MAP combo and every shared-world combo. Returns
-    (validated, grounded_weights, gw_by_combo, shared_combos, provenance)."""
+    (validated, grounded_weights, gw_by_combo, shared_combos, provenance). `shared_world_combos`,
+    when supplied by the D12 graph, replaces the independent-product enumeration (tail preserved)."""
     validated: dict = {}
     for aid, hyps in states_by_actor.items():
         inst_rules = [i for i in bp.institutions if aid in (i.get("members") or [])]
@@ -654,7 +665,7 @@ def _build_grounded_weights(bp, states_by_actor, posterior_engine, grounding,
             if aid in validated and validated[aid]:
                 a["private_state_variants"] = [h.to_variant() for h in validated[aid]]
 
-    shared_combos = _shared_combos(posterior_engine)
+    shared_combos = shared_world_combos if shared_world_combos else _shared_combos(posterior_engine)
     gw_by_combo: dict = {}
     provenance: dict = {}
     for combo, _w in shared_combos:
