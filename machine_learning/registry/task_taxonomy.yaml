@@ -1,0 +1,111 @@
+# The prediction-task taxonomy. Mirrors machine_learning/tasks.py (a unit test asserts
+# they agree). Each task lists the payload-schema file that validates its payload and the
+# primary evaluation metrics used by the evaluation harness.
+
+version: "1.0.0"
+
+tasks:
+  PREDICT_NEXT_CHOICE:
+    family: individual_choice
+    payload_schema: task_payloads/PREDICT_NEXT_CHOICE.schema.json
+    description: "Discrete choice from a (possibly known) option set; experimental/individual choice."
+    metrics: [accuracy, nll, calibration, brier]
+
+  PREDICT_NEXT_ACTION:
+    family: individual_choice
+    payload_schema: task_payloads/PREDICT_NEXT_ACTION.schema.json
+    description: "Next action including explicit NO_ACTION/inactivity."
+    metrics: [accuracy, action_f1, no_action_accuracy, nll]
+
+  PREDICT_NEXT_MESSAGE:
+    family: social_conversation
+    payload_schema: task_payloads/PREDICT_NEXT_MESSAGE.schema.json
+    description: "Next natural-language message given history + private goal."
+    metrics: [message_semantic_similarity, dialogue_act_accuracy, nll]
+
+  PREDICT_NEXT_SPEAKER:
+    family: social_conversation
+    payload_schema: task_payloads/PREDICT_NEXT_SPEAKER.schema.json
+    description: "Turn-taking: which participant acts next."
+    metrics: [accuracy, macro_f1]
+
+  PREDICT_BELIEF_CHANGE:
+    family: social_conversation
+    payload_schema: task_payloads/PREDICT_BELIEF_CHANGE.schema.json
+    description: "How a stated belief/opinion shifts after observing messages (measured pre/post only)."
+    metrics: [belief_change_mae, direction_accuracy, calibration]
+
+  PREDICT_PRIVATE_STATE_UPDATE:
+    family: social_conversation
+    payload_schema: task_payloads/PREDICT_PRIVATE_STATE_UPDATE.schema.json
+    description: "Update to a self-reported private state (satisfaction, preference strength)."
+    metrics: [state_mae, direction_accuracy]
+
+  PREDICT_TIME_TO_ACTION:
+    family: long_horizon
+    payload_schema: task_payloads/PREDICT_TIME_TO_ACTION.schema.json
+    description: "Whether + when an actor acts; supports right-censoring."
+    metrics: [timing_mae, censored_likelihood, c_index]
+
+  PREDICT_RESPONSE_OR_NONRESPONSE:
+    family: individual_choice
+    payload_schema: task_payloads/PREDICT_RESPONSE_OR_NONRESPONSE.schema.json
+    description: "Binary response vs nonresponse — the core inactivity signal."
+    metrics: [response_accuracy, f1, calibration, brier]
+
+  PREDICT_TRAJECTORY_CONTINUATION:
+    family: long_horizon
+    payload_schema: task_payloads/PREDICT_TRAJECTORY_CONTINUATION.schema.json
+    description: "Next K events of an episode given its prefix."
+    metrics: [trajectory_similarity, edit_distance, prefix_accuracy]
+
+  PREDICT_FINAL_OUTCOME:
+    family: long_horizon
+    payload_schema: task_payloads/PREDICT_FINAL_OUTCOME.schema.json
+    description: "Terminal outcome (deal/no-deal, final price, success, donation)."
+    metrics: [outcome_accuracy, brier, regression_mae]
+
+  PREDICT_POPULATION_RESPONSE:
+    family: population_response
+    payload_schema: task_payloads/PREDICT_POPULATION_RESPONSE.schema.json
+    description: "Aggregate population response (CTR, choice distribution) under a condition."
+    metrics: [distribution_distance, rate_mae, calibration]
+
+  PREDICT_POPULATION_TIME_SERIES:
+    family: population_response
+    payload_schema: task_payloads/PREDICT_POPULATION_TIME_SERIES.schema.json
+    description: "Population-level time series after an event."
+    metrics: [time_series_mae, dtw, trend_accuracy]
+
+  PREDICT_DISCUSSION_TREE:
+    family: social_conversation
+    payload_schema: task_payloads/PREDICT_DISCUSSION_TREE.schema.json
+    description: "Growth/shape of a reply tree from a seed + partial tree."
+    metrics: [tree_edit_distance, depth_mae, branching_mae]
+
+  PREDICT_INTERVENTION_EFFECT:
+    family: intervention_effect
+    payload_schema: task_payloads/PREDICT_INTERVENTION_EFFECT.schema.json
+    description: "Treatment vs control outcomes + estimated effect; requires assignment mechanism."
+    metrics: [effect_mae, pehe, policy_risk]
+
+  RANK_CANDIDATE_ACTIONS:
+    family: intervention_effect
+    payload_schema: task_payloads/RANK_CANDIDATE_ACTIONS.schema.json
+    description: "Rank candidate actions/items; chosen one is positive."
+    metrics: [ndcg, mrr, top1_accuracy]
+
+  PREDICT_POLICY_VALUE:
+    family: intervention_effect
+    payload_schema: task_payloads/PREDICT_POLICY_VALUE.schema.json
+    description: "Reward of a logged (context, action) pair; enables off-policy value estimation."
+    metrics: [reward_mae, ips_value, dr_value, regret]
+
+# Each task family must have at least one held-out cross-dataset test (see splitting).
+families:
+  individual_choice: [PREDICT_NEXT_CHOICE, PREDICT_NEXT_ACTION, PREDICT_RESPONSE_OR_NONRESPONSE]
+  social_conversation: [PREDICT_NEXT_MESSAGE, PREDICT_NEXT_SPEAKER, PREDICT_BELIEF_CHANGE, PREDICT_PRIVATE_STATE_UPDATE, PREDICT_DISCUSSION_TREE]
+  long_horizon: [PREDICT_TIME_TO_ACTION, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+  negotiation: [PREDICT_NEXT_MESSAGE, PREDICT_NEXT_ACTION, PREDICT_FINAL_OUTCOME]
+  population_response: [PREDICT_POPULATION_RESPONSE, PREDICT_POPULATION_TIME_SERIES]
+  intervention_effect: [PREDICT_INTERVENTION_EFFECT, RANK_CANDIDATE_ACTIONS, PREDICT_POLICY_VALUE]

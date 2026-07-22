@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_RESPONSE_OR_NONRESPONSE.schema.json",
+  "title": "PredictResponseOrNonresponse",
+  "description": "Predict whether the actor responds at all (binary), the core inactivity/nonresponse signal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "observation": {
+          "type": "object"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "responded"
+      ],
+      "properties": {
+        "responded": {
+          "type": "boolean"
+        },
+        "latency_seconds": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

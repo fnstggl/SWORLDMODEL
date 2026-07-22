@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_NEXT_SPEAKER.schema.json",
+  "title": "PredictNextSpeaker",
+  "description": "Predict which participant speaks/acts next (turn-taking).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "dialogue_history": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "participants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "speaker_id"
+      ],
+      "properties": {
+        "speaker_id": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

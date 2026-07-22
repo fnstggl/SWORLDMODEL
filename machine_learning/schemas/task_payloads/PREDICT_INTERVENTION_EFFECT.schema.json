@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_INTERVENTION_EFFECT.schema.json",
+  "title": "PredictInterventionEffect",
+  "description": "Predict treatment vs control outcomes and the estimated effect for a unit/population. Requires an explicit assignment mechanism.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "population_or_actor_features": {
+          "type": "object"
+        },
+        "treatment": {
+          "type": "object"
+        },
+        "control": {
+          "type": "object"
+        },
+        "assignment_mechanism": {
+          "type": "object",
+          "description": "{type: rct|observational|..., randomized: bool, unit: str}"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "treated_outcome",
+        "control_outcome"
+      ],
+      "properties": {
+        "treated_outcome": {
+          "type": "object"
+        },
+        "control_outcome": {
+          "type": "object"
+        },
+        "estimated_effect": {
+          "type": "object"
+        },
+        "uncertainty": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

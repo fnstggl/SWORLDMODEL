@@ -1,0 +1,35 @@
+# Human-in-the-loop training approvals.
+#
+# A dataset may enter a TRAINING manifest ONLY if BOTH hold:
+#   (1) the registry marks it TRAIN_CANDIDATE/VALIDATION_CANDIDATE with a training-allowed
+#       license class, AND
+#   (2) a human has approved it here (approved: true) after reviewing the audit report +
+#       the human-review sample.
+#
+# This file is versioned so every training run records exactly which human approvals were
+# in effect. Editing it is a deliberate, reviewable act. Default: nothing approved yet —
+# a fresh clone cannot accidentally train on anything until a human signs off.
+
+version: "1.0.0"
+reviewer: ""              # who signed off (set when approving)
+reviewed_at: ""
+
+approvals:
+  # dataset_id: {approved: bool, note: "...", reviewed_commit: "..."}
+  casino:            {approved: false, note: "Awaiting human review of audit + samples."}
+  persuasionforgood: {approved: false, note: "Awaiting human review."}
+  abcd:              {approved: false, note: "Awaiting human review."}
+  dealornodeal:      {approved: false, note: "Awaiting human review. NON-COMMERCIAL (CC-BY-NC)."}
+  werewolf:          {approved: false, note: "Awaiting human review."}
+  open_bandit:       {approved: false, note: "Awaiting human review (in-repo Apache-2.0 sample)."}
+  surge:             {approved: false, note: "Awaiting human review; full data storage-blocked."}
+  omnibehavior:      {approved: false, note: "NON-COMMERCIAL; storage-blocked; human review required."}
+  opera:             {approved: false, note: "Storage-blocked; human review required."}
+  psych101:          {approved: false, note: "Storage-blocked; converter parses NL transcripts — review carefully."}
+  kuairand:          {approved: false, note: "Storage-blocked; ShareAlike; per-dataset cap required."}
+  upworthy:          {approved: false, note: "Awaiting human review."}
+
+# Datasets deliberately NOT listed here can never be approved: they are eval-only, blocked,
+# infrastructure, or license-restricted (craigslistbargain, criteo_uplift, simbench,
+# behaviorbench, socsci210, some, debate, mirobench, darpa_socialsim, acl_online_shopping,
+# agentsociety).

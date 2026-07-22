@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_BELIEF_CHANGE.schema.json",
+  "title": "PredictBeliefChange",
+  "description": "Predict how an actor's stated belief/opinion changes after observing messages. Only valid when belief_before AND belief_after were actually measured.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "belief_before": {
+          "type": "object"
+        },
+        "observed_messages": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "belief_after"
+      ],
+      "properties": {
+        "belief_after": {
+          "type": "object"
+        },
+        "belief_delta": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

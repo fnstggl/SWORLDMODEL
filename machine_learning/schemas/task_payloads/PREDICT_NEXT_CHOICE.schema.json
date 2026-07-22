@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_NEXT_CHOICE.schema.json",
+  "title": "PredictNextChoice",
+  "description": "Predict a discrete choice an actor makes from a (possibly known) option set \u2014 experimental/individual choice.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "observation": {
+          "type": "object"
+        },
+        "available_actions": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {}
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "choice",
+        "acted"
+      ],
+      "properties": {
+        "choice": {
+          "description": "The chosen option (verbatim value/label)."
+        },
+        "choice_index": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Index into available_actions when recoverable."
+        },
+        "acted": {
+          "type": "boolean",
+          "description": "True unless this is an explicit non-choice (see NO_ACTION token)."
+        }
+      }
+    }
+  }
+}

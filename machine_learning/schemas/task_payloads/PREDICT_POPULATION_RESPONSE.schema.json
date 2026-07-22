@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_POPULATION_RESPONSE.schema.json",
+  "title": "PredictPopulationResponse",
+  "description": "Predict an aggregate population response (e.g. click-through rate, choice distribution) under a condition.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "population_features": {
+          "type": "object"
+        },
+        "intervention": {
+          "type": "object"
+        },
+        "historical_context": {
+          "type": "object"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "aggregate_metrics"
+      ],
+      "properties": {
+        "response_distribution": {
+          "type": "object",
+          "description": "Category -> probability/mass, when applicable."
+        },
+        "aggregate_metrics": {
+          "type": "object",
+          "description": "e.g. {rate: 0.031, n: 4210, successes: 130}"
+        },
+        "time_series": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

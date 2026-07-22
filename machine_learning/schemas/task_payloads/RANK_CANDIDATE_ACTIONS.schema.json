@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/RANK_CANDIDATE_ACTIONS.schema.json",
+  "title": "RankCandidateActions",
+  "description": "Rank a set of candidate actions/items; the chosen one is the positive. Only valid when a genuine comparable candidate set exists.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "context": {
+          "type": "object"
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "chosen_id"
+      ],
+      "properties": {
+        "chosen_id": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "ranking": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {},
+          "description": "Full observed ranking when available, else null."
+        },
+        "relevance": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "candidate_id -> observed relevance/reward, when available."
+        }
+      }
+    }
+  }
+}

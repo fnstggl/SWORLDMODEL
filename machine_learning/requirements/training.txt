@@ -1,0 +1,16 @@
+# GPU training + evaluation requirements.
+# Install after base.txt + data.txt on a machine with a CUDA GPU:
+#     pip install -r base.txt -r data.txt -r training.txt
+#
+# NOTE: `bitsandbytes` requires CUDA and is used ONLY by the 4-bit QLoRA path. The CPU
+# tiny-model smoke test (training.smoke) uses plain LoRA and does NOT import bitsandbytes,
+# so the smoke test runs without a GPU. Pin torch to a CUDA build matching your driver.
+-r data.txt
+torch>=2.1
+transformers>=4.40
+peft>=0.10
+trl>=0.8
+accelerate>=0.29
+sentencepiece>=0.1.99
+# GPU-only. Comment out for a CPU-only smoke environment.
+bitsandbytes>=0.43 ; platform_system == "Linux"

@@ -1,0 +1,48 @@
+# --------------------------------------------------------------------------------------
+# machine_learning working-storage + heavyweight artifacts. NEVER commit bulk data,
+# model weights, checkpoints, or caches. The repository holds only code, config,
+# registry, schemas, small fixtures, manifests summaries, reports, and docs.
+#
+# NOTE: the *repository-root* .gitignore already ignores `data/` and `*.parquet`, which
+# covers machine_learning/data/. This file adds ML-specific ignores and is explicit so
+# the intent is obvious to a human auditor reading only this directory.
+# --------------------------------------------------------------------------------------
+
+# Bulk working storage (raw downloads, normalized shards, examples, splits, generated manifests)
+data/raw/
+data/normalized/
+data/examples/
+data/splits/
+data/manifests/
+data/samples/
+data/cache/
+data/logs/
+data/state/
+
+# Model weights, adapters, checkpoints, quantized exports
+*.safetensors
+*.bin
+*.pt
+*.gguf
+artifacts/checkpoints/
+artifacts/adapters/
+artifacts/runs/
+artifacts/merged/
+
+# HF + torch caches if they land locally
+.hf_cache/
+hf_home/
+*.arrow
+*.lock
+
+# Columnar/temp data formats anywhere under this tree
+*.parquet
+*.feather
+*.tmp
+*.partial
+*.download
+
+# But DO keep committed structure markers, small fixtures, committed manifest summaries
+!tests/fixtures/**
+!artifacts/manifests/**
+!reports/**

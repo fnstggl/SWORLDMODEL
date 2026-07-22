@@ -1,0 +1,9 @@
+# Data acquisition + normalization requirements.
+# Install after base.txt:  pip install -r base.txt -r data.txt
+-r base.txt
+pyarrow>=14
+pandas>=2.0
+datasets>=2.18
+huggingface_hub>=0.23
+# fsspec is pulled in by datasets; pinned loosely for streaming remote files
+fsspec>=2023.9

@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_POPULATION_TIME_SERIES.schema.json",
+  "title": "PredictPopulationTimeSeries",
+  "description": "Predict a population-level time series (e.g. volume/sentiment over time following an event).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "population_features": {
+          "type": "object"
+        },
+        "event_context": {
+          "type": "object"
+        },
+        "observed_prefix": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "time_series"
+      ],
+      "properties": {
+        "time_series": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "Ordered [{t, value, ...}] observations after the cutoff."
+        }
+      }
+    }
+  }
+}

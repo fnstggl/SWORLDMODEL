@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/source_manifests/source_manifest.schema.json",
+  "title": "SourceAcquisitionManifest",
+  "description": "Written by acquisition/download.py for every dataset. Records exactly what was fetched, from where, its size + checksums, the license snapshot at acquisition time, and enough state to resume. Lives under $SWM_DATA_ROOT/state/<dataset_id>/source_manifest.json (working storage) and a redacted copy is committed under reports/acquisition/.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["dataset_id", "status", "download_method", "files", "created_at"],
+  "properties": {
+    "dataset_id": { "type": "string" },
+    "dataset_version": { "type": ["string", "null"] },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "acquiring", "acquired", "partial", "blocked", "failed", "deferred_storage", "skipped"]
+    },
+    "download_method": { "type": "string", "description": "hf_load_dataset | hf_hub_download | hf_snapshot | git_clone | curl | manual | none" },
+    "source_urls": { "type": "array", "items": { "type": "string" } },
+    "created_at": { "type": ["string", "null"] },
+    "updated_at": { "type": ["string", "null"] },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "size_bytes"],
+        "properties": {
+          "path": { "type": "string", "description": "Path relative to the dataset raw dir." },
+          "sha256": { "type": "string" },
+          "size_bytes": { "type": "integer" },
+          "role": { "type": "string", "description": "e.g. data, license, readme, metadata" }
+        }
+      }
+    },
+    "total_bytes": { "type": "integer" },
+    "estimated_total_bytes": { "type": ["integer", "null"], "description": "Pre-download size estimate used for the storage guard." },
+    "license_snapshot": {
+      "type": "object",
+      "description": "What the official source stated about the license AT ACQUISITION TIME.",
+      "additionalProperties": true,
+      "properties": {
+        "license": { "type": "string" },
+        "license_file": { "type": ["string", "null"] },
+        "verified_from": { "type": "string", "description": "URL/path the license text was read from." },
+        "verified": { "type": "boolean" }
+      }
+    },
+    "access": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "gated": { "type": "boolean" },
+        "requires_token": { "type": "boolean" },
+        "requirement": { "type": ["string", "null"] }
+      }
+    },
+    "resume_state": {
+      "type": "object",
+      "description": "Method-specific state to resume an interrupted acquisition.",
+      "additionalProperties": true
+    },
+    "notes": { "type": "array", "items": { "type": "string" } },
+    "errors": { "type": "array", "items": { "type": "object" } }
+  }
+}

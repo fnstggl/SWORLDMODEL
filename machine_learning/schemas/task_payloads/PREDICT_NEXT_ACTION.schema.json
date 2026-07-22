@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_NEXT_ACTION.schema.json",
+  "title": "PredictNextAction",
+  "description": "Predict the next action an actor takes, including explicit NO_ACTION.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "observation": {
+          "type": "object"
+        },
+        "available_actions": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {}
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "action_type",
+        "acted"
+      ],
+      "properties": {
+        "action_type": {
+          "type": "string"
+        },
+        "action_content": {
+          "type": "object"
+        },
+        "acted": {
+          "type": "boolean",
+          "description": "False encodes NO_ACTION / inactivity \u2014 never drop these."
+        }
+      }
+    }
+  }
+}

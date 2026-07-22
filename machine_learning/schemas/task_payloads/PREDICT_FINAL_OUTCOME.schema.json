@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_FINAL_OUTCOME.schema.json",
+  "title": "PredictFinalOutcome",
+  "description": "Predict the terminal outcome of an episode (deal/no-deal, final price, task success, donation amount).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "state": {
+          "type": "object"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "outcome"
+      ],
+      "properties": {
+        "outcome": {
+          "description": "The terminal outcome value/label/struct."
+        },
+        "outcome_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

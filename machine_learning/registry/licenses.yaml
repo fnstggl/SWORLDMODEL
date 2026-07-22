@@ -1,0 +1,100 @@
+# Coarse license classes referenced by every dataset's `license_class`.
+# `training_allowed` is the decisive flag: a dataset whose class has training_allowed=false
+# can NEVER enter a training manifest, regardless of its dataset_role. When the official
+# source declares no license, we assume nothing (unknown) and keep it out of training.
+#
+# These are engineering classifications to drive the pipeline, NOT legal advice. Every
+# entry cites where the permission judgement came from; uncertain cases are marked unknown.
+
+license_classes:
+
+  permissive_commercial:
+    examples: [MIT, Apache-2.0, BSD-3-Clause]
+    commercial_use: yes
+    derivatives: yes
+    redistribution: yes
+    attribution_required: yes
+    training_allowed: true
+    notes: "Permissive OSS licenses. Training, derivatives, commercial use all allowed with notice/attribution."
+
+  cc_by:
+    examples: [CC-BY-4.0]
+    commercial_use: yes
+    derivatives: yes
+    redistribution: yes
+    attribution_required: yes
+    training_allowed: true
+    notes: "Attribution only. No NC/ND/SA restrictions."
+
+  cc_by_sa:
+    examples: [CC-BY-SA-4.0]
+    commercial_use: yes
+    derivatives: yes
+    redistribution: yes
+    attribution_required: yes
+    training_allowed: true
+    notes: "ShareAlike: derivative distributions must carry CC-BY-SA-4.0. Local training is fine; redistributing normalized data must be SA."
+
+  cc_by_nc:
+    examples: [CC-BY-NC-4.0, CC-BY-NC-SA-4.0]
+    commercial_use: no
+    derivatives: yes
+    redistribution: yes
+    attribution_required: yes
+    training_allowed: true
+    training_scope: non_commercial
+    notes: "NonCommercial. Derivatives/training permitted for NON-COMMERCIAL use only. Excluded from any commercial training view."
+
+  cc_by_nc_nd:
+    examples: [CC-BY-NC-ND-4.0]
+    commercial_use: no
+    derivatives: no
+    redistribution: yes
+    attribution_required: yes
+    training_allowed: false
+    notes: "No-Derivatives: training on it produces a derivative and is NOT permitted. Evaluation-only (read, measure, do not derive/redistribute modified)."
+
+  research_only:
+    examples: ["citation-required research release", "academic-use terms"]
+    commercial_use: unknown
+    derivatives: unknown
+    redistribution: unknown
+    attribution_required: yes
+    training_allowed: false
+    notes: "Released for research with a citation requirement but no explicit derivative/commercial grant. Default to eval-only until clarified."
+
+  unknown_unstated:
+    examples: ["no license declared on the official card/repo"]
+    commercial_use: unknown
+    derivatives: unknown
+    redistribution: unknown
+    attribution_required: unknown
+    training_allowed: false
+    notes: "Official source states no license. Assume nothing; keep out of training until the authors clarify."
+
+  upstream_tos_restricted:
+    examples: ["Reddit ToS", "Weibo/Twitter ToS", "Yelp Dataset License"]
+    commercial_use: no
+    derivatives: unknown
+    redistribution: no
+    attribution_required: yes
+    training_allowed: false
+    notes: "Even when the packaging carries a permissive header, the underlying platform content is governed by third-party ToS restricting redistribution. Eval-only / infrastructure."
+
+  restricted_program:
+    examples: ["DARPA/Leidos DUA", "program-performer-only distribution"]
+    commercial_use: no
+    derivatives: unknown
+    redistribution: no
+    attribution_required: yes
+    training_allowed: false
+    notes: "Distributed only to funded performers under a data-use agreement. No public route. Blocked."
+
+  proprietary_unreleased:
+    examples: ["internal corporate data", "paper-only, data not released"]
+    commercial_use: no
+    derivatives: no
+    redistribution: no
+    attribution_required: yes
+    training_allowed: false
+    notes: "Data was never publicly released. Blocked; only the paper is available."

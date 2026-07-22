@@ -1,0 +1,59 @@
+# Project metadata + tooling config for the SWORLDMODEL behaviour-ML subsystem.
+#
+# This package is intentionally NOT wired into the repository-root `sworldmodel` package
+# (whose core `swm/` library is dependency-free on purpose). It is used from the repo
+# root via `python -m machine_learning.cli ...`. Install its dependencies with:
+#
+#     pip install -r machine_learning/requirements/base.txt      # always
+#     pip install -r machine_learning/requirements/data.txt      # acquisition + normalization
+#     pip install -r machine_learning/requirements/training.txt  # GPU training + smoke test
+#
+# We deliberately do not declare this as an installable build target to keep the
+# `machine_learning.` import namespace intact when run from the repository root.
+
+[project]
+name = "sworldmodel-behavior-ml"
+version = "0.1.0"
+description = "Reproducible data-preparation, validation, and QLoRA training-readiness system for a specialized human-behavior model."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "See repository LICENSE; source datasets retain their own licenses." }
+dependencies = []  # concrete deps live in requirements/*.txt, split by pipeline stage
+
+[project.optional-dependencies]
+data = [
+  "pyarrow>=14",
+  "pandas>=2.0",
+  "pyyaml>=6",
+  "jsonschema>=4.0",
+  "datasets>=2.18",
+  "huggingface_hub>=0.23",
+  "requests>=2.28",
+  "tqdm>=4.65",
+]
+training = [
+  "torch>=2.1",
+  "transformers>=4.40",
+  "peft>=0.10",
+  "trl>=0.8",
+  "accelerate>=0.29",
+  "bitsandbytes>=0.43",  # GPU-only; the CPU smoke path does not import it
+  "datasets>=2.18",
+  "sentencepiece>=0.1.99",
+]
+dev = ["pytest>=7", "pytest-cov>=4"]
+
+[tool.pytest.ini_options]
+# Scoped to this subsystem only; the repo-root pytest config (testpaths=["tests"]) does
+# not collect these, so existing SWORLDMODEL tests are untouched.
+testpaths = ["tests"]
+markers = [
+  "integration: end-to-end pipeline tests that touch real (small) fixtures",
+  "gpu: requires a CUDA device; skipped by default",
+  "network: requires network access to acquire real data; skipped by default",
+]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

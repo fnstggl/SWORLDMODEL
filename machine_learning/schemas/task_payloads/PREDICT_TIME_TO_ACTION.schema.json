@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_TIME_TO_ACTION.schema.json",
+  "title": "PredictTimeToAction",
+  "description": "Predict whether and when an actor acts. Supports right-censoring (actor never acted within the observation window).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "current_time": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "acted",
+        "censoring"
+      ],
+      "properties": {
+        "acted": {
+          "type": "boolean"
+        },
+        "time_to_action_seconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "null when censored (acted=false) or when timestamps unavailable."
+        },
+        "censoring": {
+          "type": "object",
+          "description": "{censored: bool, observation_window_seconds: number|null, reason: str}"
+        }
+      }
+    }
+  }
+}

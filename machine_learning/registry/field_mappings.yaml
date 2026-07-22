@@ -1,0 +1,63 @@
+# Shared canonical field conventions every converter follows, so records from different
+# datasets are structurally comparable. Dataset-specific field maps live in each
+# converter's DOC (schemas/source_manifests/converter_doc.schema.json) — this file defines
+# the SHARED shapes those maps target.
+
+version: "1.0.0"
+
+# Shape of one entry in context.known_history / payload.input.dialogue_history.
+history_event:
+  fields:
+    index: "int, position within the episode (0-based)"
+    t: "timestamp or null (MISSING_TIMESTAMP token when the source has none)"
+    actor_id: "who produced the event (pseudonymous id)"
+    kind: "one of: message | action | choice | observation | system"
+    text: "utterance text (for message/observation), else null"
+    action_type: "for kind=action"
+    action_content: "object, for kind=action"
+    meta: "object, any dataset-specific extras preserved verbatim"
+
+# Shape of context.current_observation.
+current_observation:
+  fields:
+    text: "the latest observed content the actor is reacting to, or null"
+    kind: "message | screen | item | prompt | state"
+    meta: "object"
+
+# Actor role vocabulary (kept open; datasets add their own but SHOULD reuse these).
+actor_roles:
+  - buyer
+  - seller
+  - persuader
+  - persuadee
+  - customer
+  - agent            # service/support agent
+  - player
+  - participant
+  - proposer
+  - responder
+  - population        # aggregate decision unit
+
+# Pseudonymization: original participant identifiers are hashed to stable pseudonyms of
+# the form "<dataset_id>-<role_or_kind>-<sha1_12>" so identity is preserved for
+# leakage-isolation without exposing raw identifiers. Real free-text content (messages)
+# is preserved as-is because it IS the behaviour; only stable *identifiers* are hashed.
+pseudonymization:
+  id_template: "{dataset_id}-{kind}-{hash12}"
+  hash: sha1
+  hash_input: "original identifier"
+  applies_to: [participant_ids, actor_id, group_id, session_id, decision_maker_id, recipient_ids]
+  never_applies_to: [message_text, action_content, world_state]
+
+# Causal-metadata conventions for interventional datasets.
+causal:
+  assignment_mechanisms: [rct, bernoulli_ts, uniform_random, random, observational, unknown]
+  propensity: "logging-policy probability of the taken action (null when unknown)"
+
+# Missing-data policy: absent source fields become null / [] / {} and are listed in
+# data_quality.missing_fields. Never fabricated, never LLM-filled.
+missing_data:
+  scalar: null
+  collection: []
+  object: {}
+  record_in: data_quality.missing_fields

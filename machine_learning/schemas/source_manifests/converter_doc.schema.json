@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/source_manifests/converter_doc.schema.json",
+  "title": "ConverterDocument",
+  "description": "Machine-readable documentation every dataset converter must expose (as `Converter.DOC`). Rendered into reports/normalization/<dataset_id>.md and consumed by the audit + readiness reports. Forces each converter author to state, before writing code, exactly how the real source maps to the canonical schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "dataset_id", "original_fields", "canonical_mapping", "tasks_produced",
+    "unavailable_fields", "chronology_rules", "split_key", "leakage_risks",
+    "known_limitations", "license_implications", "training_suitability"
+  ],
+  "properties": {
+    "dataset_id": { "type": "string" },
+    "original_fields": {
+      "type": "array",
+      "description": "The real source fields (name + short meaning), inspected from the actual data — NOT assumed.",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "meaning": { "type": "string" },
+          "example": {}
+        }
+      }
+    },
+    "canonical_mapping": {
+      "type": "array",
+      "description": "How each source field maps into the canonical event (or that it is dropped/derived).",
+      "items": {
+        "type": "object",
+        "required": ["source_field", "canonical_path"],
+        "properties": {
+          "source_field": { "type": "string" },
+          "canonical_path": { "type": "string", "description": "Dotted path, e.g. context.current_observation.text" },
+          "transform": { "type": "string" }
+        }
+      }
+    },
+    "tasks_produced": { "type": "array", "items": { "type": "string" } },
+    "unavailable_fields": {
+      "type": "array",
+      "description": "Canonical fields the source cannot fill; stored null/empty and listed in data_quality.missing_fields.",
+      "items": { "type": "string" }
+    },
+    "chronology_rules": { "type": "string", "description": "How the cutoff is defined and how future information is excluded." },
+    "split_key": { "type": "string", "description": "The isolation unit used to keep episodes/participants together across splits." },
+    "leakage_risks": { "type": "array", "items": { "type": "string" } },
+    "known_limitations": { "type": "array", "items": { "type": "string" } },
+    "license_implications": { "type": "string" },
+    "training_suitability": {
+      "type": "string",
+      "enum": ["train", "eval_only", "infrastructure_only", "blocked", "unusable"]
+    },
+    "assumptions": { "type": "array", "items": { "type": "string" } }
+  }
+}

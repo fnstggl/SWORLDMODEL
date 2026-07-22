@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_DISCUSSION_TREE.schema.json",
+  "title": "PredictDiscussionTree",
+  "description": "Predict the growth/shape of a reply tree from a seed post + partial tree.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "seed_post": {
+          "type": "object"
+        },
+        "partial_tree": {
+          "type": "object",
+          "description": "{nodes: [...], edges: [[parent, child], ...]} observed before cutoff."
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "tree"
+      ],
+      "properties": {
+        "tree": {
+          "type": "object",
+          "description": "{nodes: [...], edges: [...]} of the continued discussion."
+        },
+        "aggregate": {
+          "type": "object",
+          "description": "e.g. {depth, n_nodes, n_branches} when full node text is unavailable."
+        }
+      }
+    }
+  }
+}

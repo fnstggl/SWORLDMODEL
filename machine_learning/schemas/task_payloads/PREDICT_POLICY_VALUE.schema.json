@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_POLICY_VALUE.schema.json",
+  "title": "PredictPolicyValue",
+  "description": "Predict the reward of a logged (context, action) pair. Enables off-policy value estimation with logged propensities.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "logged_context": {
+          "type": "object"
+        },
+        "action": {
+          "type": "object"
+        },
+        "propensity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Logging-policy probability of `action` (for IPS/DR)."
+        },
+        "logging_policy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "reward"
+      ],
+      "properties": {
+        "reward": {
+          "type": [
+            "number",
+            "object"
+          ]
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

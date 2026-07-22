@@ -1,0 +1,718 @@
+# =====================================================================================
+# Dataset registry. One entry per dataset. Licensing + access verified from OFFICIAL
+# sources (HF dataset cards, official GitHub/GitLab repos, official papers, institutional
+# pages) on last_verified_at. Where a source declares no license, we say so and keep it
+# out of training (license_class: unknown_unstated / research_only).
+#
+# `dataset_role`      : TRAIN_CANDIDATE | VALIDATION_CANDIDATE | CROSS_DATASET_EVAL_ONLY |
+#                       LICENSE_RESTRICTED_EVAL_ONLY | INFRASTRUCTURE_ONLY | ACCESS_BLOCKED | UNUSABLE
+# `conversion_status` : PENDING | CONVERTER_READY_STORAGE_BLOCKED | SAMPLE_NORMALIZED |
+#                       NORMALIZED_AND_VALIDATED | NORMALIZED_EVAL_ONLY | INFRASTRUCTURE_ONLY |
+#                       ACCESS_BLOCKED | LICENSE_BLOCKED | SOURCE_UNAVAILABLE | UNUSABLE_AFTER_INSPECTION
+# `acquire.estimated_bytes` = size of the PLANNED pull (a streamed sample, not the full set);
+# `full_expected_bytes`     = size of the complete dataset (for the readiness/storage report).
+# =====================================================================================
+
+datasets:
+
+# ------------------------------------------------------------------ multi-agent / social
+  - dataset_id: debate
+    official_name: "DEBATE: A Large-Scale Benchmark for Evaluating Opinion Dynamics in Role-Playing LLM Agents"
+    description: "Real US human debates with private 6-point Likert beliefs measured before AND after multi-round discussion, plus public chat messages. 2,788 participants / 697 groups / 107 topics; 5,302 pre/post opinion ratings."
+    official_paper: "https://arxiv.org/abs/2510.25110"
+    official_data_source: "https://openreview.net/forum?id=rMnZbCOhSS"
+    official_code_source: ""
+    license: "Not stated (data not yet publicly released)"
+    license_class: unknown_unstated
+    commercial_use_allowed: unknown
+    derivatives_allowed: unknown
+    redistribution_allowed: unknown
+    personal_data_notes: "Human belief ratings + chat text; participants are real people. Handle as personal data if released."
+    access_requirements: "Reviewer-gated at submission; authors state a public release is planned but no stable URL confirmed."
+    gated: true
+    expected_size: "small (text): ~29-30k utterances, 5,302 pre/post ratings"
+    full_expected_bytes: null
+    download_method: manual
+    checksum_method: sha256
+    dataset_role: ACCESS_BLOCKED
+    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_NEXT_SPEAKER, PREDICT_BELIEF_CHANGE, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+    split_unit: participant   # also hold out groups + topics
+    conversion_status: ACCESS_BLOCKED
+    blockers: "Dataset not publicly released as of last_verified_at. Human action: watch arxiv/OpenReview page rMnZbCOhSS for the promised code+data release, or email the authors (UW-Madison / Google DeepMind / Stanford) for pre-release access."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, note: "Identity high-confidence; public data URL unconfirmed.", sources: ["https://arxiv.org/abs/2510.25110", "https://openreview.net/forum?id=rMnZbCOhSS"]}
+    converter: machine_learning.normalization.converters.debate.Converter
+
+  - dataset_id: mirobench
+    official_name: "MiroBench: Benchmarking Realism in Agentic Simulation of Real-world Discussions"
+    description: "4,292 real Reddit threads (875 seeds, 5 product domains) used as ground truth for agentic discussion simulation. Reply-tree structure with seed-post cutoff."
+    official_paper: "https://arxiv.org/abs/2606.14715"
+    official_data_source: ""
+    official_code_source: ""
+    license: "Not stated; underlying Reddit content under Reddit ToS"
+    license_class: upstream_tos_restricted
+    commercial_use_allowed: no
+    derivatives_allowed: unknown
+    redistribution_allowed: no
+    personal_data_notes: "Real Reddit user content; Reddit ToS restricts redistribution."
+    access_requirements: "No public data link located; appears unreleased or forthcoming."
+    gated: true
+    expected_size: "small (text): 4,292 threads"
+    full_expected_bytes: null
+    download_method: manual
+    checksum_method: sha256
+    dataset_role: ACCESS_BLOCKED
+    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_DISCUSSION_TREE, PREDICT_POPULATION_RESPONSE, PREDICT_TRAJECTORY_CONTINUATION]
+    split_unit: topic   # by seed-post / thread; hold out domains
+    conversion_status: ACCESS_BLOCKED
+    blockers: "No public release located. Human action: watch arxiv 2606.14715 for a code/data link; if released, verify Reddit-ToS compliance before redistribution (local conversion only)."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: medium, note: "Identity high; release unconfirmed.", sources: ["https://arxiv.org/abs/2606.14715"]}
+    converter: machine_learning.normalization.converters.mirobench.Converter
+
+  - dataset_id: darpa_socialsim
+    official_name: "SocialSim — Computational Simulation of Online Social Behavior (DARPA)"
+    description: "DARPA program; ground-truth Twitter/Reddit/GitHub (later Telegram) cascade + information-spread corpora collected/distributed by Leidos to funded performers."
+    official_paper: "https://www.ifaamas.org/Proceedings/aamas2019/pdfs/p1835.pdf"
+    official_data_source: "https://www.darpa.mil/research/programs/computational-simulation-of-online-social-behavior"
+    official_code_source: ""
+    license: "No public license; program/DUA terms"
+    license_class: restricted_program
+    commercial_use_allowed: no
+    derivatives_allowed: unknown
+    redistribution_allowed: no
+    personal_data_notes: "Raw social-platform activity (Twitter/Reddit/GitHub); PII + platform-ToS constraints."
+    access_requirements: "Distributed only to funded performers via Leidos under a DUA. No open portal."
+    gated: true
+    expected_size: "large; not published"
+    full_expected_bytes: null
+    download_method: manual
+    checksum_method: sha256
+    dataset_role: ACCESS_BLOCKED
+    supported_tasks: [PREDICT_POPULATION_TIME_SERIES, PREDICT_DISCUSSION_TREE, PREDICT_TRAJECTORY_CONTINUATION]
+    split_unit: event
+    conversion_status: ACCESS_BLOCKED
+    blockers: "No public/archival download. Human action: contact DARPA/Leidos or partner with a former SocialSim performer (USC/ISI, UCF, UVA Biocomplexity, PNNL) under a data-use agreement. Twitter/X ToS separately bars public redistribution of raw data."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, note: "Not publicly accessible.", sources: ["https://www.darpa.mil/research/programs/computational-simulation-of-online-social-behavior", "https://arxiv.org/abs/1908.05437"]}
+    converter: null
+
+  - dataset_id: surge
+    official_name: "SURGE: An Event-Centric Social Media Sentiment Time Series Benchmark with Interaction Structure"
+    description: "67 events / 817,442 real posts (Twitter/Reddit/Threads, English). Processed sentiment time series + JSONL interaction edges + post metadata; raw post text intentionally excluded from the repo."
+    official_paper: "https://arxiv.org/abs/2605.21198"
+    official_data_source: "https://github.com/synlp/SURGE"
+    official_code_source: "https://github.com/synlp/SURGE"
+    license: "MIT (code) + CC-BY-4.0 (author-created data under data/)"
+    license_class: cc_by
+    commercial_use_allowed: yes
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "Raw posts excluded; ships processed time series + interaction edges + metadata only."
+    access_requirements: "Open (git clone)."
+    gated: false
+    expected_size: "moderate: CSV time series + JSONL edges + JSON stats"
+    full_expected_bytes: 300000000
+    download_method: git
+    checksum_method: sha256
+    dataset_role: TRAIN_CANDIDATE
+    supported_tasks: [PREDICT_POPULATION_TIME_SERIES, PREDICT_POPULATION_RESPONSE, PREDICT_TRAJECTORY_CONTINUATION]
+    split_unit: event
+    conversion_status: CONVERTER_READY_STORAGE_BLOCKED
+    blockers: "Converter implemented + fixture-tested. Full acquisition deferred (needs git clone + moderate disk). Resume: python -m machine_learning.cli datasets acquire surge --allow-large && ... normalize surge."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://github.com/synlp/SURGE", "https://arxiv.org/abs/2605.21198"]}
+    acquire:
+      method: git
+      estimated_bytes: 300000000
+      git: {url: "https://github.com/synlp/SURGE.git", subdir: "data", depth: 1}
+    converter: machine_learning.normalization.converters.surge.Converter
+
+  - dataset_id: some
+    official_name: "SoMe: A Realistic Benchmark for LLM-based Social Media Agents"
+    description: "Environment/benchmark over ~9.16M real crawled posts (Weibo + third-party fact-check + 32 platforms), 6,591 user profiles, 25,686 reports, 17,869 annotated task queries."
+    official_paper: "https://arxiv.org/abs/2512.14720"
+    official_data_source: "https://huggingface.co/datasets/LivXue/Social-Media-Agents-Benchmark"
+    official_code_source: "https://github.com/LivXue/SoMe"
+    license: "Apache-2.0 (repo header) — but underlying crawled content under platform ToS"
+    license_class: upstream_tos_restricted
+    commercial_use_allowed: no
+    derivatives_allowed: unknown
+    redistribution_allowed: no
+    personal_data_notes: "Crawled Weibo posts/profiles + commercial 'Xiaoying' data; platform-ToS + PII constraints the Apache header does not clear."
+    access_requirements: "Open on HF, but ~50GB+ and ToS-encumbered content."
+    gated: false
+    expected_size: "large: ~50GB+ recommended storage; 9.16M posts"
+    full_expected_bytes: 53687091200
+    download_method: hf
+    checksum_method: sha256
+    dataset_role: CROSS_DATASET_EVAL_ONLY
+    supported_tasks: [PREDICT_NEXT_ACTION, PREDICT_POPULATION_RESPONSE, PREDICT_TRAJECTORY_CONTINUATION]
+    split_unit: platform_user
+    conversion_status: CONVERTER_READY_STORAGE_BLOCKED
+    blockers: "50GB+ exceeds working disk; content under platform ToS (eval-only, no redistribution). Converter streams + samples only empirically-grounded human posts (drops agent-benchmark task scaffolding). Resume: acquire with mode=stream larger --limit on a big volume."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://huggingface.co/datasets/LivXue/Social-Media-Agents-Benchmark", "https://github.com/LivXue/SoMe"]}
+    acquire:
+      method: hf
+      estimated_bytes: 40000000
+      hf: {repo_id: "LivXue/Social-Media-Agents-Benchmark", mode: stream, split: train, stream_rows: 500}
+    converter: machine_learning.normalization.converters.some.Converter
+
+  - dataset_id: agentsociety
+    official_name: "AgentSociety Challenge (WWW'25): Designing LLM Agents for User Modeling and Recommendation"
+    description: "Simulator INFRASTRUCTURE (websocietysimulator, InteractionTool, Simulator, baseline agents). Underlying real human data (Yelp/Amazon-Reviews-2023/Goodreads) is NOT redistributed — participants download raw data themselves."
+    official_paper: "https://arxiv.org/abs/2502.18754"
+    official_data_source: "https://tsinghua-fib-lab.github.io/AgentSocietyChallenge/"
+    official_code_source: "https://github.com/tsinghua-fib-lab/AgentSocietyChallenge"
+    license: "MIT (simulator). Underlying datasets: Yelp/Amazon/Goodreads own terms (Yelp non-commercial/academic)."
+    license_class: permissive_commercial   # for the simulator code itself
+    commercial_use_allowed: unknown         # depends on underlying data source
+    derivatives_allowed: yes
+    redistribution_allowed: no              # underlying data not redistributable
+    personal_data_notes: "Real Yelp/Amazon/Goodreads reviews (genuine human); each under its own license. Simulation outputs are LLM-agent-generated (NOT human)."
+    access_requirements: "Simulator open (MIT). Real datasets downloaded separately under each source's terms."
+    gated: false
+    expected_size: "n/a (infra); underlying corpora large (>=16GB RAM to process)"
+    full_expected_bytes: null
+    download_method: none
+    checksum_method: sha256
+    dataset_role: INFRASTRUCTURE_ONLY
+    supported_tasks: [PREDICT_NEXT_ACTION, RANK_CANDIDATE_ACTIONS]
+    split_unit: platform_user
+    conversion_status: INFRASTRUCTURE_ONLY
+    blockers: "The challenge itself ships a SIMULATOR, not human data; we do NOT train on simulator output. To use the underlying Yelp/Amazon/Goodreads human data, register each dataset separately under its own license (Yelp is non-commercial/academic)."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://github.com/tsinghua-fib-lab/AgentSocietyChallenge", "https://arxiv.org/abs/2502.18754"]}
+    converter: null
+
+# ------------------------------------------------------------------ long-horizon / individual
+  - dataset_id: omnibehavior
+    official_name: "OmniBehavior: Benchmarking LLMs on Long-horizon, Cross-scenario, Heterogeneous Behavior Traces"
+    description: "Real Kuaishou user traces (~200 users, 5 scenarios: live-streaming/video/e-commerce/ads/search), ~8,143 actions/user avg over a 90-day span, with persistent cross-scenario user identity."
+    official_paper: "https://arxiv.org/abs/2604.08362"
+    official_data_source: "https://huggingface.co/datasets/jiawei-ucas/OmniBehavior"
+    official_code_source: "https://github.com/icip-cas/OmniBehavior"
+    license: "CC-BY-NC-SA-4.0 (non-commercial)"
+    license_class: cc_by_nc
+    commercial_use_allowed: no
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "Real user behavior; ethics clause forbids re-identification/tracking of individuals. Pseudonymize; non-commercial only."
+    access_requirements: "Open on HF (no gate)."
+    gated: false
+    expected_size: "~6.37 GB (multiple JSON files)"
+    full_expected_bytes: 6840388403
+    download_method: hf
+    checksum_method: sha256
+    dataset_role: TRAIN_CANDIDATE
+    supported_tasks: [PREDICT_NEXT_ACTION, PREDICT_RESPONSE_OR_NONRESPONSE, PREDICT_TIME_TO_ACTION, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+    split_unit: platform_user
+    conversion_status: CONVERTER_READY_STORAGE_BLOCKED
+    blockers: "6.37GB > safe working disk here. Streaming converter implemented + fixture-tested; sample normalized. Full run resume: python -m machine_learning.cli datasets acquire omnibehavior --allow-large (on a >=20GB volume) then normalize. NON-COMMERCIAL license: excluded from any commercial training view."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://huggingface.co/datasets/jiawei-ucas/OmniBehavior", "https://github.com/icip-cas/OmniBehavior"]}
+    acquire:
+      method: hf
+      estimated_bytes: 20000000
+      hf: {repo_id: "jiawei-ucas/OmniBehavior", mode: stream, split: train, stream_rows: 300}
+    converter: machine_learning.normalization.converters.omnibehavior.Converter
+
+  - dataset_id: opera
+    official_name: "OPeRA: Observation, Persona, Rationale, Action for Human Online-Shopping Behavior Simulation"
+    description: "Real Amazon shopping sessions (692 sessions, 51 unique users, 28,904 observation-action pairs) captured via browser plugin + questionnaire, with self-reported personas/rationales + interview transcripts."
+    official_paper: "https://arxiv.org/abs/2506.05606"
+    official_data_source: "https://huggingface.co/datasets/NEU-HAI/OPeRA"
+    official_code_source: ""
+    license: "CC-BY-4.0"
+    license_class: cc_by
+    commercial_use_allowed: yes
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "Real users' shopping sessions + self-reports; pseudonymize user ids."
+    access_requirements: "Open on HF."
+    gated: false
+    expected_size: "~8.58 GB; 53,295 rows"
+    full_expected_bytes: 9212612116
+    download_method: hf
+    checksum_method: sha256
+    dataset_role: TRAIN_CANDIDATE
+    supported_tasks: [PREDICT_NEXT_ACTION, PREDICT_TIME_TO_ACTION, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+    split_unit: platform_user   # hold out users + sessions
+    conversion_status: CONVERTER_READY_STORAGE_BLOCKED
+    blockers: "8.58GB > safe working disk. Streaming converter implemented + fixture-tested; sample normalized. Rationales are self-reports, NOT infallible private states (recorded with confidence markers). Full run resume: acquire --allow-large on a >=20GB volume."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://huggingface.co/datasets/NEU-HAI/OPeRA", "https://arxiv.org/abs/2506.05606"]}
+    acquire:
+      method: hf
+      estimated_bytes: 20000000
+      hf: {repo_id: "NEU-HAI/OPeRA", mode: stream, split: train, stream_rows: 300}
+    converter: machine_learning.normalization.converters.opera.Converter
+
+  - dataset_id: acl_online_shopping
+    official_name: "Can LLM Agents Simulate Multi-Turn Human Behavior? (Real Online Customer Behavior Data)"
+    description: "31,865 sessions / 230,965 actions of real Amazon customer click-through behavior used to train/evaluate agent simulation. Proprietary Amazon-internal data."
+    official_paper: "https://arxiv.org/abs/2503.20749"
+    official_data_source: ""
+    official_code_source: ""
+    license: "None stated; proprietary internal data"
+    license_class: proprietary_unreleased
+    commercial_use_allowed: no
+    derivatives_allowed: no
+    redistribution_allowed: no
+    personal_data_notes: "Real customer logs; proprietary and unreleased."
+    access_requirements: "Not released. No data-availability statement in the paper."
+    gated: true
+    expected_size: "n/a"
+    full_expected_bytes: null
+    download_method: manual
+    checksum_method: sha256
+    dataset_role: ACCESS_BLOCKED
+    supported_tasks: [PREDICT_NEXT_ACTION, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+    split_unit: platform_user
+    conversion_status: ACCESS_BLOCKED
+    blockers: "Dataset is proprietary Amazon-internal data; never publicly released. Human action: none available without Amazon permission. Use OPeRA (same lab, released) as the multi-turn shopping substitute."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://arxiv.org/abs/2503.20749", "https://aclanthology.org/2026.acl-long.2034/"]}
+    converter: null
+
+  - dataset_id: psych101
+    official_name: "Psych-101 (Centaur)"
+    description: "160 psychology experiments transcribed to natural language; 60,092 participants, ~10.68M human trial-by-trial choices. Columns: text (transcript with embedded responses), experiment, participant."
+    official_paper: "https://arxiv.org/abs/2410.20268"
+    official_data_source: "https://huggingface.co/datasets/marcelbinz/Psych-101"
+    official_code_source: "https://github.com/marcelbinz/Centaur"
+    license: "Apache-2.0"
+    license_class: permissive_commercial
+    commercial_use_allowed: yes
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "De-identified experiment participants; transcripts are natural language."
+    access_requirements: "Open on HF (main set). NOTE: the separate marcelbinz/Psych-101-test set is gated CC-BY-ND-4.0 — do NOT use it for training."
+    gated: false
+    expected_size: "~859 MB (parquet), 60,092 rows"
+    full_expected_bytes: 990932107
+    download_method: hf
+    checksum_method: sha256
+    dataset_role: TRAIN_CANDIDATE
+    supported_tasks: [PREDICT_NEXT_CHOICE, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+    split_unit: participant   # hold out participants + experiments + tasks
+    conversion_status: CONVERTER_READY_STORAGE_BLOCKED
+    blockers: "859MB fits, but the converter must parse choices out of NL transcripts (response markers) per-experiment — non-trivial. Streaming converter implemented + fixture-tested on the documented transcript format; sample normalized. Full run resume: acquire --allow-large then normalize psych101."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://huggingface.co/datasets/marcelbinz/Psych-101", "https://www.nature.com/articles/s41586-025-09215-4"]}
+    acquire:
+      method: hf
+      estimated_bytes: 30000000
+      hf: {repo_id: "marcelbinz/Psych-101", mode: stream, split: train, stream_rows: 200}
+    converter: machine_learning.normalization.converters.psych101.Converter
+
+# ------------------------------------------------------------------ experimental / intervention
+  - dataset_id: socsci210
+    official_name: "SocSci210"
+    description: "210 social-science experiments (mostly NSF TESS), 2.9M responses / 400,491 participants / 1,194 conditions. Columns: sample_id, participant, demographic, stimuli, response, condition_num, task_num, prompt, reasoning, study_id."
+    official_paper: "https://arxiv.org/abs/2509.05830"
+    official_data_source: "https://huggingface.co/datasets/socratesft/SocSci210"
+    official_code_source: ""
+    license: "No license declared on the HF card"
+    license_class: unknown_unstated
+    commercial_use_allowed: unknown
+    derivatives_allowed: unknown
+    redistribution_allowed: unknown
+    personal_data_notes: "Survey/experiment responses with demographics; underlying TESS studies are public but the compiled dataset carries no explicit license."
+    access_requirements: "Open on HF, but license unspecified."
+    gated: false
+    expected_size: "~1.45 GB (parquet), 2.9M rows"
+    full_expected_bytes: 1556925645
+    download_method: hf
+    checksum_method: sha256
+    dataset_role: LICENSE_RESTRICTED_EVAL_ONLY
+    supported_tasks: [PREDICT_NEXT_CHOICE, PREDICT_POPULATION_RESPONSE, PREDICT_INTERVENTION_EFFECT, RANK_CANDIDATE_ACTIONS]
+    split_unit: participant   # ships participant/task/condition split-mapping JSONs
+    conversion_status: CONVERTER_READY_STORAGE_BLOCKED
+    blockers: "License unspecified on the official card -> keep OUT of training (eval-only) until authors clarify. Streaming converter implemented + fixture-tested; sample normalized as eval-only. Resume: acquire --allow-large then normalize socsci210."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, note: "License genuinely unstated on official card.", sources: ["https://huggingface.co/datasets/socratesft/SocSci210", "https://arxiv.org/abs/2509.05830"]}
+    acquire:
+      method: hf
+      estimated_bytes: 30000000
+      hf: {repo_id: "socratesft/SocSci210", mode: stream, split: train, stream_rows: 300}
+    converter: machine_learning.normalization.converters.socsci210.Converter
+
+  - dataset_id: kuairand
+    official_name: "KuaiRand: An Unbiased Sequential Recommendation Dataset with Randomly Exposed Videos"
+    description: "Kuaishou short-video interactions WITH randomly-exposed items. is_rand=1 marks random exposure (unbiased); tab (0-14) marks recommendation policy. Variants: Pure (~1.44M), 1K (~11.7M), 27K (~322M interactions)."
+    official_paper: "https://arxiv.org/abs/2208.08696"
+    official_data_source: "https://zenodo.org/records/10439422"
+    official_code_source: "https://github.com/chongminggao/KuaiRand"
+    license: "CC-BY-SA-4.0"
+    license_class: cc_by_sa
+    commercial_use_allowed: yes
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "Pseudonymous user/video ids; ShareAlike applies to redistributed derivatives."
+    access_requirements: "Open (Zenodo / USTC mirror)."
+    gated: false
+    expected_size: "Pure ~194MB / 1K ~4.3GB / 27K ~46GB (CSV tar.gz)"
+    full_expected_bytes: 203423744
+    download_method: http
+    checksum_method: sha256
+    dataset_role: TRAIN_CANDIDATE
+    supported_tasks: [PREDICT_NEXT_ACTION, PREDICT_RESPONSE_OR_NONRESPONSE, PREDICT_TIME_TO_ACTION, PREDICT_INTERVENTION_EFFECT, PREDICT_POLICY_VALUE]
+    split_unit: platform_user
+    conversion_status: CONVERTER_READY_STORAGE_BLOCKED
+    blockers: "KuaiRand-Pure (~194MB) is acquirable but tar.gz extraction + CSV normalization is disk-heavy; keep randomized-exposure (is_rand=1) separate from organic. Converter implemented + fixture-tested. Resume: acquire kuairand --allow-large (Pure) then normalize. Do NOT let its size dominate the sampler (per-dataset cap set)."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://kuairand.com/", "https://github.com/chongminggao/KuaiRand", "https://zenodo.org/records/10439422"]}
+    acquire:
+      method: http
+      estimated_bytes: 203423744
+      http:
+        urls:
+          - {url: "https://zenodo.org/records/10439422/files/KuaiRand-Pure.tar.gz?download=1", filename: "KuaiRand-Pure.tar.gz", role: data}
+    converter: machine_learning.normalization.converters.kuairand.Converter
+
+  - dataset_id: upworthy
+    official_name: "The Upworthy Research Archive"
+    description: "32,487 randomized A/B headline/image 'package' experiments with impressions + clicks per arm. Fields: clickability_test_id, headline, impressions, clicks, created_at, eyecatcher_id."
+    official_paper: "https://www.nature.com/articles/s41597-021-00934-7"
+    official_data_source: "https://osf.io/jd64p/"
+    official_code_source: "https://github.com/UpworthyResearch/upworthy-archive"
+    license: "CC-BY-4.0"
+    license_class: cc_by
+    commercial_use_allowed: yes
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "Aggregate arm-level counts; no user-level PII."
+    access_requirements: "Open (OSF; no registration)."
+    gated: false
+    expected_size: "tens-hundreds MB (aggregate CSVs)"
+    full_expected_bytes: 120000000
+    download_method: http
+    checksum_method: sha256
+    dataset_role: TRAIN_CANDIDATE
+    supported_tasks: [PREDICT_POPULATION_RESPONSE, PREDICT_INTERVENTION_EFFECT, RANK_CANDIDATE_ACTIONS, PREDICT_POLICY_VALUE]
+    split_unit: experiment   # keep whole experiments (clickability_test_id) together
+    conversion_status: CONVERTER_READY_STORAGE_BLOCKED
+    blockers: "Converter implemented + fixture-tested. OSF direct-file ids vary by release; set acquire.http.urls to the current OSF file download link, or place the CSV in raw/upworthy/ and run normalize. Randomization-problem window (2013-06-25..2014-01-10) is flagged + excluded from confirmatory splits."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://osf.io/jd64p/", "https://www.nature.com/articles/s41597-021-00934-7"]}
+    acquire:
+      method: http
+      estimated_bytes: 120000000
+      http:
+        urls:
+          - {url: "https://osf.io/download/upworthy-archive-confirmatory-packages/", filename: "upworthy-archive-confirmatory-packages.csv", role: data}
+    converter: machine_learning.normalization.converters.upworthy.Converter
+
+  - dataset_id: open_bandit
+    official_name: "Open Bandit Dataset (ZOZO)"
+    description: "Logged bandit feedback with true propensities under Uniform-Random and Bernoulli-TS policies, across campaigns {all, men, women}. In-repo sample = 10,000 records per campaign x policy. Fields: timestamp, item_id/action, position, click, propensity_score, context."
+    official_paper: "https://arxiv.org/abs/2008.07146"
+    official_data_source: "https://research.zozo.com/data.html"
+    official_code_source: "https://github.com/st-tech/zr-obp"
+    license: "Apache-2.0 (repo + in-repo sample). Full data: citation-required 'research' terms (commercial not clearly granted)."
+    license_class: permissive_commercial   # for the in-repo sample
+    commercial_use_allowed: yes             # sample; full-data commercial terms unclear
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "Pseudonymous logged recommendation interactions."
+    access_requirements: "Sample open on GitHub. Full dataset direct-download from research.zozo.com (citation requested)."
+    gated: false
+    expected_size: "sample ~small; full ~26M rows"
+    full_expected_bytes: null
+    download_method: git
+    checksum_method: sha256
+    dataset_role: TRAIN_CANDIDATE
+    supported_tasks: [PREDICT_NEXT_ACTION, PREDICT_INTERVENTION_EFFECT, PREDICT_POLICY_VALUE, RANK_CANDIDATE_ACTIONS]
+    split_unit: session
+    conversion_status: PENDING
+    blockers: ""
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, note: "In-repo sample Apache-2.0; full-data commercial terms unclear (citation-only).", sources: ["https://github.com/st-tech/zr-obp", "https://research.zozo.com/data.html"]}
+    acquire:
+      method: git
+      estimated_bytes: 60000000
+      git: {url: "https://github.com/st-tech/zr-obp.git", subdir: "obd", depth: 1}
+    converter: machine_learning.normalization.converters.open_bandit.Converter
+
+  - dataset_id: criteo_uplift
+    official_name: "Criteo Uplift Modeling Dataset (v2.1)"
+    description: "Randomized ad-exposure trial: 13,979,592 rows, 12 features f0-f11, treatment (~85%), exposure, visit (~4.7%), conversion (~0.29%). Assignment randomized (no explicit propensity needed)."
+    official_paper: "https://ailab.criteo.com/criteo-uplift-prediction-dataset/"
+    official_data_source: "https://huggingface.co/datasets/criteo/criteo-uplift"
+    official_code_source: ""
+    license: "CC-BY-NC-SA-4.0 (non-commercial)"
+    license_class: cc_by_nc
+    commercial_use_allowed: no
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "Anonymized dense features; no direct PII."
+    access_requirements: "Open (HF mirror or direct go.criteo.net link)."
+    gated: false
+    expected_size: "~297MB gz / ~311MB csv"
+    full_expected_bytes: 311000000
+    download_method: hf
+    checksum_method: sha256
+    dataset_role: CROSS_DATASET_EVAL_ONLY   # reserved as the held-out intervention-effect transfer test
+    supported_tasks: [PREDICT_POPULATION_RESPONSE, PREDICT_INTERVENTION_EFFECT, PREDICT_POLICY_VALUE]
+    split_unit: time_period
+    conversion_status: PENDING
+    blockers: ""
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://ailab.criteo.com/criteo-uplift-prediction-dataset/", "https://huggingface.co/datasets/criteo/criteo-uplift"]}
+    acquire:
+      method: hf
+      estimated_bytes: 5000000
+      hf: {repo_id: "criteo/criteo-uplift", mode: stream, split: train, stream_rows: 2000}
+    converter: machine_learning.normalization.converters.criteo_uplift.Converter
+
+# ------------------------------------------------------------------ persuasion / negotiation / dialogue
+  - dataset_id: persuasionforgood
+    official_name: "Persuasion For Good"
+    description: "1,017 dialogues (1,285 workers) persuading a partner to donate to Save the Children, with donation outcomes, demographics, Big-5/Moral-Foundations/Schwartz surveys; 300 dialogues annotated with persuasion strategies."
+    official_paper: "https://arxiv.org/abs/1906.06725"
+    official_data_source: "https://gitlab.com/ucdavisnlp/persuasionforgood"
+    official_code_source: "https://gitlab.com/ucdavisnlp/persuasionforgood"
+    license: "Apache-2.0"
+    license_class: permissive_commercial
+    commercial_use_allowed: yes
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "MTurk workers' demographics + psych surveys + donation decisions; pseudonymize worker ids."
+    access_requirements: "Open (git clone GitLab)."
+    gated: false
+    expected_size: "small (CSV + XLSX); ~20,932 utterances"
+    full_expected_bytes: 40000000
+    download_method: git
+    checksum_method: sha256
+    dataset_role: TRAIN_CANDIDATE
+    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_RESPONSE_OR_NONRESPONSE, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME, RANK_CANDIDATE_ACTIONS]
+    split_unit: conversation   # also hold out workers
+    conversion_status: PENDING
+    blockers: ""
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://gitlab.com/ucdavisnlp/persuasionforgood", "https://arxiv.org/abs/1906.06725"]}
+    acquire:
+      method: git
+      estimated_bytes: 40000000
+      git: {url: "https://gitlab.com/ucdavisnlp/persuasionforgood.git", depth: 1}
+    converter: machine_learning.normalization.converters.persuasionforgood.Converter
+
+  - dataset_id: craigslistbargain
+    official_name: "CraigslistBargain"
+    description: "6,682 buyer/seller negotiation dialogues over Craigslist listings, with roles, private target prices, offers, dialogue acts, agreement + final price."
+    official_paper: "https://arxiv.org/abs/1808.09637"
+    official_data_source: "https://huggingface.co/datasets/stanfordnlp/craigslist_bargains"
+    official_code_source: "https://github.com/stanfordnlp/cocoa"
+    license: "Dataset: no explicit license (HF card 'More Information Needed'). Code (cocoa): MIT."
+    license_class: unknown_unstated
+    commercial_use_allowed: unknown
+    derivatives_allowed: unknown
+    redistribution_allowed: unknown
+    personal_data_notes: "Public listing text + crowdworker dialogues."
+    access_requirements: "Open on HF."
+    gated: false
+    expected_size: "small; 6,682 dialogues (train 5,247/val 597/test 838)"
+    full_expected_bytes: 40000000
+    download_method: hf
+    checksum_method: sha256
+    dataset_role: CROSS_DATASET_EVAL_ONLY   # reserved as the held-out negotiation transfer test (also: license unstated)
+    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_NEXT_ACTION, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+    split_unit: conversation
+    conversion_status: PENDING
+    blockers: ""
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, note: "Dataset license unstated; held out as cross-dataset eval anyway.", sources: ["https://huggingface.co/datasets/stanfordnlp/craigslist_bargains", "https://github.com/stanfordnlp/cocoa"]}
+    acquire:
+      method: hf
+      estimated_bytes: 40000000
+      hf: {repo_id: "stanfordnlp/craigslist_bargains", mode: snapshot, repo_type: dataset}
+    converter: machine_learning.normalization.converters.craigslistbargain.Converter
+
+  - dataset_id: dealornodeal
+    official_name: "Deal or No Deal (end-to-end-negotiator)"
+    description: "5,808 human negotiation dialogues over 2,236 scenarios; agents divide items with PRIVATE utility values. Tag-delimited: <input> item counts+values, <dialogue> YOU/THEM turns, <output> allocation, <partner_input>."
+    official_paper: "https://arxiv.org/abs/1706.05125"
+    official_data_source: "https://github.com/facebookresearch/end-to-end-negotiator"
+    official_code_source: "https://github.com/facebookresearch/end-to-end-negotiator"
+    license: "CC-BY-NC (non-commercial)"
+    license_class: cc_by_nc
+    commercial_use_allowed: no
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "Crowdworker negotiation dialogues; private utilities recorded."
+    access_requirements: "Open (git clone)."
+    gated: false
+    expected_size: "small (text); 5,808 dialogues"
+    full_expected_bytes: 20000000
+    download_method: git
+    checksum_method: sha256
+    dataset_role: TRAIN_CANDIDATE   # non-commercial training view only
+    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_NEXT_ACTION, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME, RANK_CANDIDATE_ACTIONS]
+    split_unit: session   # scenario/dialogue
+    conversion_status: PENDING
+    blockers: ""
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://github.com/facebookresearch/end-to-end-negotiator", "https://arxiv.org/abs/1706.05125"]}
+    acquire:
+      method: git
+      estimated_bytes: 20000000
+      git: {url: "https://github.com/facebookresearch/end-to-end-negotiator.git", depth: 1}
+    converter: machine_learning.normalization.converters.dealornodeal.Converter
+
+  - dataset_id: casino
+    official_name: "CaSiNo: A Corpus of Campsite Negotiation Dialogues"
+    description: "1,030 campsite negotiation dialogues; private preference orderings + arguments for Food/Water/Firewood, Big-5, Social Value Orientation, points, satisfaction + opponent-liking surveys, offers/concessions/allocations. 396 dialogues have utterance-level strategy annotations."
+    official_paper: "https://aclanthology.org/2021.naacl-main.254/"
+    official_data_source: "https://huggingface.co/datasets/kchawla123/casino"
+    official_code_source: "https://github.com/kushalchawla/CaSiNo"
+    license: "CC-BY-4.0"
+    license_class: cc_by
+    commercial_use_allowed: yes
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "MTurk workers' demographics + personality + survey responses; pseudonymize participant ids."
+    access_requirements: "Open on HF."
+    gated: false
+    expected_size: "small; 1,030 dialogues"
+    full_expected_bytes: 20000000
+    download_method: hf
+    checksum_method: sha256
+    dataset_role: TRAIN_CANDIDATE
+    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_NEXT_ACTION, PREDICT_PRIVATE_STATE_UPDATE, PREDICT_FINAL_OUTCOME]
+    split_unit: conversation   # also hold out participants
+    conversion_status: PENDING
+    blockers: ""
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://huggingface.co/datasets/kchawla123/casino", "https://github.com/kushalchawla/CaSiNo"]}
+    acquire:
+      method: hf
+      estimated_bytes: 20000000
+      hf: {repo_id: "kchawla123/casino", mode: snapshot, repo_type: dataset}
+    converter: machine_learning.normalization.converters.casino.Converter
+
+  - dataset_id: werewolf
+    official_name: "Werewolf Among Us"
+    description: "199 social-deduction games (Werewolf/Avalon; 151 YouTube + 48 Ego4D), 26,647 utterance-level persuasion-strategy annotations, with roles, deception, voting, game outcomes. Text/annotations downloadable separately from video."
+    official_paper: "https://aclanthology.org/2023.findings-acl.411/"
+    official_data_source: "https://huggingface.co/datasets/bolinlai/Werewolf-Among-Us"
+    official_code_source: "https://github.com/SALT-NLP/PersuationGames"
+    license: "Apache-2.0 (text/annotations). Ego4D video subset under separate Ego4D license."
+    license_class: permissive_commercial
+    commercial_use_allowed: yes
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "Public game transcripts; the 48 Ego4D games' VIDEO requires the Ego4D license (we use text/annotations only)."
+    access_requirements: "Open on HF (text/annotations); video fetched separately."
+    gated: false
+    expected_size: "small (text/annotations); video features large (skipped)"
+    full_expected_bytes: 200000000
+    download_method: hf
+    checksum_method: sha256
+    dataset_role: TRAIN_CANDIDATE
+    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_NEXT_ACTION, PREDICT_BELIEF_CHANGE, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+    split_unit: group   # by game; hold out whole games
+    conversion_status: PENDING
+    blockers: ""
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, note: "Only observed votes/roles used; private beliefs NOT inferred.", sources: ["https://huggingface.co/datasets/bolinlai/Werewolf-Among-Us", "https://aclanthology.org/2023.findings-acl.411/"]}
+    acquire:
+      method: hf
+      estimated_bytes: 40000000
+      hf: {repo_id: "bolinlai/Werewolf-Among-Us", mode: snapshot, repo_type: dataset, allow_patterns: ["*.json", "*.txt", "*.csv", "*.md", "LICENSE*"]}
+    converter: machine_learning.normalization.converters.werewolf.Converter
+
+  - dataset_id: abcd
+    official_name: "Action-Based Conversations Dataset (ABCD)"
+    description: "~10,042 customer-service dialogues grounded in agent guidelines/policies, with 55 subflows (customer intent), 30 button-click actions, system state/ontology, 100-candidate utterance ranking."
+    official_paper: "https://aclanthology.org/2021.naacl-main.239/"
+    official_data_source: "https://github.com/asappresearch/abcd"
+    official_code_source: "https://github.com/asappresearch/abcd"
+    license: "MIT"
+    license_class: permissive_commercial
+    commercial_use_allowed: yes
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "Synthetic-persona customer-service dialogues; no real customer PII."
+    access_requirements: "Open (git clone)."
+    gated: false
+    expected_size: "~10,042 dialogues (abcd_v1.1.json.gz)"
+    full_expected_bytes: 30000000
+    download_method: git
+    checksum_method: sha256
+    dataset_role: TRAIN_CANDIDATE
+    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_NEXT_ACTION, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+    split_unit: conversation
+    conversion_status: PENDING
+    blockers: ""
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://github.com/asappresearch/abcd", "https://aclanthology.org/2021.naacl-main.239/"]}
+    acquire:
+      method: git
+      estimated_bytes: 30000000
+      git: {url: "https://github.com/asappresearch/abcd.git", subdir: "data", depth: 1, lfs: true}
+    converter: machine_learning.normalization.converters.abcd.Converter
+
+# ------------------------------------------------------------------ broad behavioral benchmarks
+  - dataset_id: behaviorbench
+    official_name: "BehaviorBench: Benchmarking Foundation Models for Behavioral Science Tasks"
+    description: "~15,984 records (34.6MB) from Big-Five psychometrics, MobLab gameplay logs (2015-2023), published-article data, Economics Olympiad problems. Explicitly an EVALUATION benchmark."
+    official_paper: "https://arxiv.org/abs/2606.24162"
+    official_data_source: "https://huggingface.co/datasets/befm/BehaviorBench"
+    official_code_source: "https://github.com/umich-foreseer/behaviorbench_eval"
+    license: "CC-BY-NC-ND-4.0"
+    license_class: cc_by_nc_nd
+    commercial_use_allowed: no
+    derivatives_allowed: no
+    redistribution_allowed: yes
+    personal_data_notes: "De-identified psychometric + gameplay records."
+    access_requirements: "Open on HF (no gate). ND = no derivatives/training."
+    gated: false
+    expected_size: "~34.6 MB; ~15,984 records"
+    full_expected_bytes: 36280500
+    download_method: hf
+    checksum_method: sha256
+    dataset_role: LICENSE_RESTRICTED_EVAL_ONLY
+    supported_tasks: [PREDICT_NEXT_CHOICE, PREDICT_FINAL_OUTCOME, RANK_CANDIDATE_ACTIONS]
+    split_unit: experiment
+    conversion_status: CONVERTER_READY_STORAGE_BLOCKED
+    blockers: "CC-BY-NC-ND: No-Derivatives forbids training (which produces a derivative). Normalize for EVALUATION only; never place in a training manifest. Converter implemented + fixture-tested. Resume (eval): acquire behaviorbench --allow-large then normalize (eval-only)."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, note: "ND clause forbids training use.", sources: ["https://huggingface.co/datasets/befm/BehaviorBench", "https://arxiv.org/abs/2606.24162"]}
+    acquire:
+      method: hf
+      estimated_bytes: 36280500
+      hf: {repo_id: "befm/BehaviorBench", mode: snapshot, repo_type: dataset}
+    converter: machine_learning.normalization.converters.behaviorbench.Converter
+
+  - dataset_id: simbench
+    official_name: "SimBench: Benchmarking the Ability of LLMs to Simulate Human Behaviors"
+    description: "~13,500 test cases (SimBenchPop 7,167 + SimBenchGrouped 6,343) compiled from 20 real survey/experiment datasets (AfroBarometer, ESS, ISSP, OpinionQA, Choices13k, MoralMachine, ...). Measures reproduction of real human response distributions."
+    official_paper: "https://arxiv.org/abs/2510.17516"
+    official_data_source: "https://huggingface.co/datasets/pitehu/SimBench"
+    official_code_source: "http://simbench.tiancheng.hu/"
+    license: "CC-BY-NC-SA-4.0 (non-commercial). Underlying 20 sources keep their own terms."
+    license_class: cc_by_nc
+    commercial_use_allowed: no
+    derivatives_allowed: yes
+    redistribution_allowed: yes
+    personal_data_notes: "Aggregated survey/experiment response distributions; per-source terms apply."
+    access_requirements: "Open on HF (no gate)."
+    gated: false
+    expected_size: "moderate; ~13,500 test cases, up to ~10.9M simulation targets"
+    full_expected_bytes: 400000000
+    download_method: hf
+    checksum_method: sha256
+    dataset_role: CROSS_DATASET_EVAL_ONLY   # held-out population-response transfer test
+    supported_tasks: [PREDICT_POPULATION_RESPONSE, PREDICT_NEXT_CHOICE]
+    split_unit: study   # by source dataset
+    conversion_status: CONVERTER_READY_STORAGE_BLOCKED
+    blockers: "Reserved as the held-out population-response cross-dataset transfer test; excluded from training manifests by design. NC-SA (non-commercial). Converter implemented + fixture-tested. Resume (eval): acquire simbench --allow-large then normalize (eval-only)."
+    last_verified_at: "2026-07-22"
+    verification: {confidence: high, sources: ["https://huggingface.co/datasets/pitehu/SimBench", "https://arxiv.org/abs/2510.17516"]}
+    acquire:
+      method: hf
+      estimated_bytes: 20000000
+      hf: {repo_id: "pitehu/SimBench", mode: stream, split: train, stream_rows: 300}
+    converter: machine_learning.normalization.converters.simbench.Converter

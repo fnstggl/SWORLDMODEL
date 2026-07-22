@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_NEXT_MESSAGE.schema.json",
+  "title": "PredictNextMessage",
+  "description": "Predict the next natural-language message a speaker produces given dialogue history + private goal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "dialogue_history": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "private_goal": {
+          "type": "object"
+        },
+        "current_observation": {
+          "type": "object"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "message_text"
+      ],
+      "properties": {
+        "message_text": {
+          "type": "string"
+        },
+        "dialogue_act": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "strategy": {
+          "type": [
+            "string",
+            "array",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

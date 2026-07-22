@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/task_payloads/PREDICT_PRIVATE_STATE_UPDATE.schema.json",
+  "title": "PredictPrivateStateUpdate",
+  "description": "Predict an update to an actor's recorded private state (e.g. satisfaction, preference strength). Only valid when the private state was explicitly self-reported before AND after.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input",
+    "target"
+  ],
+  "properties": {
+    "input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [],
+      "properties": {
+        "private_state_before": {
+          "type": "object"
+        },
+        "observed_events": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "private_state_after"
+      ],
+      "properties": {
+        "private_state_after": {
+          "type": "object"
+        },
+        "delta": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

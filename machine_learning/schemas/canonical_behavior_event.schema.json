@@ -1,0 +1,191 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sworldmodel/schemas/canonical_behavior_event.schema.json",
+  "title": "CanonicalBehaviorEvent",
+  "description": "One decision unit: an actor (or population) about to produce an observed behavior at a cutoff, together with everything known BEFORE that behavior. The task-specific label lives in `payload.target`; nothing in the record above `payload.target` may reveal the future. This is a thin outer envelope shared by every dataset + a task-specific `payload` validated separately against schemas/task_payloads/<task_type>.schema.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "record_id", "source", "task_type", "episode", "cutoff",
+    "decision_unit", "context", "payload", "causal_metadata", "data_quality",
+    "provenance", "split_metadata"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "record_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Globally unique, deterministic id: '<dataset_id>:<task_type>:<stable-hash>'. Reproducible from raw source + converter version."
+    },
+    "task_type": {
+      "type": "string",
+      "description": "One of registry/task_taxonomy.yaml. Determines which payload schema applies.",
+      "enum": [
+        "PREDICT_NEXT_CHOICE", "PREDICT_NEXT_ACTION", "PREDICT_NEXT_MESSAGE",
+        "PREDICT_NEXT_SPEAKER", "PREDICT_BELIEF_CHANGE", "PREDICT_PRIVATE_STATE_UPDATE",
+        "PREDICT_TIME_TO_ACTION", "PREDICT_RESPONSE_OR_NONRESPONSE",
+        "PREDICT_TRAJECTORY_CONTINUATION", "PREDICT_FINAL_OUTCOME",
+        "PREDICT_POPULATION_RESPONSE", "PREDICT_POPULATION_TIME_SERIES",
+        "PREDICT_DISCUSSION_TREE", "PREDICT_INTERVENTION_EFFECT",
+        "RANK_CANDIDATE_ACTIONS", "PREDICT_POLICY_VALUE"
+      ]
+    },
+
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dataset_id", "license_class", "converter_version"],
+      "properties": {
+        "dataset_id": { "type": "string" },
+        "dataset_version": { "type": "string" },
+        "raw_record_ids": { "type": "array", "items": { "type": "string" } },
+        "raw_file_paths": { "type": "array", "items": { "type": "string" } },
+        "license_class": { "type": "string", "description": "Coarse class from registry/licenses.yaml (e.g. permissive_commercial, cc_by, research_only, restricted)." },
+        "citation": { "type": "string" },
+        "source_language": { "type": "string" },
+        "normalization_timestamp": { "type": ["string", "null"] },
+        "converter_version": { "type": "string" },
+        "raw_content_hashes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "episode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["episode_id"],
+      "properties": {
+        "episode_id": { "type": "string", "description": "Stable id for the interaction/session/trial-sequence this decision belongs to. The primary leakage-isolation candidate." },
+        "participant_ids": { "type": "array", "items": { "type": "string" } },
+        "group_id": { "type": ["string", "null"] },
+        "session_id": { "type": ["string", "null"] },
+        "experiment_id": { "type": ["string", "null"] },
+        "topic_id": { "type": ["string", "null"] },
+        "item_ids": { "type": "array", "items": { "type": "string" } },
+        "environment_id": { "type": ["string", "null"] },
+        "start_time": { "type": ["string", "number", "null"] },
+        "end_time": { "type": ["string", "number", "null"] },
+        "sequence_index": { "type": ["integer", "null"], "description": "Position of THIS decision unit within its episode (0-based)." }
+      }
+    },
+
+    "cutoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["future_hidden"],
+      "properties": {
+        "cutoff_time": { "type": ["string", "number", "null"], "description": "Everything in context/known_history must be <= this time." },
+        "cutoff_sequence_index": { "type": ["integer", "null"], "description": "Everything in context must be strictly before this index within the episode." },
+        "future_hidden": { "type": "boolean", "description": "MUST be true. A record with future_hidden=false is a leakage bug, not valid training data." }
+      }
+    },
+
+    "decision_unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": { "type": ["string", "null"] },
+        "actor_role": { "type": ["string", "null"] },
+        "population_id": { "type": ["string", "null"], "description": "Set for population/aggregate tasks instead of a single actor." },
+        "decision_maker_id": { "type": ["string", "null"] },
+        "recipient_ids": { "type": "array", "items": { "type": "string" } },
+        "persistent_identity_available": { "type": "boolean", "description": "Whether actor_id is stable across episodes (enables cross-scenario history)." }
+      }
+    },
+
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "actor_profile": { "type": "object", "description": "Stable, pre-cutoff attributes of the actor/population (demographics, persona, personality). Open object." },
+        "private_state_before": { "type": "object", "description": "Actor's private state KNOWN to have existed before the cutoff (e.g. self-reported goal, private value). Only include if the source actually recorded it." },
+        "known_history": { "type": "array", "description": "Ordered list of prior observable events (messages, actions, choices) strictly before the cutoff.", "items": { "type": "object" } },
+        "current_observation": { "type": "object", "description": "What the actor observes at the cutoff (the latest message, the current screen, the offered item)." },
+        "world_state": { "type": "object", "description": "Institutional/environmental state at cutoff (listing details, game board, rules)." },
+        "relationships": { "type": "array", "items": { "type": "object" } },
+        "available_actions": { "type": ["array", "null"], "description": "The recoverable action space at the cutoff, or null when unknown. null != empty: null means 'we do not know the choice set'." },
+        "institutional_constraints": { "type": "array", "items": { "type": "object" } },
+        "language": { "type": "string" }
+      }
+    },
+
+    "payload": {
+      "type": "object",
+      "description": "Task-specific input+target. Validated separately against schemas/task_payloads/<task_type>.schema.json. `payload.target` is the label; nothing outside `payload.target` may reveal it.",
+      "required": ["input", "target"],
+      "properties": {
+        "input": { "type": "object" },
+        "target": {}
+      }
+    },
+
+    "causal_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Only populated for interventional/experimental datasets. Empty object otherwise.",
+      "properties": {
+        "is_experimental": { "type": "boolean" },
+        "randomized": { "type": ["boolean", "null"] },
+        "assignment_mechanism": { "type": ["string", "null"], "description": "e.g. rct, bernoulli_ts, random, uniform_random_exposure, observational, unknown" },
+        "treatment_arm": { "type": ["string", "null"] },
+        "control_arm": { "type": ["string", "null"] },
+        "propensity": { "type": ["number", "null"], "description": "Logging-policy probability of the taken action, when known (bandit datasets)." },
+        "logging_policy": { "type": ["string", "null"] },
+        "unit_of_assignment": { "type": ["string", "null"] }
+      }
+    },
+
+    "data_quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["missing_fields", "chronology_verified", "target_verified", "possible_leakage", "license_verified"],
+      "properties": {
+        "missing_fields": { "type": "array", "items": { "type": "string" }, "description": "Fields the source did not provide (stored null/empty, never fabricated)." },
+        "inferred_fields": { "type": "array", "items": { "type": "string" }, "description": "Fields deterministically derived (NOT model-generated). e.g. sequence_index computed from ordering." },
+        "weak_label_fields": { "type": "array", "items": { "type": "string" }, "description": "Fields that are model-generated annotations. MUST be empty in default training manifests." },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "confidence": { "type": "string", "enum": ["high", "medium", "low", ""] },
+        "chronology_verified": { "type": "boolean" },
+        "target_verified": { "type": "boolean" },
+        "possible_leakage": { "type": "boolean" },
+        "license_verified": { "type": "boolean" }
+      }
+    },
+
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["converter", "converter_version", "conversion_timestamp", "raw_record_locator"],
+      "properties": {
+        "converter": { "type": "string", "description": "Fully-qualified converter class/module." },
+        "converter_version": { "type": "string" },
+        "conversion_timestamp": { "type": ["string", "null"] },
+        "code_commit": { "type": ["string", "null"], "description": "Git commit of the converter code at conversion time." },
+        "transformation_steps": { "type": "array", "items": { "type": "string" }, "description": "Ordered human-readable list of transformations applied to the raw record." },
+        "raw_record_locator": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Exact pointer(s) back to the raw source record(s) this example derives from.",
+          "properties": {
+            "files": { "type": "array", "items": { "type": "string" } },
+            "indices": { "type": "array", "items": { "type": ["integer", "string"] } },
+            "ids": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "content_hash": { "type": ["string", "null"], "description": "Hash of the canonical record content (dedup + integrity)." }
+      }
+    },
+
+    "split_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Populated by the splitting stage; null/empty before splitting.",
+      "properties": {
+        "split": { "type": ["string", "null"], "enum": ["train", "validation", "test_in_domain", "test_unseen_people", "test_unseen_groups", "test_unseen_topics", "test_unseen_experiments", "test_unseen_conditions", "test_future_time", "test_cross_dataset", null] },
+        "split_policy": { "type": ["string", "null"] },
+        "isolation_keys": { "type": "object", "description": "The concrete key values that decided this record's split (e.g. {participant: p12, topic: abortion})." },
+        "dedup_hash": { "type": ["string", "null"] },
+        "near_dup_bucket": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
