@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Social World Model — Lean V2 Replay</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ TOP BAR ============ -->
+  <header id="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <div>
+        <div class="brand-title">SOCIAL WORLD MODEL <span class="brand-sub">· World-Model-V2 · Lean V2</span></div>
+        <div id="q-line" class="q-line">—</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="asof" id="asof-line">—</div>
+      <div class="headline" id="headline">
+        <div class="headline-p" id="headline-p">—</div>
+        <div class="headline-l" id="headline-label">probability</div>
+      </div>
+      <div class="status-pill" id="status-pill">idle</div>
+      <select id="recording-select" title="Choose a recorded run"></select>
+    </div>
+  </header>
+
+  <!-- ============ PHASE RAIL ============ -->
+  <nav id="phase-rail"></nav>
+
+  <!-- ============ MAIN ============ -->
+  <main id="main">
+
+    <!-- CENTER: agent plane -->
+    <section id="stage">
+      <div id="plane">
+        <svg id="edges" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div id="hub" class="hub hidden">
+          <div class="hub-title" id="hub-title">institution</div>
+          <div class="hub-rule" id="hub-rule"></div>
+          <div class="hub-tally" id="hub-tally"></div>
+          <div class="hub-verdict" id="hub-verdict"></div>
+        </div>
+        <div id="nodes"></div>
+        <div id="plane-empty" class="plane-empty">Press <b>Play</b> or <b>Step ▶</b> to compile the world…</div>
+      </div>
+      <div id="now-bar" class="now-bar">
+        <span id="now-icon" class="now-icon">·</span>
+        <span id="now-text" class="now-text">Ready.</span>
+      </div>
+    </section>
+
+    <!-- RIGHT: log + inspector -->
+    <aside id="side">
+      <div class="side-tabs">
+        <button class="side-tab active" data-tab="log">Event Log</button>
+        <button class="side-tab" data-tab="call">LLM Call</button>
+        <button class="side-tab" data-tab="actor">Actor Model</button>
+      </div>
+
+      <div class="side-panel active" id="panel-log">
+        <div class="log-filter">
+          <input id="log-search" placeholder="filter events…" />
+          <label class="chk"><input type="checkbox" id="only-calls" /> LLM calls only</label>
+        </div>
+        <div id="log-list" class="log-list"></div>
+      </div>
+
+      <div class="side-panel" id="panel-call">
+        <div id="call-empty" class="panel-empty">Select an LLM-call step to see the exact prompt &amp; reply the model was given.</div>
+        <div id="call-view" class="call-view hidden">
+          <div class="call-head">
+            <span class="call-badge" id="call-badge">decision</span>
+            <span class="call-actor" id="call-actor"></span>
+            <span class="call-meta" id="call-meta"></span>
+          </div>
+          <div class="call-cols">
+            <div class="call-col">
+              <div class="call-col-title">PROMPT · exactly what the model was given</div>
+              <pre id="call-prompt" class="call-pre"></pre>
+            </div>
+            <div class="call-col">
+              <div class="call-col-title">REPLY · exactly what it said</div>
+              <pre id="call-reply" class="call-pre"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-panel" id="panel-actor">
+        <div id="actor-empty" class="panel-empty">Click an actor on the plane to inspect exactly how they are modelled.</div>
+        <div id="actor-view" class="actor-view hidden"></div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ============ TRANSPORT ============ -->
+  <footer id="transport">
+    <div class="tp-buttons">
+      <button id="btn-restart" title="Restart">⏮</button>
+      <button id="btn-back" title="Step back">◀</button>
+      <button id="btn-play" class="primary" title="Play / Pause">▶</button>
+      <button id="btn-step" title="Step +1">▶▎</button>
+    </div>
+    <div class="tp-scrub">
+      <input type="range" id="scrub" min="0" max="0" value="0" />
+      <div class="tp-info">
+        <span id="step-count">0 / 0</span>
+        <span id="phase-now" class="phase-now">—</span>
+      </div>
+    </div>
+    <div class="tp-speed">
+      <label>speed</label>
+      <select id="speed">
+        <option value="1600">0.6×</option>
+        <option value="1000" selected>1×</option>
+        <option value="550">1.8×</option>
+        <option value="250">4×</option>
+      </select>
+    </div>
+  </footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
