@@ -288,22 +288,39 @@ def gather_grounding(*, question: str, as_of: str, evidence_text: str, actor_ids
                        "states": states, "table": tbl.as_dict(),
                        "evidence_ids": list(sc.get("evidence_ids") or [])}
 
+    from swm.world_model_v2.lean_v2.reference_verification import (LAYER_ACTION, LAYER_OUTCOME,
+                                                                   counted_rate, verify_cases)
     actor_classes: dict = {}
     for rc in r.get("actor_state_reference_classes") or []:
         aid = str(rc.get("actor_id") or "")
         if aid not in actor_ids:
             continue
+        cases = rc.get("reference_cases") or []
         tbl = build_reference_class(
-            rc.get("quantity") or f"{aid}:state", rc.get("reference_cases") or [], as_of=as_of,
+            rc.get("quantity") or f"{aid}:state", cases, as_of=as_of,
             definition=rc.get("definition", ""), inclusion=rc.get("inclusion_criteria", ""),
-            exclusion=rc.get("exclusion_criteria", ""), evidence_text=evidence_text)
-        actor_classes.setdefault(aid, []).append(tbl.as_dict())
+            exclusion=rc.get("exclusion_criteria", ""), evidence_text=evidence_text).as_dict()
+        # D10: verify the cases and TYPE the class to its observed action class, so D8 can weight
+        # a state ONLY when the class's counted action agrees with the state's tendency. Verified
+        # cases and exclusions are recorded for audit; the counted rate itself is unchanged here.
+        verified = verify_cases(cases, evidence_text=evidence_text, as_of=as_of, layer=LAYER_ACTION)
+        vr = counted_rate(verified)
+        if vr["action_option_id"]:
+            tbl["action_option_id"] = vr["action_option_id"]
+        tbl["verification"] = {"action_option_id": vr["action_option_id"],
+                               "n_verified": vr["denominator"], "n_excluded": vr["n_excluded"],
+                               "excluded": vr["excluded"]}
+        actor_classes.setdefault(aid, []).append(tbl)
 
     oc = r.get("outcome_reference_class") or {}
     outcome_tbl = build_reference_class(
         oc.get("quantity") or "terminal_yes", oc.get("reference_cases") or [], as_of=as_of,
         definition=oc.get("definition", ""), inclusion=oc.get("inclusion_criteria", ""),
         exclusion=oc.get("exclusion_criteria", ""), evidence_text=evidence_text).as_dict()
+    _oc_ver = verify_cases(oc.get("reference_cases") or [], evidence_text=evidence_text,
+                           as_of=as_of, layer=LAYER_OUTCOME)
+    outcome_tbl["verification"] = {"n_verified": sum(1 for c in _oc_ver if c.included),
+                                   "n_excluded": sum(1 for c in _oc_ver if not c.included)}
 
     obligations = {}
     for ob in r.get("institutional_obligations") or []:
