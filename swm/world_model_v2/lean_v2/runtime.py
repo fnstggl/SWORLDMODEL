@@ -249,6 +249,31 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
     lean_v2_prov["obligations"] = {k: o.as_dict() for k, o in obligations.items()}
     map_combo = shared_combos[0][0] if shared_combos else {}
 
+    # ---------------- 6d-ter. ACTOR KNOWLEDGE PACKETS (D13) -----------------------------
+    # what each consequential actor actually KNOWS — real facts (D11), own latent mindset (D9),
+    # the world that affects them (D12) — assembled with hard leakage guards (no other actor's
+    # private state, no future, no secret ballot). This is the auditable knowledge each actor
+    # reasons from instead of labels/hashes.
+    from swm.world_model_v2.lean_v2.knowledge_packet import build_knowledge_packet
+    from swm.world_model_v2.lean_v2.state_completeness import feasible_options_for
+    _roles_map = {a["id"]: a.get("role", "") for a in bp.actors}
+    _inst_map: dict = {}
+    for _inst in bp.institutions:
+        for _m in _inst.get("members") or []:
+            _inst_map.setdefault(_m, []).append(_inst.get("id"))
+    _packets: dict = {}
+    for _aid in consequential:
+        _a = bp.actor_by_id(_aid) or {"id": _aid}
+        _st = (validated.get(_aid) or [None])[0]
+        _packets[_aid] = build_knowledge_packet(
+            _a, evidence_store=evidence_store, state=_st, shared_world=map_combo, day=as_of,
+            roles=_roles_map, institutions=_inst_map,
+            feasible_actions=feasible_options_for(bp, _aid)).as_dict()
+    lean_v2_prov["knowledge_packets"] = {
+        "n": len(_packets), "actors": sorted(_packets),
+        "leakage_flags": {a: p["leakage_flags"] for a, p in _packets.items() if p["leakage_flags"]},
+        "sample": next(iter(_packets.values()), None)}
+
     # ---------------- 6e-bis. DELIBERATIVE INSTITUTION-VOTE RESOLUTION (D7 + D8 + D14) ------
     # An institution vote is resolved by a deliberative sub-simulation over the FAITHFUL roster
     # (D7) with grounded initial positions (D8) and grounded convergence (D14), tallied
