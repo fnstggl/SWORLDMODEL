@@ -146,9 +146,19 @@ def test_35_mass_normalizes_and_is_monotone_in_counts():
 
 # ============================================================ core pooling math
 def test_partial_pool_core_no_data_is_uniform():
+    from swm.world_model_v2.lean_v2.action_baseline import JEFFREYS_PER_CLASS
     mean, conc, n, levels = partial_pool_categorical(["a", "b", "c"], {})
     assert all(abs(v - 1 / 3) < 1e-9 for v in mean.values())
-    assert n == 0.0 and levels == [] and conc == POOLING_TAU
+    # no data → disclosed uniform; concentration is just the weak global Jeffreys prior
+    assert n == 0.0 and levels == [] and conc == 3 * JEFFREYS_PER_CLASS
+
+
+def test_partial_pool_single_level_reproduces_beta_binomial_rate():
+    # 2 of 8 at one level → the beta-binomial posterior mean 2.5/9 = 0.2778, NOT shrunk again
+    mean, conc, n, levels = partial_pool_categorical(
+        ["dissent", "hold"], {"same_institution": {"dissent": 2, "hold": 6}})
+    assert abs(mean["dissent"] - 2.5 / 9) < 1e-9    # == grounding._beta_binomial(2, 8) mean
+    assert conc == 2 * 0.5 + 8
 
 
 def test_partial_pool_core_empty_specific_inherits_parent():
@@ -174,3 +184,61 @@ def test_no_action_classes_is_empty_baseline():
     b = build_action_baseline("m", "d", [], _cases([("hold", "same_institution", 3)]))
     assert b.class_mass == {}
     assert b.top() == ""
+
+
+# ============================================================ D8 integration in the posterior engine
+# These lock the fix at weight_actor_states: story count never moves the forecast; action-class
+# mass is grounded; states live beneath their tendency.
+from swm.world_model_v2.lean_v2.states import (ActorStateHypothesis,  # noqa: E402
+                                               ActorStatePosteriorEngine)
+
+_OPTS = ["Maintain at 0.75%", "Raise to 1.0%"]
+
+
+def _state(sid, tendency):
+    return ActorStateHypothesis(actor_id="m", state_id=sid, claim=sid,
+                                action_if_state=tendency, expected_action_tendency=tendency)
+
+
+def test_36_weight_is_invariant_to_number_of_stories_per_tendency():
+    eng = ActorStatePosteriorEngine({"actor_state_reference_classes": {}})
+    # 3 hold stories + 1 raise story, NO counted classes → 0.5/0.5, NOT 0.75/0.25
+    a = eng.weight_actor_states("m", [_state("h1", _OPTS[0]), _state("h2", _OPTS[0]),
+                                      _state("h3", _OPTS[0]), _state("r1", _OPTS[1])],
+                                feasible_options=_OPTS)[0]
+    mids = {r.state_id: r.mid for r in a}
+    hold = sum(v for k, v in mids.items() if k.startswith("h"))
+    raise_ = sum(v for k, v in mids.items() if k.startswith("r"))
+    assert abs(hold - 0.5) < 1e-3 and abs(raise_ - 0.5) < 1e-3
+    # 5 hold + 1 raise: hold tendency mass STILL 0.5 (invariant to story count)
+    b = eng.weight_actor_states("m", [_state(f"h{i}", _OPTS[0]) for i in range(5)]
+                                + [_state("r1", _OPTS[1])], feasible_options=_OPTS)[0]
+    mb = {r.state_id: r.mid for r in b}
+    assert abs(sum(v for k, v in mb.items() if k.startswith("h")) - 0.5) < 1e-3
+
+
+def test_37_counted_evidence_drives_action_mass_not_story_count():
+    # A same-institution counted class saying this member holds 80% of the time (8 of 10) must
+    # push the hold tendency well above 0.5 even with a single hold story vs a single raise story.
+    from swm.world_model_v2.lean_v2.grounding import build_reference_class
+    tbl = build_reference_class(
+        "member holds", [{"date": f"20{y:02d}-01-01", "outcome": (i < 8),
+                          "hierarchy_level": "same_institution"}
+                         for i, y in enumerate(range(10, 20))], as_of="2025-01-01").as_dict()
+    tbl["action_option_id"] = "Maintain at 0.75%"
+    eng = ActorStatePosteriorEngine({"actor_state_reference_classes": {"m": [tbl]}})
+    rows = eng.weight_actor_states("m", [_state("hold", _OPTS[0]), _state("raise", _OPTS[1])],
+                                   feasible_options=_OPTS)[0]
+    mids = {r.state_id: r.mid for r in rows}
+    assert mids["hold"] > 0.6      # grounded, from counts — not 0.5 story-split
+
+
+def test_38_states_sharing_a_tendency_split_only_that_tendency():
+    eng = ActorStatePosteriorEngine({"actor_state_reference_classes": {}})
+    rows = eng.weight_actor_states(
+        "m", [_state("h_a", _OPTS[0]), _state("h_b", _OPTS[0]), _state("r", _OPTS[1])],
+        feasible_options=_OPTS)[0]
+    mids = {r.state_id: r.mid for r in rows}
+    # the two hold stories share the hold tendency's 0.5; neither individually exceeds it
+    assert abs((mids["h_a"] + mids["h_b"]) - 0.5) < 1e-3
+    assert mids["r"] > mids["h_a"] and mids["r"] > mids["h_b"]

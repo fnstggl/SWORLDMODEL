@@ -286,37 +286,29 @@ class ActorStatePosteriorEngine:
             n = (tbl.get("provenance") or {}).get("denominator") or 0
             if rate is None or n <= 0:
                 continue
-            w = rate
-            if shared_world and best.aligned_condition:
-                for cid, want in best.aligned_condition.items():
-                    have = (shared_world or {}).get(cid)
-                    if have is not None and norm_key(have) != norm_key(want):
-                        w = w * (1 - n / (n + 1.0))
-            matched[best.state_id] = w
+            # the counted rate is the class's coverage signal (feeds the residual and seeds the
+            # action baseline). Conditioning on the shared world is applied INSIDE the action
+            # baseline via typed state<->condition alignment, not by an ad-hoc downweight here.
+            matched[best.state_id] = rate
             intervals[best.state_id] = tbl.get("interval") or (0.0, 1.0)
             provs[best.state_id] = {"source": "counted_reference_class", "key": tbl.get("key"),
                                     "rate": rate, "n": n, "interval": intervals[best.state_id],
                                     "hierarchy_level": (tbl.get("provenance") or {})
                                     .get("hierarchy_level")}
             claimed.add(best.state_id)
-        # unmatched states share the RESIDUAL of the counted rates — a grounded complement
-        # (the counted classes cover the matched outcomes; what's left is the complementary
-        # probability of the remaining modeled states), never a label-derived number
         matched_sum = sum(matched.values())
         unmatched = [h.state_id for h in survivors if h.state_id not in matched]
-        residual = max(0.0, 1.0 - matched_sum)
-        raw_weights = dict(matched)
-        if unmatched:
-            share = residual / len(unmatched)
-            for sid in unmatched:
-                raw_weights[sid] = share
-                intervals[sid] = (0.0, min(1.0, residual))
-                provs[sid] = {"source": "counted_complement",
-                              "note": "complement of the counted matched rates (1 - "
-                                      f"{matched_sum:.3f}) shared among {len(unmatched)} "
-                                      "unmatched modeled state(s) — grounded, not a label"}
+        residual = max(0.0, 1.0 - matched_sum)      # for the bounded coverage residual only
         n_counted = len(matched)
         reversal = any(h.reversal_capable for h in survivors)
+        # D8: allocate mass to ACTION TENDENCIES first, from a counted, hierarchically
+        # partial-pooled baseline over the actor's feasible action classes — NEVER the number
+        # of prose stories, NEVER residual/len(states). States that share a tendency split only
+        # that tendency's total (trajectory/sensitivity), so story count cannot move the
+        # forecast. The old equal split is gone; the residual below is a SEPARATE coverage bound.
+        raw_weights = self._allocate_by_action_class(
+            actor_id, survivors, matched, intervals, provs,
+            shared_world=shared_world, feasible_options=feasible_options)
         # THE COMPLETENESS LAW: the represented states normalize to the FULL branch mass.
         # The residual is the COUNTED under-summing only (matched counted rates that leave
         # probability no represented state holds), capped — an interval-widening bound at
@@ -364,6 +356,112 @@ class ActorStatePosteriorEngine:
                                       "matched_sum": round(matched_sum, 4),
                                       "law": "represented states normalize to 1; residual is "
                                              "a bounded interval-widener, never branch mass"}
+
+    # -- D8: action-tendency-first allocation ---------------------------------------------
+    @staticmethod
+    def _action_class_of(h: ActorStateHypothesis, feasible_options) -> str:
+        """The canonical ACTION CLASS this state tends toward. Prefer the typed
+        `expected_action_tendency`, else `action_if_state`; canonicalize to one of the actor's
+        feasible options when a set is given so states that mean the same vote share a class.
+        A state with no tendency is its own singleton class (weighted as a distinct action)."""
+        tend = (getattr(h, "expected_action_tendency", "")
+                or getattr(h, "action_if_state", "")).strip()
+        if feasible_options and tend:
+            from swm.world_model_v2.lean_v2.canonical_options import normalize_option
+            c = normalize_option(tend, list(feasible_options))
+            if c is not None:
+                return c.canonical_option_id
+        if tend:
+            return norm_key(tend)
+        return f"__state__{h.state_id}"
+
+    def _allocate_by_action_class(self, actor_id, survivors, matched, intervals, provs, *,
+                                  shared_world=None, feasible_options=None) -> dict:
+        """Group survivors by action class, build a counted partial-pooled `ActorActionBaseline`
+        over those classes (conditional on the shared world via typed alignment), give each class
+        its baseline mass, and split a class's mass among its states (proportional to their
+        counted rate, else equally within the tendency). Returns {state_id: weight} summing to 1.
+        The within-class split never changes a class total — so story count cannot move the
+        forecast. Provenance is recorded for states the counted matcher did not already claim."""
+        from swm.world_model_v2.lean_v2.action_baseline import ActionCase, build_action_baseline
+        cls_of = {h.state_id: self._action_class_of(h, feasible_options) for h in survivors}
+        classes: list = []
+        for h in survivors:
+            if cls_of[h.state_id] not in classes:
+                classes.append(cls_of[h.state_id])
+        rep_state = {}                              # one representative state per action class
+        for h in survivors:
+            rep_state.setdefault(cls_of[h.state_id], h)
+        # which counted class matched which state in the token matcher (for the untyped path)
+        key_to_state = {provs[s].get("key"): s for s in matched if provs.get(s, {}).get("key")}
+        # DIRECT counted evidence per action class — typed (`action_option_id`) FIRST so a
+        # counted rate reaches its action class without depending on prose token overlap; else
+        # the class the token matcher bound it to. This is the robust seed for the baseline.
+        direct: dict = {}
+        for tbl in self.actor_classes.get(actor_id, []):
+            prov = tbl.get("provenance") or {}
+            den = prov.get("denominator") or 0
+            rate = prov.get("rate_mean")
+            if den <= 0 or rate is None:
+                continue
+            # RAW counts (numerator / denominator), so the baseline's single Jeffreys prior
+            # reproduces the counted beta-binomial rate rather than shrinking it a second time
+            num = prov.get("numerator")
+            num = round(float(rate) * den) if num is None else num
+            num = max(0, min(int(den), int(num)))
+            aoi = str(tbl.get("action_option_id") or "").strip()
+            ac = None
+            if aoi:
+                ac = self._action_class_of(
+                    ActorStateHypothesis(actor_id=actor_id, state_id="_",
+                                         action_if_state=aoi), feasible_options)
+            elif tbl.get("key") in key_to_state:
+                ac = cls_of.get(key_to_state[tbl["key"]])
+            if ac is None or ac not in classes:
+                continue
+            lvl = prov.get("hierarchy_level") or "broad_human_decision_class"
+            ctx = dict(getattr(rep_state.get(ac), "aligned_condition", {}) or {})
+            direct.setdefault(ac, []).append((int(num), int(den), lvl, ctx))
+        cases: list = []
+        for ac, evs in direct.items():
+            for num, den, lvl, ctx in evs:
+                cases.append(ActionCase(ac, lvl, ctx, weight=float(num)))   # raw positive count
+        # binary complement: when exactly two action classes and only ONE carries direct counted
+        # evidence, the other inherits the complement (denominator - numerator) — "the rest chose
+        # the other option". With both (or neither) counted, each class stands on its own count.
+        if len(classes) == 2:
+            with_ev = [c for c in classes if direct.get(c)]
+            without = [c for c in classes if not direct.get(c)]
+            if len(with_ev) == 1 and len(without) == 1:
+                for num, den, lvl, ctx in direct[with_ev[0]]:
+                    cases.append(ActionCase(without[0], lvl, ctx, weight=float(den - num)))
+        baseline = build_action_baseline(actor_id, "actor_decision", classes, cases,
+                                         condition_state=shared_world or {})
+        by_class: dict = {}
+        for h in survivors:
+            by_class.setdefault(cls_of[h.state_id], []).append(h)
+        raw: dict = {}
+        for ac, members in by_class.items():
+            cmass = baseline.mass(ac)
+            wr = {m.state_id: (matched.get(m.state_id) or 0.0) for m in members}
+            tot = sum(wr.values())
+            for m in members:
+                within = (wr[m.state_id] / tot) if tot > 0 else (1.0 / len(members))
+                raw[m.state_id] = cmass * within
+                if m.state_id not in matched:      # the counted matcher already set matched provs
+                    ci = baseline.interval(ac)
+                    intervals[m.state_id] = (round(ci[0] * within, 4), round(ci[1] * within, 4))
+                    provs[m.state_id] = {
+                        "source": ("action_baseline_disclosed_uniform" if baseline.disclosed_uniform
+                                   else "action_baseline_counted"),
+                        "action_class": ac, "class_mass": round(cmass, 4),
+                        "within_class_share": round(within, 4),
+                        "levels_used": baseline.levels_used,
+                        "note": "mass allocated to the action tendency (D8), never story count"}
+        z = sum(raw.values()) or 1.0
+        self._last_action_baselines = getattr(self, "_last_action_baselines", {})
+        self._last_action_baselines[actor_id] = baseline.as_dict()
+        return {k: v / z for k, v in raw.items()}
 
     def _match_class(self, h: ActorStateHypothesis, classes: dict) -> dict | None:
         if h.reference_class_key and h.reference_class_key in classes:

@@ -115,23 +115,29 @@ def partial_pool_categorical(action_classes: list, counts_by_level: dict, *,
                              tau: float = POOLING_TAU) -> tuple:
     """Hierarchical Dirichlet-multinomial partial pooling over the specificity levels.
 
-    `counts_by_level` maps a hierarchy level → {class_id: count}. Processing broad → specific,
-    each level's posterior mean is the observation shrunk toward its parent with strength `tau`:
+    `counts_by_level` maps a hierarchy level → {class_id: count} of RAW counts. Two distinct
+    strengths, kept separate so a single counted level reproduces its beta-binomial rate exactly
+    (no double shrinkage toward uniform):
 
-        mean_level[k] = (tau · parent_mean[k] + n_level[k]) / (tau + N_level)
+      * the GLOBAL prior — a weak symmetric Jeffreys pseudocount (JEFFREYS_PER_CLASS per class) —
+        is combined with the BROADEST level that actually has data:
+            post_broad[k] = JEFFREYS_PER_CLASS + n_broad[k]
+      * each MORE SPECIFIC level then shrinks toward its (broader) parent's mean with the
+        cross-level concentration `tau`:
+            post_level[k] = tau · parent_mean[k] + n_level[k]
 
-    A level with no observations passes the parent through unchanged; the initial parent is the
-    symmetric Jeffreys prior (a disclosed uniform). Returns (mean: {class_id: p}, concentration,
-    n_total, levels_used) — `concentration` is tau + Σ observed counts (the effective Dirichlet
-    sample size, used for credible intervals)."""
+    A level with no observations is skipped (its broader parent passes through). With no data at
+    all the mean is the disclosed uniform. Returns (mean, concentration, n_total, levels_used);
+    `concentration = K·JEFFREYS_PER_CLASS + Σ observed counts` is the effective Dirichlet sample
+    size used for the credible band."""
     K = len(action_classes)
     if K == 0:
         return {}, 0.0, 0.0, []
-    # initial parent = symmetric Jeffreys prior (disclosed uniform, weak)
-    parent = {c: 1.0 / K for c in action_classes}
+    mean = {c: 1.0 / K for c in action_classes}   # disclosed uniform until data arrives
     n_total = 0.0
     levels_used = []
-    for lvl in _LEVELS_BROAD_TO_SPECIFIC:
+    first = True
+    for lvl in _LEVELS_BROAD_TO_SPECIFIC:          # broadest first
         raw = counts_by_level.get(lvl) or {}
         n = {c: float(raw.get(c, 0.0)) for c in action_classes}
         N = sum(n.values())
@@ -139,11 +145,17 @@ def partial_pool_categorical(action_classes: list, counts_by_level: dict, *,
             continue
         levels_used.append(lvl)
         n_total += N
-        parent = {c: (tau * parent[c] + n[c]) / (tau + N) for c in action_classes}
-    concentration = tau + n_total
-    # normalize defensively (float drift)
-    z = sum(parent.values()) or 1.0
-    mean = {c: parent[c] / z for c in action_classes}
+        if first:
+            # broadest level with data: weak Jeffreys GLOBAL prior + observations (the count
+            # dominates as it grows — a well-counted single level is NOT shrunk toward uniform)
+            post = {c: JEFFREYS_PER_CLASS + n[c] for c in action_classes}
+            first = False
+        else:
+            # a more specific level shrinks toward its broader parent's mean with strength tau
+            post = {c: tau * mean[c] + n[c] for c in action_classes}
+        z = sum(post.values()) or 1.0
+        mean = {c: post[c] / z for c in action_classes}
+    concentration = K * JEFFREYS_PER_CLASS + n_total
     return mean, concentration, n_total, levels_used
 
 
