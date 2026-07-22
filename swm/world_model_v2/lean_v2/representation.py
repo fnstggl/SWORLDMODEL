@@ -158,6 +158,23 @@ def _looks_like_candidate(actor: dict, question: str, target_option: str) -> boo
     return False
 
 
+def _safe_threshold(raw):
+    """Parse a rule_params threshold that may be a number or a phrase (">50%", "majority of 9",
+    "5"). Returns a float (a percentage becomes its fraction) or None — never raises. A fraction
+    <1 is an explicit share; a bare integer is an absolute vote/seat count."""
+    if isinstance(raw, (int, float)) and not isinstance(raw, bool):
+        return float(raw)
+    s = str(raw or "").strip()
+    if not s or any(k in s.lower() for k in ("majority", "unanimity", "consensus", "none",
+                                             "half", "plurality")):
+        return None                                # a rule word, not an absolute count
+    m = re.search(r"(\d+(?:\.\d+)?)\s*%", s)
+    if m:                                          # a percentage → its fraction
+        return float(m.group(1)) / 100.0
+    m = re.search(r"\d+(?:\.\d+)?", s)             # else the first bare number (absolute count)
+    return float(m.group(0)) if m else None
+
+
 def _bloc_seat_count(unit_label: str, real_total: int, individual_seats: int,
                      n_blocs: int) -> int:
     """Seats a bloc represents = (real_total − individually-modeled seats) shared across blocs.
@@ -186,10 +203,10 @@ def build_representation(bp, resolution_spec, *, evidence_text: str = "",
     spec.rule = str(term.get("decision_rule") or inst.get("decision_rule") or "majority")
     rp = term.get("rule_params") or {}
     spec.target_option = str(rp.get("option") or "")
-    spec.threshold = (float(getattr(resolution_spec, "vote_threshold", None))
-                      if getattr(resolution_spec, "vote_threshold", None) is not None
-                      else (float(rp.get("threshold")) if str(rp.get("threshold") or "").strip()
-                            not in ("", "None") else None))
+    # the threshold may be a bare number, or a phrase like ">50%", "majority", "5 of 9" — parse the
+    # numeric part safely (a fraction stays a fraction; a bare integer stays absolute); never crash
+    vt = getattr(resolution_spec, "vote_threshold", None)
+    spec.threshold = float(vt) if isinstance(vt, (int, float)) else _safe_threshold(rp.get("threshold"))
     spec.threshold_units = getattr(resolution_spec, "threshold_units", "") or "votes"
     q = getattr(resolution_spec, "vote_of_total", None)
     real, src = infer_real_body_size(resolution_spec, evidence_text, grounding)

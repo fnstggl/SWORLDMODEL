@@ -218,3 +218,19 @@ def test_threshold_is_never_rescaled_to_the_modeled_roster():
     assert spec.threshold != 3                         # NOT rescaled to majority-of-5
     assert spec.total_voting_power() == spec.real_member_count == 9
     assert any("expanded the roster" in r for r in spec.repairs)
+
+
+# ============================================================ threshold phrase robustness (rerun bug)
+def test_threshold_phrase_never_crashes_build_representation():
+    from swm.world_model_v2.lean_v2.representation import _safe_threshold
+    assert _safe_threshold(">50%") == 0.5           # a percentage → its fraction
+    assert _safe_threshold("majority of 9") is None  # a rule word, not a count
+    assert _safe_threshold(">=26") == 26.0
+    assert _safe_threshold("at least 3 votes") == 3.0
+    assert _safe_threshold("") is None and _safe_threshold(None) is None
+    # a blueprint whose rule_params threshold is a phrase must not crash build_representation
+    bp = _vote_bp(institution_id="board", members=["a", "b", "c"], target_option="Yes")
+    bp.terminal["rule_params"]["threshold"] = ">50%"
+    spec = ensure_faithful_representation(bp, _res(vote_of_total=3),
+                                          evidence_text="a three-member board")
+    assert spec.threshold == 0.5
