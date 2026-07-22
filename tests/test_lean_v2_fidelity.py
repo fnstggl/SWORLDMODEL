@@ -158,3 +158,57 @@ def test_10_round_trip_still_holds_for_boolean():
     canonicalize_terminal_writers(bp)
     rt = terminal_round_trip(bp)
     assert rt["ok"] is True
+
+
+# ============================================================ D2 — reference-class direction
+def _class(quantity, rate, n, action_option_id):
+    return {"key": quantity, "quantity": quantity, "action_option_id": action_option_id,
+            "interval": (0.0, 1.0),
+            "provenance": {"rate_mean": rate, "denominator": n, "hierarchy_level": "role"}}
+
+
+# 3 + 4 — a hike class cannot weight a hold state even when its PROSE lexically overlaps that
+# state (the exact BoJ inversion: a "dissents-for-a-hike" class was pinned onto a Maintain state)
+def test_3_and_4_reference_class_direction_cannot_invert():
+    from swm.world_model_v2.lean_v2.states import (ActorStateHypothesis,
+                                                   ActorStatePosteriorEngine)
+    opts = ["Maintain at 0.75%", "Raise to 1.0%"]
+    # the regenerated dovish state whose PROSE contains "dissent" — lexical overlap with the
+    # class quantity would (old behaviour) bind the pro-raise rate to this hold state
+    hold_state = ActorStateHypothesis(
+        actor_id="m", state_id="dovish_hold",
+        claim="a dissent-prone member who ultimately holds", action_if_state="Maintain at 0.75%",
+        expected_action_tendency="Maintain at 0.75%")
+    # the counted class is ABOUT a hike (action_option_id=Raise) but its quantity prose overlaps
+    # the hold state's "dissent" token
+    grounding = {"actor_state_reference_classes": {"m": [
+        _class("member dissent culminating in a hike", 0.75, 8, "Raise to 1.0%")]}}
+    eng = ActorStatePosteriorEngine(grounding)
+    rows, resid, prov = eng.weight_actor_states("m", [hold_state], feasible_options=opts)
+    by = {r.state_id: r for r in rows}
+    # the pro-raise class must NOT have weighted the HOLD state (no inversion)
+    assert by["dovish_hold"].provenance.get("source") != "counted_reference_class"
+    # the rejection is recorded rather than silently reversing the evidence
+    assert any(e.get("rejected_class") for e in eng.provenance_log)
+    # a correctly-directed class (action_option_id=Maintain) DOES weight the hold state
+    g2 = {"actor_state_reference_classes": {"m": [
+        _class("member holds steady", 0.7, 6, "Maintain at 0.75%")]}}
+    eng2 = ActorStatePosteriorEngine(g2)
+    rows2, _r2, _p2 = eng2.weight_actor_states("m", [hold_state], feasible_options=opts)
+    assert rows2[0].provenance.get("source") == "counted_reference_class"
+
+
+# a class with NO typed action_option_id never triggers a false rejection (guard only rejects
+# a PROVEN inversion)
+def test_4b_untyped_class_not_rejected():
+    from swm.world_model_v2.lean_v2.states import (ActorStateHypothesis,
+                                                   ActorStatePosteriorEngine)
+    s = ActorStateHypothesis(actor_id="m", state_id="s", claim="raise",
+                             action_if_state="Raise to 1.0%")
+    grounding = {"actor_state_reference_classes": {"m": [
+        {"key": "raise", "quantity": "raise", "interval": (0.0, 1.0),
+         "provenance": {"rate_mean": 0.6, "denominator": 5}}]}}
+    eng = ActorStatePosteriorEngine(grounding)
+    rows, resid, prov = eng.weight_actor_states("m", [s], feasible_options=["Maintain at 0.75%",
+                                                                            "Raise to 1.0%"])
+    assert abs(sum(r.mid for r in rows) - 1.0) < 1e-9   # still weighted, no false rejection

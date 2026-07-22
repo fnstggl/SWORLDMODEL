@@ -68,6 +68,11 @@ class ActorStateHypothesis:
     historical_case_refs: list = field(default_factory=list)
     distinguishing_observations: list = field(default_factory=list)
     action_if_state: str = ""
+    #: the canonical action this state tends toward (D2). A counted reference class may weight
+    #: this state ONLY when the class's own action_option_id is compatible with this tendency —
+    #: a "dissents-for-a-hike" class can never weight a state that tends to hold. Defaults to
+    #: action_if_state when not separately typed.
+    expected_action_tendency: str = ""
     reversal_capable: bool = False
     assumptions: list = field(default_factory=list)
     transition_triggers: list = field(default_factory=list)
@@ -171,6 +176,36 @@ def _behavioral_signature(h: ActorStateHypothesis) -> str:
     return hashlib.sha256("\x00".join(t for t in toks if t).encode()).hexdigest()[:16]
 
 
+def _reference_class_action_conflict(tbl: dict, state, feasible_options) -> str:
+    """D2: return a non-empty reason string when the counted class's action is INCOMPATIBLE
+    with the state's action tendency, else "". Compatibility is decided by TYPED canonical
+    options, never by lexical prose overlap: the class's declared `action_option_id` and the
+    state's `expected_action_tendency` (or `action_if_state`) are each normalized to a canonical
+    option among the actor's feasible options; if both resolve and DIFFER, it is a conflict. If
+    either side does not declare a typed action, no conflict is asserted (the match proceeds on
+    the existing counted logic — this guard only ever REJECTS a proven direction inversion)."""
+    class_action = (tbl.get("action_option_id") or "").strip()
+    state_action = (getattr(state, "expected_action_tendency", "")
+                    or getattr(state, "action_if_state", "")).strip()
+    if not class_action or not state_action:
+        return ""
+    opts = list(feasible_options or [])
+    if opts:
+        from swm.world_model_v2.lean_v2.canonical_options import normalize_option
+        c = normalize_option(class_action, opts)
+        s = normalize_option(state_action, opts)
+        if c is not None and s is not None and c.canonical_option_id != s.canonical_option_id:
+            return (f"class action '{class_action}' -> {c.canonical_option_id} conflicts with "
+                    f"state tendency '{state_action}' -> {s.canonical_option_id}")
+        return ""
+    # no feasible-option list: fall back to a direct normalized-string comparison
+    if norm_key(class_action) and norm_key(state_action) \
+            and norm_key(class_action) != norm_key(state_action):
+        return (f"class action '{class_action}' conflicts with state tendency "
+                f"'{state_action}' (no option set to reconcile)")
+    return ""
+
+
 # ------------------------------------------------------------------ the posterior engine
 class ActorStatePosteriorEngine:
     """Turns counted reference classes + validated hypotheses into weighted states — the ONLY
@@ -209,7 +244,7 @@ class ActorStatePosteriorEngine:
 
     # -- per-actor state weights (counted, conditional on a shared world) -----------------
     def weight_actor_states(self, actor_id: str, hyps: list, *,
-                            shared_world: dict = None) -> tuple:
+                            shared_world: dict = None, feasible_options: list = None) -> tuple:
         """Returns ([ActorStatePosteriorRange...], bounded_residual, provenance). Weights are
         the normalized counted reference-class rates of the SURVIVING states and always sum to
         1 — the represented states carry the full branch mass. The second element is the
@@ -236,6 +271,16 @@ class ActorStatePosteriorEngine:
                                     and (best is None or not best.reversal_capable)):
                     best, best_ov = h, ov
             if best is None or best_ov < 1:
+                continue
+            # D2: a counted class may weight a state ONLY when their action semantics AGREE.
+            # If the class declares the option it counts (action_option_id) and the state
+            # declares its expected action tendency, and those resolve to DIFFERENT canonical
+            # options, REJECT the match — never assign a pro-hike rate to a hold state.
+            conflict = _reference_class_action_conflict(tbl, best, feasible_options)
+            if conflict:
+                self.provenance_log.append({"actor_id": actor_id, "rejected_class": tbl.get("key"),
+                                            "state": best.state_id, "reason": conflict})
+                claimed.add(best.state_id)      # do not let another class silently re-bind it
                 continue
             rate = (tbl.get("provenance") or {}).get("rate_mean")
             n = (tbl.get("provenance") or {}).get("denominator") or 0

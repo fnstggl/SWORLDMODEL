@@ -619,8 +619,12 @@ def _build_grounded_weights(bp, states_by_actor, posterior_engine, grounding,
         ck = __import__("json").dumps(combo, sort_keys=True)
         table = {}
         for aid, hyps in validated.items():
+            # D2: pass the actor's feasible canonical options so a counted class can only
+            # weight a state whose action tendency agrees with the class's counted action
+            from swm.world_model_v2.lean_v2.state_completeness import feasible_options_for
             rows, unknown, prov = posterior_engine.weight_actor_states(
-                aid, hyps, shared_world=combo)
+                aid, hyps, shared_world=combo,
+                feasible_options=feasible_options_for(bp, aid))
             table[aid] = {"mid": {r.state_id: r.mid for r in rows},
                           "rng": {r.state_id: (r.lo, r.mid, r.hi) for r in rows},
                           "unknown": unknown, "prov": prov}
