@@ -126,8 +126,9 @@ def test_7_and_8_shared_condition_induces_correlation():
     assert prov["source"] == "counted_shared_condition"
 
 
-# 9 + 10 — unknown-state mass explicit; never 50%/prior automatically
-def test_9_and_10_unknown_state_mass_explicit_never_half():
+# 9 + 10 — omitted-state uncertainty is a BOUNDED residual (never branch mass, never
+# 50%/prior automatically); the represented states always carry the full branch mass
+def test_9_and_10_residual_is_bounded_never_branch_mass():
     grounding = {"actor_state_reference_classes": {"a": [
         GR.build_reference_class("a dissents",
                                  [{"date": "2024-01-01", "outcome": True},
@@ -138,16 +139,21 @@ def test_9_and_10_unknown_state_mass_explicit_never_half():
     eng = ActorStatePosteriorEngine(grounding)
     h = ActorStateHypothesis(actor_id="a", state_id="dissent", claim="a dissents",
                              action_if_state="dissent", reversal_capable=True)
-    rows, unknown, prov = eng.weight_actor_states("a", [h])
-    assert unknown > 0.0                            # thin single-state set → explicit unknown
-    assert unknown != 0.5                           # never the neutral default
-    assert unknown != prior_mean_of(eng, "a")       # never automatically the prior
-    # a state with NO counted class draws HIGH (coverage-driven) unknown mass — never a
-    # label-derived number, never automatically 0.5 or the prior
+    rows, residual, prov = eng.weight_actor_states("a", [h])
+    # the counted class under-sums with no unmatched state to hold the remainder → a
+    # BOUNDED residual, capped, never 0.5, never the prior, never world mass
+    assert 0.0 < residual <= ST.MAX_ACTOR_RESIDUAL
+    assert residual != 0.5
+    assert residual != prior_mean_of(eng, "a")
+    # the represented state carries the FULL branch mass (the completeness law)
+    assert abs(sum(r.mid for r in rows) - 1.0) < 1e-6
+    # a state with NO counted class: mids still normalize to 1; residual sits at the
+    # declared cap — never a coverage-penalty invention, never 0.5
     h2 = ActorStateHypothesis(actor_id="a", state_id="mystery", claim="unrelated")
-    rows2, unknown2, prov2 = eng.weight_actor_states("a", [h2])
-    assert unknown2 >= 0.3 and unknown2 != 0.5
-    assert prov2["n_counted_states"] == 0           # nothing counted → coverage-driven unknown
+    rows2, residual2, prov2 = eng.weight_actor_states("a", [h2])
+    assert abs(sum(r.mid for r in rows2) - 1.0) < 1e-6
+    assert residual2 == ST.MAX_ACTOR_RESIDUAL and residual2 != 0.5
+    assert prov2["n_counted_states"] == 0
 
 
 # 11 + 12 — state posteriors update after new evidence; duplicate events do not

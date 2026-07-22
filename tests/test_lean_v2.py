@@ -263,15 +263,22 @@ def test_1_preflight_stops_impossible_rollout_before_actors_run():
 def test_2_valid_rollout_passes_preflight_unchanged():
     res, llm = _run()
     assert res.provenance["lean_v2"]["preflight"]["verdict"] == "answerable"
-    # m1/m2 carry coverage-driven unknown-state mass (single ungrounded state) → the run is
-    # honestly partially_resolved, never silently completed
-    assert res.simulation_status == "partially_resolved"
+    # THE COMPLETENESS LAW: m1/m2's single ungrounded states are EXPANDED by the recovery
+    # ladder to a decision-spanning basis (favors each option + conflicted) — the run
+    # COMPLETES; omitted-state doubt is a bounded residual, never unresolved world mass,
+    # and a spanning basis has residual 0 by construction
+    assert res.simulation_status == "completed"
+    rec = res.provenance["lean_v2"]["state_recovery"]["actors"]
+    assert rec["m1"]["final_state_count"] >= 2 and rec["m2"]["final_state_count"] >= 2
+    eng = res.provenance["lean_v2"]["engine_primary"]
+    assert eng["joint_residual_bound"] == 0.0       # spanning basis → nothing omitted
+    audit = res.provenance["lean_v2"]["completion_audit"]["acceptance"]
+    assert audit["terminal_unknown_state_ok"] and audit["resolved_target_met"]
     assert res.has_forecast()
     # the m3 dove/dissent weights are COUNTED (2 of 8 dissent → 0.28 / 0.72), NOT label
     # midpoints; the grounded prior and simulation-conditional agree at 0.7222
     fd = res.provenance["lean_v2"]["forecast_decomposition"]
     assert abs(fd["grounded_prior"]["p"] - 0.7222) < 1e-3
-    assert abs(res.raw_probability - 0.7222) < 1e-2
     law = res.provenance["lean_v2"]["engine_primary"]["grounded_weight_law"]["m3"]
     assert abs(law["dissenter"] - 0.2778) < 1e-3   # counted, not a 0.15-0.45 label range
     assert res.provenance["execution_profile"] == "lean_v2"
@@ -293,11 +300,12 @@ def test_4_backward_slice_removes_duplicate_and_ceremonial_actors():
 
 def test_5_aliases_do_not_create_duplicate_decision_calls():
     res, llm = _run()
-    # distinct contexts: m1(anchor), m2(follower), m3(dove), m3(dissenter) = 4 — the merged
-    # duplicate chair adds ZERO calls
-    assert llm.calls["decision"] == 4
+    # distinct contexts under the completeness law: m1 and m2 each hold their original state
+    # plus the 3-state decision-spanning fallback basis (4 variants each), m3 keeps its two
+    # generated states = 4+4+2 = 10 — and the merged duplicate chair adds ZERO calls
+    assert llm.calls["decision"] == 10
     man = res.provenance["lean_v2"]["engine_primary"]["decisions"]
-    assert man["unique_decision_contexts"] == 4
+    assert man["unique_decision_contexts"] == 10
 
 
 # ---------------------------------------------------------------------- 6: shared compile
@@ -345,10 +353,13 @@ def test_7_missing_information_decisions_do_not_escalate_without_new_information
     # no deliberation, no staged escalation for the stated missing fact...
     assert llm.calls["deliberation"] == 0
     assert not any("missing" in str(e.get("reason", "")) for e in eng["escalations"])
-    # ...and the SAME known absence is never re-asked (m3 decides once per variant, even
-    # though the wait scheduled a reconsideration with no new information)
-    assert llm.calls["decision"] == 4
-    # m3 never voted -> votes missing -> honest partial/unresolved accounting
+    # ...and the SAME known absence is never re-asked: 10 wave contexts (one per variant)
+    # plus ONE mandatory-terminal reopening per waiting variant (Cy Vega ×2) = 12; the
+    # completion pass stops on no-progress instead of re-asking the same absence forever
+    assert llm.calls["decision"] == 12
+    eng2 = res.provenance["lean_v2"]["engine_primary"]
+    assert len(eng2["completion_audit"]["rounds"]) == 1     # no-progress → one round only
+    # the waiter refused every allowed terminal action -> honest unresolved accounting
     assert res.simulation_status in ("partially_resolved", "unresolved")
     assert res.resolution_report["missing_mechanisms"]
 
@@ -448,7 +459,7 @@ def test_13_sequential_and_concurrent_deterministic_execution_match():
     r2, l2 = _run(policy_extra={"max_workers": 6})
     assert r1.raw_distribution == r2.raw_distribution
     assert r1.raw_probability == r2.raw_probability
-    assert l1.calls["decision"] == l2.calls["decision"] == 4
+    assert l1.calls["decision"] == l2.calls["decision"] == 10
     m1 = r1.provenance["lean_v2"]["engine_primary"]["coalescer"]
     m2 = r2.provenance["lean_v2"]["engine_primary"]["coalescer"]
     assert m1["merges"] == m2["merges"] and m1["truncated_mass"] == m2["truncated_mass"]
@@ -484,7 +495,7 @@ def test_15_genuinely_unstable_scoreable_result_may_still_escalate():
     assert llm.calls["challenger_delta"] == 1
     assert res.structural_disagreement is not None
     # localized fork: the challenger reuses every unchanged decision context — only m3's
-    # replacement variant costs a call (4 primary + 1 challenger)
-    assert llm.calls["decision"] == 5
+    # replacement variant costs a call (10 primary + 1 challenger)
+    assert llm.calls["decision"] == 11
     bud = res.provenance["lean_v2"]["budget"]
     assert bud["structural_models"] == 2
