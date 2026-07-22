@@ -67,14 +67,19 @@ def structural_audit(qid: str, lv2: dict, d: dict) -> dict:
         delib = {"institution_type": (per_combo[0].get("resolution") or {}).get("institution_type"),
                  "rounds_run": tr.get("rounds_run"), "material_changes": tr.get("material_changes"),
                  "n_messages": len(tr.get("messages") or [])}
+    # terminal kind: institution_vote when a deliberative resolution ran; numeric when a mechanism
+    # dimension was checked; else the readiness/round-trip record
+    terminal_kind = ("institution_vote" if it.get("p_yes") is not None or rep
+                     else "numeric_or_event" if omd
+                     else (lv2.get("readiness") or {}).get("terminal_kind") or "unknown")
     audit = {
         "question_id": qid, "name": NAMES.get(qid, qid),
-        "terminal_kind": (d.get("provenance") or {}).get("lean_v2", {}).get("terminal_kind")
-        or (bp.get("terminal") or {}).get("kind"),
-        "actors": len(bp.get("actors") or []),
-        "institutions": [{"id": i.get("id"), "members": len(i.get("members") or []),
-                          "decision_rule": i.get("decision_rule")}
-                         for i in (bp.get("institutions") or [])],
+        "terminal_kind": terminal_kind,
+        "actors": (bp.get("n_actors") if isinstance(bp, dict) else None) or len(states),
+        "institution": {"id": rep.get("institution_id"), "rule": rep.get("rule"),
+                        "modeled_members": len([u for u in (rep.get("decision_units") or [])
+                                                if (u.get("provenance") or "").startswith("modeled")]),
+                        "total_units": len(rep.get("decision_units") or [])} if rep else None,
         "representation": {"real_member_count": rep.get("real_member_count"),
                            "represented_voting_power": rep.get("represented_voting_power"),
                            "total_voting_power": rep.get("total_voting_power"),
@@ -123,9 +128,10 @@ def structural_audit(qid: str, lv2: dict, d: dict) -> dict:
 def print_structural_audit(a: dict):
     print(f"\n===== PHASE C — STRUCTURAL AUDIT: {a['name']} (no outcome) =====")
     print(f"  terminal_kind: {a['terminal_kind']}   actors: {a['actors']}")
-    for inst in a["institutions"]:
-        print(f"  institution {inst['id']}: {inst['members']} modeled members, "
-              f"rule={inst['decision_rule']}")
+    if a.get("institution"):
+        inst = a["institution"]
+        print(f"  institution {inst['id']}: {inst['modeled_members']} modeled / "
+              f"{inst['total_units']} total units, rule={inst['rule']}")
     r = a["representation"]
     if a["terminal_kind"] == "institution_vote":
         print(f"  faithful representation: real={r['real_member_count']} "
