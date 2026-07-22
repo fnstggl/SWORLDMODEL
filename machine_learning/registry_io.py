@@ -172,3 +172,32 @@ def summarize() -> dict:
     for e in datasets.values():
         by_role[e["dataset_role"]] = by_role.get(e["dataset_role"], 0) + 1
     return {"n_datasets": len(datasets), "by_role": by_role}
+
+
+# --------------------------------------------------------------------------------------
+# Training eligibility: registry role + license training-allowed + human approval.
+# --------------------------------------------------------------------------------------
+from .config import APPROVALS_FILE  # noqa: E402
+
+
+def load_approvals() -> dict:
+    doc = _load_yaml(APPROVALS_FILE, {})
+    return (doc or {}).get("approvals", {})
+
+
+def training_eligibility(dataset_id: str, *, require_approval: bool = True) -> tuple[bool, str]:
+    """Return (eligible, reason). A dataset may enter a TRAINING manifest only if its
+    registry role is a train/validation candidate, its license class permits training, and
+    (when require_approval) a human has approved it in training_approvals.yaml."""
+    entry = get_dataset(dataset_id)
+    role = entry.get("dataset_role")
+    if role not in ("TRAIN_CANDIDATE", "VALIDATION_CANDIDATE"):
+        return False, f"role={role} (not a training candidate)"
+    lic = load_licenses().get(entry.get("license_class"), {})
+    if not lic.get("training_allowed", False):
+        return False, f"license_class={entry.get('license_class')} does not permit training"
+    if require_approval:
+        appr = load_approvals().get(dataset_id, {})
+        if not appr.get("approved", False):
+            return False, "not approved in training_approvals.yaml (awaiting human review)"
+    return True, "eligible"

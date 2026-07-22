@@ -1,0 +1,21 @@
+# Auto-generated training-view config. Edit weights/caps as needed; rebuild with
+#   python -m machine_learning.cli manifests build social_interaction_v1
+view: social_interaction_v1
+description: 'Conversational + social behavior: next message/speaker, belief change,
+  discussion trees.'
+adapter: 8b_social_interaction
+tasks:
+- PREDICT_NEXT_MESSAGE
+- PREDICT_NEXT_SPEAKER
+- PREDICT_BELIEF_CHANGE
+- PREDICT_DISCUSSION_TREE
+temperature: 0.7
+per_dataset_cap: 200000
+per_participant_cap: 1000
+max_dataset_dominance: 0.5
+rare_task_min_fraction: 0.05
+split: train
+include_datasets: null
+exclude_datasets: []
+task_weights: {}
+dataset_weights: {}

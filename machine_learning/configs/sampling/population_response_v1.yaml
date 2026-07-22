@@ -1,0 +1,18 @@
+# Auto-generated training-view config. Edit weights/caps as needed; rebuild with
+#   python -m machine_learning.cli manifests build population_response_v1
+view: population_response_v1
+description: Aggregate population responses + population time series under conditions.
+adapter: 8b_population_response
+tasks:
+- PREDICT_POPULATION_RESPONSE
+- PREDICT_POPULATION_TIME_SERIES
+temperature: 0.7
+per_dataset_cap: 200000
+per_participant_cap: 1000
+max_dataset_dominance: 0.5
+rare_task_min_fraction: 0.05
+split: train
+include_datasets: null
+exclude_datasets: []
+task_weights: {}
+dataset_weights: {}

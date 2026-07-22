@@ -1,0 +1,20 @@
+# Auto-generated training-view config. Edit weights/caps as needed; rebuild with
+#   python -m machine_learning.cli manifests build causal_intervention_v1
+view: causal_intervention_v1
+description: Intervention effects, off-policy value, and action ranking with logged
+  propensities.
+adapter: 8b_causal_intervention
+tasks:
+- PREDICT_INTERVENTION_EFFECT
+- PREDICT_POLICY_VALUE
+- RANK_CANDIDATE_ACTIONS
+temperature: 0.7
+per_dataset_cap: 200000
+per_participant_cap: 1000
+max_dataset_dominance: 0.5
+rare_task_min_fraction: 0.05
+split: train
+include_datasets: null
+exclude_datasets: []
+task_weights: {}
+dataset_weights: {}

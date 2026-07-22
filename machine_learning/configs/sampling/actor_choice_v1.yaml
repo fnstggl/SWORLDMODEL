@@ -1,0 +1,20 @@
+# Auto-generated training-view config. Edit weights/caps as needed; rebuild with
+#   python -m machine_learning.cli manifests build actor_choice_v1
+view: actor_choice_v1
+description: Individual next-choice / next-action / response-vs-nonresponse across
+  experimental + behavioral datasets.
+adapter: 8b_actor_choice
+tasks:
+- PREDICT_NEXT_CHOICE
+- PREDICT_NEXT_ACTION
+- PREDICT_RESPONSE_OR_NONRESPONSE
+temperature: 0.7
+per_dataset_cap: 200000
+per_participant_cap: 1000
+max_dataset_dominance: 0.5
+rare_task_min_fraction: 0.05
+split: train
+include_datasets: null
+exclude_datasets: []
+task_weights: {}
+dataset_weights: {}

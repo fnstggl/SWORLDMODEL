@@ -1,0 +1,33 @@
+# Auto-generated training-view config. Edit weights/caps as needed; rebuild with
+#   python -m machine_learning.cli manifests build unified_behavior_multitask_v1
+view: unified_behavior_multitask_v1
+description: All 16 tasks across every training-eligible dataset, balanced by temperature
+  + anti-dominance.
+adapter: 8b_unified_multitask
+tasks:
+- PREDICT_NEXT_CHOICE
+- PREDICT_NEXT_ACTION
+- PREDICT_NEXT_MESSAGE
+- PREDICT_NEXT_SPEAKER
+- PREDICT_BELIEF_CHANGE
+- PREDICT_PRIVATE_STATE_UPDATE
+- PREDICT_TIME_TO_ACTION
+- PREDICT_RESPONSE_OR_NONRESPONSE
+- PREDICT_TRAJECTORY_CONTINUATION
+- PREDICT_FINAL_OUTCOME
+- PREDICT_POPULATION_RESPONSE
+- PREDICT_POPULATION_TIME_SERIES
+- PREDICT_DISCUSSION_TREE
+- PREDICT_INTERVENTION_EFFECT
+- RANK_CANDIDATE_ACTIONS
+- PREDICT_POLICY_VALUE
+temperature: 0.6
+per_dataset_cap: 200000
+per_participant_cap: 1000
+max_dataset_dominance: 0.35
+rare_task_min_fraction: 0.05
+split: train
+include_datasets: null
+exclude_datasets: []
+task_weights: {}
+dataset_weights: {}
