@@ -515,7 +515,7 @@ datasets:
     gated: false
     expected_size: "small; 6,682 dialogues (train 5,247/val 597/test 838)"
     full_expected_bytes: 40000000
-    download_method: hf
+    download_method: http
     checksum_method: sha256
     dataset_role: CROSS_DATASET_EVAL_ONLY   # reserved as the held-out negotiation transfer test (also: license unstated)
     supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_NEXT_ACTION, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
@@ -523,11 +523,14 @@ datasets:
     conversion_status: PENDING
     blockers: ""
     last_verified_at: "2026-07-22"
-    verification: {confidence: high, note: "Dataset license unstated; held out as cross-dataset eval anyway.", sources: ["https://huggingface.co/datasets/stanfordnlp/craigslist_bargains", "https://github.com/stanfordnlp/cocoa"]}
+    verification: {confidence: high, note: "HF repo is a loader script only (datasets>=5 dropped script support); real data pulled from the official CodaLab COCOA bundles the script references.", sources: ["https://huggingface.co/datasets/stanfordnlp/craigslist_bargains", "https://github.com/stanfordnlp/cocoa"]}
     acquire:
-      method: hf
+      method: http
       estimated_bytes: 40000000
-      hf: {repo_id: "stanfordnlp/craigslist_bargains", mode: snapshot, repo_type: dataset}
+      http:
+        urls:
+          - {url: "https://worksheets.codalab.org/rest/bundles/0xd34bbbc5fb3b4fccbd19e10756ca8dd7/contents/blob/parsed.json", filename: "craigslist_train.json", role: data}
+          - {url: "https://worksheets.codalab.org/rest/bundles/0x15c4160b43d44ee3a8386cca98da138c/contents/blob/parsed.json", filename: "craigslist_val.json", role: data}
     converter: machine_learning.normalization.converters.craigslistbargain.Converter
 
   - dataset_id: dealornodeal
@@ -638,7 +641,7 @@ datasets:
     access_requirements: "Open (git clone)."
     gated: false
     expected_size: "~10,042 dialogues (abcd_v1.1.json.gz)"
-    full_expected_bytes: 30000000
+    full_expected_bytes: 45000000
     download_method: git
     checksum_method: sha256
     dataset_role: TRAIN_CANDIDATE
@@ -647,11 +650,11 @@ datasets:
     conversion_status: PENDING
     blockers: ""
     last_verified_at: "2026-07-22"
-    verification: {confidence: high, sources: ["https://github.com/asappresearch/abcd", "https://aclanthology.org/2021.naacl-main.239/"]}
+    verification: {confidence: high, note: "data/abcd_v1.1.json.gz is a regular committed file (NOT git-lfs); plain git clone materializes it.", sources: ["https://github.com/asappresearch/abcd", "https://aclanthology.org/2021.naacl-main.239/"]}
     acquire:
       method: git
-      estimated_bytes: 30000000
-      git: {url: "https://github.com/asappresearch/abcd.git", subdir: "data", depth: 1, lfs: true}
+      estimated_bytes: 45000000
+      git: {url: "https://github.com/asappresearch/abcd.git", subdir: "data", depth: 1, lfs: false}
     converter: machine_learning.normalization.converters.abcd.Converter
 
 # ------------------------------------------------------------------ broad behavioral benchmarks

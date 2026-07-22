@@ -49,8 +49,16 @@ class GitAdapter(Adapter):
         if rev:
             _run(["git", "-C", str(clone_dir), "fetch", "--depth", "1", "origin", rev], env)
             _run(["git", "-C", str(clone_dir), "checkout", rev], env)
+        lfs_note = None
         if spec.get("lfs"):
-            _run(["git", "-C", str(clone_dir), "lfs", "pull"], env)
+            if shutil.which("git-lfs") is None:
+                # Degrade gracefully: without git-lfs we cannot materialize LFS blobs. Rather
+                # than hard-fail, record it so the orchestrator/registry can route to an HTTP
+                # LFS-media URL instead. Pointer files are left in place (small, harmless).
+                lfs_note = ("git-lfs not installed: LFS files are POINTERS, not content. "
+                            "Use the http adapter with the media.githubusercontent LFS URL.")
+            else:
+                _run(["git", "-C", str(clone_dir), "lfs", "pull"], env)
 
         # Move the requested subdir (or the whole tree minus .git) into dest, then drop clone.
         subdir = spec.get("subdir")
@@ -60,10 +68,12 @@ class GitAdapter(Adapter):
 
         files = _relocate(src_root, dest, drop_git=(subdir is None))
         shutil.rmtree(clone_dir, ignore_errors=True)
-        rev_hash = _rev_parse(dest)  # best-effort; clone already removed, so from notes
+        notes = [f"git clone {url}" + (f"#{rev}" if rev else "")]
+        if lfs_note:
+            notes.append(lfs_note)
         return FetchResult(files=files,
                            resume_state={"mode": "git", "complete": True, "revision": rev or "HEAD"},
-                           notes=[f"git clone {url}" + (f"#{rev}" if rev else "")])
+                           notes=notes)
 
 
 def _run(cmd: list[str], env: dict) -> None:
