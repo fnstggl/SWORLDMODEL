@@ -1,0 +1,118 @@
+{
+  "baselines": [
+    {
+      "baseline": "majority-class(C)",
+      "accuracy": 0.0526,
+      "macro_f1": 0.0038,
+      "dataset": "psych101",
+      "task": "PREDICT_NEXT_CHOICE",
+      "n_test": 950,
+      "n_train": 8200
+    },
+    {
+      "baseline": "zero-effect",
+      "note": "predict no effect; effect MAE requires model estimate vs realized arm",
+      "dataset": "socsci210",
+      "task": "PREDICT_INTERVENTION_EFFECT",
+      "n_test": 7,
+      "n_train": 0
+    },
+    {
+      "baseline": "mean-rate",
+      "note": "no scalar rate in aggregate_metrics",
+      "dataset": "socsci210",
+      "task": "PREDICT_POPULATION_RESPONSE",
+      "n_test": 8,
+      "n_train": 0
+    },
+    {
+      "baseline": "majority-class(recommend_item)",
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "dataset": "open_bandit",
+      "task": "PREDICT_NEXT_ACTION",
+      "n_test": 1992,
+      "n_train": 16040
+    },
+    {
+      "baseline": "mean-reward(0.0055)",
+      "reward_mae": 0.01293,
+      "dataset": "open_bandit",
+      "task": "PREDICT_POLICY_VALUE",
+      "n_test": 1992,
+      "n_train": 16040
+    },
+    {
+      "baseline": "zero-effect",
+      "note": "predict no effect; effect MAE requires model estimate vs realized arm",
+      "dataset": "criteo_uplift",
+      "task": "PREDICT_INTERVENTION_EFFECT",
+      "n_test": 2000,
+      "n_train": 0
+    },
+    {
+      "baseline": "mean-rate",
+      "note": "no scalar rate in aggregate_metrics",
+      "dataset": "criteo_uplift",
+      "task": "PREDICT_POPULATION_RESPONSE",
+      "n_test": 4,
+      "n_train": 0
+    },
+    {
+      "baseline": "majority-class(None)",
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "dataset": "persuasionforgood",
+      "task": "PREDICT_FINAL_OUTCOME",
+      "n_test": 72,
+      "n_train": 620
+    },
+    {
+      "baseline": "most-frequent-message",
+      "token_f1": 0.0062,
+      "note": "generation task; real eval needs the model",
+      "dataset": "persuasionforgood",
+      "task": "PREDICT_NEXT_MESSAGE",
+      "n_test": 1468,
+      "n_train": 12782
+    },
+    {
+      "baseline": "base-rate(0.976)",
+      "brier": 0.0287,
+      "ece": 0.0051,
+      "accuracy": 0.9705,
+      "dataset": "persuasionforgood",
+      "task": "PREDICT_RESPONSE_OR_NONRESPONSE",
+      "n_test": 745,
+      "n_train": 6468
+    },
+    {
+      "baseline": "majority-class(None)",
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "dataset": "casino",
+      "task": "PREDICT_FINAL_OUTCOME",
+      "n_test": 100,
+      "n_train": 826
+    },
+    {
+      "baseline": "majority-class(Submit-Deal)",
+      "accuracy": 0.4955,
+      "macro_f1": 0.1657,
+      "dataset": "casino",
+      "task": "PREDICT_NEXT_ACTION",
+      "n_test": 220,
+      "n_train": 1925
+    },
+    {
+      "baseline": "most-frequent-message",
+      "token_f1": 0.0063,
+      "note": "generation task; real eval needs the model",
+      "dataset": "casino",
+      "task": "PREDICT_NEXT_MESSAGE",
+      "n_test": 1157,
+      "n_train": 9579
+    }
+  ],
+  "n_datasets": 7
+}

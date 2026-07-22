@@ -1,0 +1,113 @@
+{
+  "dataset_id": "persuasionforgood",
+  "n_records": 20000,
+  "critical_ok": true,
+  "critical": {
+    "schema": true,
+    "chronology": true,
+    "leakage": true,
+    "provenance": true,
+    "licensing": true
+  },
+  "warnings": [
+    "1 coincidental verbatim message repeats (target text recurs in history; below the systematic-bug threshold)"
+  ],
+  "schema": {
+    "n_ok": 20000,
+    "n_bad": 0,
+    "failures": []
+  },
+  "chronology": {
+    "dataset_id": "persuasionforgood",
+    "n_checked": 20000,
+    "n_issues": 1,
+    "ok": false,
+    "hard_ok": true,
+    "n_hard": 0,
+    "n_soft": 1,
+    "issues": [
+      {
+        "record_id": "persuasionforgood:PREDICT_NEXT_MESSAGE:723158714e7be019",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      }
+    ]
+  },
+  "provenance": {
+    "dataset_id": "persuasionforgood",
+    "n_checked": 20000,
+    "n_missing": 0,
+    "ok": true,
+    "missing": []
+  },
+  "leakage": {
+    "dataset_id": "persuasionforgood",
+    "ok": true,
+    "n_records": 49464,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "persuasionforgood",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 49464,
+      "notes": []
+    }
+  },
+  "deduplication": null,
+  "distributions": {
+    "dataset_id": "persuasionforgood",
+    "n_records": 20000,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 7991,
+      "PREDICT_RESPONSE_OR_NONRESPONSE": 4039,
+      "PREDICT_TRAJECTORY_CONTINUATION": 7582,
+      "PREDICT_FINAL_OUTCOME": 388
+    },
+    "action_type_counts": {},
+    "outcome_counts": {
+      "None": 388
+    },
+    "missing_field_counts": {
+      "utterance_strategy_annotation": 7991,
+      "dialogue_act": 7991,
+      "timestamps": 20000,
+      "latency_seconds": 4039
+    },
+    "inactivity": {
+      "n_inactive": 91,
+      "n_action_or_response": 4039,
+      "inactivity_rate": 0.0225
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 253.0,
+      "p25": 1182.0,
+      "median": 1940.0,
+      "p75": 2754.0,
+      "p95": 3914.0,
+      "max": 7332.0,
+      "mean": 2029.87,
+      "n": 4000
+    },
+    "n_participants": 587,
+    "n_episodes": 390,
+    "warnings": []
+  },
+  "licensing": {
+    "dataset": "persuasionforgood",
+    "license": "Apache-2.0",
+    "license_class": "permissive_commercial",
+    "role": "TRAIN_CANDIDATE",
+    "commercial_use": "yes",
+    "derivatives": "yes",
+    "redistribution": "yes",
+    "training_allowed_by_license": "yes",
+    "training_eligible_now": false,
+    "training_eligible_reason": "not approved in training_approvals.yaml (awaiting human review)",
+    "eligible_if_approved": true
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "view": "cross_dataset_evaluation_v1",
+  "preview": true,
+  "eval_only_view": true,
+  "split": "test_cross_dataset",
+  "tasks": [],
+  "datasets_included": [
+    "socsci210",
+    "criteo_uplift",
+    "craigslistbargain"
+  ],
+  "datasets_excluded": [
+    {
+      "dataset": "some",
+      "reason": "no records in split=test_cross_dataset for tasks"
+    },
+    {
+      "dataset": "behaviorbench",
+      "reason": "no records in split=test_cross_dataset for tasks"
+    },
+    {
+      "dataset": "simbench",
+      "reason": "no records in split=test_cross_dataset for tasks"
+    }
+  ],
+  "n_raw_examples": 108241,
+  "n_sampled_examples": 108241,
+  "n_manifest_records": 108241,
+  "estimated_tokens": 34637120,
+  "per_group_weight": {
+    "craigslistbargain:PREDICT_FINAL_OUTCOME": 0.05244,
+    "craigslistbargain:PREDICT_NEXT_ACTION": 0.09284,
+    "craigslistbargain:PREDICT_NEXT_MESSAGE": 0.38724,
+    "craigslistbargain:PREDICT_TRAJECTORY_CONTINUATION": 0.42758,
+    "criteo_uplift:PREDICT_INTERVENTION_EFFECT": 0.01848,
+    "criteo_uplift:PREDICT_POLICY_VALUE": 0.01848,
+    "criteo_uplift:PREDICT_POPULATION_RESPONSE": 4e-05,
+    "socsci210:PREDICT_INTERVENTION_EFFECT": 6e-05,
+    "socsci210:PREDICT_NEXT_CHOICE": 0.00277,
+    "socsci210:PREDICT_POPULATION_RESPONSE": 7e-05
+  },
+  "per_group_count": {
+    "craigslistbargain:PREDICT_FINAL_OUTCOME": 5676,
+    "craigslistbargain:PREDICT_NEXT_ACTION": 10049,
+    "craigslistbargain:PREDICT_NEXT_MESSAGE": 41915,
+    "craigslistbargain:PREDICT_TRAJECTORY_CONTINUATION": 46282,
+    "criteo_uplift:PREDICT_INTERVENTION_EFFECT": 2000,
+    "criteo_uplift:PREDICT_POLICY_VALUE": 2000,
+    "criteo_uplift:PREDICT_POPULATION_RESPONSE": 4,
+    "socsci210:PREDICT_INTERVENTION_EFFECT": 7,
+    "socsci210:PREDICT_NEXT_CHOICE": 300,
+    "socsci210:PREDICT_POPULATION_RESPONSE": 8
+  },
+  "sampling": {
+    "temperature": 1.0,
+    "per_dataset_cap": null,
+    "per_participant_cap": null,
+    "max_dataset_dominance": 1.0,
+    "rare_task_min_fraction": 0.0
+  },
+  "license_notes": {
+    "socsci210": {
+      "license": "No license declared on the HF card",
+      "license_class": "unknown_unstated",
+      "commercial_use_allowed": "unknown"
+    },
+    "criteo_uplift": {
+      "license": "CC-BY-NC-SA-4.0 (non-commercial)",
+      "license_class": "cc_by_nc",
+      "commercial_use_allowed": "no"
+    },
+    "craigslistbargain": {
+      "license": "Dataset: no explicit license (HF card 'More Information Needed'). Code (cocoa): MIT.",
+      "license_class": "unknown_unstated",
+      "commercial_use_allowed": "unknown"
+    }
+  },
+  "adapter": null,
+  "manifest_hash": "fbb9824bac8ec6b7"
+}

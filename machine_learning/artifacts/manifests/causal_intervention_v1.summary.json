@@ -1,0 +1,130 @@
+{
+  "view": "causal_intervention_v1",
+  "preview": true,
+  "eval_only_view": false,
+  "split": "train",
+  "tasks": [
+    "PREDICT_INTERVENTION_EFFECT",
+    "PREDICT_POLICY_VALUE",
+    "RANK_CANDIDATE_ACTIONS"
+  ],
+  "datasets_included": [
+    "open_bandit"
+  ],
+  "datasets_excluded": [
+    {
+      "dataset": "debate",
+      "reason": "role=ACCESS_BLOCKED (not a training candidate)"
+    },
+    {
+      "dataset": "mirobench",
+      "reason": "role=ACCESS_BLOCKED (not a training candidate)"
+    },
+    {
+      "dataset": "darpa_socialsim",
+      "reason": "role=ACCESS_BLOCKED (not a training candidate)"
+    },
+    {
+      "dataset": "surge",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "some",
+      "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
+    },
+    {
+      "dataset": "agentsociety",
+      "reason": "role=INFRASTRUCTURE_ONLY (not a training candidate)"
+    },
+    {
+      "dataset": "omnibehavior",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "opera",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "acl_online_shopping",
+      "reason": "role=ACCESS_BLOCKED (not a training candidate)"
+    },
+    {
+      "dataset": "psych101",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "socsci210",
+      "reason": "role=LICENSE_RESTRICTED_EVAL_ONLY (not a training candidate)"
+    },
+    {
+      "dataset": "kuairand",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "upworthy",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "criteo_uplift",
+      "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
+    },
+    {
+      "dataset": "persuasionforgood",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "craigslistbargain",
+      "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
+    },
+    {
+      "dataset": "dealornodeal",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "casino",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "werewolf",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "abcd",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "behaviorbench",
+      "reason": "role=LICENSE_RESTRICTED_EVAL_ONLY (not a training candidate)"
+    },
+    {
+      "dataset": "simbench",
+      "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
+    }
+  ],
+  "n_raw_examples": 48115,
+  "n_sampled_examples": 48115,
+  "n_manifest_records": 48115,
+  "estimated_tokens": 15396800,
+  "per_group_weight": {
+    "open_bandit:PREDICT_POLICY_VALUE": 1.0
+  },
+  "per_group_count": {
+    "open_bandit:PREDICT_POLICY_VALUE": 48115
+  },
+  "sampling": {
+    "temperature": 0.7,
+    "per_dataset_cap": 200000,
+    "per_participant_cap": 1000,
+    "max_dataset_dominance": 0.5,
+    "rare_task_min_fraction": 0.05
+  },
+  "license_notes": {
+    "open_bandit": {
+      "license": "Apache-2.0 (repo + in-repo sample). Full data: citation-required 'research' terms (commercial not clearly granted).",
+      "license_class": "permissive_commercial",
+      "commercial_use_allowed": "yes"
+    }
+  },
+  "adapter": "8b_causal_intervention",
+  "manifest_hash": "03cfa29bee26dd20"
+}

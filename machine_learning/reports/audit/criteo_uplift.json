@@ -1,0 +1,93 @@
+{
+  "dataset_id": "criteo_uplift",
+  "official_source": "https://huggingface.co/datasets/criteo/criteo-uplift",
+  "official_paper": "https://ailab.criteo.com/criteo-uplift-prediction-dataset/",
+  "license": "CC-BY-NC-SA-4.0 (non-commercial)",
+  "license_class": "cc_by_nc",
+  "dataset_role": "CROSS_DATASET_EVAL_ONLY",
+  "conversion_status": "PENDING",
+  "acquisition_status": "partial",
+  "raw_files": 1,
+  "raw_bytes": 35312,
+  "normalized": {
+    "n_valid": 4004,
+    "n_quarantined": 0,
+    "n_episodes": 2004,
+    "n_actors": 0,
+    "task_counts": {
+      "PREDICT_INTERVENTION_EFFECT": 2000,
+      "PREDICT_POLICY_VALUE": 2000,
+      "PREDICT_POPULATION_RESPONSE": 4
+    }
+  },
+  "distributions": {
+    "dataset_id": "criteo_uplift",
+    "n_records": 4004,
+    "task_counts": {
+      "PREDICT_INTERVENTION_EFFECT": 2000,
+      "PREDICT_POLICY_VALUE": 2000,
+      "PREDICT_POPULATION_RESPONSE": 4
+    },
+    "action_type_counts": {},
+    "outcome_counts": {},
+    "missing_field_counts": {
+      "counterfactual_outcome": 2000,
+      "propensity": 2000
+    },
+    "inactivity": {
+      "n_inactive": 0,
+      "n_action_or_response": 0,
+      "inactivity_rate": 0.0
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 221.0,
+      "p25": 549.0,
+      "median": 552.0,
+      "p75": 556.0,
+      "p95": 556.0,
+      "max": 559.0,
+      "mean": 551.53,
+      "n": 801
+    },
+    "n_participants": 0,
+    "n_episodes": 2004,
+    "warnings": []
+  },
+  "split_counts": {
+    "test_cross_dataset": 4004
+  },
+  "leakage": {
+    "dataset_id": "criteo_uplift",
+    "ok": true,
+    "n_records": 4004,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "criteo_uplift",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 4004,
+      "notes": []
+    }
+  },
+  "assumptions": [
+    "column names f0..f11, treatment, exposure, visit, conversion (verified from HF stream)",
+    "treatment=1 is the treated arm, treatment=0 the control/holdout arm"
+  ],
+  "known_limitations": [
+    "streamed sample from offset 0 is entirely treatment=1 (dataset is ~85% treated); control rows appear later in the full ~14M-row file",
+    "features are anonymized doubles with no semantic meaning",
+    "aggregation block boundaries are a normalization choice (BLOCK_SIZE=500), not a source field"
+  ],
+  "unavailable_fields": [
+    "counterfactual outcome (only the realized arm is observed; never imputed)",
+    "per-row logging propensity (assignment is randomized; no logged probability)",
+    "timestamps / user identity (rows are independent anonymized impressions)"
+  ],
+  "training_recommendation": "NOT for training (role=CROSS_DATASET_EVAL_ONLY).",
+  "evaluation_recommendation": "Reserved as held-out EVALUATION data (never in training manifests)."
+}

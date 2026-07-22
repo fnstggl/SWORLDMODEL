@@ -1,0 +1,101 @@
+{
+  "dataset_id": "persuasionforgood",
+  "official_source": "https://gitlab.com/ucdavisnlp/persuasionforgood",
+  "official_paper": "https://arxiv.org/abs/1906.06725",
+  "license": "Apache-2.0",
+  "license_class": "permissive_commercial",
+  "dataset_role": "TRAIN_CANDIDATE",
+  "conversion_status": "PENDING",
+  "acquisition_status": "acquired",
+  "raw_files": 60,
+  "raw_bytes": 359587454,
+  "normalized": {
+    "n_valid": 52464,
+    "n_quarantined": 0,
+    "n_episodes": 1017,
+    "n_actors": 1285,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 20932,
+      "PREDICT_RESPONSE_OR_NONRESPONSE": 10600,
+      "PREDICT_TRAJECTORY_CONTINUATION": 19915,
+      "PREDICT_FINAL_OUTCOME": 1017
+    }
+  },
+  "distributions": {
+    "dataset_id": "persuasionforgood",
+    "n_records": 20000,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 7991,
+      "PREDICT_RESPONSE_OR_NONRESPONSE": 4039,
+      "PREDICT_TRAJECTORY_CONTINUATION": 7582,
+      "PREDICT_FINAL_OUTCOME": 388
+    },
+    "action_type_counts": {},
+    "outcome_counts": {
+      "None": 388
+    },
+    "missing_field_counts": {
+      "utterance_strategy_annotation": 7991,
+      "dialogue_act": 7991,
+      "timestamps": 20000,
+      "latency_seconds": 4039
+    },
+    "inactivity": {
+      "n_inactive": 91,
+      "n_action_or_response": 4039,
+      "inactivity_rate": 0.0225
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 253.0,
+      "p25": 1182.0,
+      "median": 1940.0,
+      "p75": 2754.0,
+      "p95": 3914.0,
+      "max": 7332.0,
+      "mean": 2029.87,
+      "n": 4000
+    },
+    "n_participants": 587,
+    "n_episodes": 390,
+    "warnings": []
+  },
+  "split_counts": {
+    "validation": 5126,
+    "train": 40019,
+    "test_in_domain": 4319
+  },
+  "leakage": {
+    "dataset_id": "persuasionforgood",
+    "ok": true,
+    "n_records": 49464,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "persuasionforgood",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 49464,
+      "notes": []
+    }
+  },
+  "assumptions": [
+    "role code 0=persuader, 1=persuadee (per FullData/readme.md)",
+    "charity is 'Save the Children' (dataset task design)"
+  ],
+  "known_limitations": [
+    "FullData carries no utterance-level persuasion-strategy labels",
+    "donation B6 is a single private post-task self-report; a null value means the participant did not report a donation and is flagged, never imputed"
+  ],
+  "unavailable_fields": [
+    "per-utterance strategy annotation (FullData has none; only the 300-dialogue AnnotatedData subset)",
+    "intended donation B5 (annotated only in AnnotatedData)",
+    "per-utterance timestamps / reply latency",
+    "RANK_CANDIDATE_ACTIONS: no candidate-action set exists in the source"
+  ],
+  "training_recommendation": "Eligible for training pending human approval (training_approvals.yaml).",
+  "evaluation_recommendation": "Usable for in-domain evaluation on its own test split."
+}

@@ -1,0 +1,99 @@
+{
+  "dataset_id": "psych101",
+  "official_source": "https://huggingface.co/datasets/marcelbinz/Psych-101",
+  "official_paper": "https://arxiv.org/abs/2410.20268",
+  "license": "Apache-2.0",
+  "license_class": "permissive_commercial",
+  "dataset_role": "TRAIN_CANDIDATE",
+  "conversion_status": "CONVERTER_READY_STORAGE_BLOCKED",
+  "acquisition_status": "partial",
+  "raw_files": 1,
+  "raw_bytes": 335530,
+  "normalized": {
+    "n_valid": 10200,
+    "n_quarantined": 0,
+    "n_episodes": 200,
+    "n_actors": 122,
+    "task_counts": {
+      "PREDICT_NEXT_CHOICE": 10000,
+      "PREDICT_TRAJECTORY_CONTINUATION": 200
+    }
+  },
+  "distributions": {
+    "dataset_id": "psych101",
+    "n_records": 10200,
+    "task_counts": {
+      "PREDICT_NEXT_CHOICE": 10000,
+      "PREDICT_TRAJECTORY_CONTINUATION": 200
+    },
+    "action_type_counts": {},
+    "outcome_counts": {},
+    "missing_field_counts": {
+      "available_actions": 10200,
+      "actor_profile": 10200,
+      "timestamps": 10200
+    },
+    "inactivity": {
+      "n_inactive": 0,
+      "n_action_or_response": 0,
+      "inactivity_rate": 0.0
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 538.0,
+      "p25": 1443.0,
+      "median": 1970.0,
+      "p75": 2464.0,
+      "p95": 2570.0,
+      "max": 2583.0,
+      "mean": 1883.43,
+      "n": 2040
+    },
+    "n_participants": 122,
+    "n_episodes": 200,
+    "warnings": [
+      "task imbalance: one task is 98% of records"
+    ]
+  },
+  "split_counts": {
+    "train": 8364,
+    "test_in_domain": 969,
+    "validation": 867
+  },
+  "leakage": {
+    "dataset_id": "psych101",
+    "ok": true,
+    "n_records": 10200,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "psych101",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 10200,
+      "notes": []
+    }
+  },
+  "assumptions": [
+    "each <<...>> span is exactly one human choice/keypress; empty spans (<<>>) are ignored",
+    "everything before a marker is context the participant had already seen"
+  ],
+  "known_limitations": [
+    "at most CAP (~50) PREDICT_NEXT_CHOICE examples emitted per transcript (transcripts can hold 100s of markers); surfaced via data_quality.warning when capped",
+    "PREDICT_TRAJECTORY_CONTINUATION continuation capped to CAP events and may not reach the transcript end",
+    "transcripts with zero <<>> markers are skipped and counted",
+    "option set / available_actions not recovered (varies per experiment; not guessed)"
+  ],
+  "unavailable_fields": [
+    "available_actions / option set (not reliably parseable from heterogeneous free text)",
+    "actor_profile / demographics",
+    "per-trial timestamps",
+    "private beliefs/goals",
+    "PREDICT_FINAL_OUTCOME (no single downstream outcome; a transcript is a trial sequence)"
+  ],
+  "training_recommendation": "Eligible for training pending human approval (training_approvals.yaml).",
+  "evaluation_recommendation": "Usable for in-domain evaluation on its own test split."
+}

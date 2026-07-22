@@ -1,0 +1,90 @@
+{
+  "dataset_id": "open_bandit",
+  "official_source": "https://research.zozo.com/data.html",
+  "official_paper": "https://arxiv.org/abs/2008.07146",
+  "license": "Apache-2.0 (repo + in-repo sample). Full data: citation-required 'research' terms (commercial not clearly granted).",
+  "license_class": "permissive_commercial",
+  "dataset_role": "TRAIN_CANDIDATE",
+  "conversion_status": "PENDING",
+  "acquisition_status": "acquired",
+  "raw_files": 14,
+  "raw_bytes": 24288588,
+  "normalized": {
+    "n_valid": 120000,
+    "n_quarantined": 0,
+    "n_episodes": 60000,
+    "n_actors": 0,
+    "task_counts": {
+      "PREDICT_POLICY_VALUE": 60000,
+      "PREDICT_NEXT_ACTION": 60000
+    }
+  },
+  "distributions": {
+    "dataset_id": "open_bandit",
+    "n_records": 20000,
+    "task_counts": {
+      "PREDICT_POLICY_VALUE": 10000,
+      "PREDICT_NEXT_ACTION": 10000
+    },
+    "action_type_counts": {
+      "recommend_item": 10000
+    },
+    "outcome_counts": {},
+    "missing_field_counts": {
+      "available_action_set": 10000
+    },
+    "inactivity": {
+      "n_inactive": 0,
+      "n_action_or_response": 10000,
+      "inactivity_rate": 0.0
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 476.0,
+      "p25": 476.0,
+      "median": 477.0,
+      "p75": 477.0,
+      "p95": 477.0,
+      "max": 477.0,
+      "mean": 476.5,
+      "n": 4000
+    },
+    "n_participants": 0,
+    "n_episodes": 10000,
+    "warnings": []
+  },
+  "split_counts": {
+    "train": 96230,
+    "validation": 11822,
+    "test_in_domain": 11948
+  },
+  "leakage": {
+    "dataset_id": "open_bandit",
+    "ok": true,
+    "n_records": 120000,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "open_bandit",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 120000,
+      "notes": []
+    }
+  },
+  "assumptions": [
+    "dir layout {policy}/{campaign}/{campaign}.csv"
+  ],
+  "known_limitations": [
+    "in-repo sample is 10k rows/policy/campaign; full set ~26M rows on research.zozo.com"
+  ],
+  "unavailable_fields": [
+    "matched treatment/control outcomes",
+    "user identity across sessions"
+  ],
+  "training_recommendation": "Eligible for training pending human approval (training_approvals.yaml).",
+  "evaluation_recommendation": "Usable for in-domain evaluation on its own test split."
+}

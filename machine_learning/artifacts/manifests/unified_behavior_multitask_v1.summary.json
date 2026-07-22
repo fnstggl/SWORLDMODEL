@@ -1,0 +1,169 @@
+{
+  "view": "unified_behavior_multitask_v1",
+  "preview": true,
+  "eval_only_view": false,
+  "split": "train",
+  "tasks": [
+    "PREDICT_BELIEF_CHANGE",
+    "PREDICT_DISCUSSION_TREE",
+    "PREDICT_FINAL_OUTCOME",
+    "PREDICT_INTERVENTION_EFFECT",
+    "PREDICT_NEXT_ACTION",
+    "PREDICT_NEXT_CHOICE",
+    "PREDICT_NEXT_MESSAGE",
+    "PREDICT_NEXT_SPEAKER",
+    "PREDICT_POLICY_VALUE",
+    "PREDICT_POPULATION_RESPONSE",
+    "PREDICT_POPULATION_TIME_SERIES",
+    "PREDICT_PRIVATE_STATE_UPDATE",
+    "PREDICT_RESPONSE_OR_NONRESPONSE",
+    "PREDICT_TIME_TO_ACTION",
+    "PREDICT_TRAJECTORY_CONTINUATION",
+    "RANK_CANDIDATE_ACTIONS"
+  ],
+  "datasets_included": [
+    "psych101",
+    "open_bandit",
+    "persuasionforgood",
+    "casino"
+  ],
+  "datasets_excluded": [
+    {
+      "dataset": "debate",
+      "reason": "role=ACCESS_BLOCKED (not a training candidate)"
+    },
+    {
+      "dataset": "mirobench",
+      "reason": "role=ACCESS_BLOCKED (not a training candidate)"
+    },
+    {
+      "dataset": "darpa_socialsim",
+      "reason": "role=ACCESS_BLOCKED (not a training candidate)"
+    },
+    {
+      "dataset": "surge",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "some",
+      "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
+    },
+    {
+      "dataset": "agentsociety",
+      "reason": "role=INFRASTRUCTURE_ONLY (not a training candidate)"
+    },
+    {
+      "dataset": "omnibehavior",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "opera",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "acl_online_shopping",
+      "reason": "role=ACCESS_BLOCKED (not a training candidate)"
+    },
+    {
+      "dataset": "socsci210",
+      "reason": "role=LICENSE_RESTRICTED_EVAL_ONLY (not a training candidate)"
+    },
+    {
+      "dataset": "kuairand",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "upworthy",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "criteo_uplift",
+      "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
+    },
+    {
+      "dataset": "craigslistbargain",
+      "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
+    },
+    {
+      "dataset": "dealornodeal",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "werewolf",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "abcd",
+      "reason": "no records in split=train for tasks"
+    },
+    {
+      "dataset": "behaviorbench",
+      "reason": "role=LICENSE_RESTRICTED_EVAL_ONLY (not a training candidate)"
+    },
+    {
+      "dataset": "simbench",
+      "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
+    }
+  ],
+  "n_raw_examples": 156943,
+  "n_sampled_examples": 156943,
+  "n_manifest_records": 156943,
+  "estimated_tokens": 50221760,
+  "per_group_weight": {
+    "casino:PREDICT_FINAL_OUTCOME": 0.0315,
+    "casino:PREDICT_NEXT_ACTION": 0.02571,
+    "casino:PREDICT_NEXT_MESSAGE": 0.12793,
+    "open_bandit:PREDICT_NEXT_ACTION": 0.16931,
+    "open_bandit:PREDICT_POLICY_VALUE": 0.16931,
+    "persuasionforgood:PREDICT_FINAL_OUTCOME": 0.0185,
+    "persuasionforgood:PREDICT_NEXT_MESSAGE": 0.13324,
+    "persuasionforgood:PREDICT_RESPONSE_OR_NONRESPONSE": 0.06743,
+    "persuasionforgood:PREDICT_TRAJECTORY_CONTINUATION": 0.12659,
+    "psych101:PREDICT_NEXT_CHOICE": 0.12791,
+    "psych101:PREDICT_TRAJECTORY_CONTINUATION": 0.00256
+  },
+  "per_group_count": {
+    "casino:PREDICT_FINAL_OUTCOME": 826,
+    "casino:PREDICT_NEXT_ACTION": 1925,
+    "casino:PREDICT_NEXT_MESSAGE": 9579,
+    "open_bandit:PREDICT_NEXT_ACTION": 48115,
+    "open_bandit:PREDICT_POLICY_VALUE": 48115,
+    "persuasionforgood:PREDICT_FINAL_OUTCOME": 777,
+    "persuasionforgood:PREDICT_NEXT_MESSAGE": 15977,
+    "persuasionforgood:PREDICT_RESPONSE_OR_NONRESPONSE": 8085,
+    "persuasionforgood:PREDICT_TRAJECTORY_CONTINUATION": 15180,
+    "psych101:PREDICT_NEXT_CHOICE": 8200,
+    "psych101:PREDICT_TRAJECTORY_CONTINUATION": 164
+  },
+  "sampling": {
+    "temperature": 0.6,
+    "per_dataset_cap": 200000,
+    "per_participant_cap": 1000,
+    "max_dataset_dominance": 0.35,
+    "rare_task_min_fraction": 0.05
+  },
+  "license_notes": {
+    "psych101": {
+      "license": "Apache-2.0",
+      "license_class": "permissive_commercial",
+      "commercial_use_allowed": "yes"
+    },
+    "open_bandit": {
+      "license": "Apache-2.0 (repo + in-repo sample). Full data: citation-required 'research' terms (commercial not clearly granted).",
+      "license_class": "permissive_commercial",
+      "commercial_use_allowed": "yes"
+    },
+    "persuasionforgood": {
+      "license": "Apache-2.0",
+      "license_class": "permissive_commercial",
+      "commercial_use_allowed": "yes"
+    },
+    "casino": {
+      "license": "CC-BY-4.0",
+      "license_class": "cc_by",
+      "commercial_use_allowed": "yes"
+    }
+  },
+  "adapter": "8b_unified_multitask",
+  "manifest_hash": "6e9473dcf3176eac"
+}

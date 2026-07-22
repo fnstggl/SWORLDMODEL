@@ -1,0 +1,152 @@
+{
+  "dataset_id": "craigslistbargain",
+  "n_records": 20000,
+  "critical_ok": true,
+  "critical": {
+    "schema": true,
+    "chronology": true,
+    "leakage": true,
+    "provenance": true,
+    "licensing": true
+  },
+  "warnings": [
+    "8 coincidental verbatim message repeats (target text recurs in history; below the systematic-bug threshold)"
+  ],
+  "schema": {
+    "n_ok": 20000,
+    "n_bad": 0,
+    "failures": []
+  },
+  "chronology": {
+    "dataset_id": "craigslistbargain",
+    "n_checked": 20000,
+    "n_issues": 8,
+    "ok": false,
+    "hard_ok": true,
+    "n_hard": 0,
+    "n_soft": 8,
+    "issues": [
+      {
+        "record_id": "craigslistbargain:PREDICT_NEXT_MESSAGE:89d220eef04f2bd8",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "craigslistbargain:PREDICT_NEXT_MESSAGE:91c76d3d5e561b91",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "craigslistbargain:PREDICT_NEXT_MESSAGE:c09913cf8c9ae22f",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "craigslistbargain:PREDICT_NEXT_MESSAGE:b4db3a502be53376",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "craigslistbargain:PREDICT_NEXT_MESSAGE:507a7cae5794e161",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "craigslistbargain:PREDICT_NEXT_MESSAGE:7a75eb5bb9a95190",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "craigslistbargain:PREDICT_NEXT_MESSAGE:49bd1da0d980bde2",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "craigslistbargain:PREDICT_NEXT_MESSAGE:bc565e7bfc14b239",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      }
+    ]
+  },
+  "provenance": {
+    "dataset_id": "craigslistbargain",
+    "n_checked": 20000,
+    "n_missing": 0,
+    "ok": true,
+    "missing": []
+  },
+  "leakage": {
+    "dataset_id": "craigslistbargain",
+    "ok": true,
+    "n_records": 103922,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "craigslistbargain",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 103922,
+      "notes": []
+    }
+  },
+  "deduplication": null,
+  "distributions": {
+    "dataset_id": "craigslistbargain",
+    "n_records": 20000,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 8033,
+      "PREDICT_NEXT_ACTION": 1972,
+      "PREDICT_TRAJECTORY_CONTINUATION": 8927,
+      "PREDICT_FINAL_OUTCOME": 1068
+    },
+    "action_type_counts": {
+      "offer": 937,
+      "accept": 788,
+      "quit": 161,
+      "reject": 86
+    },
+    "outcome_counts": {
+      "None": 1068
+    },
+    "missing_field_counts": {
+      "bottomline": 8033,
+      "final_price": 150,
+      "offer_price": 3
+    },
+    "inactivity": {
+      "n_inactive": 0,
+      "n_action_or_response": 1972,
+      "inactivity_rate": 0.0
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 242.0,
+      "p25": 500.0,
+      "median": 808.0,
+      "p75": 1148.0,
+      "p95": 1709.0,
+      "max": 3952.0,
+      "mean": 879.46,
+      "n": 4000
+    },
+    "n_participants": 2140,
+    "n_episodes": 1070,
+    "warnings": []
+  },
+  "licensing": {
+    "dataset": "craigslistbargain",
+    "license": "Dataset: no explicit license (HF card 'More Information Needed'). Code (cocoa): MIT.",
+    "license_class": "unknown_unstated",
+    "role": "CROSS_DATASET_EVAL_ONLY",
+    "commercial_use": "unknown",
+    "derivatives": "unknown",
+    "redistribution": "unknown",
+    "training_allowed_by_license": "no",
+    "training_eligible_now": false,
+    "training_eligible_reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)",
+    "eligible_if_approved": false
+  }
+}

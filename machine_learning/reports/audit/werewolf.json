@@ -1,0 +1,87 @@
+{
+  "dataset_id": "werewolf",
+  "official_source": "https://huggingface.co/datasets/bolinlai/Werewolf-Among-Us",
+  "official_paper": "https://aclanthology.org/2023.findings-acl.411/",
+  "license": "Apache-2.0 (text/annotations). Ego4D video subset under separate Ego4D license.",
+  "license_class": "permissive_commercial",
+  "dataset_role": "TRAIN_CANDIDATE",
+  "conversion_status": "PENDING",
+  "acquisition_status": "acquired",
+  "raw_files": 340,
+  "raw_bytes": 5627482,
+  "normalized": {
+    "n_valid": 54632,
+    "n_quarantined": 0,
+    "n_episodes": 199,
+    "n_actors": 933,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 26911,
+      "PREDICT_TRAJECTORY_CONTINUATION": 26712,
+      "PREDICT_NEXT_ACTION": 818,
+      "PREDICT_FINAL_OUTCOME": 191
+    }
+  },
+  "distributions": {
+    "dataset_id": "werewolf",
+    "n_records": 20000,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 10046,
+      "PREDICT_TRAJECTORY_CONTINUATION": 9743,
+      "PREDICT_NEXT_ACTION": 143,
+      "PREDICT_FINAL_OUTCOME": 68
+    },
+    "action_type_counts": {
+      "vote": 143
+    },
+    "outcome_counts": {
+      "None": 68
+    },
+    "missing_field_counts": {
+      "private_goal_hidden_role": 10046,
+      "video_features": 20000,
+      "explicit_winner_label": 68,
+      "strategy_annotation": 7
+    },
+    "inactivity": {
+      "n_inactive": 0,
+      "n_action_or_response": 143,
+      "inactivity_rate": 0.0
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 235.0,
+      "p25": 2359.0,
+      "median": 2787.0,
+      "p75": 3057.0,
+      "p95": 3524.0,
+      "max": 4333.0,
+      "mean": 2550.44,
+      "n": 4000
+    },
+    "n_participants": 350,
+    "n_episodes": 73,
+    "warnings": []
+  },
+  "split_counts": {},
+  "leakage": {
+    "ok": null,
+    "n_records": 0
+  },
+  "assumptions": [
+    "votingOutcome[i] is the index into playerNames of the player that player i voted for",
+    "a game with no startRoles is an Avalon game"
+  ],
+  "known_limitations": [
+    "Avalon games (Ego4D/split/avalon.json) carry only dialogue — no players/votes/roles — so they yield only NEXT_MESSAGE + TRAJECTORY_CONTINUATION",
+    "timestamps are video mm:ss strings (kept as event.t), not absolute wall-clock times"
+  ],
+  "unavailable_fields": [
+    "PREDICT_BELIEF_CHANGE: private beliefs are not recorded (no before/after belief measurement); only observed votes and revealed roles exist — a belief-change label would have to be fabricated, so it is NOT emitted",
+    "explicit game winner label (only revealed roles + votes are recorded; a winner is derivable via game rules but not provided, so it is not fabricated)",
+    "a player's own start role in INPUT (deliberately withheld: roles are deception ground truth, exposed only in the FINAL_OUTCOME target)",
+    "N/A votes (voted center / unrecorded) are not emitted as discrete vote actions",
+    "video / audio / MViT numpy feature files (skipped)"
+  ],
+  "training_recommendation": "Eligible for training pending human approval (training_approvals.yaml).",
+  "evaluation_recommendation": "Usable for in-domain evaluation on its own test split."
+}

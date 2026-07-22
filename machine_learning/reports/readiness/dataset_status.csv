@@ -1,0 +1,24 @@
+dataset,final_status,role,license_class,acquired,examples,tokens,critical_ok,training_eligible_if_approved,reason,blockers
+abcd,NORMALIZED_AND_VALIDATED,TRAIN_CANDIDATE,permissive_commercial,acquired,3000,960000,,True,,
+acl_online_shopping,ACCESS_BLOCKED,ACCESS_BLOCKED,proprietary_unreleased,pending,0,0,,False,role=ACCESS_BLOCKED (not a training candidate),Dataset is proprietary Amazon-internal data; never publicly released. Human action: none available without Amazon permis
+agentsociety,INFRASTRUCTURE_ONLY,INFRASTRUCTURE_ONLY,permissive_commercial,pending,0,0,,False,role=INFRASTRUCTURE_ONLY (not a training candidate),"The challenge itself ships a SIMULATOR, not human data; we do NOT train on simulator output. To use the underlying Yelp/"
+behaviorbench,LICENSE_BLOCKED,LICENSE_RESTRICTED_EVAL_ONLY,cc_by_nc_nd,acquired,0,0,,False,role=LICENSE_RESTRICTED_EVAL_ONLY (not a training candidate),CC-BY-NC-ND: No-Derivatives forbids training (which produces a derivative). Normalize for EVALUATION only; never place i
+casino,NORMALIZED_AND_VALIDATED,TRAIN_CANDIDATE,cc_by,acquired,15327,4904640,True,True,,
+craigslistbargain,NORMALIZED_EVAL_ONLY,CROSS_DATASET_EVAL_ONLY,unknown_unstated,acquired,106922,34215040,True,False,role=CROSS_DATASET_EVAL_ONLY (not a training candidate),
+criteo_uplift,NORMALIZED_EVAL_ONLY,CROSS_DATASET_EVAL_ONLY,cc_by_nc,partial,4004,1281280,True,False,role=CROSS_DATASET_EVAL_ONLY (not a training candidate),
+darpa_socialsim,ACCESS_BLOCKED,ACCESS_BLOCKED,restricted_program,pending,0,0,,False,role=ACCESS_BLOCKED (not a training candidate),"No public/archival download. Human action: contact DARPA/Leidos or partner with a former SocialSim performer (USC/ISI, U"
+dealornodeal,NORMALIZED_AND_VALIDATED,TRAIN_CANDIDATE,cc_by_nc,acquired,3000,960000,,True,,
+debate,ACCESS_BLOCKED,ACCESS_BLOCKED,unknown_unstated,pending,0,0,,False,role=ACCESS_BLOCKED (not a training candidate),Dataset not publicly released as of last_verified_at. Human action: watch arxiv/OpenReview page rMnZbCOhSS for the promi
+kuairand,CONVERTER_READY_STORAGE_BLOCKED,TRAIN_CANDIDATE,cc_by_sa,pending,0,0,,True,,KuaiRand-Pure (~194MB) is acquirable but tar.gz extraction + CSV normalization is disk-heavy; keep randomized-exposure (
+mirobench,ACCESS_BLOCKED,ACCESS_BLOCKED,upstream_tos_restricted,pending,0,0,,False,role=ACCESS_BLOCKED (not a training candidate),"No public release located. Human action: watch arxiv 2606.14715 for a code/data link; if released, verify Reddit-ToS com"
+omnibehavior,CONVERTER_READY_STORAGE_BLOCKED,TRAIN_CANDIDATE,cc_by_nc,acquiring,0,0,,True,,6.37GB > safe working disk here. Streaming converter implemented + fixture-tested; sample normalized. Full run resume: p
+open_bandit,NORMALIZED_AND_VALIDATED,TRAIN_CANDIDATE,permissive_commercial,acquired,120000,38400000,True,True,,
+opera,CONVERTER_READY_STORAGE_BLOCKED,TRAIN_CANDIDATE,cc_by,failed,0,0,,True,,8.58GB > safe working disk. Streaming converter implemented + fixture-tested; sample normalized. Rationales are self-rep
+persuasionforgood,NORMALIZED_AND_VALIDATED,TRAIN_CANDIDATE,permissive_commercial,acquired,52464,16788480,True,True,,
+psych101,NORMALIZED_AND_VALIDATED,TRAIN_CANDIDATE,permissive_commercial,partial,10200,3264000,True,True,,"859MB fits, but the converter must parse choices out of NL transcripts (response markers) per-experiment — non-trivial. "
+simbench,CONVERTER_READY_STORAGE_BLOCKED,CROSS_DATASET_EVAL_ONLY,cc_by_nc,failed,0,0,,False,role=CROSS_DATASET_EVAL_ONLY (not a training candidate),Reserved as the held-out population-response cross-dataset transfer test; excluded from training manifests by design. NC
+socsci210,NORMALIZED_EVAL_ONLY,LICENSE_RESTRICTED_EVAL_ONLY,unknown_unstated,partial,315,100800,True,False,role=LICENSE_RESTRICTED_EVAL_ONLY (not a training candidate),License unspecified on the official card -> keep OUT of training (eval-only) until authors clarify. Streaming converter 
+some,CONVERTER_READY_STORAGE_BLOCKED,CROSS_DATASET_EVAL_ONLY,upstream_tos_restricted,partial,0,0,,False,role=CROSS_DATASET_EVAL_ONLY (not a training candidate),"50GB+ exceeds working disk; content under platform ToS (eval-only, no redistribution). Converter streams + samples only "
+surge,CONVERTER_READY_STORAGE_BLOCKED,TRAIN_CANDIDATE,cc_by,pending,0,0,,True,,Converter implemented + fixture-tested. Full acquisition deferred (needs git clone + moderate disk). Resume: python -m m
+upworthy,CONVERTER_READY_STORAGE_BLOCKED,TRAIN_CANDIDATE,cc_by,pending,0,0,,True,,Converter implemented + fixture-tested. OSF direct-file ids vary by release; set acquire.http.urls to the current OSF fi
+werewolf,NORMALIZED_AND_VALIDATED,TRAIN_CANDIDATE,permissive_commercial,acquired,54632,17482240,True,True,,

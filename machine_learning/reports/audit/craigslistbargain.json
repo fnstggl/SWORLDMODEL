@@ -1,0 +1,101 @@
+{
+  "dataset_id": "craigslistbargain",
+  "official_source": "https://huggingface.co/datasets/stanfordnlp/craigslist_bargains",
+  "official_paper": "https://arxiv.org/abs/1808.09637",
+  "license": "Dataset: no explicit license (HF card 'More Information Needed'). Code (cocoa): MIT.",
+  "license_class": "unknown_unstated",
+  "dataset_role": "CROSS_DATASET_EVAL_ONLY",
+  "conversion_status": "PENDING",
+  "acquisition_status": "acquired",
+  "raw_files": 2,
+  "raw_bytes": 22435777,
+  "normalized": {
+    "n_valid": 106922,
+    "n_quarantined": 0,
+    "n_episodes": 5844,
+    "n_actors": 11688,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 43104,
+      "PREDICT_NEXT_ACTION": 10357,
+      "PREDICT_TRAJECTORY_CONTINUATION": 47617,
+      "PREDICT_FINAL_OUTCOME": 5844
+    }
+  },
+  "distributions": {
+    "dataset_id": "craigslistbargain",
+    "n_records": 20000,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 8033,
+      "PREDICT_NEXT_ACTION": 1972,
+      "PREDICT_TRAJECTORY_CONTINUATION": 8927,
+      "PREDICT_FINAL_OUTCOME": 1068
+    },
+    "action_type_counts": {
+      "offer": 937,
+      "accept": 788,
+      "quit": 161,
+      "reject": 86
+    },
+    "outcome_counts": {
+      "None": 1068
+    },
+    "missing_field_counts": {
+      "bottomline": 8033,
+      "final_price": 150,
+      "offer_price": 3
+    },
+    "inactivity": {
+      "n_inactive": 0,
+      "n_action_or_response": 1972,
+      "inactivity_rate": 0.0
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 242.0,
+      "p25": 500.0,
+      "median": 808.0,
+      "p75": 1148.0,
+      "p95": 1709.0,
+      "max": 3952.0,
+      "mean": 879.46,
+      "n": 4000
+    },
+    "n_participants": 2140,
+    "n_episodes": 1070,
+    "warnings": []
+  },
+  "split_counts": {
+    "test_cross_dataset": 103922
+  },
+  "leakage": {
+    "dataset_id": "craigslistbargain",
+    "ok": true,
+    "n_records": 103922,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "craigslistbargain",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 103922,
+      "notes": []
+    }
+  },
+  "assumptions": [
+    "kbs[a] corresponds to events with agent==a",
+    "an 'accept' event denotes a reached agreement"
+  ],
+  "known_limitations": [
+    "no stated dataset license — cross-dataset EVAL ONLY (see license_implications)",
+    "reward is the source's scalar payoff; agreement is derived from the presence of an accept event"
+  ],
+  "unavailable_fields": [
+    "stable cross-conversation agent id (agents are only indexed 0/1 per dialogue)",
+    "Bottomline is null in the source for essentially all agents"
+  ],
+  "training_recommendation": "NOT for training (role=CROSS_DATASET_EVAL_ONLY).",
+  "evaluation_recommendation": "Reserved as held-out EVALUATION data (never in training manifests)."
+}

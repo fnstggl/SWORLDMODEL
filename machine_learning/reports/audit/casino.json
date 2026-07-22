@@ -1,0 +1,100 @@
+{
+  "dataset_id": "casino",
+  "official_source": "https://huggingface.co/datasets/kchawla123/casino",
+  "official_paper": "https://aclanthology.org/2021.naacl-main.254/",
+  "license": "CC-BY-4.0",
+  "license_class": "cc_by",
+  "dataset_role": "TRAIN_CANDIDATE",
+  "conversion_status": "PENDING",
+  "acquisition_status": "acquired",
+  "raw_files": 3,
+  "raw_bytes": 1260547,
+  "normalized": {
+    "n_valid": 15327,
+    "n_quarantined": 0,
+    "n_episodes": 1030,
+    "n_actors": 2060,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 11919,
+      "PREDICT_NEXT_ACTION": 2378,
+      "PREDICT_FINAL_OUTCOME": 1030
+    }
+  },
+  "distributions": {
+    "dataset_id": "casino",
+    "n_records": 15327,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 11919,
+      "PREDICT_NEXT_ACTION": 2378,
+      "PREDICT_FINAL_OUTCOME": 1030
+    },
+    "action_type_counts": {
+      "Submit-Deal": 1181,
+      "Accept-Deal": 1005,
+      "Reject-Deal": 167,
+      "Walk-Away": 25
+    },
+    "outcome_counts": {
+      "None": 1030
+    },
+    "missing_field_counts": {
+      "timestamps": 15327,
+      "strategy_annotation": 7304
+    },
+    "inactivity": {
+      "n_inactive": 0,
+      "n_action_or_response": 2378,
+      "inactivity_rate": 0.0
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 738.0,
+      "p25": 1250.0,
+      "median": 1680.0,
+      "p75": 2201.0,
+      "p95": 3147.0,
+      "max": 8510.0,
+      "mean": 1812.22,
+      "n": 3066
+    },
+    "n_participants": 2060,
+    "n_episodes": 1030,
+    "warnings": []
+  },
+  "split_counts": {
+    "train": 12330,
+    "test_in_domain": 1477,
+    "validation": 1520
+  },
+  "leakage": {
+    "dataset_id": "casino",
+    "ok": true,
+    "n_records": 15327,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "casino",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 15327,
+      "notes": []
+    }
+  },
+  "assumptions": [
+    "deal actions are exactly {Submit-Deal, Accept-Deal, Reject-Deal, Walk-Away}"
+  ],
+  "known_limitations": [
+    "strategy labels only on ~396/1030 dialogues",
+    "satisfaction/liking are single post-hoc self-reports"
+  ],
+  "unavailable_fields": [
+    "per-turn timestamps",
+    "stable cross-dialogue worker id",
+    "pre-negotiation satisfaction (only post measured)"
+  ],
+  "training_recommendation": "Eligible for training pending human approval (training_approvals.yaml).",
+  "evaluation_recommendation": "Usable for in-domain evaluation on its own test split."
+}
