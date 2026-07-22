@@ -320,6 +320,25 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
                                   or bp.resolution.get("yes_means") or "", question=question)
         lean_v2_prov["outcome_mechanism_dimensions"] = dimensional_check_mechanism(mechanism, _rspec)
 
+    # ---------------- 6e-quater. STRUCTURAL-FIDELITY READINESS GATE (D17) ---------------
+    # readiness is not 'the machine can run' but 'the world it runs IS faithful': aggregate the
+    # fidelity verdicts of the resolution (D5), institution representation (D7), evidence (D11),
+    # behavior grounding (D8), and outcome mechanism (D16). An impossible institution is never
+    # made ready by rescaling its real threshold.
+    from swm.world_model_v2.lean_v2.readiness import assess_structural_fidelity
+    from swm.world_model_v2.lean_v2.resolution_spec import parse_resolution as _parse_res
+    _fid_rspec = _parse_res(bp.resolution.get("interpretation")
+                            or bp.resolution.get("yes_means") or "", question=question)
+    _fid_rep = None
+    if str(bp.terminal.get("kind") or "") == "institution_vote":
+        from swm.world_model_v2.lean_v2.representation import ensure_faithful_representation
+        _fid_rep = ensure_faithful_representation(bp, _fid_rspec, evidence_text=evidence_text,
+                                                  grounding=grounding)
+    lean_v2_prov["structural_fidelity"] = assess_structural_fidelity(
+        bp, resolution_spec=_fid_rspec, representation=_fid_rep, evidence_store=evidence_store,
+        mechanism_dim=lean_v2_prov.get("outcome_mechanism_dimensions"),
+        grounding=grounding).as_dict()
+
     # ---------------- 7. three-valued answerability preflight ---------------------------
     pre = ckpt.run_stage("answerability_preflight", lambda: run_preflight(
         bp, as_of=as_of, horizon=horizon, consequence_templates=executor.templates))

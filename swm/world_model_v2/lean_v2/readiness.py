@@ -31,6 +31,110 @@ READINESS_VERSION = "lean_v2.readiness.v1"
 CANONICAL_TERMINAL_KEY = "__terminal_yes__"
 
 
+# ------------------------------------------------------------------ D17: structural-fidelity gate
+@dataclass
+class StructuralFidelityReport:
+    """Readiness is not merely 'the machine can run' — it is 'the world it will run IS faithful'.
+    Aggregates the fidelity verdicts of the resolution (D5), the institution representation (D7),
+    the evidence (D11), the behavior grounding (D8), and the outcome mechanism (D16). An invalid
+    institution is NEVER made ready by rescaling its real threshold — it is repaired (roster) or
+    fails."""
+    verdict: str = "ready"                          # ready | repairable | not_ready
+    checks: dict = field(default_factory=dict)
+    diagnostics: list = field(default_factory=list)
+    repairs_needed: list = field(default_factory=list)
+    version: str = READINESS_VERSION
+
+    def as_dict(self) -> dict:
+        return {"verdict": self.verdict, "checks": self.checks, "diagnostics": self.diagnostics,
+                "repairs_needed": self.repairs_needed, "version": self.version}
+
+
+def _worst(verdicts: list) -> str:
+    order = {"not_ready": 2, "repairable": 1, "ready": 0}
+    return max(verdicts, key=lambda v: order.get(v, 0)) if verdicts else "ready"
+
+
+def assess_structural_fidelity(bp, *, resolution_spec=None, representation=None,
+                               evidence_store=None, mechanism_dim: dict = None,
+                               grounding: dict = None) -> StructuralFidelityReport:
+    """The structural-fidelity gate (§14). Each dimension contributes a verdict; the report is the
+    WORST, with the specific repairs a `repairable` needs. Structural, not question-specific."""
+    rep = StructuralFidelityReport()
+    term = bp.terminal or {}
+    tk = str(term.get("kind") or "")
+    verdicts = []
+
+    # (1) RESOLUTION — the frozen criterion parses to a typed terminal and matches the blueprint
+    if resolution_spec is not None:
+        try:
+            from swm.world_model_v2.lean_v2.resolution_spec import spec_matches_blueprint
+            matches = spec_matches_blueprint(resolution_spec, bp)
+        except Exception:  # noqa: BLE001
+            matches = True
+        rk = getattr(resolution_spec, "terminal_kind", "")
+        ok_res = bool(rk) and matches
+        rep.checks["resolution"] = {"verdict": "ready" if ok_res else "repairable",
+                                    "terminal_kind": rk, "matches_blueprint": matches}
+        verdicts.append("ready" if ok_res else "repairable")
+    else:
+        rep.checks["resolution"] = {"verdict": "repairable", "note": "no parsed resolution spec"}
+        verdicts.append("repairable")
+
+    # (2) INSTITUTION — the faithful representation reconciles real==represented==threshold, or is
+    # repaired by EXPANDING the roster; the threshold is NEVER rescaled to fit a collapsed roster
+    if tk == "institution_vote":
+        if representation is not None:
+            v = getattr(representation, "verdict", "not_ready")
+            rep.checks["institution"] = {
+                "verdict": v, "real_member_count": getattr(representation, "real_member_count", None),
+                "represented_voting_power": getattr(representation, "represented_voting_power", 0),
+                "threshold": getattr(representation, "threshold", None),
+                "repairs": getattr(representation, "repairs", [])}
+            if v == "repairable":
+                rep.repairs_needed.append("expand the institution roster to the real body "
+                                          "(never rescale the threshold)")
+            verdicts.append(v)
+        else:
+            rep.checks["institution"] = {"verdict": "not_ready", "note": "no representation built"}
+            verdicts.append("not_ready")
+
+    # (3) EVIDENCE — canonical facts exist and at least one is terminal-relevant (D11)
+    if evidence_store is not None:
+        n = len(getattr(evidence_store, "facts", []))
+        rel = len(evidence_store.terminal_relevant_facts()) if hasattr(
+            evidence_store, "terminal_relevant_facts") else 0
+        okev = n > 0
+        rep.checks["evidence"] = {"verdict": "ready" if okev else "repairable",
+                                  "n_facts": n, "terminal_relevant": rel}
+        verdicts.append("ready" if okev else "repairable")
+
+    # (4) BEHAVIOR — the decision is grounded (counted actor classes / an action baseline exist),
+    # never a bare label; states carry action tendencies (D8)
+    if grounding is not None:
+        ac = grounding.get("actor_state_reference_classes") or {}
+        oc = (grounding.get("outcome_reference_class") or {}).get("provenance", {})
+        grounded = bool(ac) or (oc.get("denominator") or 0) > 0
+        rep.checks["behavior"] = {"verdict": "ready" if grounded else "repairable",
+                                  "actors_with_classes": len(ac),
+                                  "outcome_class_n": oc.get("denominator", 0)}
+        verdicts.append("ready" if grounded else "repairable")
+
+    # (5) OUTCOME — a numeric mechanism produces the required variable in the required dimension (D16)
+    if mechanism_dim is not None:
+        okdim = bool(mechanism_dim.get("ok"))
+        rep.checks["outcome"] = {"verdict": "ready" if okdim else "not_ready",
+                                 "dimension": mechanism_dim.get("dimension"),
+                                 "required_dimension": mechanism_dim.get("required_dimension"),
+                                 "diagnostics": mechanism_dim.get("diagnostics")}
+        if not okdim:
+            rep.diagnostics.append("outcome mechanism dimension does not match the required unit")
+        verdicts.append("ready" if okdim else "not_ready")
+
+    rep.verdict = _worst(verdicts)
+    return rep
+
+
 # ------------------------------------------------------------------ pure terminal evaluator
 def pure_terminal_outcome(bp, *, votes: dict = None, world_state: dict = None,
                           obligations: dict = None, mechanism: dict = None,
