@@ -164,6 +164,15 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
     lean_v2_prov["grounding"] = grounding
     lean_v2_prov["weight_invariant"] = _assert_no_label_weights(grounding)
 
+    # ---------------- 6b-bis. CANONICAL FACT STORE (D11) --------------------------------
+    # the information that actually exists in the world — real content, provenance, credibility
+    # and visibility — built from the counted grounding + grounded rates, leakage-guarded at
+    # as_of. Actor knowledge packets (D13) render facts from here instead of a blind truncation.
+    from swm.world_model_v2.lean_v2.evidence_store import build_evidence_store
+    evidence_store = ckpt.run_stage("evidence_store", lambda: build_evidence_store(
+        bp, grounding, as_of=as_of, evidence_text=evidence_text))
+    lean_v2_prov["evidence_store"] = evidence_store.manifest()
+
     # ---------------- 6c. STATE GENERATION (no numbers) + counted posteriors ------------
     shared_cids = list((grounding.get("shared_world_conditions") or {}).keys())
     states_by_actor, state_rejections, state_meta = ckpt.run_stage(
