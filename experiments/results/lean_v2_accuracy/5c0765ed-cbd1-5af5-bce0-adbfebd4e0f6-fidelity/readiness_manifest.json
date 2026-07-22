@@ -1,0 +1,201 @@
+{
+ "readiness": {
+  "verdict": "ready",
+  "checks": [
+   {
+    "check": "actor_states:greg_joswiak",
+    "ok": true,
+    "note": "2 state(s)"
+   },
+   {
+    "check": "actor_weights:greg_joswiak",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "actor_states:apple_executive_team",
+    "ok": true,
+    "note": "3 state(s)"
+   },
+   {
+    "check": "actor_weights:apple_executive_team",
+    "ok": true,
+    "note": "weight sum 0.9999"
+   },
+   {
+    "check": "shared_conditions_exist",
+    "ok": true,
+    "note": "7 combo(s)"
+   },
+   {
+    "check": "actor_trigger:greg_joswiak",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:greg_joswiak",
+    "ok": true,
+    "note": "1 option(s)"
+   },
+   {
+    "check": "actor_trigger:apple_executive_team",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:apple_executive_team",
+    "ok": true,
+    "note": "2 option(s)"
+   },
+   {
+    "check": "institution_deadline:apple_wwdc_keynote",
+    "ok": true,
+    "note": "2026-06-12"
+   },
+   {
+    "check": "institution_deadline:apple_newsroom",
+    "ok": true,
+    "note": "2026-06-12"
+   },
+   {
+    "check": "terminal_writer",
+    "ok": true,
+    "note": "canonical-key writer or bounded mechanism"
+   },
+   {
+    "check": "terminal_units",
+    "ok": true,
+    "note": "numeric predicates need a bounded mechanism in question units"
+   },
+   {
+    "check": "terminal_round_trip",
+    "ok": true,
+    "note": "synthetic YES\u21921 / NO\u21920 through the live path"
+   }
+  ],
+  "repairs_needed": [],
+  "repairs_applied": [],
+  "round_trip": {
+   "mapping": {
+    "yes_label": "Yes",
+    "no_label": "No",
+    "aliases_yes": [
+     "1",
+     "true",
+     "visionos_major_announcement event occurs on or before 2026-0",
+     "yes"
+    ],
+    "aliases_no": [
+     "0",
+     "false",
+     "no",
+     "no visionos_major_announcement event occurs by 2026-06-12."
+    ]
+   },
+   "checks": [
+    {
+     "case": "known_yes",
+     "evaluator_ok": true,
+     "evaluator_out": {
+      "resolved": true,
+      "outcome": "YES",
+      "detail": {
+       "predicate": "__terminal_yes__"
+      }
+     },
+     "recovery_p": 1.0,
+     "mapping_ok": true
+    },
+    {
+     "case": "known_no",
+     "evaluator_ok": true,
+     "evaluator_out": {
+      "resolved": true,
+      "outcome": "NO",
+      "detail": {
+       "predicate": "__terminal_yes__"
+      }
+     },
+     "recovery_p": 0.0,
+     "mapping_ok": true
+    }
+   ],
+   "ok": true
+  },
+  "version": "lean_v2.readiness.v1"
+ },
+ "terminal_canonicalization": {
+  "needed": true,
+  "rewritten": [
+   {
+    "action_id": "include_in_keynote",
+    "old_key": "keynote_script_visionos",
+    "new_key": "__terminal_yes__"
+   },
+   {
+    "action_id": "issue_press_release",
+    "old_key": "newsroom_visionos",
+    "new_key": "__terminal_yes__"
+   },
+   {
+    "action_id": "omit_from_keynote",
+    "old_key": "keynote_script_visionos",
+    "new_key": "__terminal_yes__"
+   }
+  ],
+  "canonical_key": "__terminal_yes__"
+ },
+ "preflight": {
+  "verdict": "answerable",
+  "checks": [
+   {
+    "check": "terminal_predicate_exists",
+    "ok": true,
+    "note": "kind=event_occurs"
+   },
+   {
+    "check": "terminal_writer_exists",
+    "ok": true,
+    "note": "writers=['include_in_keynote', 'issue_press_release', 'omit_from_keynote']"
+   },
+   {
+    "check": "terminal_writer_instantiated",
+    "ok": true,
+    "note": "instantiated=['include_in_keynote', 'issue_press_release', 'omit_from_keynote'] of 3"
+   },
+   {
+    "check": "writer_inputs_producible",
+    "ok": true,
+    "note": "writer include_in_keynote reachable at 2026-06-01"
+   },
+   {
+    "check": "yes_path_exists",
+    "ok": true,
+    "note": "event_occurs: NO = censoring at horizon"
+   },
+   {
+    "check": "no_path_exists",
+    "ok": true,
+    "note": "event_occurs: NO = censoring at horizon"
+   },
+   {
+    "check": "outcome_mechanism_accepted",
+    "ok": true,
+    "note": "all terminal-writing effects are known mechanical kinds"
+   },
+   {
+    "check": "unresolved_recovery_pathway",
+    "ok": true,
+    "note": "forecast_recovery active; grounded_rates=0"
+   },
+   {
+    "check": "not_inevitably_unresolved",
+    "ok": true,
+    "note": "at least one resolving path exists"
+   }
+  ],
+  "blocking": [],
+  "probe": {},
+  "one_sided": ""
+ }
+}

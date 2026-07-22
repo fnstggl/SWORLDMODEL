@@ -1,0 +1,78 @@
+{
+ "grounded_prior": {
+  "p": 0.9,
+  "source": "counted_outcome_reference_class",
+  "n": 4,
+  "interval": [
+   0.6985,
+   1.0
+  ],
+  "provenance": {
+   "quantity": "BOJ raises short-term policy interest rate at June 15-16, 2026 meeting",
+   "hierarchy_level": "same_institution",
+   "numerator": 4,
+   "denominator": 4,
+   "fallback_reason": "more specific levels held 0 case(s) (< 4); pooled up to 'same_institution'"
+  }
+ },
+ "simulation_conditional": {
+  "p": 0.0385,
+  "resolved_mass": 1.0,
+  "interval": [
+   0.0,
+   0.0962
+  ],
+  "weight_sensitive": false,
+  "dependence_sensitive": false,
+  "provenance": {
+   "source": "deliberative_institution_vote",
+   "institution_type": "consensus_body",
+   "threshold": 5.0,
+   "total_seats": 5,
+   "convergence_band": [
+    0.0,
+    0.0962
+   ],
+   "law": "D7 faithful roster + D8 grounded initial positions + D14 convergence + seat-weighted absolute-threshold tally"
+  }
+ },
+ "combined": null,
+ "combined_interval": [
+  0.0385,
+  0.9
+ ],
+ "method": "combiner_unavailable_range_only",
+ "disagreement": 0.8615,
+ "sim_weight": null,
+ "prior_weight": null,
+ "fixed_blend_used": false,
+ "combiner_available": false,
+ "notes": [
+  "no leakage-audited reliability combiner is fitted \u2014 prior and simulation are reported separately with the feasible combined range; no fixed blend is applied and Lean V2 must not become default on this basis"
+ ],
+ "reliability_features": {
+  "prior_n": 4,
+  "prior_specificity": "same_institution",
+  "resolved_mass": 1.0,
+  "unknown_state_mass": 0.0,
+  "evidence_coverage": 0.3333333333333333,
+  "structural_sensitivity": false,
+  "weight_sensitive": false,
+  "dependence_sensitive": false,
+  "prior_sim_divergence": 0.8615,
+  "horizon_days": 0
+ },
+ "grounded_prior_probability": 0.9,
+ "simulation_conditional_probability": 0.0385,
+ "resolved_simulation_mass": 1.0,
+ "unresolved_mass_by_cause": {},
+ "simulation_probability_bounds": [
+  0.0,
+  0.5853
+ ],
+ "residual_bound": 0.58528,
+ "prior_forecast": 0.9,
+ "simulation_forecast": 0.0385,
+ "headline_forecast": 0.0385,
+ "headline_source": "deliberative_institution_vote"
+}

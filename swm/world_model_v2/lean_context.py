@@ -134,6 +134,17 @@ class DecisionRelevantContext:
     replicate_index: int = 0
     dependency_spec: dict = field(default_factory=dict)
     obstacle: str = ""                                     # revision-round context (perceived block)
+    #: D15 — the institution/deliberation process fields that MATERIALLY change the decision and
+    #: therefore MUST participate in the cache key. A different proposal, stage, decision rule,
+    #: visible tally, substantive message, or fact credibility is a DIFFERENT decision context and
+    #: must miss the cache — never a false hit reusing a stale reply.
+    proposal: str = ""
+    stage: str = ""
+    decision_rule: str = ""
+    visible_tally: dict = field(default_factory=dict)
+    substantive_messages: list = field(default_factory=list)
+    fact_credibility: dict = field(default_factory=dict)  # {fact_id: credibility}
+    deadline: str = ""
 
     def signature(self) -> str:
         raw = json.dumps(asdict(self), sort_keys=True, separators=(",", ":"), default=str)
@@ -149,7 +160,9 @@ _DIFF_FIELDS = ("actor_id", "actor_role", "authority", "cohort_id", "private_sta
                 "relationships", "institution_rules", "resources", "action_history",
                 "feasible_actions", "day", "public_facts_hash", "prior_decision",
                 "structural_frame_hash", "prompt_version", "backend_fingerprint",
-                "replicate_index", "obstacle", "schema_version")
+                "replicate_index", "obstacle", "schema_version",
+                "proposal", "stage", "decision_rule", "visible_tally", "substantive_messages",
+                "fact_credibility", "deadline")
 
 
 @dataclass

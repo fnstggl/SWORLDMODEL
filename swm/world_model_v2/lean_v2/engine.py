@@ -712,21 +712,25 @@ class WaveEngine:
         return norm((v or {}).get("action_if_state"), 60)
 
     def _force_terminal_vote(self, nd: WeightedWorldNode, actor_id: str, ob) -> bool:
-        """Coerce a required participant who is still not voting at a HARD deadline (no
-        procedurally-permitted non-substantive action) into a SUBSTANTIVE vote drawn from
-        their simulated state's implied action — the deadline forces the process to reach one
-        of its allowed terminal actions. Records the vote directly on the tally."""
+        """Deterministic PRECOMMITMENT fallback for a required participant still not voting at a
+        HARD deadline. It may use ONLY the actor's own simulated-state implied action
+        (`action_if_state`), normalized to a canonical option (D1). It must NEVER invent a vote
+        by picking the first/lowest option (D3): if the state's action does not map to a valid
+        option, the world is left as a labeled actor-decision failure (bounded), never a
+        fabricated choice. Returns True only when a grounded precommitment was recorded."""
+        from swm.world_model_v2.lean_v2.canonical_options import normalize_to_label
         allowed = self._member_vote_options(actor_id)
         if not allowed:
             return False
         action = self._variant_action(actor_id, nd.actor_variant.get(actor_id) or "")
-        al = action.lower()
-        option = next((o for o in sorted(allowed)
-                       if o.lower() in al or al in o.lower()), None) if action else None
+        option = normalize_to_label(action, sorted(allowed)) if action else None
         if option is None:
-            option = sorted(allowed)[0]         # deadline forces a choice; default lowest
+            # no grounded precommitment → NOT a fabricated vote; labeled failure, bounded
+            nd.unresolved_reason = f"actor_decision_failure:{actor_id}"
+            return False
         nd.institution_state.setdefault(ob.institution_id, {}).setdefault(
             "votes", {})[actor_id] = str(option)
+        nd.prior_decisions.setdefault(actor_id, {})["terminal_provenance"] = "precommitment"
         return True
 
     def _schedule_mandatory_terminal(self, nd: WeightedWorldNode, actor_id: str, day: str,
@@ -1064,14 +1068,23 @@ class WaveEngine:
                     nd.institution_state.setdefault(term_inst, {}).setdefault(
                         "votes", {})[ctx.actor_id] = f"__{terminal_kw}__"
                     return
-                # not permitted at the deadline → force a substantive option below
-            option = norm(dec.get("vote_option"), 40)
-            if option not in allowed_opts:
-                option = next((o for o in sorted(allowed_opts)
-                               if o in norm(chosen, 120).lower()
-                               or o in norm(dec.get("intended_effect"), 120).lower()), None)
-            if option is None and at_deadline:
-                option = sorted(allowed_opts)[0]     # deadline forces a choice; default lowest
+                # not permitted at the deadline → try to read a substantive option below
+            # D1: normalize the actor's own stated vote (handles `vote:`-prefix, casing,
+            # punctuation, aliases) — a valid cast is NEVER dropped on formatting. The cast is
+            # matched only against THIS actor's options; on ambiguity/unknown it stays None.
+            from swm.world_model_v2.lean_v2.canonical_options import normalize_to_label
+            option = normalize_to_label(dec.get("vote_option"), sorted(allowed_opts))
+            if option is None:
+                # fall back to the actor's OWN expressed intent (chosen / intended_effect),
+                # still via safe normalization — never a lexicographic default (D3)
+                for src in (chosen, dec.get("intended_effect")):
+                    option = normalize_to_label(src, sorted(allowed_opts))
+                    if option is not None:
+                        break
+            # D3: NO lexicographic/first-option default — a deadline never fabricates the
+            # lowest option. An unresolvable cast at the deadline is a labeled actor-decision
+            # failure (bounded), handled by the precommitment/absence ladder in
+            # _schedule_mandatory_terminal.
             if option is not None:
                 nd.institution_state.setdefault(term_inst, {}).setdefault(
                     "votes", {})[ctx.actor_id] = str(option)

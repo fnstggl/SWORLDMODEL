@@ -68,6 +68,11 @@ class ActorStateHypothesis:
     historical_case_refs: list = field(default_factory=list)
     distinguishing_observations: list = field(default_factory=list)
     action_if_state: str = ""
+    #: the canonical action this state tends toward (D2). A counted reference class may weight
+    #: this state ONLY when the class's own action_option_id is compatible with this tendency —
+    #: a "dissents-for-a-hike" class can never weight a state that tends to hold. Defaults to
+    #: action_if_state when not separately typed.
+    expected_action_tendency: str = ""
     reversal_capable: bool = False
     assumptions: list = field(default_factory=list)
     transition_triggers: list = field(default_factory=list)
@@ -76,6 +81,18 @@ class ActorStateHypothesis:
     eliminated: bool = False
     elimination_reason: str = ""
     is_unknown: bool = False
+    #: D9 — the actor's LATENT MINDSET (internal, freely hypothesized) kept SEPARATE from claimed
+    #: EXTERNAL EVENTS. `evidence_supported_observations` are external claims backed by a real fact;
+    #: `hypothetical_assumptions` are unsupported external claims carried as SIMULATED POSSIBILITY,
+    #: never handed to the actor as established reality.
+    latent_beliefs: list = field(default_factory=list)
+    latent_goals: list = field(default_factory=list)
+    latent_preferences: list = field(default_factory=list)
+    latent_risk_tolerance: str = ""
+    known_commitments: list = field(default_factory=list)
+    evidence_supported_observations: list = field(default_factory=list)
+    hypothetical_assumptions: list = field(default_factory=list)
+    mindset_separated: bool = False
 
     def as_dict(self) -> dict:
         return asdict(self)
@@ -128,6 +145,103 @@ def reject_numeric_state_weights(raw_state: dict) -> list:
     return rejected
 
 
+# ------------------------------------------------------------------ D9: mindset vs external events
+import re as _re  # noqa: E402
+
+#: an assertion that an EXTERNAL EVENT occurred (a communication/action by someone/something) —
+#: a claim about the world that, unless evidence-backed, must not be handed to the actor as fact
+_EXTERNAL_EVENT_MARKERS = _re.compile(
+    r"\b(received|sent|told|informed|met with|call(?:ed)? from|called on|phoned|threatened|"
+    r"promised|warned|leaked|memo|message from|deal|struck an agreement|signed|announced|"
+    r"instructed|ordered|demanded|offered|assured|briefed|contacted|pressured by|was asked|"
+    r"was pushed|handed|delivered|secret\w*|behind closed doors|backchannel|tipped off|"
+    r"urged|publicly|pressed|criticized|endorsed|opposed|rejected|blocked|resigned|appointed|"
+    r"nominated|vetoed|published|unveiled|filed|sued|fired|hired)\b", _re.I)
+
+#: framing that marks the sentence as the actor's OWN latent mindset (a belief ABOUT a possible
+#: event is fine to simulate; an assertion that the event happened is not)
+_LATENT_MARKERS = _re.compile(
+    r"\b(believ\w+|think\w*|want\w*|prefer\w*|fear\w*|worri\w+|hop\w+|intend\w*|inclin\w+|"
+    r"valu\w+|distrust\w*|trust\w*|feel\w*|expect\w*|suspect\w*|assum\w+|is (?:risk-averse|"
+    r"risk-tolerant|cautious|confident|hawkish|dovish|skeptical|reluctant|eager)|priorit\w+|"
+    r"committed to|goal|aim\w*)\b", _re.I)
+
+
+def classify_assertion(text: str) -> str:
+    """'latent' (the actor's mindset) vs 'external_event' (a claim the world did something). An
+    event framed as a belief/fear/expectation is LATENT; a bare assertion that the event occurred
+    is EXTERNAL and needs evidence. Deterministic, content-based, universal."""
+    t = str(text or "")
+    if not t.strip():
+        return "latent"
+    ext = bool(_EXTERNAL_EVENT_MARKERS.search(t))
+    lat = bool(_LATENT_MARKERS.search(t))
+    if ext and not lat:
+        return "external_event"          # asserts an occurrence with no belief-framing
+    return "latent"
+
+
+def _fact_supports(claim: str, evidence_store) -> bool:
+    if evidence_store is None:
+        return False
+    ck = norm_key(claim)
+    ctoks = [w for w in ck.split() if len(w) > 3]
+    if not ctoks:
+        return False
+    for f in getattr(evidence_store, "facts", []):
+        ftoks = set(norm_key(f.content).split())
+        if sum(1 for w in ctoks if w in ftoks) / len(ctoks) >= 0.6:
+            return True
+    return False
+
+
+def separate_mindset_from_events(h: "ActorStateHypothesis", *, evidence_store=None) -> dict:
+    """D9: split the actor's latent mindset from claimed external events. Latent statements
+    (beliefs/goals/preferences/risk tolerance) populate the `latent_*` fields freely. Each external
+    event claim is routed by support: an evidence-backed claim becomes an
+    `evidence_supported_observation`; an UNSUPPORTED claim becomes a `hypothetical_assumption`
+    (simulated possibility) and is removed from the belief stream so it is never rendered to the
+    actor as established fact. Returns a manifest of what moved and why."""
+    moved_supported, moved_hypothetical, kept_latent = [], [], []
+    # goals / stances are intrinsically latent
+    h.latent_goals = list(h.goals)
+    h.latent_preferences = [s for s in h.stances]
+    h.known_commitments = list(h.commitments)
+    # risk tolerance surfaced from stances/pressures if named
+    rt = ""
+    for s in list(h.stances) + [h.pressures]:
+        m = _re.search(r"risk-(averse|tolerant|neutral)|cautious|aggressive", str(s or ""), _re.I)
+        if m:
+            rt = m.group(0).lower()
+            break
+    h.latent_risk_tolerance = rt
+    # classify each belief-stream statement (beliefs + claim + pressures sentences)
+    stream = list(h.beliefs)
+    for extra in (h.claim, h.pressures):
+        for sent in _re.split(r"(?<=[.;])\s+", str(extra or "")):
+            if sent.strip():
+                stream.append(sent.strip())
+    for stmt in stream:
+        if classify_assertion(stmt) == "external_event":
+            if h.supporting_evidence_ids or _fact_supports(stmt, evidence_store):
+                h.evidence_supported_observations.append(stmt)
+                moved_supported.append(stmt)
+            else:
+                h.hypothetical_assumptions.append(f"[simulated possibility, unverified] {stmt}")
+                moved_hypothetical.append(stmt)
+        else:
+            h.latent_beliefs.append(stmt)
+            kept_latent.append(stmt)
+    # the belief stream the actor is shown is now ONLY latent mindset + supported observations;
+    # unsupported external events live in hypothetical_assumptions, never asserted as fact
+    h.beliefs = list(h.latent_beliefs)
+    h.mindset_separated = True
+    return {"actor_id": h.actor_id, "state_id": h.state_id,
+            "latent_beliefs": len(kept_latent), "supported_observations": moved_supported,
+            "unsupported_external_events_relabeled": moved_hypothetical,
+            "risk_tolerance": rt}
+
+
 # ------------------------------------------------------------------ hypothesis-set validation
 def validate_hypothesis_set(actor_id: str, hyps: list, *, institution_rules: list,
                             hard_evidence_ids: set) -> dict:
@@ -171,6 +285,36 @@ def _behavioral_signature(h: ActorStateHypothesis) -> str:
     return hashlib.sha256("\x00".join(t for t in toks if t).encode()).hexdigest()[:16]
 
 
+def _reference_class_action_conflict(tbl: dict, state, feasible_options) -> str:
+    """D2: return a non-empty reason string when the counted class's action is INCOMPATIBLE
+    with the state's action tendency, else "". Compatibility is decided by TYPED canonical
+    options, never by lexical prose overlap: the class's declared `action_option_id` and the
+    state's `expected_action_tendency` (or `action_if_state`) are each normalized to a canonical
+    option among the actor's feasible options; if both resolve and DIFFER, it is a conflict. If
+    either side does not declare a typed action, no conflict is asserted (the match proceeds on
+    the existing counted logic — this guard only ever REJECTS a proven direction inversion)."""
+    class_action = (tbl.get("action_option_id") or "").strip()
+    state_action = (getattr(state, "expected_action_tendency", "")
+                    or getattr(state, "action_if_state", "")).strip()
+    if not class_action or not state_action:
+        return ""
+    opts = list(feasible_options or [])
+    if opts:
+        from swm.world_model_v2.lean_v2.canonical_options import normalize_option
+        c = normalize_option(class_action, opts)
+        s = normalize_option(state_action, opts)
+        if c is not None and s is not None and c.canonical_option_id != s.canonical_option_id:
+            return (f"class action '{class_action}' -> {c.canonical_option_id} conflicts with "
+                    f"state tendency '{state_action}' -> {s.canonical_option_id}")
+        return ""
+    # no feasible-option list: fall back to a direct normalized-string comparison
+    if norm_key(class_action) and norm_key(state_action) \
+            and norm_key(class_action) != norm_key(state_action):
+        return (f"class action '{class_action}' conflicts with state tendency "
+                f"'{state_action}' (no option set to reconcile)")
+    return ""
+
+
 # ------------------------------------------------------------------ the posterior engine
 class ActorStatePosteriorEngine:
     """Turns counted reference classes + validated hypotheses into weighted states — the ONLY
@@ -209,7 +353,7 @@ class ActorStatePosteriorEngine:
 
     # -- per-actor state weights (counted, conditional on a shared world) -----------------
     def weight_actor_states(self, actor_id: str, hyps: list, *,
-                            shared_world: dict = None) -> tuple:
+                            shared_world: dict = None, feasible_options: list = None) -> tuple:
         """Returns ([ActorStatePosteriorRange...], bounded_residual, provenance). Weights are
         the normalized counted reference-class rates of the SURVIVING states and always sum to
         1 — the represented states carry the full branch mass. The second element is the
@@ -237,41 +381,43 @@ class ActorStatePosteriorEngine:
                     best, best_ov = h, ov
             if best is None or best_ov < 1:
                 continue
+            # D2: a counted class may weight a state ONLY when their action semantics AGREE.
+            # If the class declares the option it counts (action_option_id) and the state
+            # declares its expected action tendency, and those resolve to DIFFERENT canonical
+            # options, REJECT the match — never assign a pro-hike rate to a hold state.
+            conflict = _reference_class_action_conflict(tbl, best, feasible_options)
+            if conflict:
+                self.provenance_log.append({"actor_id": actor_id, "rejected_class": tbl.get("key"),
+                                            "state": best.state_id, "reason": conflict})
+                claimed.add(best.state_id)      # do not let another class silently re-bind it
+                continue
             rate = (tbl.get("provenance") or {}).get("rate_mean")
             n = (tbl.get("provenance") or {}).get("denominator") or 0
             if rate is None or n <= 0:
                 continue
-            w = rate
-            if shared_world and best.aligned_condition:
-                for cid, want in best.aligned_condition.items():
-                    have = (shared_world or {}).get(cid)
-                    if have is not None and norm_key(have) != norm_key(want):
-                        w = w * (1 - n / (n + 1.0))
-            matched[best.state_id] = w
+            # the counted rate is the class's coverage signal (feeds the residual and seeds the
+            # action baseline). Conditioning on the shared world is applied INSIDE the action
+            # baseline via typed state<->condition alignment, not by an ad-hoc downweight here.
+            matched[best.state_id] = rate
             intervals[best.state_id] = tbl.get("interval") or (0.0, 1.0)
             provs[best.state_id] = {"source": "counted_reference_class", "key": tbl.get("key"),
                                     "rate": rate, "n": n, "interval": intervals[best.state_id],
                                     "hierarchy_level": (tbl.get("provenance") or {})
                                     .get("hierarchy_level")}
             claimed.add(best.state_id)
-        # unmatched states share the RESIDUAL of the counted rates — a grounded complement
-        # (the counted classes cover the matched outcomes; what's left is the complementary
-        # probability of the remaining modeled states), never a label-derived number
         matched_sum = sum(matched.values())
         unmatched = [h.state_id for h in survivors if h.state_id not in matched]
-        residual = max(0.0, 1.0 - matched_sum)
-        raw_weights = dict(matched)
-        if unmatched:
-            share = residual / len(unmatched)
-            for sid in unmatched:
-                raw_weights[sid] = share
-                intervals[sid] = (0.0, min(1.0, residual))
-                provs[sid] = {"source": "counted_complement",
-                              "note": "complement of the counted matched rates (1 - "
-                                      f"{matched_sum:.3f}) shared among {len(unmatched)} "
-                                      "unmatched modeled state(s) — grounded, not a label"}
+        residual = max(0.0, 1.0 - matched_sum)      # for the bounded coverage residual only
         n_counted = len(matched)
         reversal = any(h.reversal_capable for h in survivors)
+        # D8: allocate mass to ACTION TENDENCIES first, from a counted, hierarchically
+        # partial-pooled baseline over the actor's feasible action classes — NEVER the number
+        # of prose stories, NEVER residual/len(states). States that share a tendency split only
+        # that tendency's total (trajectory/sensitivity), so story count cannot move the
+        # forecast. The old equal split is gone; the residual below is a SEPARATE coverage bound.
+        raw_weights = self._allocate_by_action_class(
+            actor_id, survivors, matched, intervals, provs,
+            shared_world=shared_world, feasible_options=feasible_options)
         # THE COMPLETENESS LAW: the represented states normalize to the FULL branch mass.
         # The residual is the COUNTED under-summing only (matched counted rates that leave
         # probability no represented state holds), capped — an interval-widening bound at
@@ -319,6 +465,112 @@ class ActorStatePosteriorEngine:
                                       "matched_sum": round(matched_sum, 4),
                                       "law": "represented states normalize to 1; residual is "
                                              "a bounded interval-widener, never branch mass"}
+
+    # -- D8: action-tendency-first allocation ---------------------------------------------
+    @staticmethod
+    def _action_class_of(h: ActorStateHypothesis, feasible_options) -> str:
+        """The canonical ACTION CLASS this state tends toward. Prefer the typed
+        `expected_action_tendency`, else `action_if_state`; canonicalize to one of the actor's
+        feasible options when a set is given so states that mean the same vote share a class.
+        A state with no tendency is its own singleton class (weighted as a distinct action)."""
+        tend = (getattr(h, "expected_action_tendency", "")
+                or getattr(h, "action_if_state", "")).strip()
+        if feasible_options and tend:
+            from swm.world_model_v2.lean_v2.canonical_options import normalize_option
+            c = normalize_option(tend, list(feasible_options))
+            if c is not None:
+                return c.canonical_option_id
+        if tend:
+            return norm_key(tend)
+        return f"__state__{h.state_id}"
+
+    def _allocate_by_action_class(self, actor_id, survivors, matched, intervals, provs, *,
+                                  shared_world=None, feasible_options=None) -> dict:
+        """Group survivors by action class, build a counted partial-pooled `ActorActionBaseline`
+        over those classes (conditional on the shared world via typed alignment), give each class
+        its baseline mass, and split a class's mass among its states (proportional to their
+        counted rate, else equally within the tendency). Returns {state_id: weight} summing to 1.
+        The within-class split never changes a class total — so story count cannot move the
+        forecast. Provenance is recorded for states the counted matcher did not already claim."""
+        from swm.world_model_v2.lean_v2.action_baseline import ActionCase, build_action_baseline
+        cls_of = {h.state_id: self._action_class_of(h, feasible_options) for h in survivors}
+        classes: list = []
+        for h in survivors:
+            if cls_of[h.state_id] not in classes:
+                classes.append(cls_of[h.state_id])
+        rep_state = {}                              # one representative state per action class
+        for h in survivors:
+            rep_state.setdefault(cls_of[h.state_id], h)
+        # which counted class matched which state in the token matcher (for the untyped path)
+        key_to_state = {provs[s].get("key"): s for s in matched if provs.get(s, {}).get("key")}
+        # DIRECT counted evidence per action class — typed (`action_option_id`) FIRST so a
+        # counted rate reaches its action class without depending on prose token overlap; else
+        # the class the token matcher bound it to. This is the robust seed for the baseline.
+        direct: dict = {}
+        for tbl in self.actor_classes.get(actor_id, []):
+            prov = tbl.get("provenance") or {}
+            den = prov.get("denominator") or 0
+            rate = prov.get("rate_mean")
+            if den <= 0 or rate is None:
+                continue
+            # RAW counts (numerator / denominator), so the baseline's single Jeffreys prior
+            # reproduces the counted beta-binomial rate rather than shrinking it a second time
+            num = prov.get("numerator")
+            num = round(float(rate) * den) if num is None else num
+            num = max(0, min(int(den), int(num)))
+            aoi = str(tbl.get("action_option_id") or "").strip()
+            ac = None
+            if aoi:
+                ac = self._action_class_of(
+                    ActorStateHypothesis(actor_id=actor_id, state_id="_",
+                                         action_if_state=aoi), feasible_options)
+            elif tbl.get("key") in key_to_state:
+                ac = cls_of.get(key_to_state[tbl["key"]])
+            if ac is None or ac not in classes:
+                continue
+            lvl = prov.get("hierarchy_level") or "broad_human_decision_class"
+            ctx = dict(getattr(rep_state.get(ac), "aligned_condition", {}) or {})
+            direct.setdefault(ac, []).append((int(num), int(den), lvl, ctx))
+        cases: list = []
+        for ac, evs in direct.items():
+            for num, den, lvl, ctx in evs:
+                cases.append(ActionCase(ac, lvl, ctx, weight=float(num)))   # raw positive count
+        # binary complement: when exactly two action classes and only ONE carries direct counted
+        # evidence, the other inherits the complement (denominator - numerator) — "the rest chose
+        # the other option". With both (or neither) counted, each class stands on its own count.
+        if len(classes) == 2:
+            with_ev = [c for c in classes if direct.get(c)]
+            without = [c for c in classes if not direct.get(c)]
+            if len(with_ev) == 1 and len(without) == 1:
+                for num, den, lvl, ctx in direct[with_ev[0]]:
+                    cases.append(ActionCase(without[0], lvl, ctx, weight=float(den - num)))
+        baseline = build_action_baseline(actor_id, "actor_decision", classes, cases,
+                                         condition_state=shared_world or {})
+        by_class: dict = {}
+        for h in survivors:
+            by_class.setdefault(cls_of[h.state_id], []).append(h)
+        raw: dict = {}
+        for ac, members in by_class.items():
+            cmass = baseline.mass(ac)
+            wr = {m.state_id: (matched.get(m.state_id) or 0.0) for m in members}
+            tot = sum(wr.values())
+            for m in members:
+                within = (wr[m.state_id] / tot) if tot > 0 else (1.0 / len(members))
+                raw[m.state_id] = cmass * within
+                if m.state_id not in matched:      # the counted matcher already set matched provs
+                    ci = baseline.interval(ac)
+                    intervals[m.state_id] = (round(ci[0] * within, 4), round(ci[1] * within, 4))
+                    provs[m.state_id] = {
+                        "source": ("action_baseline_disclosed_uniform" if baseline.disclosed_uniform
+                                   else "action_baseline_counted"),
+                        "action_class": ac, "class_mass": round(cmass, 4),
+                        "within_class_share": round(within, 4),
+                        "levels_used": baseline.levels_used,
+                        "note": "mass allocated to the action tendency (D8), never story count"}
+        z = sum(raw.values()) or 1.0
+        self._last_action_baselines = getattr(self, "_last_action_baselines", {})
+        self._last_action_baselines[actor_id] = baseline.as_dict()
+        return {k: v / z for k, v in raw.items()}
 
     def _match_class(self, h: ActorStateHypothesis, classes: dict) -> dict | None:
         if h.reference_class_key and h.reference_class_key in classes:

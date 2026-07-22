@@ -164,6 +164,15 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
     lean_v2_prov["grounding"] = grounding
     lean_v2_prov["weight_invariant"] = _assert_no_label_weights(grounding)
 
+    # ---------------- 6b-bis. CANONICAL FACT STORE (D11) --------------------------------
+    # the information that actually exists in the world — real content, provenance, credibility
+    # and visibility — built from the counted grounding + grounded rates, leakage-guarded at
+    # as_of. Actor knowledge packets (D13) render facts from here instead of a blind truncation.
+    from swm.world_model_v2.lean_v2.evidence_store import build_evidence_store
+    evidence_store = ckpt.run_stage("evidence_store", lambda: build_evidence_store(
+        bp, grounding, as_of=as_of, evidence_text=evidence_text))
+    lean_v2_prov["evidence_store"] = evidence_store.manifest()
+
     # ---------------- 6c. STATE GENERATION (no numbers) + counted posteriors ------------
     shared_cids = list((grounding.get("shared_world_conditions") or {}).keys())
     states_by_actor, state_rejections, state_meta = ckpt.run_stage(
@@ -196,9 +205,36 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
     lean_v2_prov["state_recovery"] = completeness.manifest()
 
     posterior_engine = ActorStatePosteriorEngine(grounding)
+    # ---------------- 6c-bis. SHARED CONDITION GRAPH (D12) ------------------------------
+    # correlated actors share a latent cause and are enumerated THROUGH it (never independently
+    # multiplied); dependencies/exclusivity give the true joint worlds; the low-probability tail
+    # is PRESERVED as a bounded interval widener instead of being pruned and renormalized to zero.
+    from swm.world_model_v2.lean_v2.shared_conditions import build_shared_condition_graph
+    _scg = build_shared_condition_graph(posterior_engine, grounding)
+    _jw = _scg.joint_worlds()
+    lean_v2_prov["shared_condition_graph"] = _scg.manifest()
+    lean_v2_prov["preserved_tail_mass"] = _jw["tail_mass"]
     validated, grounded_weights, gw_by_combo, shared_combos, state_prov = \
         _build_grounded_weights(bp, states_by_actor, posterior_engine, grounding,
-                                hard_evidence_ids)
+                                hard_evidence_ids, shared_world_combos=_jw["worlds"])
+    # ---------------- 6d-bis. D9: split latent mindset from unobserved external events ------
+    # before any state reaches an actor, separate the actor's LATENT mindset from claimed
+    # EXTERNAL events; an unsupported external claim (a secret memo, a private threat) is
+    # relabeled a simulated possibility and removed from the belief stream, never asserted as fact.
+    from swm.world_model_v2.lean_v2.states import separate_mindset_from_events
+    _mindset_manifest = []
+    for _aid, _hs in validated.items():
+        for _h in _hs:
+            if not getattr(_h, "mindset_separated", False):
+                rec = separate_mindset_from_events(_h, evidence_store=evidence_store)
+                if rec.get("unsupported_external_events_relabeled"):
+                    _mindset_manifest.append(rec)
+        # refresh the installed blueprint variants so the relabeled beliefs are what actors see
+        _a = bp.actor_by_id(_aid)
+        if _a is not None and _hs:
+            _a["private_state_variants"] = [h.to_variant() for h in _hs]
+    lean_v2_prov["mindset_separation"] = {"states_relabeled": len(_mindset_manifest),
+                                          "detail": _mindset_manifest[:20]}
     lean_v2_prov["actor_states"] = {aid: [h.as_dict() for h in hs]
                                     for aid, hs in validated.items()}
     lean_v2_prov["state_posteriors"] = state_prov
@@ -212,6 +248,45 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
                                  lambda: build_obligations(bp, grounding))
     lean_v2_prov["obligations"] = {k: o.as_dict() for k, o in obligations.items()}
     map_combo = shared_combos[0][0] if shared_combos else {}
+
+    # ---------------- 6d-ter. ACTOR KNOWLEDGE PACKETS (D13) -----------------------------
+    # what each consequential actor actually KNOWS — real facts (D11), own latent mindset (D9),
+    # the world that affects them (D12) — assembled with hard leakage guards (no other actor's
+    # private state, no future, no secret ballot). This is the auditable knowledge each actor
+    # reasons from instead of labels/hashes.
+    from swm.world_model_v2.lean_v2.knowledge_packet import build_knowledge_packet
+    from swm.world_model_v2.lean_v2.state_completeness import feasible_options_for
+    _roles_map = {a["id"]: a.get("role", "") for a in bp.actors}
+    _inst_map: dict = {}
+    for _inst in bp.institutions:
+        for _m in _inst.get("members") or []:
+            _inst_map.setdefault(_m, []).append(_inst.get("id"))
+    _packets: dict = {}
+    for _aid in consequential:
+        _a = bp.actor_by_id(_aid) or {"id": _aid}
+        _st = (validated.get(_aid) or [None])[0]
+        _packets[_aid] = build_knowledge_packet(
+            _a, evidence_store=evidence_store, state=_st, shared_world=map_combo, day=as_of,
+            roles=_roles_map, institutions=_inst_map,
+            feasible_actions=feasible_options_for(bp, _aid)).as_dict()
+    lean_v2_prov["knowledge_packets"] = {
+        "n": len(_packets), "actors": sorted(_packets),
+        "leakage_flags": {a: p["leakage_flags"] for a, p in _packets.items() if p["leakage_flags"]},
+        "sample": next(iter(_packets.values()), None)}
+
+    # ---------------- 6e-bis. DELIBERATIVE INSTITUTION-VOTE RESOLUTION (D7 + D8 + D14) ------
+    # An institution vote is resolved by a deliberative sub-simulation over the FAITHFUL roster
+    # (D7) with grounded initial positions (D8) and grounded convergence (D14), tallied
+    # seat-weighted against the REAL threshold — never by counting independent per-member votes
+    # against a rescaled threshold. This becomes the simulation-conditional forecast for
+    # institution_vote terminals; the wave engine still runs for dynamics and audit.
+    inst_terminal = None
+    if str(bp.terminal.get("kind") or "") == "institution_vote":
+        inst_terminal = ckpt.run_stage(
+            "deliberative_institution_vote",
+            lambda: _resolve_institution_vote_terminal(
+                bp, question, evidence_text, grounding, validated, gw_by_combo, shared_combos))
+        lean_v2_prov["institution_terminal"] = inst_terminal
 
     # ---------------- 6e. MISSING-MECHANISM RECOVERY (predicate terminals) --------------
     # a numeric-threshold terminal with no mechanical writer gets the 5-attempt bridge
@@ -234,6 +309,35 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
                 as_of=as_of, gateway=gateway, cache=cache, budget_ledger=ledger,
                 world_condition_keys=shared_cids))
     lean_v2_prov["mechanism_recovery"] = mech_manifest
+    # ---------------- 6e-ter. DIMENSIONAL OUTCOME MECHANISM CHECK (D16) -----------------
+    # a recovered numeric mechanism must produce the EXACT variable+unit the question requires;
+    # a votes/count/rate/level terminal is never scored by a mechanism of another dimension and a
+    # numeric terminal is never collapsed to a boolean.
+    if mechanism:
+        from swm.world_model_v2.lean_v2.outcome_mechanism import dimensional_check_mechanism
+        from swm.world_model_v2.lean_v2.resolution_spec import parse_resolution
+        _rspec = parse_resolution(bp.resolution.get("interpretation")
+                                  or bp.resolution.get("yes_means") or "", question=question)
+        lean_v2_prov["outcome_mechanism_dimensions"] = dimensional_check_mechanism(mechanism, _rspec)
+
+    # ---------------- 6e-quater. STRUCTURAL-FIDELITY READINESS GATE (D17) ---------------
+    # readiness is not 'the machine can run' but 'the world it runs IS faithful': aggregate the
+    # fidelity verdicts of the resolution (D5), institution representation (D7), evidence (D11),
+    # behavior grounding (D8), and outcome mechanism (D16). An impossible institution is never
+    # made ready by rescaling its real threshold.
+    from swm.world_model_v2.lean_v2.readiness import assess_structural_fidelity
+    from swm.world_model_v2.lean_v2.resolution_spec import parse_resolution as _parse_res
+    _fid_rspec = _parse_res(bp.resolution.get("interpretation")
+                            or bp.resolution.get("yes_means") or "", question=question)
+    _fid_rep = None
+    if str(bp.terminal.get("kind") or "") == "institution_vote":
+        from swm.world_model_v2.lean_v2.representation import ensure_faithful_representation
+        _fid_rep = ensure_faithful_representation(bp, _fid_rspec, evidence_text=evidence_text,
+                                                  grounding=grounding)
+    lean_v2_prov["structural_fidelity"] = assess_structural_fidelity(
+        bp, resolution_spec=_fid_rspec, representation=_fid_rep, evidence_store=evidence_store,
+        mechanism_dim=lean_v2_prov.get("outcome_mechanism_dimensions"),
+        grounding=grounding).as_dict()
 
     # ---------------- 7. three-valued answerability preflight ---------------------------
     pre = ckpt.run_stage("answerability_preflight", lambda: run_preflight(
@@ -394,7 +498,8 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
     # ---------------- 11. terminal projection + calibrated combination -------------------
     res = ckpt.run_stage("terminal_projection", lambda: _assemble_result(
         question, bp, eng, challenger_engine, unresolved_share, evidence_text,
-        grounding=grounding, obligations=obligations, lean_v2_prov=lean_v2_prov))
+        grounding=grounding, obligations=obligations, lean_v2_prov=lean_v2_prov,
+        inst_terminal=inst_terminal))
     lean_v2_prov["consequences"] = consequences_manifest(executor)
     finished = _finish(res)
     # ---------------- 12. full traces + human report ------------------------------------
@@ -596,10 +701,12 @@ def _shared_combos(posterior_engine, cap: int = 6) -> list:
 
 
 def _build_grounded_weights(bp, states_by_actor, posterior_engine, grounding,
-                            hard_evidence_ids, *, install_variants: bool = True):
+                            hard_evidence_ids, *, install_variants: bool = True,
+                            shared_world_combos: list = None):
     """Validate hypotheses, install them as blueprint variants, and compute COUNTED per-actor
     weights for the MAP combo and every shared-world combo. Returns
-    (validated, grounded_weights, gw_by_combo, shared_combos, provenance)."""
+    (validated, grounded_weights, gw_by_combo, shared_combos, provenance). `shared_world_combos`,
+    when supplied by the D12 graph, replaces the independent-product enumeration (tail preserved)."""
     validated: dict = {}
     for aid, hyps in states_by_actor.items():
         inst_rules = [i for i in bp.institutions if aid in (i.get("members") or [])]
@@ -612,15 +719,19 @@ def _build_grounded_weights(bp, states_by_actor, posterior_engine, grounding,
             if aid in validated and validated[aid]:
                 a["private_state_variants"] = [h.to_variant() for h in validated[aid]]
 
-    shared_combos = _shared_combos(posterior_engine)
+    shared_combos = shared_world_combos if shared_world_combos else _shared_combos(posterior_engine)
     gw_by_combo: dict = {}
     provenance: dict = {}
     for combo, _w in shared_combos:
         ck = __import__("json").dumps(combo, sort_keys=True)
         table = {}
         for aid, hyps in validated.items():
+            # D2: pass the actor's feasible canonical options so a counted class can only
+            # weight a state whose action tendency agrees with the class's counted action
+            from swm.world_model_v2.lean_v2.state_completeness import feasible_options_for
             rows, unknown, prov = posterior_engine.weight_actor_states(
-                aid, hyps, shared_world=combo)
+                aid, hyps, shared_world=combo,
+                feasible_options=feasible_options_for(bp, aid))
             table[aid] = {"mid": {r.state_id: r.mid for r in rows},
                           "rng": {r.state_id: (r.lo, r.mid, r.hi) for r in rows},
                           "unknown": unknown, "prov": prov}
@@ -681,8 +792,40 @@ def _build_unresolved_ledger(eng) -> UnresolvedLedger:
     return led
 
 
+def _resolve_institution_vote_terminal(bp, question, evidence_text, grounding, validated,
+                                       gw_by_combo, shared_combos) -> dict:
+    """Compose D7 (faithful representation) + D8 (grounded initial positions) + D14 (deliberative
+    convergence + seat-weighted tally) into the institution-vote forecast. Returns the deliberative
+    resolution dict (or a withheld marker when the faithful representation is not ready)."""
+    from swm.world_model_v2.lean_v2.resolution_spec import INSTITUTION_VOTE, parse_resolution
+    from swm.world_model_v2.lean_v2.representation import ensure_faithful_representation
+    from swm.world_model_v2.lean_v2.institution_terminal import resolve_institution_terminal
+    from swm.world_model_v2.lean_v2.state_completeness import feasible_options_for
+    rspec = parse_resolution(
+        bp.resolution.get("interpretation") or bp.resolution.get("yes_means") or "",
+        question=question, terminal_kind_hint=INSTITUTION_VOTE)
+    rep = ensure_faithful_representation(bp, rspec, evidence_text=evidence_text,
+                                         grounding=grounding)
+    if rep.verdict == "not_ready":
+        return {"p_yes": None, "verdict": rep.verdict, "representation": rep.as_dict(),
+                "note": "faithful representation not ready — deliberative resolution withheld"}
+    feas = {}
+    for u in rep.voter_units():
+        for aid in list(getattr(u, "member_ids", None) or []) + [u.unit_id]:
+            if bp.actor_by_id(aid):
+                feas[aid] = feasible_options_for(bp, aid)
+                break
+    target = rep.target_option or str((bp.terminal.get("rule_params") or {}).get("option") or "")
+    out = resolve_institution_terminal(
+        bp, rep, grounding, states_by_actor=validated, gw_by_combo=gw_by_combo,
+        shared_combos=shared_combos, feasible_options_by_actor=feas, target_option=target)
+    out["representation"] = rep.as_dict()
+    out["verdict"] = rep.verdict
+    return out
+
+
 def _assemble_result(question, bp, eng, ch_eng, unresolved_share, evidence_text, *,
-                     grounding, obligations, lean_v2_prov) -> SimulationResult:
+                     grounding, obligations, lean_v2_prov, inst_terminal=None) -> SimulationResult:
     dist = eng.distribution()
     options = eng.options or ["YES", "NO"]
     led = _build_unresolved_ledger(eng)
@@ -708,6 +851,32 @@ def _assemble_result(question, bp, eng, ch_eng, unresolved_share, evidence_text,
         provenance={"yes_mass": round(eng.yes_mass, 4), "no_mass": round(eng.no_mass, 4),
                     "dependence_range": (list(eng.dependence_range)
                                          if eng.dependence_range else None)})
+
+    # ---- D7+D8+D14: an INSTITUTION VOTE is resolved by the deliberative sub-simulation over the
+    # faithful roster and the REAL threshold — that IS the simulation-conditional forecast, and it
+    # resolves fully (a probability), so it also sets the resolved distribution. The independent
+    # per-node vote count no longer drives the institution answer.
+    inst_p = (inst_terminal or {}).get("p_yes")
+    inst_override = bp.terminal.get("kind") == "institution_vote" and inst_p is not None
+    if inst_override:
+        band = (inst_terminal or {}).get("band")
+        yes_lab = str(options[0]) if options else "YES"
+        no_lab = str(options[1]) if len(options) > 1 else "NO"
+        dist = {yes_lab: round(inst_p, 4), no_lab: round(1.0 - inst_p, 4)}
+        resolved_mass = 1.0
+        genuine_share, status = 0.0, "completed"
+        sim = SimulationConditionalForecast(
+            p=round(inst_p, 4), resolved_mass=1.0,
+            interval=(band[0], band[1]) if band else None,
+            weight_sensitive=bool(band and band[0] < 0.5 < band[1]),
+            dependence_sensitive=bool(band and (band[1] - band[0]) > DISAGREEMENT_SPREAD),
+            provenance={"source": "deliberative_institution_vote",
+                        "institution_type": inst_terminal.get("institution_type"),
+                        "threshold": inst_terminal.get("threshold"),
+                        "total_seats": inst_terminal.get("total_seats"),
+                        "convergence_band": band,
+                        "law": "D7 faithful roster + D8 grounded initial positions + D14 "
+                               "convergence + seat-weighted absolute-threshold tally"})
     # material structural disagreement keeps BOTH models visible; the challenger becomes a
     # second simulation input (never hidden), reported separately
     structural_sensitivity = False
@@ -782,7 +951,12 @@ def _assemble_result(question, bp, eng, ch_eng, unresolved_share, evidence_text,
     #     never a fixed blend, the same principled mechanism both other profiles use. The
     #     simulation forecast is preserved (it drives the resolved share); the prior is a
     #     separate, disclosed input for the unresolved share — never a wholesale replacement.
-    if combo_report.combined is not None:
+    if inst_override:
+        # the deliberative institution vote fully resolves the terminal — it IS the headline,
+        # not a wave-mass blend and not a combiner output (there is no unresolved mass to hand
+        # to the prior; the faithful roster + real threshold already produced P(YES))
+        headline, source = round(inst_p, 4), "deliberative_institution_vote"
+    elif combo_report.combined is not None:
         headline, source = combo_report.combined, "combined_calibrated"
     elif sim.p is not None or prior.p is not None:
         rec = recover_forecast(
