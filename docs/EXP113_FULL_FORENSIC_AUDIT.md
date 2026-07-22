@@ -97,18 +97,31 @@ candidates) is necessary for either to be answerable correctly.
 
 ### Defect 3 — Terminal predicate does not encode the question's numeric bar; the numeric bridge is missing (Hormuz)
 
-Hormuz asks whether daily tanker transits cross a specific numeric threshold. The blueprint's
-terminal is a **qualitative event/disruption predicate**, not the numeric daily-transit count,
-so an actor action that writes a "disruption occurred" / "some tankers transit" style flag
-satisfies YES on 0.667 of the mass even though the question requires a specific daily count. The
-missing-mechanism ladder tried to build a bounded numeric bridge and **correctly reported it
-could not** — `failure_proof: "the resolution criterion carries no parseable numeric threshold
-— a bounded numeric mechanism is not the right bridge for this terminal"` — leaving 0.333 as
-honest `missing_mechanism` mass. The bridge that is absent: `actor decisions (blockade
-effectiveness, escort capacity, insurance, routing) → a daily tanker-transit COUNT → compare to
-the numeric threshold`. Because the terminal fired YES on a qualitative flag, the simulation
-predicted 1.0 (disruption) where the outcome was 0 (NO). (Per-question detail and the exact
-predicate are in the Hormuz forensic report.)
+Hormuz asks whether daily tanker transits cross a numeric bar (≥ 50 transits on one day, stated
+four times in the resolution). The forensic reconstruction shows the blueprint's `yes_when`
+*did* encode it (`daily_transit_count >= 50`, `threshold "50"`) — but two failures downstream
+turned the executable terminal into a **qualitative OR of de-escalation events**, not a count
+comparison:
+
+1. **`terminal_canonicalization` over-reached.** The canonicalization step (a genuine keeper for
+   boolean *event* terminals — it is what saved visionOS) rewrote three actions' write-keys all
+   to the single boolean `__terminal_yes__`, collapsing the numeric predicate into an OR. So
+   `us_lift_blockade` writing `__terminal_yes__ = "lifted"` (a precondition, not 50 crossings)
+   satisfied YES on 0.333 of mass, and `tanker_operators_transit` wrote `__terminal_yes__ = ">=50"`
+   as a **hard-coded string literal** — an asserted verdict, not a measured count — on another
+   0.333. No action ever wrote an integer transit count.
+2. **The threshold parser failed to extract "50"** from the resolution prose (the number is
+   present but not behind an "at least / or more" trigger the regex recognises), so the
+   missing-mechanism ladder returned `threshold: null` and `failure_proof: "the resolution
+   criterion carries no parseable numeric threshold"`. Combined with evidence that carried no
+   pre-as_of transit-count series, the ladder honestly built nothing and left 0.333 as
+   `missing_mechanism`.
+
+The bridge that is absent: `actor decisions (blockade effectiveness, escort capacity, insurance,
+routing) → an integer daily tanker-transit COUNT → compare to 50`. Because the terminal fired YES
+on a boolean flag, the simulation predicted 1.0 (disruption) where the outcome was 0 (NO). A
+correct numeric mechanism would move the resolved mass heavily toward NO (the window opened at
+~7 ships / 0 tankers with a persistent blockade in most worlds).
 
 **Mass affected:** the 0.667 resolved-YES mass is spurious; the 0.333 was honestly unresolved.
 
@@ -120,6 +133,9 @@ predicate are in the Hormuz forensic report.)
 - **Terminal-writer canonicalization + synthetic round-trip** — every round-trip passes; the
   visionOS class of bug (a completed simulation discarded on a YES-label mismatch) is dead. On
   visionOS the resolved simulation (0.75 at P=1.0) was *kept* and improved the forecast.
+  **Caveat (see Defect 3):** canonicalization is correct for boolean *event* terminals but must
+  **skip numeric-threshold predicates** — on Hormuz it collapsed a `daily_transit_count >= 50`
+  predicate into a boolean OR, which is a large part of that question's failure.
 - **Mass conservation** — weights sum to 1.0 within rounding across up to 1 458 nodes on every
   question; terminal groups reconcile exactly to the simulation-only probability.
 - **Missing-mechanism honesty** — where no numeric bridge could be built (Hormuz 0.333,
@@ -134,6 +150,42 @@ predicate are in the Hormuz forensic report.)
   forced votes — see §5.)
 - **visionOS end-to-end** — small faithful roster + event-style terminal + coherent actor
   decisions produced the one correct, prior-beating forecast. This is the shape to generalize.
+
+## 4b. Secondary implementation bugs (concrete, narrow, fixable — distinct from the three architectural defects)
+
+The per-question reconstructions surfaced four specific bugs that amplified the defects above.
+Each is small and independently fixable, and each moves a wrong forecast materially:
+
+- **State-weighting inversion (BoJ).** The `ActorStatePosteriorEngine` attached the counted
+  reference class "dissents-for-hike ≈ 0.75" to a *Maintain* (dovish) state for each of the three
+  real April hawks — pinning a pro-hike counted rate onto an anti-hike state, inverting the
+  dissenters. This is a class→state matching error (the counted class was bound to the
+  semantically opposite hypothesis). It is a large part of why BoJ's hawks read dovish.
+- **Forced-vote label-prefix drop (BoJ).** At the hard-deadline closure, Ueda's cast came back as
+  `"vote:Raise to 1.0%"` — carrying the `vote:` menu prefix from the terminal-action set — which
+  the terminal's option matcher never stripped, so his Raise was dropped and he contributed 0
+  Raise across ~62% of nodes. A one-line normalization (strip the `vote:` prefix before matching)
+  recovers it.
+- **Forced-fallback inconsistency on "conflicted/unity" variants (Banxico).** The deterministic
+  `_force_terminal_vote` uses the variant's `action_if_state`; for internally-conflicted /
+  consensus-seeking variants that field is empty, so the fallback defaulted to the menu's lowest
+  option — and it did so **inconsistently across actors** (irene → hold, victoria → hold, but
+  omar's `pragmatic_unanimity_seeker` → not-hold, scored as a dissent). A consensus-seeking state
+  was thus turned into a dissent over ~1/3 of mass.
+- **Forced completion never helps the consensus/coalition outcome (Banxico, Wale).** Because the
+  fallback casts a fixed per-state action, forcing only ever added *status-quo / self-interested*
+  votes: on Wale **0.0 of the forced votes went to Wale** (they only suppressed him); on Banxico
+  the forced unity variants split inconsistently. Forced votes are grounded but are not free
+  actor evidence and structurally cannot produce the convergence the real institutions showed.
+
+Quantified reversibility (from the per-question closed-form recomputations, all matching the sim
+exactly): **Banxico** fix omar's unity vote → 0.099→0.198, full committee coordination → ~0.83;
+**BoJ** weight the bloc as its 5 real seats → 0.036→0.500 (Brier 0.93→0.25), fix Ueda's dropped
+Raise → 0.169, un-invert the hawks → toward 0.875; **Wale** fix the candidate self-abstention →
+0.130→0.278, model the majority coalition as whipped/unified → ~0.6–0.8 (a Wale-win forecast);
+**Hormuz** a correct integer transit mechanism → resolved mass moves heavily to NO. In every
+wrong case a correction to the identified first-wrong-step reverses the forecast toward the true
+outcome — the errors are architectural, not irreducible uncertainty.
 
 ## 5. Caveat on forced completion (invented final choices)
 
@@ -162,15 +214,23 @@ blueprint-repair, and `reference_class_grounding` prompts — 3 call types × 2 
 
 **3. First wrong assumption per question:**
 - **Banxico** — modeling the five voters as near-independent state draws with no deliberative
-  convergence, so unanimity is geometrically suppressed (0.099 vs base rate 0.83).
-- **BoJ** — the 9-member board collapsed to 5 units (a 5-member bloc voting once) combined with
-  the same independence defect, concentrating mass on "Maintain."
-- **visionOS** — none material; the simulation was correct. (Minor: 0.25 mass left as honest
-  missing_mechanism.)
-- **Wale** — modeling the electing parliament as the rival candidates themselves (3 of 5 voters
-  are Wale's opponents; the coalition backbench compressed to one bloc vote).
-- **Hormuz** — the blueprint terminal encodes a qualitative disruption event, not the question's
-  numeric daily-transit threshold, so a qualitative "disruption" flag fires YES.
+  convergence, so unanimity is geometrically suppressed (0.099 = 24/243 vs base rate 0.83);
+  amplified by the forced-fallback turning omar's consensus-seeking variant into a dissent.
+- **BoJ** — the 9-member board collapsed to 5 units (a 5-member bloc voting once) plus the
+  independence defect; amplified by two implementation bugs (the dissents-for-hike counted class
+  bound to a Maintain state, inverting the hawks; and Ueda's `vote:`-prefixed Raise dropped by
+  the terminal matcher).
+- **visionOS** — none material; the simulation was correct. (Minor: 0.25 honest
+  missing_mechanism because the boolean terminal has YES-writers but no positive NO-writer — the
+  right fix is a deadline "no-announcement-recorded" writer, which the ladder correctly declined
+  to replace with a numeric mechanism.)
+- **Wale** — modeling the electing 50-seat parliament as the rival candidates themselves (3 of 5
+  voters are Wale's opponents; the majority coalition compressed to one bloc vote); amplified by
+  the candidate self-abstaining in 62.5% of his mass.
+- **Hormuz** — a compound terminal failure: `terminal_canonicalization` collapsed the numeric
+  `daily_transit_count >= 50` predicate into a boolean OR of de-escalation events, and the
+  threshold parser failed to extract "50" from the prose, so no integer transit bridge was built
+  and a qualitative flag fired YES.
 
 **4. The three most important general architectural defects:** (1) false actor independence / no
 deliberative convergence → systematic anti-consensus bias; (2) institution roster collapse →
@@ -194,6 +254,13 @@ combiner. It should be paired with a faithful-roster rule for Defect 2 (never mo
 electorate as the candidates; weight a representative bloc by the members it stands for), but the
 convergence step is the smallest single fix with the largest expected accuracy gain. Terminal
 numeric-bar encoding (Defect 3) is a narrower, separate fix affecting one question.
+
+Before (or alongside) that, the four secondary bugs in §4b are near-zero-cost quick wins that
+each move a wrong forecast materially on their own — the bloc-as-real-seats weighting alone takes
+BoJ from 0.036 to 0.500 (Brier 0.93→0.25), and stripping the `vote:` prefix and un-inverting the
+counted-class→state binding are one-line fixes. They are worth landing first because they are
+unambiguous correctness fixes, not modeling choices, and they de-noise the accuracy signal the
+convergence work will be measured against.
 
 Do **not** calibrate a prior↔simulation combiner until at least Defect 1 is fixed and the
 simulation-only accuracy is re-measured — a good prior Brier must not be allowed to mask the
