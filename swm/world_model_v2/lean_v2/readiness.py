@@ -66,14 +66,23 @@ def pure_terminal_outcome(bp, *, votes: dict = None, world_state: dict = None,
             opt = norm_key(rp.get("option")) or (max(set(nvals), key=nvals.count)
                                                  if nvals else "")
             count = sum(1 for v in nvals if v == opt)
+            m = len(members)
             thr = rp.get("threshold")
             if thr is None or str(thr) == "":
-                yes = count / max(1, len(members)) > 0.5
+                yes = count / max(1, m) > 0.5
             else:
                 thr = float(thr)
-                # a threshold >= 1 is an ABSOLUTE vote count ("at least 5 votes"); a
-                # threshold < 1 is a FRACTION of the members ("more than 50%")
-                yes = count >= thr if thr >= 1.0 else count / max(1, len(members)) > thr
+                if thr < 1.0:
+                    yes = count / max(1, m) > thr        # explicit fraction ("more than 50%")
+                elif thr < m:
+                    yes = count >= thr                   # absolute count achievable in-model
+                else:
+                    # an absolute threshold that meets-or-exceeds the MODELED member count is
+                    # a real-body count (a majority of a larger parliament/board) collapsed
+                    # onto representative actors/blocs — 26 of 50 modeled as 5, 5 of 9 modeled
+                    # as 5. A 'majority' rule means a majority: translate to a majority of the
+                    # modeled substantive votes rather than an unreachable absolute count.
+                    yes = count / max(1, m) > 0.5
         else:
             return {"resolved": False, "cause": f"unknown_rule:{rule}"}
         return {"resolved": True, "outcome": "YES" if yes else "NO",
@@ -276,7 +285,9 @@ def simulation_readiness(*, bp, consequential_actors: list, completed_states: di
         hard_fail = hard_fail or not ok
         gw = grounded_weights.get(aid) or {}
         wsum = sum((gw.get("mid") or {}).values())
-        check(f"actor_weights:{aid}", states and abs(wsum - 1.0) < 1e-6,
+        # tolerance accommodates rounded counted weights (they sum to ~0.9999); a genuinely
+        # unnormalized set (far from 1) still fails and is renormalized
+        check(f"actor_weights:{aid}", states and abs(wsum - 1.0) < 5e-3,
               f"weight sum {wsum:.4f}", repairable_as="renormalize_represented_weights")
     check("shared_conditions_exist", shared_combos is not None,
           f"{len(shared_combos or [])} combo(s)")
