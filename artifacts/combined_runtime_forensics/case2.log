@@ -1,0 +1,66 @@
+[case2 ran in 3346s]
+
+==============================================================================
+CASE 2 (institutional decision) — STRUCTURAL MODELS
+==============================================================================
+  - m0_actor_relationship: [promoted] The variance outcome is determined by the strategic alignment of the five board members' individual voting int
+  - m1_institutional_procedural: [promoted] The variance outcome is determined by whether the city planner's staff report recommends approval or denial, b
+  - m2_resource_constraint: [promoted] The decisive causal factor is whether the city planner's staff report, constrained by the August session deadl
+  - m3_information_distribution: [promoted] The variance outcome is determined by whether the city planner's staff report, due before the August session, 
+  - m4_adversarial_alternative: [promoted] The variance outcome is determined by whether the mayor publicly endorses or opposes the shelter, because the 
+    budget m0_actor_relationship: pilot=8 final=40 required=40 status=completed
+    budget m1_institutional_procedural: pilot=8 final=35 required=35 status=completed
+    budget m2_resource_constraint: pilot=12 final=60 required=60 status=completed
+    budget m3_information_distribution: pilot=11 final=55 required=55 status=completed
+    budget m4_adversarial_alternative: pilot=8 final=30 required=30 status=completed
+
+==============================================================================
+CASE 2 (institutional decision) — PER-MODEL TEMPORAL MODELS (compiled inside each structural model)
+==============================================================================
+  - m0_actor_relationship: hash=f277b531d9d5 channels=['board_meeting_deliberation', 'staff_report_submission'] institutional_processes=['variance_approval'] deadlines=2
+      decision-trigger sources: ['riverbend_zoning_board: scheduled_meeting_vote']
+  - m1_institutional_procedural: hash=27cc7a8cd594 channels=['board_meeting_deliberation', 'neighborhood_opposition_letters', 'staff_report_submission'] institutional_processes=['variance_approval_process'] deadlines=2
+      decision-trigger sources: ['zoning_board_chair_robert_chen: meeting_vote', 'board_member_linda_otoole: meeting_vote', 'board_member_james_kowalski: meeting_vote', 'board_member_susan_park: meeting_vote', 'board_member_carlos_mendez: meeting_vote']
+  - m2_resource_constraint: hash=909c0940fc96 channels=['lobbying_communication', 'public_hearing_testimony', 'staff_report_submission'] institutional_processes=['variance_approval'] deadlines=4
+      decision-trigger sources: ['Riverbend_city_zoning_board: scheduled_vote']
+  - m3_information_distribution: hash=5b88f5d16119 channels=['public_hearing_comment', 'staff_report_submission'] institutional_processes=['variance_approval'] deadlines=4
+      decision-trigger sources: ['board_member_1_sarah_chan: board_vote', 'board_member_2_james_rodriguez: board_vote', 'board_member_3_maria_kim: board_vote', 'board_member_4_tom_baker: board_vote', 'board_member_5_lisa_patel: board_vote']
+  - m4_adversarial_alternative: hash=43a48e279b7a channels=['planning_staff_report', 'zoning_board_public_hearing'] institutional_processes=['variance_approval'] deadlines=2
+      decision-trigger sources: ['zoning_board_chair_marcus_chan: board_vote', 'zoning_board_member_2_li_chen: board_vote', 'zoning_board_member_3_james_okonkwo: board_vote', 'zoning_board_member_4_sarah_mendez: board_vote', 'zoning_board_member_5_tom_bradley: board_vote']
+
+==============================================================================
+CASE 2 (institutional decision) — ATTEMPTS / MECHANISMS / OBSERVATIONS / ACTOR DECISIONS (per model)
+==============================================================================
+  - m0_actor_relationship:
+      attempts=40 intended_deliveries=0 ACTUAL_deliveries=0 mech invoked=0 ok=0 fail=0 unresolved=0
+      observations_delivered=0 attention_events=0 actors_reconsidered=0 direct_human_writes=0 numeric_fallbacks=0
+      temporal runtime: {"event_counts": {"observe_evidence": 280, "deadline": 80, "scheduled_fact": 120, "recurring_obligation": 40, "decision_opportunity": 40, "network_diffusion": 40, "structural_process_prior": 80, "actor_action_aggregation
+      decisions[alan_morrison]: {"raw_qualitative_simulation_distribution": {"check_barbara_chen_contacts[multi_part]@barbara_chen": 0.05, "check_shelter_audit_status[multi_part]@shelter_nonpr
+  - m1_institutional_procedural:
+      attempts=35 intended_deliveries=0 ACTUAL_deliveries=0 mech invoked=0 ok=0 fail=0 unresolved=0
+      observations_delivered=0 attention_events=0 actors_reconsidered=0 direct_human_writes=0 numeric_fallbacks=0
+      temporal runtime: {"event_counts": {"observe_evidence": 245, "deadline": 35, "scheduled_fact": 105, "recurring_obligation": 35, "decision_opportunity": 35, "structural_process_prior": 70, "actor_action_aggregation": 35, "institutional_dec
+      decisions[city_planner_maria_vasquez]: {"raw_qualitative_simulation_distribution": {"discreetly_probe_council_member_alignment[multi_part]": 0.0857, "discreetly_probe_council_member_ambitions[multi_p
+  - m2_resource_constraint:
+      attempts=60 intended_deliveries=0 ACTUAL_deliveries=0 mech invoked=0 ok=0 fail=0 unresolved=0
+      observations_delivered=0 attention_events=0 actors_reconsidered=0 direct_human_writes=0 numeric_fallbacks=0
+      temporal runtime: {"event_counts": {"observe_evidence": 420, "recurring_obligation": 60, "deadline": 120, "scheduled_fact": 180, "decision_opportunity": 60, "structural_process_prior": 120, "actor_action_aggregation": 60, "institutional_d
+      decisions[Riverbend_city_zoning_board_member_1]: {"raw_qualitative_simulation_distribution": {"do_nothing[private]": 0.0667, "private_call_to_developer_lobby_contact[multi_part]": 0.3, "private_check_with_deve
+  - m3_information_distribution:
+      attempts=55 intended_deliveries=0 ACTUAL_deliveries=0 mech invoked=0 ok=0 fail=0 unresolved=0
+      observations_delivered=0 attention_events=0 actors_reconsidered=0 direct_human_writes=0 numeric_fallbacks=0
+      temporal runtime: {"event_counts": {"observe_evidence": 385, "deadline": 55, "scheduled_fact": 165, "recurring_obligation": 55, "decision_opportunity": 55, "network_diffusion": 55, "structural_process_prior": 110, "actor_action_aggregatio
+      decisions[city_planner_alex_morgan]: {"raw_qualitative_simulation_distribution": {"review_agenda_for_hope_harbor_connection[multi_part]": 0.1455, "review_agenda_for_hope_harbor_item[multi_part]": 0
+  - m4_adversarial_alternative:
+      attempts=30 intended_deliveries=0 ACTUAL_deliveries=0 mech invoked=0 ok=0 fail=0 unresolved=0
+      observations_delivered=0 attention_events=0 actors_reconsidered=0 direct_human_writes=0 numeric_fallbacks=0
+      temporal runtime: {"event_counts": {"observe_evidence": 210, "deadline": 60, "scheduled_fact": 90, "recurring_obligation": 30, "decision_opportunity": 30, "structural_process_prior": 60, "actor_action_aggregation": 30, "institutional_deci
+      decisions[mayor_elena_vargas]: {"raw_qualitative_simulation_distribution": {"call_angela_ross_private[multi_part]@city_budget_director_angela_ross": 0.0667, "private_meeting_with_angela_ross[
+
+==============================================================================
+CASE 2 (institutional decision) — TERMINAL
+==============================================================================
+  status=completed_with_degradation  distribution={'approve': 0.499, 'deny': 0.501}
+[saved artifacts/combined_runtime_forensics/case2_institutional_decision.json]
+
+DONE

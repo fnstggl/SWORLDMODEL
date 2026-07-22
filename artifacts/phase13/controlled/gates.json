@@ -1,0 +1,95 @@
+{
+ "n_tasks": 136,
+ "n_action_tasks": 106,
+ "n_policy_tasks": 30,
+ "exhaustive_recovery_rate": 1.0,
+ "recovery_gate_99pct": true,
+ "median_optimality_gap_rel": 0.0,
+ "gap_gate_1pct": true,
+ "crn_pairing_rate": 1.0,
+ "crn_gate_100pct": true,
+ "variance_reduction_median_of_medians": 1.0,
+ "matched_variance_not_worse": true,
+ "sequential_beats_greedy_rate": 1.0,
+ "sequential_gate": true,
+ "policy_recovery_rate": 1.0,
+ "feasibility_rejections_correct": true,
+ "pareto_recovery": true,
+ "voi_recommends_gathering_rate": 1.0,
+ "abstention_false_positives": 0,
+ "racing_recovery_rate": 1.0,
+ "racing_median_gap_rel": 0.0,
+ "hierarchical": [
+  {
+   "task_id": "search_240_0",
+   "n_arms": 240,
+   "method": "exhaustive_within_budget",
+   "n_evaluated": 240,
+   "picked": "sarm_239",
+   "recovered": true,
+   "gap_rel": 0.0
+  },
+  {
+   "task_id": "search_240_1",
+   "n_arms": 240,
+   "method": "exhaustive_within_budget",
+   "n_evaluated": 240,
+   "picked": "sarm_239",
+   "recovered": true,
+   "gap_rel": 0.0
+  }
+ ],
+ "budget_curve": [
+  {
+   "tier": "diagnostic",
+   "n_evaluated": 60,
+   "picked": "sarm_058",
+   "gap_rel": 0.0
+  },
+  {
+   "tier": "standard",
+   "n_evaluated": 60,
+   "picked": "sarm_058",
+   "gap_rel": 0.0
+  },
+  {
+   "tier": "production",
+   "n_evaluated": 60,
+   "picked": "sarm_058",
+   "gap_rel": 0.0
+  }
+ ],
+ "deterministic_replay": true,
+ "search_diagnostics_present_rate": 1.0,
+ "by_split": {
+  "validation": {
+   "n": 40,
+   "recovery": 1.0
+  },
+  "development": {
+   "n": 62,
+   "recovery": 1.0
+  },
+  "calibration": {
+   "n": 34,
+   "recovery": 1.0
+  }
+ },
+ "determinism_checks": [
+  {
+   "task_id": "discrete_01",
+   "same_recommendation": true,
+   "identical_expected_utilities": true
+  },
+  {
+   "task_id": "multi_actor_02",
+   "same_recommendation": true,
+   "identical_expected_utilities": true
+  },
+  {
+   "task_id": "constrained_03",
+   "same_recommendation": true,
+   "identical_expected_utilities": true
+  }
+ ]
+}

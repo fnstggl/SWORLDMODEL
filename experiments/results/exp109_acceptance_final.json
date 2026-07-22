@@ -1,0 +1,36 @@
+{
+ "evaluated_on": "complete five-question paired baseline (EXP-107 full_fidelity 5/5 vs EXP-108 lean_adaptive 5/5, frozen BTF-3 rows, sealed-replay bundle, seed 0)",
+ "section_25_conditions": {
+  "all_safety_invariants_pass": {
+   "verdict": true,
+   "evidence": "PR #127 protection tests green at head; research-before-psychology runtime invariant; no numeric actors in lean (grep+test); ensure_outcome_pathway validated on every prepared model; no empty rollouts; no generic terminal guess (AST-pinned no-0.5); honest statuses preserved under the forecast-availability contract"
+  },
+  "controlled_cache_tests_show_no_semantic_corruption": {
+   "verdict": true,
+   "evidence": "isolated caching parity gate: caches on vs off byte-identical decisions/distributions/statuses/censuses with decision calls 70->4 (35 particles, 4 distinct situations, 101 hits, 0 invalidated); sequential == bounded-concurrent identity test; 0 invalidated cache hits across the live arm; every reuse carries explain_equivalence()"
+  },
+  "no_catastrophic_forecast_degradation_on_the_five_questions": {
+   "verdict": true,
+   "evidence": "paired-5 Brier: lean 0.337 vs full_fidelity 0.440; correct side 2/5 both arms; lean closer on 4/5 questions (BoJ 0.190-vs-0.608, Wale 0.319-vs-0.708, Hormuz 0.782-vs-0.784, Banxico 0.053-vs-0.073), worse on 1 (visionOS 0.340-vs-0.028); the single lean-worse flip is mirrored by an equal-and-opposite full-fidelity flip (BoJ); no systematic degradation. Per task ss24: five questions are an architecture/performance diagnostic, no accuracy claim"
+  },
+  "prediction_changes_are_explainable": {
+   "verdict": true,
+   "evidence": "every paired divergence traces to the disclosed probability_source layer selected by each arm's resolved rollout mass (documented per question in exp109_comparison.json rows and LEAN_FINAL_REPORT ss27 answer 20)"
+  },
+  "actor_calls_tokens_cost_or_time_fall_materially": {
+   "verdict": true,
+   "evidence": "arm totals: 20,058 -> 1,052 calls (19x); 31.1M -> 2.15M tokens (14.5x); $7.96 -> $0.66 (12x); 2,375 -> 134 min (17.7x); per-question call reductions 93-96%"
+  },
+  "unstable_questions_correctly_escalate": {
+   "verdict": true,
+   "evidence": "BoJ and Hormuz refused early particle stopping (full 108/108 and 111/111 budgets); structural disagreement spread > 0.10 forced full budgets; 69 staged-cognition escalations recorded with reasons; capped execution-replicate stability probe ran on all five; underidentification reported, never averaged away"
+  },
+  "full_fidelity_escalation_remains_available": {
+   "verdict": true,
+   "evidence": "execution_profile='full_fidelity' is byte-for-byte the PR-#127 runtime (parity-tested), selectable per call or via SWM_EXECUTION_PROFILE; lean escalates internally to the staged pipeline on recorded triggers"
+  }
+ },
+ "decision": "ALL SEVEN CONDITIONS PASS -> world_model_v2 defaults to execution_profile='lean_adaptive'; 'full_fidelity' remains the explicit research-grade option (unified_runtime.DEFAULT_EXECUTION_PROFILE)",
+ "scoring_integrity": "recovered probabilities served by the precedence ladder: native ensemble fields > runtime per-model recovery blocks mixed by the runtime's own rule > artifact recomputation; recovered_by recorded per row; discrepancies disclosed (see exp110_recovered_forecasts.json)",
+ "supersedes": "exp109_acceptance_static.json (pre-baseline snapshot)"
+}

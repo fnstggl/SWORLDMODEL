@@ -1,0 +1,478 @@
+[
+  {
+    "family": "DeGroot naive learning (opinion averaging on a network)",
+    "registry_id": "degroot_influence",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.social:degroot_step resolves; test_ref tests/test_social_families.py present)",
+    "primary_sources": [
+      {
+        "title": "Reaching a Consensus",
+        "authors": "Morris H. DeGroot",
+        "year": 1974,
+        "venue": "Journal of the American Statistical Association 69(345):118-121",
+        "doi_or_url": "10.1080/01621459.1974.10480137",
+        "verified": true,
+        "what_it_provides": "structural_model — the canonical linear repeated-averaging consensus operator o_i(t+1)=Σ_j w_ij o_j(t) with row-stochastic W and its convergence/consensus conditions."
+      },
+      {
+        "title": "Naïve Learning in Social Networks and the Wisdom of Crowds",
+        "authors": "Benjamin Golub; Matthew O. Jackson",
+        "year": 2010,
+        "venue": "American Economic Journal: Microeconomics 2(1):112-149",
+        "doi_or_url": "10.1257/mic.2.1.112",
+        "verified": true,
+        "what_it_provides": "structural_model — asymptotic-learning ('wisdom of crowds') theorem for DeGroot updating: beliefs converge to truth iff the eigenvector-centrality influence of the most influential agent vanishes as n grows. NOTE: task listed this as 'QJE'; the actual venue is AEJ: Microeconomics — the Golub-Jackson QJE paper is the 2012 homophily paper (10.1093/qje/qjs021), a different article."
+      },
+      {
+        "title": "Testing Models of Social Learning on Networks: Evidence From Two Experiments",
+        "authors": "Arun G. Chandrasekhar; Horacio Larreguy; Juan Pablo Xandri",
+        "year": 2020,
+        "venue": "Econometrica 88(1):1-32",
+        "doi_or_url": "10.3982/ECTA14407",
+        "verified": true,
+        "what_it_provides": "causal_estimate / structural — lab-in-the-field + student-lab test estimating a Bayesian/DeGroot type mixture; central result: the simple DeGroot averaging model better explains subject behavior than the Bayesian model, especially as the learning task gets harder and in the field (village) sample. Real evidence that people are NOT literal Bayesian updaters and only partially DeGroot."
+      }
+    ],
+    "formal_model": "o(t+1) = W o(t), W row-stochastic and time-invariant. Long-run consensus = left Perron eigenvector s of W (s W = s); each agent's asymptotic weight (social influence) is its eigenvector centrality. Registry operator degroot_step implements one round with per-agent self-inclusive weights.",
+    "causal_assumptions": [
+      "influence/trust weights w_ij are fixed, known, and row-stochastic (myopic repeated averaging, no re-weighting)",
+      "agents do NOT correct for redundancy/double-counting of information circulating in the network (this is the 'naive' assumption)",
+      "opinions are cardinal and can be averaged",
+      "the interaction network and weights are exogenous and static",
+      "no external forcing (media, events) during the averaging horizon"
+    ],
+    "required_variables": [
+      "per-agent opinion time series over repeated communication rounds",
+      "influence/trust weight matrix W (or a network plus a weighting rule)",
+      "who observes whom each round"
+    ],
+    "temporal_scale": "discrete communication rounds (event-level); consensus emerges over many rounds",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "DeGroot-vs-Bayesian model fit (direction of result)",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Chandrasekhar, Larreguy & Xandri 2020 Econometrica (10.3982/ECTA14407)",
+        "context": "Structural mixture estimation finds the DeGroot averaging model fits observed behavior better than the Bayesian model, more so in harder tasks and in the Indian-village field sample; subjects are a heterogeneous mixture of types. Qualitative direction verified from abstract/paper summary.",
+        "verified": true
+      },
+      {
+        "name": "estimated share of DeGroot-type agents",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Chandrasekhar, Larreguy & Xandri 2020 Econometrica",
+        "context": "Secondary summaries suggest a DeGroot majority (larger among field villagers than among student subjects), but the exact estimated fraction and SE could not be confirmed from the primary text this pass (Wiley 403; NBER PDF not machine-readable). Not recorded as a number to avoid fabrication.",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "Chandrasekhar et al. 2020: Indian-village social-network learning experiment + Mexican-student lab (sequential binary-state guessing over neighbors)",
+      "Golub & Jackson 2010 is theoretical (no dataset)"
+    ],
+    "replication_evidence": "Agranov, Elliott & Ortoleva 2024 Econometrica comment (10.3982/ECTA22442) corrects a theoretical proposition; the authors note the reduced-form results, simulations, and structural estimations of Chandrasekhar et al. are unaffected. Naive-DeGroot theory itself (Golub-Jackson) is widely re-derived but rarely empirically calibrated.",
+    "critiques_or_nulls": [
+      "naive DeGroot is empirically rejected as a literal model of individual updating (Chandrasekhar 2020): people are neither pure DeGroot nor pure Bayesian",
+      "ignores information redundancy / double-counting, which biases consensus in dense networks",
+      "influence weights W are unobserved and under-identified without a designed experiment"
+    ],
+    "applicability_limits": [
+      "requires repeated opinion exchange over a stable, known influence network",
+      "requires cardinal, averageable opinions",
+      "not valid for one-shot exposure, strategic/adversarial persuasion, or discrete choice herding"
+    ],
+    "transport_risks": [
+      "influence matrix W is setting-specific and not transportable across groups/topics",
+      "the DeGroot-vs-Bayesian type mixture varies by population (villagers vs students) and task difficulty",
+      "convergence speed depends on network structure (homophily slows it — Golub-Jackson 2012)"
+    ],
+    "local_refit_feasible": false,
+    "best_validation_route": "A designed network-signal experiment (Chandrasekhar style) or an external panel of repeated opinions over a known influence network. NOT achievable with current in-repo data: OpinionQA and GlobalOpinions are cross-sectional (opinion distributions by group, not opinion trajectories over a network), so W and convergence cannot be identified.",
+    "expected_applicability": "narrow — small-group / village deliberation with repeated exchange; partial even there because behavior is a Bayesian/DeGroot mixture",
+    "expected_transport_risk": "high",
+    "priority": "medium-low",
+    "planned_implementation": "Retain degroot_step as a candidate structural operator; add an optional Bayesian / mixture comparator and a signal-redundancy discount; keep W an explicit required, un-pinned input (no default weights presented as empirical).",
+    "planned_parameter_packs": [],
+    "promotion_blocker": "No in-repo opinion-dynamics panel to fit or validate W; the strongest external evidence (Chandrasekhar 2020) partially rejects the naive form and is not a transportable parameter calibration.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Bounded-confidence opinion dynamics (Hegselmann-Krause / Deffuant)",
+    "registry_id": "bounded_confidence",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.social:bounded_confidence_step resolves; test_ref tests/test_social_families.py present)",
+    "primary_sources": [
+      {
+        "title": "Opinion Dynamics and Bounded Confidence: Models, Analysis and Simulation",
+        "authors": "Rainer Hegselmann; Ulrich Krause",
+        "year": 2002,
+        "venue": "Journal of Artificial Societies and Social Simulation (JASSS) 5(3), article 2",
+        "doi_or_url": "https://www.jasss.org/5/3/2.html",
+        "verified": true,
+        "what_it_provides": "structural_model (agent-based) — the HK simultaneous-averaging rule: each agent moves to the mean of all opinions within confidence bound epsilon; analysis of when this yields consensus, polarization, or fragmentation. JASSS uses article numbering (no DOI)."
+      },
+      {
+        "title": "Mixing Beliefs among Interacting Agents",
+        "authors": "Guillaume Deffuant; David Neau; Frédéric Amblard; Gérard Weisbuch",
+        "year": 2000,
+        "venue": "Advances in Complex Systems 3(1n04):87-98",
+        "doi_or_url": "10.1142/S0219525900000078",
+        "verified": true,
+        "what_it_provides": "structural_model (agent-based) — the pairwise Deffuant-Weisbuch variant: on a random encounter, two agents partially converge (rate mu) iff their opinion gap is below epsilon; high epsilon -> single cluster, low epsilon -> multiple clusters."
+      }
+    ],
+    "formal_model": "HK: o_i(t+1) = mean{ o_j : |o_j - o_i| <= epsilon }. Deffuant: for a random pair (i,j), if |o_i - o_j| <= epsilon then o_i += mu (o_j - o_i) and symmetrically for j. epsilon (confidence bound) is the key parameter governing the consensus/fragmentation transition; the registry operator bounded_confidence_step implements the HK rule with an optional neighbor restriction.",
+    "causal_assumptions": [
+      "agents are influenced only by others whose opinion is within distance epsilon (homophilous, convergent influence)",
+      "influence is symmetric and attractive (no repulsion / no backfire in the base model)",
+      "opinions are continuous and cardinal",
+      "epsilon is typically homogeneous across agents",
+      "closed system: no exogenous media/events"
+    ],
+    "required_variables": [
+      "opinion time series",
+      "confidence bound epsilon",
+      "(Deffuant) convergence rate mu",
+      "interaction topology / who can meet whom"
+    ],
+    "temporal_scale": "discrete rounds (event-level); asymptotic clustering over many rounds",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "confidence bound epsilon (consensus threshold)",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Hegselmann & Krause 2002 JASSS; Deffuant et al. 2000 ACS",
+        "context": "The models demonstrate consensus for large epsilon and polarization/fragmentation for small epsilon, but epsilon is a free simulation input — there is NO empirically identified value. Number intentionally null.",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "none for calibration — these are agent-based simulation studies; empirical estimation of epsilon from field opinion data is rare and contested"
+    ],
+    "replication_evidence": "Lorenz (2007, JASSS) and a large ABM literature reproduce the HK clustering/consensus behavior in simulation, but the empirical-calibration base is thin: bounded-confidence parameters are seldom estimated from real longitudinal opinion data.",
+    "critiques_or_nulls": [
+      "SPARSE EMPIRICAL BASE — bounded-confidence models are agent-based theory; epsilon is essentially unidentified from field data",
+      "predicted number of opinion clusters is highly sensitive to epsilon and to the update rule (HK vs Deffuant)",
+      "base model has no repulsion/backfire, so it cannot generate documented polarization-by-disagreement",
+      "little out-of-sample or held-out validation exists"
+    ],
+    "applicability_limits": [
+      "continuous, cardinal opinions only",
+      "closed system without external forcing",
+      "assumes attractive homophilous influence (no antagonistic dynamics in base form)"
+    ],
+    "transport_risks": [
+      "epsilon and resulting cluster count are not transportable across topics/populations",
+      "only qualitative regimes (consensus / polarization / fragmentation) survive transport, not quantitative predictions"
+    ],
+    "local_refit_feasible": false,
+    "best_validation_route": "A longitudinal panel of individual opinions with interaction/exposure records (to identify epsilon and the update rule). Absent in repo and largely absent in the literature; OpinionQA/GlobalOpinions are cross-sectional and cannot identify dynamics.",
+    "expected_applicability": "illustrative / structural only — use as a qualitative generator for polarization vs consensus scenarios, not as a calibrated predictor",
+    "expected_transport_risk": "high",
+    "priority": "low",
+    "planned_implementation": "Keep bounded_confidence_step as a qualitative structural generator; treat epsilon (and mu) as explicit scenario assumptions run under a sensitivity sweep; do NOT emit calibrated point forecasts.",
+    "planned_parameter_packs": [],
+    "promotion_blocker": "No empirical identification of epsilon from any available dataset; this is agent-based theory with a thin validation base — cannot exceed structural-candidate status without a real opinion-trajectory calibration.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Bayesian social learning / observational learning & information cascades",
+    "registry_id": null,
+    "current_registry_status": "not_registered",
+    "current_executable_status": "not_implemented (no operator; nearest existing generic operator is belief_update_exposure)",
+    "primary_sources": [
+      {
+        "title": "A Theory of Fads, Fashion, Custom, and Cultural Change as Informational Cascades",
+        "authors": "Sushil Bikhchandani; David Hirshleifer; Ivo Welch",
+        "year": 1992,
+        "venue": "Journal of Political Economy 100(5):992-1026",
+        "doi_or_url": "10.1086/261849",
+        "verified": true,
+        "what_it_provides": "structural_model — the foundational informational-cascade model: rational agents observing predecessors' actions (not their signals) optimally ignore their own private signal once a public belief locks, so information stops aggregating (fragile herding)."
+      },
+      {
+        "title": "Information Cascades in the Laboratory",
+        "authors": "Lisa R. Anderson; Charles A. Holt",
+        "year": 1997,
+        "venue": "American Economic Review 87(5):847-862",
+        "doi_or_url": "https://www.jstor.org/stable/2951328",
+        "verified": true,
+        "what_it_provides": "causal_estimate (lab) — canonical experimental confirmation that rational information cascades form in an urn-signal design roughly as Bayesian theory predicts, including incorrect cascades."
+      },
+      {
+        "title": "Testing Models of Social Learning on Networks: Evidence From Two Experiments",
+        "authors": "Arun G. Chandrasekhar; Horacio Larreguy; Juan Pablo Xandri",
+        "year": 2020,
+        "venue": "Econometrica 88(1):1-32",
+        "doi_or_url": "10.3982/ECTA14407",
+        "verified": true,
+        "what_it_provides": "causal_estimate / structural — head-to-head test in which the Bayesian model is one mixture component; pure Bayesian updating fits worse than DeGroot averaging in the field network setting, bounding the empirical reach of full-rationality social learning."
+      }
+    ],
+    "formal_model": "Sequential Bayesian updating: agent t forms a posterior over a binary state from a private signal plus the observed action history a_1..a_{t-1}; acts to maximize expected payoff. A cascade begins when the public belief implied by the action history dominates any single private signal, so subsequent actions become uninformative and can lock on the wrong state.",
+    "causal_assumptions": [
+      "common prior and commonly known signal-generating structure",
+      "agents observe predecessors' ACTIONS but not their private signals",
+      "rational expected-utility maximization",
+      "exogenous, commonly known decision order"
+    ],
+    "required_variables": [
+      "sequential individual decisions",
+      "private-signal precision",
+      "observability of prior actions",
+      "decision order"
+    ],
+    "temporal_scale": "sequential / event-level (a decision sequence)",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "rational cascades observed vs predicted (Anderson-Holt lab)",
+        "value_or_null": "41 of 56 (reported)",
+        "uncertainty_or_null": null,
+        "source_ref": "Anderson & Holt 1997 AER 87(5):847-862",
+        "context": "Widely cited result that rational cascades formed in 41 of the 56 cases where the theory predicted them; taken from a secondary summary because the primary PDF was not machine-readable this pass. Marked unverified pending primary confirmation.",
+        "verified": false
+      },
+      {
+        "name": "Bayesian-vs-DeGroot fit (direction)",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Chandrasekhar et al. 2020 Econometrica",
+        "context": "Pure Bayesian updating underperforms DeGroot averaging in the field network experiment. Qualitative direction verified.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Anderson & Holt 1997 urn-signal lab",
+      "Chandrasekhar et al. 2020 village + student networks",
+      "numerous cascade-lab replications (Goeree et al., classroom versions)"
+    ],
+    "replication_evidence": "The lab cascade result is robustly replicated, though subjects systematically overweight their own private signal relative to Bayes and cascades are fragile to doubts about signal quality; distinguishing rational herding from conformity/DeGroot averaging in the field remains difficult.",
+    "critiques_or_nulls": [
+      "cascades are fragile: small changes in perceived signal quality break them",
+      "subjects deviate from Bayes toward their private signal (bounded rationality)",
+      "field identification of priors and signal structure is very hard",
+      "observationally hard to separate rational cascades from conformity or DeGroot averaging"
+    ],
+    "applicability_limits": [
+      "sequential decisions with observable predecessor actions and a known signal structure",
+      "discrete adoption/choice, not continuous-opinion diffusion",
+      "requires an identifiable decision order"
+    ],
+    "transport_risks": [
+      "signal precision and action-observability are setting-specific",
+      "cascade direction is path-dependent and can lock on the wrong state (non-transportable outcome)"
+    ],
+    "local_refit_feasible": false,
+    "best_validation_route": "Urn-style sequential-decision lab data, or field data with observable adoption order and a proxy for private signals (e.g., sequential product ratings/reviews). Not present in repo.",
+    "expected_applicability": "narrow — adoption/rating/review sequences, bank-run and herding scenarios",
+    "expected_transport_risk": "high",
+    "priority": "low-medium",
+    "planned_implementation": "Add a Bayesian observational-learning operator plus a cascade detector to sit alongside degroot_influence as a comparator (currently no such family is registered).",
+    "planned_parameter_packs": [],
+    "promotion_blocker": "Not implemented; no in-repo sequential private-signal + action dataset; and comparative evidence (Chandrasekhar 2020) favors DeGroot averaging over pure Bayesian updating in field settings.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Latent vs expressed opinion / preference falsification",
+    "registry_id": "latent_expressed_opinion",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.social:expressed_opinion resolves; test_ref tests/test_social_families.py present)",
+    "primary_sources": [
+      {
+        "title": "Private Truths, Public Lies: The Social Consequences of Preference Falsification",
+        "authors": "Timur Kuran",
+        "year": 1995,
+        "venue": "Harvard University Press (ISBN 9780674707580; xv+423 pp.)",
+        "doi_or_url": "https://www.hup.harvard.edu/books/9780674707580",
+        "verified": true,
+        "what_it_provides": "structural_model (theory) — the preference-falsification framework: expressed opinion diverges from private opinion under social pressure; availability cascades and the resulting unpredictability of preference reversals (e.g., sudden revolutions)."
+      },
+      {
+        "title": "Learning and Forecasting Opinion Dynamics in Social Networks (SLANT)",
+        "authors": "Abir De; Isabel Valera; Niloy Ganguly; Sourangshu Bhattacharya; Manuel Gomez-Rodriguez",
+        "year": 2016,
+        "venue": "Advances in Neural Information Processing Systems 29 (NeurIPS 2016)",
+        "doi_or_url": "https://arxiv.org/abs/1506.05474",
+        "verified": true,
+        "what_it_provides": "methodological / structural — SLANT: a latent-opinion model where each user's hidden opinion follows a marked jump-diffusion SDE driven by neighbors' expressed messages (a marked temporal point process); gives estimable parameters from timestamped event data and forecasting formulas. A concrete latent-vs-expressed estimation template."
+      }
+    ],
+    "formal_model": "Registry operator: expressed = latent when social_pressure <= conviction; otherwise expression is pulled toward the perceived opposite-pole norm by (social_pressure - conviction). SLANT generalization: latent opinion x_i(t) evolves via a jump-diffusion SDE with jumps at neighbors' message events; the expressed sentiment observed at an event is a (noisy) readout of the latent state.",
+    "causal_assumptions": [
+      "a latent private opinion exists and is distinct from the expressed one",
+      "social pressure / perceived norm drives the latent-expressed gap (Kuran)",
+      "(SLANT) opinions propagate through observed messages on a network; latent state is inferred from expression events",
+      "conviction and social_pressure are latent parameters, not directly observed"
+    ],
+    "required_variables": [
+      "expressed opinion / sentiment",
+      "a measure of or exogenous variation in social pressure / perceived norm",
+      "a latent-opinion proxy or instrument (e.g., anonymity manipulation, list experiment)",
+      "(SLANT) timestamped message events + network structure"
+    ],
+    "temporal_scale": "event-level (individual expression instances); availability cascades unfold over weeks-to-years (Kuran)",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "conviction / social-pressure thresholds (operator params)",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Kuran 1995 (theory); expressed_opinion() defaults in social.py",
+        "context": "The operator's threshold behavior is an illustrative prior, not estimated; the falsification threshold is not empirically pinned by any source here. Number null.",
+        "verified": false
+      },
+      {
+        "name": "OpinionQA expressed-response corpus size (local)",
+        "value_or_null": "23340 responses; 368 questions; 15 ATP waves; 12 demographic axes",
+        "uncertainty_or_null": null,
+        "source_ref": "experiments/results/exp028_oqa/oqa_parsed.json (counted directly)",
+        "context": "Cross-sectional EXPRESSED opinion by group. Supports descriptive expressed-distribution modeling and nonresponse ('refused') as a falsification PROXY only; it cannot causally identify preference falsification (no manipulated pressure, no latent-truth measure).",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "SLANT: Twitter event streams (e.g., Politics, Movie, US election topics) with timestamped messages",
+      "Kuran 1995: historical case studies (no dataset)",
+      "list-experiment / sensitive-question literature (outside these two sources) separately documents expressed-latent gaps"
+    ],
+    "replication_evidence": "SLANT reports out-of-sample sentiment-forecasting gains on multiple Twitter datasets. Kuran's preference-falsification predictions (surprise cascades, e.g., 1989) are historically illustrative rather than formally replicated; the broad list-experiment literature independently and repeatedly finds measurable expressed-vs-latent gaps on sensitive topics.",
+    "critiques_or_nulls": [
+      "latent opinion is unobservable, so identification requires exogenous pressure variation or a latent-truth instrument (anonymity manipulation, list/endorsement experiments)",
+      "the base operator threshold is a stub, not a fitted quantity",
+      "SLANT identifies expressed-opinion dynamics but does not separate 'true conviction' from strategic expression",
+      "cross-national expressed-opinion differences confound falsification with genuine preference and with translation/measurement"
+    ],
+    "applicability_limits": [
+      "needs a mechanism to separate latent from expressed opinion (privacy/anonymity manipulation, list experiments, or event-stream dynamics)",
+      "topic- and regime-specific (repressive vs open environments)",
+      "not a general-purpose opinion predictor without a latent measure"
+    ],
+    "transport_risks": [
+      "conviction/pressure parameters are regime-specific and not transportable (authoritarian vs liberal contexts)",
+      "measurement of the gap is confounded by cross-cultural response styles"
+    ],
+    "local_refit_feasible": "partial (descriptive only)",
+    "best_validation_route": "A SLANT-style refit needs timestamped message+network event data (absent in repo). Causal falsification needs list-experiment or anonymity-manipulation data (absent). Locally, OpinionQA/GlobalOpinions support only a DESCRIPTIVE expressed-distribution baseline (and a regime-gap association across GlobalOpinions countries), not a causal falsification calibration.",
+    "expected_applicability": "moderate for describing expressed-opinion distributions by group; weak for any causal preference-falsification claim",
+    "expected_transport_risk": "high",
+    "priority": "medium",
+    "planned_implementation": "Keep expressed_opinion as the operator; optionally add a SLANT-style latent-state variant gated on availability of message-event data; wire OpinionQA as a DESCRIPTIVE expressed-distribution reference (explicitly not a falsification calibration).",
+    "planned_parameter_packs": [],
+    "promotion_blocker": "Latent opinion is unobserved locally; no exogenous social-pressure variation or event-stream data to identify conviction/pressure; OpinionQA yields description, not causal falsification.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Interpersonal persuasion / durable attitude change (with backfire & minimal-effects nulls)",
+    "registry_id": null,
+    "current_registry_status": "not_registered",
+    "current_executable_status": "not_implemented (no dedicated persuasion operator; belief_update_exposure is the nearest generic bounded-update operator)",
+    "primary_sources": [
+      {
+        "title": "Durably reducing transphobia: A field experiment on door-to-door canvassing",
+        "authors": "David Broockman; Joshua Kalla",
+        "year": 2016,
+        "venue": "Science 352(6282):220-224",
+        "doi_or_url": "10.1126/science.aad9713",
+        "verified": true,
+        "what_it_provides": "causal_estimate (RCT) — strongest causal source: a single ~10-minute perspective-taking canvassing conversation produced a reduction in anti-transgender prejudice that persisted at least 3 months; n=501 voters, 56 canvassers; effect exceeded the 1998-2012 US average decline in homophobia. Demonstrates durable interpersonal persuasion is possible."
+      },
+      {
+        "title": "The Minimal Persuasive Effects of Campaign Contact in General Elections: Evidence from 49 Field Experiments",
+        "authors": "Joshua L. Kalla; David E. Broockman",
+        "year": 2018,
+        "venue": "American Political Science Review 112(1):148-166",
+        "doi_or_url": "https://www.cambridge.org/core/journals/american-political-science-review/article/abs/minimal-persuasive-effects-of-campaign-contact-in-general-elections-evidence-from-49-field-experiments/753665A313C4AB433DBF7110299B7433",
+        "verified": true,
+        "what_it_provides": "meta_analysis — best estimate of the persuasive effect of campaign contact/advertising on candidate choice in US general elections is approximately ZERO across 49 field experiments; non-trivial persuasion appears only in rare circumstances (very unpopular positions + heavy persuadable-targeting, or early contact that then decays). The key null / upper-bound on generic persuasion."
+      },
+      {
+        "title": "The Elusive Backfire Effect: Mass Attitudes' Steadfast Factual Adherence",
+        "authors": "Thomas Wood; Ethan Porter",
+        "year": 2019,
+        "venue": "Political Behavior 41(1):135-163",
+        "doi_or_url": "10.1007/s11109-018-9443-y",
+        "verified": true,
+        "what_it_provides": "causal_estimate / large-N experimental — across thousands of subjects and dozens of issues, factual corrections generally move beliefs toward the facts; the 'backfire effect' is rare, not a general phenomenon. Bounds the continued-influence/backfire failure mode."
+      }
+    ],
+    "formal_model": "No closed-form registered. Reduced form is a treatment-effect model: expressed attitude A_i(post) = A_i(pre) + tau * D_i + noise, where D_i is a persuasion-contact indicator and tau is a (small, often ~0, occasionally durable) average treatment effect that decays over time; heterogeneity in tau (message-target fit, perspective-taking vs information) dominates. Continued-influence/backfire is the case tau < 0 on corrected beliefs (found to be rare).",
+    "causal_assumptions": [
+      "randomized/exogenous assignment of persuasive contact (RCT identification)",
+      "stable-unit / no interference between treated and control respondents",
+      "measured outcome (survey attitude) reflects the construct of interest, with differential attrition addressed",
+      "effect can decay, so timing of measurement matters"
+    ],
+    "required_variables": [
+      "pre/post attitude measure",
+      "randomized persuasion-treatment indicator (message/contact type)",
+      "time lag to outcome measurement",
+      "target/message covariates for heterogeneity",
+      "attrition indicators"
+    ],
+    "temporal_scale": "event (single conversation/contact) with follow-up over days-to-months; effects often decay",
+    "evidence_type": "causal_estimate",
+    "reported_coefficients": [
+      {
+        "name": "durable canvassing effect on transphobia (Broockman-Kalla 2016)",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Broockman & Kalla 2016 Science (10.1126/science.aad9713)",
+        "context": "Abstract confirms a statistically significant reduction persisting >=3 months, larger than the 1998-2012 US homophobia decline, but the numeric effect size (in SD/scale points) and SE are not stated in the abstract and the primary PDF was not machine-readable this pass. Number withheld to avoid fabrication.",
+        "verified": false
+      },
+      {
+        "name": "campaign-contact persuasion effect on candidate choice (meta-analytic point estimate)",
+        "value_or_null": "approximately 0",
+        "uncertainty_or_null": null,
+        "source_ref": "Kalla & Broockman 2018 APSR 112(1):148-166",
+        "context": "Best estimate across 49 field experiments is approximately zero for general-election persuasion; exact pooled estimate and CI not extracted from primary text this pass, so recorded as a qualitative near-zero, not a precise number.",
+        "verified": false
+      },
+      {
+        "name": "CMV local persuasion base rate (delta earned)",
+        "value_or_null": "0.651 (781/1200 successful challenger arguments)",
+        "uncertainty_or_null": null,
+        "source_ref": "experiments/results/exp021_cmv/cmv_common.json (counted directly)",
+        "context": "Local matched-challenger persuasion dataset: 781 arguments earned a delta vs 419 that did not. This is a REAL, locally refittable persuasion-success outcome (online text argumentation) — a different construct/domain from face-to-face canvassing.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Broockman & Kalla 2016: South-Florida canvassing RCT (n=501)",
+      "Kalla & Broockman 2018: 49 US field experiments (meta-analytic corpus)",
+      "Wood & Porter 2019: large-N survey experiments on factual corrections",
+      "LOCAL: r/ChangeMyView (CMV) matched challenger arguments with delta-success labels (also used in repo exp021/exp074/exp087)"
+    ],
+    "replication_evidence": "The durable-persuasion canvassing result was independently reproduced by Kalla & Broockman 2020 (deep canvassing on immigration, AJPS). NOTE: Broockman & Kalla 2016 was itself the credible replacement for the RETRACTED LaCour & Green 2014 Science study — provenance matters. The minimal-effects and elusive-backfire findings are each corroborated by multiple subsequent studies.",
+    "critiques_or_nulls": [
+      "generic persuasion effects on vote choice are ~0 (Kalla & Broockman 2018) — durable effects (Broockman-Kalla 2016) are the exception, tied to perspective-taking on identity issues, not a universal lever",
+      "backfire/continued-influence is rare (Wood & Porter 2019), so models should NOT assume corrections routinely entrench beliefs",
+      "attitude effects frequently decay; measurement timing drives apparent magnitude",
+      "CMV success is platform-specific (persuadable, self-selected challengers) and confounds argument quality with responder openness"
+    ],
+    "applicability_limits": [
+      "durable effects documented for identity-prejudice perspective-taking, not for general political persuasion",
+      "online-text persuasion (CMV) and face-to-face canvassing are distinct domains — do not pool",
+      "effects are heterogeneous and time-decaying"
+    ],
+    "transport_risks": [
+      "the durable canvassing effect does not transport to generic campaign persuasion (which is ~0)",
+      "CMV-fitted success models are platform- and topic-specific",
+      "message-target fit dominates, so a single tau is not transportable"
+    ],
+    "local_refit_feasible": true,
+    "best_validation_route": "Refit an argument-level persuasion-success model on the local CMV dataset (781/419, base 0.651; matched-challenger design already used in repo exp021/exp074/exp087) as an ASSOCIATIONAL/predictive persuasion-response mechanism. Anchor external validity to Broockman-Kalla (durable, identity) and Kalla-Broockman 2018 (near-zero generic) as domain-boundary priors — but treat CMV as its own domain, not as a test of canvassing.",
+    "expected_applicability": "domain-bounded — strong for online-text argument-response persuasion (CMV-like); weak/near-zero for generic political persuasion; durable only for identity perspective-taking",
+    "expected_transport_risk": "high",
+    "priority": "high",
+    "planned_implementation": "Register a persuasion / attitude-change family with (a) a reduced-form treatment-effect operator (small, decaying, heterogeneous tau; default prior near zero per Kalla-Broockman 2018) and (b) a CMV-fitted argument-response success model as a domain pack; encode the elusive-backfire finding as a guard against assuming automatic backfire.",
+    "planned_parameter_packs": [
+      "cmv_persuasion_success (associational; local refit on cmv_common.json; base rate 0.651)",
+      "generic_campaign_persuasion_nearzero_prior (from Kalla & Broockman 2018 meta-analysis; effect ~ 0)"
+    ],
+    "promotion_blocker": "No family/operator is registered yet; needs implementation, then a held-out CMV refit for local validation. The strongest causal source (Broockman-Kalla 2016) is domain-specific (canvassing/identity prejudice) and does not transport to online-text persuasion, and its numeric effect size remains unverified this pass.",
+    "disposition": "structural_candidate_only"
+  }
+]

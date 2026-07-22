@@ -1,0 +1,139 @@
+{
+ "cohorts": {
+  "train_cutoff_h": 24,
+  "eval_cutoff_h": 48,
+  "window_h": 24,
+  "note": "both windows pre-announcement (regime break ~h80)"
+ },
+ "detail": {
+  "H0_base": {
+   "brier": 0.06274,
+   "logloss": 0.2517,
+   "auroc": 0.5,
+   "pr_auc": 0.066,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0408,
+   "n": 4000
+  },
+  "H1_logistic": {
+   "brier": 0.06167,
+   "logloss": 0.2421,
+   "auroc": 0.595,
+   "pr_auc": 0.106,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0526,
+   "n": 4000
+  },
+  "V2_max": {
+   "brier": 0.06401,
+   "logloss": 0.253,
+   "auroc": 0.564,
+   "pr_auc": 0.098,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0738,
+   "n": 4000
+  },
+  "V2_no_rollout": {
+   "brier": 0.06398,
+   "logloss": 0.2533,
+   "auroc": 0.569,
+   "pr_auc": 0.103,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0719,
+   "n": 4000
+  },
+  "V2_no_network": {
+   "brier": 0.06274,
+   "logloss": 0.2517,
+   "auroc": 0.5,
+   "pr_auc": 0.066,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0408,
+   "n": 4000
+  },
+  "V2_no_latent": {
+   "brier": 0.06362,
+   "logloss": 0.2538,
+   "auroc": 0.57,
+   "pr_auc": 0.101,
+   "real_rate": 0.0665,
+   "pred_rate": 0.065,
+   "n": 4000
+  }
+ },
+ "paired": {
+  "V2_vs_H1": {
+   "mean": 0.002338,
+   "ci95": [
+    0.001167,
+    0.003495
+   ],
+   "n": 4000
+  },
+  "V2_vs_H0": {
+   "mean": 0.001271,
+   "ci95": [
+    -0.000322,
+    0.002824
+   ],
+   "n": 4000
+  },
+  "V2_vs_no_rollout": {
+   "mean": 3e-05,
+   "ci95": [
+    -0.000186,
+    0.000218
+   ],
+   "n": 4000
+  },
+  "V2_vs_no_network": {
+   "mean": 0.001271,
+   "ci95": [
+    -0.000322,
+    0.002824
+   ],
+   "n": 4000
+  },
+  "V2_vs_no_latent": {
+   "mean": 0.000388,
+   "ci95": [
+    0.000148,
+    0.000631
+   ],
+   "n": 4000
+  },
+  "H1_vs_H0_network_features": {
+   "mean": -0.001067,
+   "ci95": [
+    -0.001555,
+    -0.00058
+   ],
+   "n": 4000
+  }
+ },
+ "fitted": {
+  "logistic": {
+   "w": [
+    0.6033,
+    -0.1137,
+    0.0659,
+    -0.0177
+   ],
+   "b": -3.2649
+  },
+  "q_per_exposure_day": 0.022391761035942502
+ },
+ "rollout_scope": {
+  "in_sample_edges": 3414,
+  "note": "within-window contagion simulated over the sampled cohort subgraph only \u2014 out-of-sample mid-window activations are not simulated (honest scope bound)"
+ },
+ "llm_arms": "STRUCTURALLY ABSENT \u2014 no message content in SNAP Higgs; nothing to interpret",
+ "_meta": {
+  "n_sample": 4000,
+  "particles": 30,
+  "v2_latency_s": 0.3,
+  "runtime_s": 31.1,
+  "llm_calls": 0,
+  "est_cost_usd": 0.0
+ }
+}

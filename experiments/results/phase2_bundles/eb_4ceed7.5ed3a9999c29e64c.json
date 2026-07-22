@@ -1,0 +1,1588 @@
+{
+ "bundle_id": "eb_4ceed7",
+ "question": "Will the streaming service hit 1M subscribers within three months of launch?",
+ "as_of": 1682899200.0,
+ "compiler_plan_hash": "5a2ce1ef6137",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_7ce2b6b089",
+   "claim_or_quantity": "yes if the number of subscribers (active accounts) on 2023-08-01 is >= 1,000,000, else no",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "streaming_service",
+    "competitor_A",
+    "competitor_B"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_be921cbc04",
+   "claim_or_quantity": "value/context of streaming_service.subscriber_count",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "streaming_service.subscriber_count",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_734d6e0ded",
+   "claim_or_quantity": "value/context of potential_subscribers.interest_level",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "potential_subscribers.interest_level",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3c4d72ee77",
+   "claim_or_quantity": "value/context of streaming_service.content_quality",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "streaming_service.content_quality",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c50b30f597",
+   "claim_or_quantity": "evidence discriminating structural hypothesis viral_growth",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:viral_growth",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2e92cb3648",
+   "claim_or_quantity": "evidence discriminating structural hypothesis marketing_dominated",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:marketing_dominated",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_d0f2ca6a43",
+   "claim_or_quantity": "decision rules / process of streaming_service",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "streaming_service",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_7ce2b6b089",
+   "terms": "streaming service hit subscribers three months launch streaming service competitor A competitor B",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_be921cbc04",
+   "terms": "streaming service subscriber count",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_734d6e0ded",
+   "terms": "potential subscribers interest level",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_7ce2b6b089",
+   "logical_query": "streaming service hit subscribers three months launch streaming service competitor A competitor B after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=streaming+service+hit+subscribers+three+months+launch+streaming+service+competitor+A+competitor+B+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783907197.091586,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:46:37 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII1JBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcf9suXmITWNDQsIlZSTkpvzA-Jb-kuLggJ7E4ozi1qCy1KN7IwMjMwNzATM_AJL7AAACjFziM\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "7649a6121a4cd5d94c817dafe5454ba330e90fe5ebef45c0b061175956ca5d44",
+   "n_bytes": 2428,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 1,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.732
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_be921cbc04",
+   "logical_query": "streaming service subscriber count after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=streaming+service+subscriber+count+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783907197.8250444,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:46:38 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw05BiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc_9ouXmITWLD15G9GJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC7KzlG\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "e32c8825f0c5e1c4947a0b7787713fe57b3ddccaa617dad1210087d6d0d0d6f0",
+   "n_bytes": 60764,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.662
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_734d6e0ded",
+   "logical_query": "potential subscribers interest level after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=potential+subscribers+interest+level+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783907198.489294,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:46:39 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0pBiSO44w5ACxJVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwc_9suXmIT2LD2ibuSclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAHNMOKo\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d3b5c01debb25242913e0eed1fb2f144ecb5bf3863b6168fae1c80e5eac08e20",
+   "n_bytes": 3940,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.574
+  }
+ ],
+ "raw_content_refs": [
+  "7649a6121a4cd5d94c817dafe5454ba330e90fe5ebef45c0b061175956ca5d44",
+  "d3b5c01debb25242913e0eed1fb2f144ecb5bf3863b6168fae1c80e5eac08e20",
+  "e32c8825f0c5e1c4947a0b7787713fe57b3ddccaa617dad1210087d6d0d0d6f0"
+ ],
+ "documents": [
+  {
+   "id": "c64500149981b16e",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFB3OHNJR09IOE9Ec0JuV3RBRUhBX2FRLUN2QzdDTU85VWlQSWpjVU5HeEpjWGg3YVpiQ2llRVpLRnl6am82VGVjWmRtR1ZPc3YydFRxeVBpVnVMbjcyYzNzZVhaMG9TVzJnN3MxVQ?oc=5",
+   "title": "Blockbuster: The rise and fall of the movie rental store, and what happened to the brand - Business Insider",
+   "text": "Blockbuster: The rise and fall of the movie rental store, and what happened to the brand - Business Insider. Blockbuster: The rise and fall of the movie rental store, and what happened to the brand Business Insider",
+   "content_hash": "72ac4834bca51831",
+   "raw_feed_hash": "7649a6121a4cd5d94c817dafe5454ba330e90fe5ebef45c0b061175956ca5d44",
+   "published_at": 1682319600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_7ce2b6b089",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "36bbb357466e5047",
+   "source": "Marketing Brew",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPZGlBbGs3RFpTenllY1l6bzBkWk13V0lhWm95Skc1VmtJU3hvWWNzWjJWdWk2c2x5WHpYRXIwYmpVZndLa2RnMVQ0LWJ2MmZaOGEzNEQzY0VSaTZXYjVJT00zQzMtUFV3ZC11MmNVM3N0dmF6bjFrUlF2VUJvZXZRX1NLRDhyazRzUkNEc2xSYnFTZ1dlSlZoTm95VnhaeURMTzlZSTZTWlgyMVQ5YkhtMEZPNnpRZw?oc=5",
+   "title": "Streamers notched big subscriber numbers in 2022\u2014and bigger losses - Marketing Brew",
+   "text": "Streamers notched big subscriber numbers in 2022\u2014and bigger losses - Marketing Brew. Streamers notched big subscriber numbers in 2022\u2014and bigger losses Marketing Brew",
+   "content_hash": "e6cdbaecb9d759a8",
+   "raw_feed_hash": "e32c8825f0c5e1c4947a0b7787713fe57b3ddccaa617dad1210087d6d0d0d6f0",
+   "published_at": 1677657600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_be921cbc04",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "027bf3c6e844cd92",
+   "source": "ADWEEK",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNNHhVNk1Bc2RSajdDN3JUazN4TjdFNWQtZXg3b21weHVfVnNoRDI5ZTI0d3JOSDYzYjdidlhXa3dKcTVxRTV0dEh1aW1aQm4teFpQR3JqaWswTG9jOGxNVHhpR2RPMGZfTnJHX0ZNdjFpbWxKT01lRjhzSjJKMlNWWHVadm9GRWExR0NjT1dHQms1MzBrTUZtUDZtOU0zZXhYd3c?oc=5",
+   "title": "How the Biggest Streaming Services Stack Up at the End of 2022 - ADWEEK",
+   "text": "How the Biggest Streaming Services Stack Up at the End of 2022 - ADWEEK. How the Biggest Streaming Services Stack Up at the End of 2022 ADWEEK",
+   "content_hash": "5c3897b2210fcb67",
+   "raw_feed_hash": "e32c8825f0c5e1c4947a0b7787713fe57b3ddccaa617dad1210087d6d0d0d6f0",
+   "published_at": 1672300800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_be921cbc04",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4e585f912b2af2d4",
+   "source": "IndieWire",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNanprMGY2R0hOMVJIbEFlR2xFczV3NjNZQXlzNnN6TkI0V0ptel9Odmk1aEt4ZUswV1FSTzZqMWJwYThEU01pbGRLQXg4XzdVbzNONjRPeUVSdkFmSG9Wd1ZTeEpITkUxN3RpTFRwRUVzbnZzMzJsYnpSaEN0MVN2WkNETFdfekhnalRpRUZIRU5YTUt5NVVTaG41dHhVWnk0S200X3JkcnR3ZDZrcWhvaGloMmZWa25LLUdVVm53?oc=5",
+   "title": "Ranking the Winners in the Streaming Wars, by Revenue and Subscribers - IndieWire",
+   "text": "Ranking the Winners in the Streaming Wars, by Revenue and Subscribers - IndieWire. Ranking the Winners in the Streaming Wars, by Revenue and Subscribers IndieWire",
+   "content_hash": "8a5410bac5655388",
+   "raw_feed_hash": "e32c8825f0c5e1c4947a0b7787713fe57b3ddccaa617dad1210087d6d0d0d6f0",
+   "published_at": 1678435200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_be921cbc04",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "79bedd4a24c7e400",
+   "source": "Bloomberg Second Measure",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOeG5hekV2WV9wQlNWZDJ4MHZrUmxUaE9TQ2dpUXNuT2J1eUNzWXRnZWZaRnFWbk1zWWduUjVEUW8ycWxheHhOZUVnOUdYOUIyRXlxWFMwUjFIcmVYSEx6cFpDZEV3R3BPcnc4MFNZQmNIQ3hUVGRLbG5tZ1JvbnZQUndwUllhWHp2?oc=5",
+   "title": "Netflix saw sales growth in Q1 2023, while new ad-supported subscription tier is still catching on - Bloomberg Second Measure",
+   "text": "Netflix saw sales growth in Q1 2023, while new ad-supported subscription tier is still catching on - Bloomberg Second Measure. Netflix saw sales growth in Q1 2023, while new ad-supported subscription tier is still catching on Bloomberg Second Measure",
+   "content_hash": "df2b00e6642a0689",
+   "raw_feed_hash": "e32c8825f0c5e1c4947a0b7787713fe57b3ddccaa617dad1210087d6d0d0d6f0",
+   "published_at": 1682060400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_be921cbc04",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0abbdd59fabe008a",
+   "source": "Yahoo",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPRlpiaFk5dHE4aUtqSFR0SVdIVUpyYzFRWmpRRV9MOFdvWVdxQUV4RHg2NmI1b1NBd00zMWREMGtoZm1FQkRva2kzRjBuWFNWZXRZb0x6NEJ2MTFXellIM1FJQkpZT0FlM1Z5MWY4bjZodW9pWUNTM0RpQm9KclZLbHhMeEpZVlVfQzkweW9SSTRSUQ?oc=5",
+   "title": "How the Major Streamers Stack Up Right Now in Subscribers and Revenue | Charts - Yahoo",
+   "text": "How the Major Streamers Stack Up Right Now in Subscribers and Revenue | Charts - Yahoo. How the Major Streamers Stack Up Right Now in Subscribers and Revenue | Charts Yahoo",
+   "content_hash": "4855c044dfb657d8",
+   "raw_feed_hash": "e32c8825f0c5e1c4947a0b7787713fe57b3ddccaa617dad1210087d6d0d0d6f0",
+   "published_at": 1670227200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_be921cbc04",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "26c058e71101a991",
+   "source": "Forbes",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOdHNXQV9FbXdwd2hmV0pRVGlVWEU2SHg4M3ZzVGJDUEQ4MjBXc2p1RTc4Sm50VGI2Y3ltVThnbjFlT21CeFhyaGdmakota05rMkZ1TWM4NktONTg2YllnRGVjR09SdEF2QVAyLW5iTlFReXAzZVNlUTdfTWs1RDR3c25xZzkyNXpidnlUN1RTbDFxZk1fbTVNMUZfUzdBem56VjJQNFlmRkhOWU56MFZVQzJFLXVYRmIzRVZ6bkx0elNvYW55c1RINHlFRzl3d2lCblcydVc4YnFtclJjem1YemZScnJET3lO?oc=5",
+   "title": "Paramount Gains Subscribers As Disney+ Reports Losses: Where All The Major Streaming Services Stand - Forbes",
+   "text": "Paramount Gains Subscribers As Disney+ Reports Losses: Where All The Major Streaming Services Stand - Forbes. Paramount Gains Subscribers As Disney+ Reports Losses: Where All The Major Streaming Services Stand Forbes",
+   "content_hash": "afcf92a500ff7fbf",
+   "raw_feed_hash": "e32c8825f0c5e1c4947a0b7787713fe57b3ddccaa617dad1210087d6d0d0d6f0",
+   "published_at": 1676534400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_be921cbc04",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "68682899faede407",
+   "source": "Visual Capitalist",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPV1hESjZEYTRQX1RWQ090aUQ2RW5odlFkT19KTG1Zem5pcWRlLUthUXg3SER0UWRuQ2haZnA0X05GLWw0Z3VMdEQyWDR3Ykh0Rmc2UE53Q2huV3gxUC1UWFFVaHh6UjlPR2lya2cteWFqelpTZ0pYQU5fYmhaZEx5c0lWdDN2ai1pUUxPbWVHRW1lYkJMbE5mUGFqYw?oc=5",
+   "title": "Mapped: The Most Popular Video Streaming Service by Country - Visual Capitalist",
+   "text": "Mapped: The Most Popular Video Streaming Service by Country - Visual Capitalist. Mapped: The Most Popular Video Streaming Service by Country Visual Capitalist",
+   "content_hash": "efd73c7baca607f6",
+   "raw_feed_hash": "e32c8825f0c5e1c4947a0b7787713fe57b3ddccaa617dad1210087d6d0d0d6f0",
+   "published_at": 1677398400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_be921cbc04",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "78183fce7522e10c",
+   "source": "Senal News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNcnFpXzJPV1NEdlVhQWM2SnQ5QzM2NnNtRWVBWi1sT0wtejV1QmVrd3NsaDRzZWtDUEFMZHdhalFyQ3BwUllXNkFkcWlWRmRHbEUwZXFpLXNMZTRzazIwazdsM0NaLWxvTWV5TkVoVVBHNXAzUUtmb0dGTmNScTdnX2htT2tnNWoxN2d0bFQyQdIBlAFBVV95cUxPSjNFdEN3RDkyczREZ2J6UllDOXNNR2ZYVUVwbkJ4OXV1SDZKNndUNS1nT3hGSWVlWnlLN0JSbVlURFFzMFRrdThVSk5HVDVHNVVNQmdWSVFjZXNTNmpEYW5hZDQ2bFZaOHBtcUtvVE13U1FVM1ZxWENhSUt1Nm5VTTlJVG1JNURvMHJhWWMybWVmRGRC?oc=5",
+   "title": "Which are the most popular streaming services by country? - Se\u00f1al News - Senal News",
+   "text": "Which are the most popular streaming services by country? - Se\u00f1al News - Senal News. Which are the most popular streaming services by country? - Se\u00f1al News Senal News",
+   "content_hash": "a03b55275c3e683b",
+   "raw_feed_hash": "e32c8825f0c5e1c4947a0b7787713fe57b3ddccaa617dad1210087d6d0d0d6f0",
+   "published_at": 1677571200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_be921cbc04",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2e15e1ea6f0b68f5",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxQV0J5clM1eWxIUjlrSjQzUWg3VDVYSy1CWFBrUFYwZmZJUDR4eUREZVZaVG0yc1J4MEJUMVBkWjlfN0RSakZCT0V1YS1uNGdRaXZ1R1pJQmgtbkV2ZVVaSUl2RURkUWRFSjdhemhPUFZMNnc1LWhkVl9KUy1reUFReTU4aWhJVzB6cWsyUlZScVVZU0c4YXdQVmttWUw3Qk41Mk9ILXNtSFZCcExub0NDN0NxN2lfV2p5bU9xRU9DVmRRaHJfYURmRXNuQ1hPSS1UNmFXOUNKYXBSdw?oc=5",
+   "title": "Consumers care about sustainability\u2014and back it up with their wallets - McKinsey & Company",
+   "text": "Consumers care about sustainability\u2014and back it up with their wallets - McKinsey & Company. Consumers care about sustainability\u2014and back it up with their wallets McKinsey & Company",
+   "content_hash": "14478edeced1b694",
+   "raw_feed_hash": "d3b5c01debb25242913e0eed1fb2f144ecb5bf3863b6168fae1c80e5eac08e20",
+   "published_at": 1675670400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_734d6e0ded",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c143c317b8d51420",
+   "source": "Fast Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNY2NSMWlWNXdjSnVEY0l6T2Y0MkZUVmtFOG10QUFWUlpLSmh1alhFbl9yUGlPUG1iQlFlSDdQZDNuNElZZmZhLU5NZm5DcFhocTBrZ21TeXZpd3RiRGZKN1BZaVhnYVBwVk84TUwyX09mVUI0a2xWaWp3czdrbWd2ekRlMm93ZjE3N2pvWEk4OW5MdXAzQlpYSXQ4T3lSNTZ2?oc=5",
+   "title": "Hinge is rolling out its $50 per month subscription on Thursday - Fast Company",
+   "text": "Hinge is rolling out its $50 per month subscription on Thursday - Fast Company. Hinge is rolling out its $50 per month subscription on Thursday Fast Company",
+   "content_hash": "9f6eb680cf072d83",
+   "raw_feed_hash": "d3b5c01debb25242913e0eed1fb2f144ecb5bf3863b6168fae1c80e5eac08e20",
+   "published_at": 1676448000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_734d6e0ded",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "c64500149981b16e:c0",
+   "source_id": "c64500149981b16e",
+   "subject": "Blockbuster",
+   "predicate": "is the subject of",
+   "object": "an article titled 'Blockbuster: The rise and fall of the movie rental store, and what happened to the brand'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Blockbuster: The rise and fall of the movie rental store, and what happened to the brand - Business Insider",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682319600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Blockbuster",
+    "Business Insider"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_20f7ff1714",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7ce2b6b089"
+   }
+  },
+  {
+   "claim_id": "c64500149981b16e:c1",
+   "source_id": "c64500149981b16e",
+   "subject": "the article",
+   "predicate": "is published by",
+   "object": "Business Insider",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Blockbuster: The rise and fall of the movie rental store, and what happened to the brand - Business Insider",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682319600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Business Insider"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_20f7ff1714",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7ce2b6b089"
+   }
+  },
+  {
+   "claim_id": "36bbb357466e5047:c0",
+   "source_id": "36bbb357466e5047",
+   "subject": "Streamers",
+   "predicate": "notched",
+   "object": "big subscriber numbers",
+   "value": "",
+   "units": "",
+   "qualifiers": "in 2022",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Streamers notched big subscriber numbers in 2022",
+   "span_verified": true,
+   "event_time": "2022",
+   "publication_time": 1677657600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Streamers"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_4eb14c696e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_be921cbc04"
+   }
+  },
+  {
+   "claim_id": "36bbb357466e5047:c1",
+   "source_id": "36bbb357466e5047",
+   "subject": "Streamers",
+   "predicate": "notched",
+   "object": "bigger losses",
+   "value": "",
+   "units": "",
+   "qualifiers": "in 2022",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "and bigger losses",
+   "span_verified": true,
+   "event_time": "2022",
+   "publication_time": 1677657600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Streamers"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_4eb14c696e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_be921cbc04"
+   }
+  },
+  {
+   "claim_id": "2e15e1ea6f0b68f5:c0",
+   "source_id": "2e15e1ea6f0b68f5",
+   "subject": "Consumers",
+   "predicate": "care about",
+   "object": "sustainability",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Consumers care about sustainability\u2014and back it up with their wallets",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675670400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Consumers",
+    "sustainability"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c5cae9fd0e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_734d6e0ded"
+   }
+  },
+  {
+   "claim_id": "2e15e1ea6f0b68f5:c1",
+   "source_id": "2e15e1ea6f0b68f5",
+   "subject": "Consumers",
+   "predicate": "back up with their wallets",
+   "object": "sustainability",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Consumers care about sustainability\u2014and back it up with their wallets",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675670400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Consumers",
+    "sustainability"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c5cae9fd0e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_734d6e0ded"
+   }
+  },
+  {
+   "claim_id": "027bf3c6e844cd92:c0",
+   "source_id": "027bf3c6e844cd92",
+   "subject": "the Biggest Streaming Services",
+   "predicate": "stack up",
+   "object": "at the End of 2022",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "How the Biggest Streaming Services Stack Up at the End of 2022",
+   "span_verified": true,
+   "event_time": "End of 2022",
+   "publication_time": 1672300800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "the Biggest Streaming Services"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e0e199c67c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_be921cbc04"
+   }
+  },
+  {
+   "claim_id": "027bf3c6e844cd92:c1",
+   "source_id": "027bf3c6e844cd92",
+   "subject": "ADWEEK",
+   "predicate": "published",
+   "object": "the article",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "ADWEEK",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672300800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "ADWEEK"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e0e199c67c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_be921cbc04"
+   }
+  },
+  {
+   "claim_id": "c143c317b8d51420:c0",
+   "source_id": "c143c317b8d51420",
+   "subject": "Hinge",
+   "predicate": "is rolling out",
+   "object": "its $50 per month subscription",
+   "value": "50",
+   "units": "USD per month",
+   "qualifiers": "on Thursday",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Hinge is rolling out its $50 per month subscription on Thursday",
+   "span_verified": true,
+   "event_time": "Thursday",
+   "publication_time": 1676448000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Hinge"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3df3554afa",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_734d6e0ded"
+   }
+  },
+  {
+   "claim_id": "4e585f912b2af2d4:c0",
+   "source_id": "4e585f912b2af2d4",
+   "subject": "IndieWire",
+   "predicate": "published article about",
+   "object": "ranking winners in streaming wars by revenue and subscribers",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Ranking the Winners in the Streaming Wars, by Revenue and Subscribers - IndieWire",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678435200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "IndieWire"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_dbcd7b69ee",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_be921cbc04"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Blockbuster",
+   "normalized": "blockbuster",
+   "candidates": [
+    {
+     "entity_id": "ent_7b7b56fb4c",
+     "canonical": "blockbuster",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Blockbuster"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Business Insider",
+   "normalized": "business insider",
+   "candidates": [
+    {
+     "entity_id": "ent_b50759d7aa",
+     "canonical": "business insider",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Business Insider",
+      "Business Insider"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Business Insider",
+   "normalized": "business insider",
+   "candidates": [
+    {
+     "entity_id": "ent_b50759d7aa",
+     "canonical": "business insider",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Business Insider",
+      "Business Insider"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Streamers",
+   "normalized": "streamers",
+   "candidates": [
+    {
+     "entity_id": "ent_6d550ebcc7",
+     "canonical": "streamers",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Streamers",
+      "Streamers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Streamers",
+   "normalized": "streamers",
+   "candidates": [
+    {
+     "entity_id": "ent_6d550ebcc7",
+     "canonical": "streamers",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Streamers",
+      "Streamers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Consumers",
+   "normalized": "consumers",
+   "candidates": [
+    {
+     "entity_id": "ent_44f6713822",
+     "canonical": "consumers",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Consumers",
+      "Consumers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "sustainability",
+   "normalized": "sustainability",
+   "candidates": [
+    {
+     "entity_id": "ent_86b38fdd14",
+     "canonical": "sustainability",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "sustainability",
+      "sustainability"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Consumers",
+   "normalized": "consumers",
+   "candidates": [
+    {
+     "entity_id": "ent_44f6713822",
+     "canonical": "consumers",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Consumers",
+      "Consumers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "sustainability",
+   "normalized": "sustainability",
+   "candidates": [
+    {
+     "entity_id": "ent_86b38fdd14",
+     "canonical": "sustainability",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "sustainability",
+      "sustainability"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "the Biggest Streaming Services",
+   "normalized": "biggest streaming services",
+   "candidates": [
+    {
+     "entity_id": "ent_46eede5985",
+     "canonical": "biggest streaming services",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "the Biggest Streaming Services"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "ADWEEK",
+   "normalized": "adweek",
+   "candidates": [
+    {
+     "entity_id": "ent_941652eb4a",
+     "canonical": "adweek",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "ADWEEK"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Hinge",
+   "normalized": "hinge",
+   "candidates": [
+    {
+     "entity_id": "ent_fecf06d591",
+     "canonical": "hinge",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Hinge"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "IndieWire",
+   "normalized": "indiewire",
+   "candidates": [
+    {
+     "entity_id": "ent_b2b2cb2ba7",
+     "canonical": "indiewire",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "IndieWire"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "c64500149981b16e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1682319600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682319600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "36bbb357466e5047": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1677657600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677657600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "027bf3c6e844cd92": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1672300800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672300800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4e585f912b2af2d4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678435200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678435200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "79bedd4a24c7e400": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1682060400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682060400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0abbdd59fabe008a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1670227200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1670227200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "26c058e71101a991": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1676534400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676534400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "68682899faede407": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1677398400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677398400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "78183fce7522e10c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1677571200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677571200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2e15e1ea6f0b68f5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1675670400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675670400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c143c317b8d51420": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1676448000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676448000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_20f7ff1714",
+   "member_ids": [
+    "c64500149981b16e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4eb14c696e",
+   "member_ids": [
+    "36bbb357466e5047"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Marketing Brew",
+   "primary_source": "Marketing Brew",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e0e199c67c",
+   "member_ids": [
+    "027bf3c6e844cd92"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "ADWEEK",
+   "primary_source": "ADWEEK",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_dbcd7b69ee",
+   "member_ids": [
+    "4e585f912b2af2d4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "IndieWire",
+   "primary_source": "IndieWire",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ab2dcf401a",
+   "member_ids": [
+    "79bedd4a24c7e400"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Bloomberg Second Measure",
+   "primary_source": "Bloomberg Second Measure",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b24f0af21c",
+   "member_ids": [
+    "0abbdd59fabe008a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Yahoo",
+   "primary_source": "Yahoo",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2ba2f43cfe",
+   "member_ids": [
+    "26c058e71101a991"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Forbes",
+   "primary_source": "Forbes",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_cdb2155599",
+   "member_ids": [
+    "68682899faede407"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Visual Capitalist",
+   "primary_source": "Visual Capitalist",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d85e20f07f",
+   "member_ids": [
+    "78183fce7522e10c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Senal News",
+   "primary_source": "Senal News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c5cae9fd0e",
+   "member_ids": [
+    "2e15e1ea6f0b68f5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "McKinsey & Company",
+   "primary_source": "McKinsey & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3df3554afa",
+   "member_ids": [
+    "c143c317b8d51420"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Fast Company",
+   "primary_source": "Fast Company",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "c64500149981b16e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682319600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c64500149981b16e:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682319600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "36bbb357466e5047:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677657600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "36bbb357466e5047:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677657600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2e15e1ea6f0b68f5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675670400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2e15e1ea6f0b68f5:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675670400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "027bf3c6e844cd92:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672300800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "027bf3c6e844cd92:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672300800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c143c317b8d51420:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676448000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4e585f912b2af2d4:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678435200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "c64500149981b16e:c0",
+  "c64500149981b16e:c1",
+  "36bbb357466e5047:c0",
+  "36bbb357466e5047:c1",
+  "2e15e1ea6f0b68f5:c0",
+  "2e15e1ea6f0b68f5:c1",
+  "027bf3c6e844cd92:c0",
+  "027bf3c6e844cd92:c1",
+  "c143c317b8d51420:c0",
+  "4e585f912b2af2d4:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_7ce2b6b089": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_be921cbc04": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_734d6e0ded": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_3c4d72ee77": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c50b30f597": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_2e92cb3648": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_d0f2ca6a43": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_3c4d72ee77",
+  "req_c50b30f597",
+  "req_2e92cb3648",
+  "req_d0f2ca6a43"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 11,
+  "n_contradictions": 0,
+  "n_documents": 11
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.168,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "5ed3a9999c29e64c",
+ "bundle_hash": "5ed3a9999c29e64c",
+ "_persisted_at": "2026-07-13T01:46:57Z"
+}

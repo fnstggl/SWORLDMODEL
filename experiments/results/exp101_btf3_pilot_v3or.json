@@ -1,0 +1,54 @@
+{
+ "n": 50,
+ "arm": "v3or",
+ "base_rate_yes": 0.26,
+ "compile_failures": 0,
+ "model": {
+  "brier": 0.3367,
+  "log_loss": 1.4497,
+  "accuracy_at_0.5": 0.62,
+  "AUC": 0.5083,
+  "frac_extreme": 0.36
+ },
+ "sota_futuresearch": {
+  "n": 45,
+  "brier": 0.0918,
+  "accuracy_at_0.5": 0.8889,
+  "AUC": 0.9179
+ },
+ "const_baselines": {
+  "p=0.5": 0.25,
+  "p=sample_base_rate": 0.1924,
+  "p=0.33_global_prior": 0.1973
+ },
+ "by_mechanism": {
+  "aggregation": {
+   "n": 5,
+   "brier": 0.513
+  },
+  "arrival": {
+   "n": 20,
+   "brier": 0.1212
+  },
+  "contest": {
+   "n": 6,
+   "brier": 0.1904
+  },
+  "diffusion": {
+   "n": 2,
+   "brier": 0.1156
+  },
+  "escalation": {
+   "n": 3,
+   "brier": 0.2633
+  },
+  "persistence": {
+   "n": 1,
+   "brier": 0.0225
+  },
+  "whipcount": {
+   "n": 13,
+   "brier": 0.7428
+  }
+ }
+}

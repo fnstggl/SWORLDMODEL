@@ -1,0 +1,927 @@
+{
+  "n_completed": 91,
+  "n_questions": 93,
+  "base_rate_yes": 0.747,
+  "per_arm_scores": {
+    "prior_only": {
+      "n": 91,
+      "brier": 0.2351,
+      "log_loss": 0.6626,
+      "directional_acc": 0.3516,
+      "ece": 0.2829,
+      "catastrophic_rate": 0.011
+    },
+    "phase2": {
+      "n": 91,
+      "brier": 0.2612,
+      "log_loss": 0.7184,
+      "directional_acc": 0.4066,
+      "ece": 0.2557,
+      "catastrophic_rate": 0.5165
+    },
+    "phase3_raw": {
+      "n": 91,
+      "brier": 0.2248,
+      "log_loss": 0.6434,
+      "directional_acc": 0.6593,
+      "ece": 0.2228,
+      "catastrophic_rate": 0.3297
+    },
+    "phase3_repaired": {
+      "n": 91,
+      "brier": 0.2537,
+      "log_loss": 0.703,
+      "directional_acc": 0.4725,
+      "ece": 0.2448,
+      "catastrophic_rate": 0.4615
+    },
+    "fitted_generic": {
+      "n": 91,
+      "brier": 0.2152,
+      "log_loss": 0.622,
+      "directional_acc": 0.7033,
+      "ece": 0.1804,
+      "catastrophic_rate": 0.2967
+    },
+    "causal": {
+      "n": 91,
+      "brier": 0.2148,
+      "log_loss": 0.6221,
+      "directional_acc": 0.7473,
+      "ece": 0.1642,
+      "catastrophic_rate": 0.2527
+    },
+    "causal_struct": {
+      "n": 91,
+      "brier": 0.2143,
+      "log_loss": 0.6181,
+      "directional_acc": 0.6813,
+      "ece": 0.2057,
+      "catastrophic_rate": 0.3187
+    },
+    "ensemble": {
+      "n": 91,
+      "brier": 0.2352,
+      "log_loss": 0.6631,
+      "directional_acc": 0.6593,
+      "ece": 0.2181,
+      "catastrophic_rate": 0.3407
+    },
+    "selector": {
+      "n": 91,
+      "brier": 0.2179,
+      "log_loss": 0.6273,
+      "directional_acc": 0.6703,
+      "ece": 0.1836,
+      "catastrophic_rate": 0.3187
+    }
+  },
+  "domain_breakdown": {
+    "elections": {
+      "n": 22,
+      "phase2_brier": 0.2753,
+      "selector_brier": 0.2086,
+      "fitted_brier": 0.2086
+    },
+    "econ": {
+      "n": 7,
+      "phase2_brier": 0.3271,
+      "selector_brier": 0.1834,
+      "fitted_brier": 0.1834
+    },
+    "macro": {
+      "n": 5,
+      "phase2_brier": 0.2469,
+      "selector_brier": 0.2229,
+      "fitted_brier": 0.2287
+    },
+    "finance": {
+      "n": 12,
+      "phase2_brier": 0.2764,
+      "selector_brier": 0.2336,
+      "fitted_brier": 0.2336
+    },
+    "tech": {
+      "n": 9,
+      "phase2_brier": 0.2252,
+      "selector_brier": 0.2304,
+      "fitted_brier": 0.2121
+    },
+    "geopolitics": {
+      "n": 12,
+      "phase2_brier": 0.2225,
+      "selector_brier": 0.2306,
+      "fitted_brier": 0.2266
+    },
+    "sports": {
+      "n": 10,
+      "phase2_brier": 0.2627,
+      "selector_brier": 0.2269,
+      "fitted_brier": 0.2269
+    },
+    "science": {
+      "n": 9,
+      "phase2_brier": 0.2858,
+      "selector_brier": 0.2258,
+      "fitted_brier": 0.2196
+    },
+    "politics": {
+      "n": 5,
+      "phase2_brier": 0.1943,
+      "selector_brier": 0.1784,
+      "fitted_brier": 0.1784
+    }
+  },
+  "paired_selector_vs_phase2": {
+    "n": 91,
+    "mean_brier_diff": -0.0433,
+    "brier_diff_ci95": [
+      -0.0666,
+      -0.0209
+    ],
+    "mean_logloss_diff": -0.091,
+    "logloss_diff_ci95": [
+      -0.1419,
+      -0.0434
+    ],
+    "note": "arm_a=selector, arm_b=phase2; negative => selector improves vs phase2"
+  },
+  "paired_fitted_vs_phase2": {
+    "n": 91,
+    "mean_brier_diff": -0.0459,
+    "brier_diff_ci95": [
+      -0.0693,
+      -0.0233
+    ],
+    "mean_logloss_diff": -0.0963,
+    "logloss_diff_ci95": [
+      -0.1469,
+      -0.0486
+    ],
+    "note": "arm_a=fitted_generic, arm_b=phase2; negative => fitted_generic improves vs phase2"
+  },
+  "paired_causal_vs_generic": {
+    "n": 91,
+    "mean_brier_diff": -0.01,
+    "brier_diff_ci95": [
+      -0.0501,
+      0.0289
+    ],
+    "mean_logloss_diff": -0.0214,
+    "logloss_diff_ci95": [
+      -0.1127,
+      0.0652
+    ],
+    "note": "arm_a=causal, arm_b=phase3_raw; negative => causal improves vs phase3_raw"
+  },
+  "per_question_deltas": [
+    {
+      "qid": "arg_2023",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.4085,
+      "p_selector": 0.511,
+      "brier_delta": -0.1107
+    },
+    {
+      "qid": "poland_2023",
+      "domain": "elections",
+      "outcome": 0,
+      "p_phase2": 0.45,
+      "p_selector": 0.5334,
+      "brier_delta": 0.082
+    },
+    {
+      "qid": "nl_2023",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.4595,
+      "p_selector": 0.5994,
+      "brier_delta": -0.1317
+    },
+    {
+      "qid": "turkey_2023",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.4865,
+      "p_selector": 0.5961,
+      "brier_delta": -0.1005
+    },
+    {
+      "qid": "taiwan_2024",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.5397,
+      "p_selector": 0.4921,
+      "brier_delta": 0.0461
+    },
+    {
+      "qid": "indonesia_2024",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.4,
+      "p_selector": 0.5472,
+      "brier_delta": -0.1549
+    },
+    {
+      "qid": "sa_2024",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.5862,
+      "p_selector": 0.5422,
+      "brier_delta": 0.0384
+    },
+    {
+      "qid": "iran_2024",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.4789,
+      "p_selector": 0.6178,
+      "brier_delta": -0.1255
+    },
+    {
+      "qid": "srilanka_2024",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.475,
+      "p_selector": 0.553,
+      "brier_delta": -0.0759
+    },
+    {
+      "qid": "romania_2024",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.4697,
+      "p_selector": 0.6456,
+      "brier_delta": -0.1556
+    },
+    {
+      "qid": "ghana_2024",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.5769,
+      "p_selector": 0.538,
+      "brier_delta": 0.0344
+    },
+    {
+      "qid": "senegal_2024",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.5493,
+      "p_selector": 0.6563,
+      "brier_delta": -0.085
+    },
+    {
+      "qid": "austria_2024",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.55,
+      "p_selector": 0.5667,
+      "brier_delta": -0.0148
+    },
+    {
+      "qid": "germany_2025",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.5,
+      "p_selector": 0.5501,
+      "brier_delta": -0.0476
+    },
+    {
+      "qid": "canada_2025",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.1667,
+      "p_selector": 0.5501,
+      "brier_delta": -0.492
+    },
+    {
+      "qid": "australia_2025",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.5147,
+      "p_selector": 0.5199,
+      "brier_delta": -0.005
+    },
+    {
+      "qid": "poland_2025",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.4789,
+      "p_selector": 0.4862,
+      "brier_delta": -0.0075
+    },
+    {
+      "qid": "uruguay_2024",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.5455,
+      "p_selector": 0.6116,
+      "brier_delta": -0.0557
+    },
+    {
+      "qid": "moldova_2024",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.5125,
+      "p_selector": 0.6099,
+      "brier_delta": -0.0855
+    },
+    {
+      "qid": "slovakia_2023",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.481,
+      "p_selector": 0.5501,
+      "brier_delta": -0.067
+    },
+    {
+      "qid": "bangladesh_2024",
+      "domain": "elections",
+      "outcome": 1,
+      "p_phase2": 0.3667,
+      "p_selector": 0.4425,
+      "brier_delta": -0.0902
+    },
+    {
+      "qid": "rba_nov24",
+      "domain": "econ",
+      "outcome": 1,
+      "p_phase2": 0.6875,
+      "p_selector": 0.5872,
+      "brier_delta": 0.0728
+    },
+    {
+      "qid": "boc_oct24",
+      "domain": "econ",
+      "outcome": 1,
+      "p_phase2": 0.5,
+      "p_selector": 0.6125,
+      "brier_delta": -0.0999
+    },
+    {
+      "qid": "snb_mar24",
+      "domain": "econ",
+      "outcome": 1,
+      "p_phase2": 0.28,
+      "p_selector": 0.6125,
+      "brier_delta": -0.3683
+    },
+    {
+      "qid": "rbnz_aug24",
+      "domain": "econ",
+      "outcome": 1,
+      "p_phase2": 0.4242,
+      "p_selector": 0.4701,
+      "brier_delta": -0.0508
+    },
+    {
+      "qid": "riksbank_2024",
+      "domain": "econ",
+      "outcome": 1,
+      "p_phase2": 0.3125,
+      "p_selector": 0.5565,
+      "brier_delta": -0.2759
+    },
+    {
+      "qid": "brazil_2024",
+      "domain": "econ",
+      "outcome": 1,
+      "p_phase2": 0.5,
+      "p_selector": 0.5121,
+      "brier_delta": -0.012
+    },
+    {
+      "qid": "rbi_2024",
+      "domain": "econ",
+      "outcome": 1,
+      "p_phase2": 0.3919,
+      "p_selector": 0.6877,
+      "brier_delta": -0.2723
+    },
+    {
+      "qid": "wti_100_2024",
+      "domain": "macro",
+      "outcome": 0,
+      "p_phase2": 0.5273,
+      "p_selector": 0.6311,
+      "brier_delta": 0.1203
+    },
+    {
+      "qid": "silver_40_2024",
+      "domain": "finance",
+      "outcome": 0,
+      "p_phase2": 0.5,
+      "p_selector": 0.5667,
+      "brier_delta": 0.0712
+    },
+    {
+      "qid": "vix_50_2024",
+      "domain": "finance",
+      "outcome": 1,
+      "p_phase2": 0.4507,
+      "p_selector": 0.5407,
+      "brier_delta": -0.0908
+    },
+    {
+      "qid": "nikkei_crash_2024",
+      "domain": "finance",
+      "outcome": 1,
+      "p_phase2": 0.4789,
+      "p_selector": 0.5994,
+      "brier_delta": -0.1111
+    },
+    {
+      "qid": "us_downgrade_2023",
+      "domain": "macro",
+      "outcome": 1,
+      "p_phase2": 0.4868,
+      "p_selector": 0.696,
+      "brier_delta": -0.171
+    },
+    {
+      "qid": "uk_recession_2024",
+      "domain": "macro",
+      "outcome": 1,
+      "p_phase2": 0.5507,
+      "p_selector": 0.5793,
+      "brier_delta": -0.0249
+    },
+    {
+      "qid": "reddit_ipo_2024",
+      "domain": "finance",
+      "outcome": 1,
+      "p_phase2": 0.4875,
+      "p_selector": 0.5977,
+      "brier_delta": -0.1008
+    },
+    {
+      "qid": "arm_ipo_2023",
+      "domain": "finance",
+      "outcome": 1,
+      "p_phase2": 0.3684,
+      "p_selector": 0.5764,
+      "brier_delta": -0.2195
+    },
+    {
+      "qid": "opec_2023",
+      "domain": "macro",
+      "outcome": 1,
+      "p_phase2": 0.5333,
+      "p_selector": 0.5838,
+      "brier_delta": -0.0446
+    },
+    {
+      "qid": "spirit_bk_2024",
+      "domain": "finance",
+      "outcome": 1,
+      "p_phase2": 0.575,
+      "p_selector": 0.6417,
+      "brier_delta": -0.0522
+    },
+    {
+      "qid": "google_monopoly_2024",
+      "domain": "tech",
+      "outcome": 1,
+      "p_phase2": 0.4655,
+      "p_selector": 0.5342,
+      "brier_delta": -0.0687
+    },
+    {
+      "qid": "ms_activision_2023",
+      "domain": "tech",
+      "outcome": 1,
+      "p_phase2": 0.4853,
+      "p_selector": 0.3289,
+      "brier_delta": 0.1854
+    },
+    {
+      "qid": "vision_pro_2024",
+      "domain": "tech",
+      "outcome": 1,
+      "p_phase2": 0.6061,
+      "p_selector": 0.576,
+      "brier_delta": 0.0247
+    },
+    {
+      "qid": "crowdstrike_2024",
+      "domain": "tech",
+      "outcome": 1,
+      "p_phase2": 0.3944,
+      "p_selector": 0.3944,
+      "brier_delta": 0.0
+    },
+    {
+      "qid": "intel_ceo_2024",
+      "domain": "tech",
+      "outcome": 1,
+      "p_phase2": 0.4557,
+      "p_selector": 0.6435,
+      "brier_delta": -0.1692
+    },
+    {
+      "qid": "blackwell_2024",
+      "domain": "tech",
+      "outcome": 1,
+      "p_phase2": 0.6212,
+      "p_selector": 0.7263,
+      "brier_delta": -0.0686
+    },
+    {
+      "qid": "x_rebrand_2023",
+      "domain": "tech",
+      "outcome": 1,
+      "p_phase2": 0.6061,
+      "p_selector": 0.7035,
+      "brier_delta": -0.0673
+    },
+    {
+      "qid": "sweden_nato_2024",
+      "domain": "geopolitics",
+      "outcome": 1,
+      "p_phase2": 0.623,
+      "p_selector": 0.6951,
+      "brier_delta": -0.0492
+    },
+    {
+      "qid": "finland_nato_2023",
+      "domain": "geopolitics",
+      "outcome": 1,
+      "p_phase2": 0.4928,
+      "p_selector": 0.4437,
+      "brier_delta": 0.0523
+    },
+    {
+      "qid": "nasrallah_2024",
+      "domain": "geopolitics",
+      "outcome": 1,
+      "p_phase2": 0.519,
+      "p_selector": 0.6763,
+      "brier_delta": -0.1266
+    },
+    {
+      "qid": "nagorno_2023",
+      "domain": "geopolitics",
+      "outcome": 1,
+      "p_phase2": 0.5915,
+      "p_selector": 0.6335,
+      "brier_delta": -0.0326
+    },
+    {
+      "qid": "niger_2023",
+      "domain": "geopolitics",
+      "outcome": 1,
+      "p_phase2": 0.5,
+      "p_selector": 0.5,
+      "brier_delta": 0.0
+    },
+    {
+      "qid": "nk_russia_2024",
+      "domain": "geopolitics",
+      "outcome": 1,
+      "p_phase2": 0.4177,
+      "p_selector": 0.5293,
+      "brier_delta": -0.1175
+    },
+    {
+      "qid": "ukraine_nato_2024",
+      "domain": "geopolitics",
+      "outcome": 0,
+      "p_phase2": 0.338,
+      "p_selector": 0.4989,
+      "brier_delta": 0.1346
+    },
+    {
+      "qid": "sudan_2024",
+      "domain": "geopolitics",
+      "outcome": 0,
+      "p_phase2": 0.4177,
+      "p_selector": 0.5412,
+      "brier_delta": 0.1184
+    },
+    {
+      "qid": "assange_2024",
+      "domain": "geopolitics",
+      "outcome": 0,
+      "p_phase2": 0.4324,
+      "p_selector": 0.5051,
+      "brier_delta": 0.0682
+    },
+    {
+      "qid": "superbowl_2024",
+      "domain": "sports",
+      "outcome": 1,
+      "p_phase2": 0.475,
+      "p_selector": 0.5777,
+      "brier_delta": -0.0973
+    },
+    {
+      "qid": "worldseries_2024",
+      "domain": "sports",
+      "outcome": 1,
+      "p_phase2": 0.4667,
+      "p_selector": 0.5147,
+      "brier_delta": -0.0489
+    },
+    {
+      "qid": "wimbledon_2024",
+      "domain": "sports",
+      "outcome": 1,
+      "p_phase2": 0.4789,
+      "p_selector": 0.5726,
+      "brier_delta": -0.0889
+    },
+    {
+      "qid": "ballondor_2024",
+      "domain": "sports",
+      "outcome": 1,
+      "p_phase2": 0.5333,
+      "p_selector": 0.5564,
+      "brier_delta": -0.0211
+    },
+    {
+      "qid": "tdf_2024",
+      "domain": "sports",
+      "outcome": 1,
+      "p_phase2": 0.4875,
+      "p_selector": 0.5625,
+      "brier_delta": -0.0713
+    },
+    {
+      "qid": "copa_2024",
+      "domain": "sports",
+      "outcome": 1,
+      "p_phase2": 0.4921,
+      "p_selector": 0.5968,
+      "brier_delta": -0.0954
+    },
+    {
+      "qid": "ausopen_2024",
+      "domain": "sports",
+      "outcome": 1,
+      "p_phase2": 0.5143,
+      "p_selector": 0.5094,
+      "brier_delta": 0.0048
+    },
+    {
+      "qid": "champtrophy_2025",
+      "domain": "sports",
+      "outcome": 1,
+      "p_phase2": 0.5,
+      "p_selector": 0.5501,
+      "brier_delta": -0.0476
+    },
+    {
+      "qid": "chandrayaan3_2023",
+      "domain": "science",
+      "outcome": 1,
+      "p_phase2": 0.5,
+      "p_selector": 0.5832,
+      "brier_delta": -0.0762
+    },
+    {
+      "qid": "odysseus_2024",
+      "domain": "science",
+      "outcome": 1,
+      "p_phase2": 0.4138,
+      "p_selector": 0.4886,
+      "brier_delta": -0.0821
+    },
+    {
+      "qid": "polaris_2024",
+      "domain": "science",
+      "outcome": 1,
+      "p_phase2": 0.5735,
+      "p_selector": 0.6623,
+      "brier_delta": -0.0678
+    },
+    {
+      "qid": "europa_2024",
+      "domain": "science",
+      "outcome": 1,
+      "p_phase2": 0.4324,
+      "p_selector": 0.6089,
+      "brier_delta": -0.1692
+    },
+    {
+      "qid": "quake_m8_2024",
+      "domain": "science",
+      "outcome": 0,
+      "p_phase2": 0.5455,
+      "p_selector": 0.5215,
+      "brier_delta": -0.0256
+    },
+    {
+      "qid": "h5n1_dairy_2024",
+      "domain": "science",
+      "outcome": 1,
+      "p_phase2": 0.4444,
+      "p_selector": 0.5832,
+      "brier_delta": -0.1349
+    },
+    {
+      "qid": "mpox_2024",
+      "domain": "science",
+      "outcome": 1,
+      "p_phase2": 0.4366,
+      "p_selector": 0.565,
+      "brier_delta": -0.1282
+    },
+    {
+      "qid": "nobel_ai_2024",
+      "domain": "science",
+      "outcome": 1,
+      "p_phase2": 0.4918,
+      "p_selector": 0.4918,
+      "brier_delta": 0.0
+    },
+    {
+      "qid": "sbf_2023",
+      "domain": "politics",
+      "outcome": 1,
+      "p_phase2": 0.6545,
+      "p_selector": 0.6513,
+      "brier_delta": 0.0022
+    },
+    {
+      "qid": "trump_fraud_2024",
+      "domain": "politics",
+      "outcome": 1,
+      "p_phase2": 0.5758,
+      "p_selector": 0.5923,
+      "brier_delta": -0.0137
+    },
+    {
+      "qid": "uaw_2023",
+      "domain": "politics",
+      "outcome": 1,
+      "p_phase2": 0.5211,
+      "p_selector": 0.5199,
+      "brier_delta": 0.0012
+    },
+    {
+      "qid": "sag_2023",
+      "domain": "politics",
+      "outcome": 1,
+      "p_phase2": 0.5,
+      "p_selector": 0.4714,
+      "brier_delta": 0.0294
+    },
+    {
+      "qid": "boeing_strike_2024",
+      "domain": "politics",
+      "outcome": 1,
+      "p_phase2": 0.5606,
+      "p_selector": 0.6929,
+      "brier_delta": -0.0987
+    },
+    {
+      "qid": "macron_resign_2024",
+      "domain": "elections",
+      "outcome": 0,
+      "p_phase2": 0.4754,
+      "p_selector": 0.6025,
+      "brier_delta": 0.137
+    },
+    {
+      "qid": "nasdaq_bear_2024",
+      "domain": "finance",
+      "outcome": 0,
+      "p_phase2": 0.5875,
+      "p_selector": 0.5073,
+      "brier_delta": -0.0878
+    },
+    {
+      "qid": "copper_12k_2024",
+      "domain": "finance",
+      "outcome": 0,
+      "p_phase2": 0.5667,
+      "p_selector": 0.5501,
+      "brier_delta": -0.0185
+    },
+    {
+      "qid": "natgas_5_2024",
+      "domain": "finance",
+      "outcome": 0,
+      "p_phase2": 0.58,
+      "p_selector": 0.5501,
+      "brier_delta": -0.0338
+    },
+    {
+      "qid": "jpy_130_2024",
+      "domain": "finance",
+      "outcome": 0,
+      "p_phase2": 0.507,
+      "p_selector": 0.5189,
+      "brier_delta": 0.0122
+    },
+    {
+      "qid": "ai_reg_2024",
+      "domain": "tech",
+      "outcome": 0,
+      "p_phase2": 0.425,
+      "p_selector": 0.5166,
+      "brier_delta": 0.0863
+    },
+    {
+      "qid": "humanoid_2024",
+      "domain": "tech",
+      "outcome": 0,
+      "p_phase2": 0.4225,
+      "p_selector": 0.5501,
+      "brier_delta": 0.1241
+    },
+    {
+      "qid": "saudi_israel_2024",
+      "domain": "geopolitics",
+      "outcome": 0,
+      "p_phase2": 0.4557,
+      "p_selector": 0.4656,
+      "brier_delta": 0.0091
+    },
+    {
+      "qid": "unsc_palestine_2024",
+      "domain": "geopolitics",
+      "outcome": 0,
+      "p_phase2": 0.58,
+      "p_selector": 0.4716,
+      "brier_delta": -0.114
+    },
+    {
+      "qid": "djokovic_2024",
+      "domain": "sports",
+      "outcome": 0,
+      "p_phase2": 0.6164,
+      "p_selector": 0.6422,
+      "brier_delta": 0.0324
+    },
+    {
+      "qid": "mancity_2025",
+      "domain": "sports",
+      "outcome": 0,
+      "p_phase2": 0.4375,
+      "p_selector": 0.5162,
+      "brier_delta": 0.075
+    },
+    {
+      "qid": "covid_voc_2024",
+      "domain": "science",
+      "outcome": 0,
+      "p_phase2": 0.541,
+      "p_selector": 0.661,
+      "brier_delta": 0.1443
+    },
+    {
+      "qid": "bank_fail_2024",
+      "domain": "finance",
+      "outcome": 0,
+      "p_phase2": 0.4324,
+      "p_selector": 0.5667,
+      "brier_delta": 0.1342
+    },
+    {
+      "qid": "ez_recession_2024",
+      "domain": "macro",
+      "outcome": 0,
+      "p_phase2": 0.5231,
+      "p_selector": 0.5231,
+      "brier_delta": 0.0
+    },
+    {
+      "qid": "cny_2024",
+      "domain": "finance",
+      "outcome": 0,
+      "p_phase2": 0.4521,
+      "p_selector": 0.434,
+      "brier_delta": -0.0161
+    },
+    {
+      "qid": "nk_nuke_2024",
+      "domain": "geopolitics",
+      "outcome": 0,
+      "p_phase2": 0.5132,
+      "p_selector": 0.6465,
+      "brier_delta": 0.1545
+    }
+  ],
+  "preregistered_gates": {
+    "gates": {
+      "G1_brier_lower_than_phase2": true,
+      "G2_logloss_lower_than_phase2": true,
+      "G3_one_primary_CI_favorable": true,
+      "G4_no_significant_regression": true,
+      "G5_ece_not_materially_worse": true,
+      "G6_catastrophic_rate_not_worse": true,
+      "G7_no_severe_domain_regression": true,
+      "G8_causal_beats_or_matches_generic": true,
+      "G9_reproducible": true
+    },
+    "severe_domain_regressions": [],
+    "n_completed": 91,
+    "powered": true,
+    "verdict": "phase3_accuracy_validated",
+    "production_eligible": true,
+    "production_default": "selector"
+  },
+  "retrieval_date_utc": "2026-07-13T20:07:26Z"
+}

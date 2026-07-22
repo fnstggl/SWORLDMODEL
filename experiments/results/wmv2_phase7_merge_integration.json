@@ -1,0 +1,58 @@
+{
+ "_meta": {
+  "note": "Phase-7 merge-integration notes (Part 33). Phase 7 touches NO shared core file: it plugs in only through register_operator (transitions.py public API), the entity latent_state extension door (state.py public API), the event payload, and a NEW sidecar registry file."
+ },
+ "shared_files_touched": [
+  {
+   "file": "swm/world_model_v2/nonlinear/* (NEW package)",
+   "why": "all Phase-7 runtime lives in a new package \u2014 zero edits to shared core files",
+   "overlap_phase9": "none",
+   "overlap_phase10": "none"
+  },
+  {
+   "file": "swm/world_model_v2/registry/data/nonlinear_extensions.json (NEW sidecar)",
+   "why": "additive integrity-hashed sidecar; joins to Phase-6 registry.json by family_id \u2014 does NOT modify registry.json / packs.json",
+   "overlap_phase9": "none (separate file)",
+   "overlap_phase10": "none (separate file)"
+  },
+  {
+   "file": "experiments/wmv2_phase7_*.py, tests/test_wmv2_phase7_*.py (NEW)",
+   "why": "Phase-7-owned",
+   "overlap_phase9": "none",
+   "overlap_phase10": "none"
+  }
+ ],
+ "shared_core_files_edited": [],
+ "integration_seams_used": {
+  "transitions.register_operator": "public API \u2014 Phase 7 registers nonlinear_mechanism / nonlinear_contagion / nonlinear_state_step operators at import (like hazard.py); no edit to transitions.py",
+  "state.register_entity_extension": "public API \u2014 Phase 7 registers p7_history + p7_mechanism_fields extensions; no edit to state.py",
+  "events.register_event_type": "public API \u2014 registers nonlinear_transition / contagion_exposure / state_step event types; no edit to events.py",
+  "event.payload": "nonlinear_spec / contagion_spec / step_spec ride on the payload (like hazard.py's hazard_spec); no plan-schema change"
+ },
+ "phase9_interface_consumption": {
+  "note": "Phase 7 CONSUMES population/network context through typed ContextVariable(source='population'|'network') read paths; it builds NO substitute population/network system. When Phase 9 lands, bind ContextVariable.state_path to its population/network accessors.",
+  "hooks": [
+   "ContextVariable(source='network', state_path='actor.degree')",
+   "ContextVariable(source='population', state_path='population.<id>.<seg>')"
+  ]
+ },
+ "phase10_interface_consumption": {
+  "note": "Phase 7 CONSUMES institutional context (capacity, queue, stage, authority) through typed ContextVariable(source='institution'); it builds NO substitute institution system. When Phase 10 lands, bind those variables to its accessors.",
+  "hooks": [
+   "ContextVariable(source='institution', state_path='quantity.queue_length')"
+  ]
+ },
+ "recommended_merge_order": [
+  "merge Phase 9 (population/network) \u2192 merge Phase 10 (institutions) \u2192 merge Phase 7 last (it only ADDS consumers of 9/10 context; no conflict)",
+  "alternatively Phase 7 first is also safe (its hooks default to typed defaults when 9/10 accessors are absent)"
+ ],
+ "manual_conflict_resolution": [
+  "none expected \u2014 no shared core file is edited. If registry.json is rebuilt by Phase 9/10, nonlinear_extensions.json is UNAFFECTED (separate file); just re-run `python -m experiments.wmv2_phase7_build_registry` to refresh join-key health."
+ ],
+ "tests_to_rerun_after_merging_all_three": [
+  "tests/test_wmv2_phase7_*.py",
+  "tests/test_diffusion_families.py",
+  "tests/test_wmv2_phase6.py",
+  "PYTHONPATH=. python -m swm.world_model_v2.nonlinear verify-registry"
+ ]
+}

@@ -1,0 +1,1879 @@
+{
+ "bundle_id": "eb_8a59e3",
+ "question": "Will the finance department sign off on the new marketing budget increase?",
+ "as_of": 1680652800.0,
+ "compiler_plan_hash": "4e8d94baa8bf",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_ae9e720442",
+   "claim_or_quantity": "The outcome is the final decision of the finance department as of the horizon date.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-05",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "finance_department",
+    "marketing_department",
+    "ceo"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_90ecbb15bf",
+   "claim_or_quantity": "value/context of finance_department.budget_remaining",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "finance_department.budget_remaining",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-05",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_da02016b4d",
+   "claim_or_quantity": "value/context of marketing_department.requested_increase",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "marketing_department.requested_increase",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-05",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a2cdd81d8a",
+   "claim_or_quantity": "value/context of finance_department.approval_threshold",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "finance_department.approval_threshold",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-05",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a0eee887d5",
+   "claim_or_quantity": "evidence discriminating structural hypothesis budget_constraint_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:budget_constraint_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-05",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_7a83874236",
+   "claim_or_quantity": "evidence discriminating structural hypothesis roi_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:roi_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-05",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_de28c9c130",
+   "claim_or_quantity": "decision rules / process of finance_department",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "finance_department",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-05",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_828562232e",
+   "claim_or_quantity": "decision rules / process of marketing_department",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "marketing_department",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-05",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_ae9e720442",
+   "terms": "finance department sign off marketing budget increase finance department marketing department ceo",
+   "after": "2022-11-06",
+   "before": "2023-04-05",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_90ecbb15bf",
+   "terms": "finance department budget remaining",
+   "after": "2022-11-06",
+   "before": "2023-04-05",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_da02016b4d",
+   "terms": "marketing department requested increase",
+   "after": "2022-11-06",
+   "before": "2023-04-05",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ae9e720442",
+   "logical_query": "finance department sign off marketing budget increase finance department marketing department ceo after:2022-11-06 before:2023-04-05",
+   "wire_url": "https://news.google.com/rss/search?q=finance+department+sign+off+marketing+budget+increase+finance+department+marketing+department+ceo+after%3A2022-11-06+before%3A2023-04-05&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-11-06",
+   "before_date": "2023-04-05",
+   "retrieved_at": 1783906387.7518218,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:33:08 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmII0JBiSO44w5ACxHVA3AjEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YR4OK40XLzEJjChrfM_o5JyUn5hfEp-SXFxQU5icUZxalFZalG8kYGRmYG5gZmegUl8gQEAgfA6GA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "b588757fed59ee4046f1d57e7122bfc941c988795e96ea1898d22d8c24c3b6c5",
+   "n_bytes": 6188,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 4,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.708
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_90ecbb15bf",
+   "logical_query": "finance department budget remaining after:2022-11-06 before:2023-04-05",
+   "wire_url": "https://news.google.com/rss/search?q=finance+department+budget+remaining+after%3A2022-11-06+before%3A2023-04-05&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-11-06",
+   "before_date": "2023-04-05",
+   "retrieved_at": 1783906388.4615793,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:33:09 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0ZBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcVxsuXmIT6Lg2O1hJOSm_MD4lv6S4uCAnsTijOLWoLLUo3sjAyMzA3MBMz8AkvsAAAGVvOEY\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d173057144cdfe9a9387a6244a97a4d8e006c8625cf41ef2a72cdac91c340259",
+   "n_bytes": 69300,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.682
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_da02016b4d",
+   "logical_query": "marketing department requested increase after:2022-11-06 before:2023-04-05",
+   "wire_url": "https://news.google.com/rss/search?q=marketing+department+requested+increase+after%3A2022-11-06+before%3A2023-04-05&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-11-06",
+   "before_date": "2023-04-05",
+   "retrieved_at": 1783906389.1528423,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:33:09 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw1ZBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDcbXh4iU2gRV3_zUxKykn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAApVE3Kw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "4bdbb485bb5f078e726bc13fdc0f57b835b38bbe3146e2fcba397ffaa699d43e",
+   "n_bytes": 21646,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.772
+  }
+ ],
+ "raw_content_refs": [
+  "4bdbb485bb5f078e726bc13fdc0f57b835b38bbe3146e2fcba397ffaa699d43e",
+  "b588757fed59ee4046f1d57e7122bfc941c988795e96ea1898d22d8c24c3b6c5",
+  "d173057144cdfe9a9387a6244a97a4d8e006c8625cf41ef2a72cdac91c340259"
+ ],
+ "documents": [
+  {
+   "id": "66e04232a2464bcb",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNVk9WZGJaMjhJNUVVNE02VDhPbGNqREVBZEwyeEJrbDB2SUE3empEbTVHVUd5dWZWT3loeHhTZ2VfSHVEOEF5RW9hclJSMHNkUEZ5N3gya2Y2V25JemZ5RmNHUldLUGZGdWwtWGRnQUZEb2FEbEUxb0l3WHd4U0ZDWGlJaVNYVm84WnR0RnZPLWl0ZU9YcndwbFZFdTFlZVpkNG5qeDU2UFlkZFJ1S2NLU2NwdWNLSTZ1?oc=5",
+   "title": "Marketing in healthcare: Improving the consumer experience - McKinsey & Company",
+   "text": "Marketing in healthcare: Improving the consumer experience - McKinsey & Company. Marketing in healthcare: Improving the consumer experience McKinsey & Company",
+   "content_hash": "538535906b4741f1",
+   "raw_feed_hash": "b588757fed59ee4046f1d57e7122bfc941c988795e96ea1898d22d8c24c3b6c5",
+   "published_at": 1678863600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ae9e720442",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e9a7116ae8f321cf",
+   "source": "PR Daily",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPdG0yT0pmQ2xEci1lQUt5TWg1aWlSY2w4T1Y1NHVRdGtfcTZNMno0LUpJdGhoaG8wSHZXY2laYlhHejlKZDZ0Y05ZaFNUZ0JTRzRIX2JqMFNrSkRseU5sMDUyUXJJZGtUQkl5WGpuVEFCb3R4cUZqd0lCRDF1dWQxeXppeG9QaEt3?oc=5",
+   "title": "Top stories of 2023: Why 2023 is the year of the chief communications officer - PR Daily",
+   "text": "Top stories of 2023: Why 2023 is the year of the chief communications officer - PR Daily. Top stories of 2023: Why 2023 is the year of the chief communications officer PR Daily",
+   "content_hash": "7ede87d890b76785",
+   "raw_feed_hash": "b588757fed59ee4046f1d57e7122bfc941c988795e96ea1898d22d8c24c3b6c5",
+   "published_at": 1674633600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ae9e720442",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "313398bb192c4b2d",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNZUtBd2MxR0IwZ1BFNzhHS2lWNnpvdVhLTFcxcVMxamRQN0xaNG16aEpTcG9lendkWXBQbklEOS1yNlhRQW9iVGFuZjFmTzdfUWw3NG1vR3VCR29DZ2g2UXRraXY2MXJkZkRvTHVnRWJNVjExQ196VjFpeVJ5bjVNc3RzRDlxZlQtamctTW13?oc=5",
+   "title": "Ad industry layoffs: 29 companies that have cut staff, including Basis and VidMob - Business Insider",
+   "text": "Ad industry layoffs: 29 companies that have cut staff, including Basis and VidMob - Business Insider. Ad industry layoffs: 29 companies that have cut staff, including Basis and VidMob Business Insider",
+   "content_hash": "a0abd62be9e5f82a",
+   "raw_feed_hash": "b588757fed59ee4046f1d57e7122bfc941c988795e96ea1898d22d8c24c3b6c5",
+   "published_at": 1676966400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ae9e720442",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5267a7c7f13ceec3",
+   "source": "raconteur.net",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQZFBCSFgtSzN5R2trbzhCQTN2dVVnMXNJSGY0SXdDTjVaeW1kX1RyMmFXY2NWbGJacWl6OUhXNjlmVXYzY2hycWJYN3FvTUlEVmE3c094UU9JNWgzUzVYVktvVEpNQUdsb2o0OGhnYUw2RXd2Q3ZqVWp5ZHRGQW5aRndzVC13SWhDUFJyOUV1LXRDa0R0SWNXZ1JucDI?oc=5",
+   "title": "Purchasing power: who gets to make the final decision? - raconteur.net",
+   "text": "Purchasing power: who gets to make the final decision? - raconteur.net. Purchasing power: who gets to make the final decision? raconteur.net",
+   "content_hash": "3f9107d356da1dc8",
+   "raw_feed_hash": "b588757fed59ee4046f1d57e7122bfc941c988795e96ea1898d22d8c24c3b6c5",
+   "published_at": 1674806400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_ae9e720442",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fff39f7a308d7033",
+   "source": "Riley County Police Department",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE93bGJuRzZWZVFMemhkYjlBRG1rMmlwTkR0MEdEanppMXY4TlJpNXBzbDE5MHR4bE85Y0pyQzZQZ0gwUDFtVXFTRW5hR2JjQkJIcUNyWTFHYmxpRXZNak16NEpR?oc=5",
+   "title": "Budget & Finance - Riley County Police Department",
+   "text": "Budget & Finance - Riley County Police Department. Budget & Finance Riley County Police Department",
+   "content_hash": "387971196577a83e",
+   "raw_feed_hash": "d173057144cdfe9a9387a6244a97a4d8e006c8625cf41ef2a72cdac91c340259",
+   "published_at": 1678343421.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_90ecbb15bf",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "10de188cd571acd0",
+   "source": "NYC.gov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxObjNkMVpfNUxJdnhfOXMtdUtMTUx1ZkdmNGo1b2h6ejl5YVgwZ3RhNzRrUWtfQ3ZVMm10bTFXdXRaekh5eUFhUEh1RUFpdmtWOXppNWt3SE1JWEp2eDh2MlFDQnV6NHJiQkVuUl93akpZSXZTV3UxVXZHbWxQUU01akh0UzNmTUYxRDg5Z1Zid0tWemJ5REJrcDFNSFV4c1RzNnpudUp5N1pJdVY3TnlJV2NqbWxubVlyeGFqVHA3V1lzN0gxUzRPUFYzNGlKMVpabEN2ZndtTU5CcTM4WHpwU3U5bw?oc=5",
+   "title": "Comments on New York City's Preliminary Budget for Fiscal Year 2024 and Financial Plan for Fiscal Years 2023 - 2027 - NYC.gov",
+   "text": "Comments on New York City's Preliminary Budget for Fiscal Year 2024 and Financial Plan for Fiscal Years 2023 - 2027 - NYC.gov. Comments on New York City's Preliminary Budget for Fiscal Year 2024 and Financial Plan for Fiscal Years 2023 - 2027 NYC.gov",
+   "content_hash": "beac6eaeb8e1227d",
+   "raw_feed_hash": "d173057144cdfe9a9387a6244a97a4d8e006c8625cf41ef2a72cdac91c340259",
+   "published_at": 1678089600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_90ecbb15bf",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "72c96e5d0684821a",
+   "source": "Congressional Budget Office (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE14cDZoQVRFa0ViWkVlaU9xczBOTFdVdFp0VXN0VzBwYmlnbU5Kd2Z4THVKRDh2T25ZNGR4YU9oSDRKSzBTX2lnd1JzYml4QQ?oc=5",
+   "title": "The Budget and Economic Outlook: 2023 to 2033 - Congressional Budget Office (.gov)",
+   "text": "The Budget and Economic Outlook: 2023 to 2033 - Congressional Budget Office (.gov). The Budget and Economic Outlook: 2023 to 2033 Congressional Budget Office (.gov)",
+   "content_hash": "a69689c77cdf0e41",
+   "raw_feed_hash": "d173057144cdfe9a9387a6244a97a4d8e006c8625cf41ef2a72cdac91c340259",
+   "published_at": 1676448000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_90ecbb15bf",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4d8c172501a9732d",
+   "source": "Spotlight PA",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNNng4d3BsWXJ4dGdiNUR1bFZUMUNIaEIwTE5hVENwMlpmeHpreHZ2TnlBUzhocGQ5SWFxUVhNYXA3LXdIZkFkX3ZIQ1Frb0xLOUNaTml3ZmdXRG1FT3ZoRmRmR3NEOHczMm5HSkhDZGZ2YXdpYnpYMzR4WUY1UjN2cXdTMlZrMHhSbU9uS0R6LXJ3VXBSTW5WUnJn?oc=5",
+   "title": "Lax PA campaign finance, lobbying laws remain - Spotlight PA",
+   "text": "Lax PA campaign finance, lobbying laws remain - Spotlight PA. Lax PA campaign finance, lobbying laws remain Spotlight PA",
+   "content_hash": "11701bffcdaaeb77",
+   "raw_feed_hash": "d173057144cdfe9a9387a6244a97a4d8e006c8625cf41ef2a72cdac91c340259",
+   "published_at": 1680246000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_90ecbb15bf",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0088670df5ababb1",
+   "source": "NJ.gov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9yVDc4dF85Rll5SXppbDBiUFJYbm9kLUxYQzlZaTJUUVZDNThtb3h0d2JraERwcUdET3ByNkhYQk8zQjB2VUpJNHZNWGdmQUFHRDZ3T0xrWE9LU0VSWkZGSGFTaFM5SDJwd3c?oc=5",
+   "title": "Investigation of Waste at Mercer County Finance Department - NJ.gov",
+   "text": "Investigation of Waste at Mercer County Finance Department - NJ.gov. Investigation of Waste at Mercer County Finance Department NJ.gov",
+   "content_hash": "20b100ba44cd58aa",
+   "raw_feed_hash": "d173057144cdfe9a9387a6244a97a4d8e006c8625cf41ef2a72cdac91c340259",
+   "published_at": 1674547200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_90ecbb15bf",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "893806f9aade7b2c",
+   "source": "Georgia Budget and Policy Institute",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE4zLUZDakFPMVhBV1pLSkNIY1Nza3BFbnlmc2swNmVmR1VFNHJlZWViQ2wzYXRZWFRLb0ZaV2pYWEpSUmpJREd3Wl9sellNZHAwbGhPSXd2bnZnRWk3bTlfQWN4V0pzS0VoTFA3LWJQTQ?oc=5",
+   "title": "Overview of Georgia\u2019s 2024 Fiscal Year Budget - Georgia Budget and Policy Institute",
+   "text": "Overview of Georgia\u2019s 2024 Fiscal Year Budget - Georgia Budget and Policy Institute. Overview of Georgia\u2019s 2024 Fiscal Year Budget Georgia Budget and Policy Institute",
+   "content_hash": "a91a98a6ec02742f",
+   "raw_feed_hash": "d173057144cdfe9a9387a6244a97a4d8e006c8625cf41ef2a72cdac91c340259",
+   "published_at": 1674633600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_90ecbb15bf",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7877a8052b5d13b2",
+   "source": "KCRA",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQdGRNQmZJWGJoeXdOMTY4MXZuVV90UG5mSk50dXJRWlZ1WC15RFQ1VDFlU0xyOTBZYXVuT3FOemo5cm9XLUhDMmdkS2JsRW8tSzF4a0RtbWhYdEdPUzRUaHFEZFFkUHBhaFhvcmVGZFMzSEJGT1V6STREYWtRTDBlV0VyLXg2bmRNSEFfdjNhMzRuemZkWFBNZkF0aS1JcmM1Um1pdFF6WFJITW1NTzFtMVh3ejEtanN1bF9LWkZEaGQ?oc=5",
+   "title": "California Department of Finance hit with cybersecurity threat, investigation underway - KCRA",
+   "text": "California Department of Finance hit with cybersecurity threat, investigation underway - KCRA. California Department of Finance hit with cybersecurity threat, investigation underway KCRA",
+   "content_hash": "b177d752a9a90d7a",
+   "raw_feed_hash": "d173057144cdfe9a9387a6244a97a4d8e006c8625cf41ef2a72cdac91c340259",
+   "published_at": 1670832000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_90ecbb15bf",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e4de1035274fbb1e",
+   "source": "Oregon Public Broadcasting - OPB",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOdkphbkVjN3JKc2I1SXRJd2pSYm1KSjRRdmtqbXJnbURRdHQ3Wm51VW91ajBkRnBMVUZIVjIzSDNuejk1MmlqdEp1UlBtRlpCQ2c0ZUpqZWV5NXE1WEVZTTVwTUpmaUpxMzJYYTFGZ3Mtc2pSTFg1bGV0RlZ1X0xORXBmZS1qQlNYSkdUb2RNQzlZTVBpaHFjOFBSWExxbzdCZnc?oc=5",
+   "title": "Oregon\u2019s top budget official is latest high-profile departure - Oregon Public Broadcasting - OPB",
+   "text": "Oregon\u2019s top budget official is latest high-profile departure - Oregon Public Broadcasting - OPB. Oregon\u2019s top budget official is latest high-profile departure Oregon Public Broadcasting - OPB",
+   "content_hash": "7653b72e24ff8f4a",
+   "raw_feed_hash": "d173057144cdfe9a9387a6244a97a4d8e006c8625cf41ef2a72cdac91c340259",
+   "published_at": 1678348800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_90ecbb15bf",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c02a83642bd2530b",
+   "source": "Legislative Analyst\u2019s Office (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5ycVNCbkxYQWdXZWtXSnZFbGdnSDdzTzF3ZF9QUUFtV3VPQ3lLQ0lMRFZZNTJUWXBZX3R2TWdCblpWdmxybVFMWkxQRTB2RjJPUTlQYl9R?oc=5",
+   "title": "The 2023-24 Budget: Department of Justice Budget Proposals - Legislative Analyst\u2019s Office (.gov)",
+   "text": "The 2023-24 Budget: Department of Justice Budget Proposals - Legislative Analyst\u2019s Office (.gov). The 2023-24 Budget: Department of Justice Budget Proposals Legislative Analyst\u2019s Office (.gov)",
+   "content_hash": "c7d0b01ee82ceb9b",
+   "raw_feed_hash": "4bdbb485bb5f078e726bc13fdc0f57b835b38bbe3146e2fcba397ffaa699d43e",
+   "published_at": 1677139200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_da02016b4d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6f68b2abd5b6c1d5",
+   "source": "Adobe for Business",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxObjluNXo4QWZwOFhLendxaFRCVG5RcDM4emxwQjVDcDRXMlhmX2ZZaFlucm8tVFA0cjY5Qks2dVZCZHBESWluWWg4Q05jckdzQndXZ0IwMjFVWGVralBaOGlYODhOSXpXdEEzOUp2TzltWE52RTZyWHBHNTNoWjNkdV9SNFQ3RWRXelhMWWhsUHRqOWp2eDZDV1hSLVg2N0dpamp4MFNIVW9VYnEyWG9V?oc=5",
+   "title": "Semrush increases active email users by 200% YoY and paying customers via email by 33% with Adobe Marketo Engage - Adobe for Business",
+   "text": "Semrush increases active email users by 200% YoY and paying customers via email by 33% with Adobe Marketo Engage - Adobe for Business. Semrush increases active email users by 200% YoY and paying customers via email by 33% with Adobe Marketo Engage Adobe for Business",
+   "content_hash": "633a4c62be61f6cd",
+   "raw_feed_hash": "4bdbb485bb5f078e726bc13fdc0f57b835b38bbe3146e2fcba397ffaa699d43e",
+   "published_at": 1679036400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_da02016b4d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "66e04232a2464bcb",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNVk9WZGJaMjhJNUVVNE02VDhPbGNqREVBZEwyeEJrbDB2SUE3empEbTVHVUd5dWZWT3loeHhTZ2VfSHVEOEF5RW9hclJSMHNkUEZ5N3gya2Y2V25JemZ5RmNHUldLUGZGdWwtWGRnQUZEb2FEbEUxb0l3WHd4U0ZDWGlJaVNYVm84WnR0RnZPLWl0ZU9YcndwbFZFdTFlZVpkNG5qeDU2UFlkZFJ1S2NLU2NwdWNLSTZ1?oc=5",
+   "title": "Marketing in healthcare: Improving the consumer experience - McKinsey & Company",
+   "text": "Marketing in healthcare: Improving the consumer experience - McKinsey & Company. Marketing in healthcare: Improving the consumer experience McKinsey & Company",
+   "content_hash": "538535906b4741f1",
+   "raw_feed_hash": "4bdbb485bb5f078e726bc13fdc0f57b835b38bbe3146e2fcba397ffaa699d43e",
+   "published_at": 1678863600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_da02016b4d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6c0c55f4375c6a0b",
+   "source": "Thomson Reuters",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQclRzRFdNTHlqQjlkVXFRZ01NRHZKOTdMQUhveWdRZ0c1T1pXV2NIZFdQWGI1MmlWTzItcndCcXMyT0JHYkdSYW1vMDFCV3NvVng1ek5sdkJiaXhFb3dOVEF2TFVuWk1uYzhieWRNN29fcHQ4aDJwaE5QRXF2QzVNVkItMUltRW5kbDFNWFBOWkpPVXl2OURKcTNPc1Z3aTQ3VkJzRHJLOA?oc=5",
+   "title": "30th Marketing Partner Forum: Assessing the state of law firm marketing & business development - Thomson Reuters",
+   "text": "30th Marketing Partner Forum: Assessing the state of law firm marketing & business development - Thomson Reuters. 30th Marketing Partner Forum: Assessing the state of law firm marketing & business development Thomson Reuters",
+   "content_hash": "231cfed225bf411c",
+   "raw_feed_hash": "4bdbb485bb5f078e726bc13fdc0f57b835b38bbe3146e2fcba397ffaa699d43e",
+   "published_at": 1675238400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_da02016b4d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6be7209ae4de71b2",
+   "source": "Police1",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQRFEyWUYzRzNLSG16MENDUU5Jd3BHVzhJbC11emlYRS00aGxWbVA4V3pXS0pzWHdDLUVrY3k3OEtQMGlCNnFhMFVqYVVOMFZWbzdPX05vclowUVpOc1Y4a1RDaU1IYVhNSmJaNjdDUVVsMkhUc1llU1VlZG1Cc2FlNElBa0JMZGg1WTRBVktQamgycEZJcWV1VWI2c3hqRmZ1cG1BcjhqandXVlFkVUo4VHFMdXpzVG9tdnRqYmRrZWJ4MGtEdjY2bjVIeG1LUGZTUXNSNVpiWWJxbld6VVBF?oc=5",
+   "title": "Boost your agency\u2019s recruitment efforts using these 7 strategies - Police1",
+   "text": "Boost your agency\u2019s recruitment efforts using these 7 strategies - Police1. Boost your agency\u2019s recruitment efforts using these 7 strategies Police1",
+   "content_hash": "b2b54229815302f9",
+   "raw_feed_hash": "4bdbb485bb5f078e726bc13fdc0f57b835b38bbe3146e2fcba397ffaa699d43e",
+   "published_at": 1678690800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_da02016b4d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2b24f969b737e3bb",
+   "source": "GovExec.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNRUFDWXlvakN5RGF4SkxCTXYxaE5TakFnbWtDZnU1UVlaNlliWXM3aEZHc0c5N1FSVGVsdEVuZkp6TElDeXN5b1VERzNHSDhKWU9Rdmd1Z2JmWE5PZVlYc3hFdWVmUjYwcTJwRXdaOUN5eUlXWWFmUTRCb1d1QmpNYmdCVmR4OUhFd2Zzckl0R2ZEdWxiUk9SNHRmT1EyTWhtRUNZLVJxS0wwSWVzcTFwMzkwWU9hUGRhYjJ1T2t6VHdCWkszeUprVlgyT2daWm5qWjQ4VXZuUDVhUkFBdVN4Yw?oc=5",
+   "title": "Biden Wants to Grow the Federal Workforce to Its Highest Level Since WWII. These Agencies Would Make the Biggest Gains. - GovExec.com",
+   "text": "Biden Wants to Grow the Federal Workforce to Its Highest Level Since WWII. These Agencies Would Make the Biggest Gains. - GovExec.com. Biden Wants to Grow the Federal Workforce to Its Highest Level Since WWII. These Agencies Would Make the Biggest Gains. GovExec.com",
+   "content_hash": "e7de9fdce8ed5b3d",
+   "raw_feed_hash": "4bdbb485bb5f078e726bc13fdc0f57b835b38bbe3146e2fcba397ffaa699d43e",
+   "published_at": 1678863600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_da02016b4d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a6a350650833c6d1",
+   "source": "Northwest Arkansas Democrat-Gazette",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNY1BLLWpvUWItR0pKdFY4ZlF1MEFvbEs1bnhBSklBWUlLSlFycER1V3pTWWNReUZmUFZKRU5EdlRyQU1PbnJxQVBEZXg3dmFvNmZBNF9CeXlsdnZoWXdyMmRXWE1TOGtFd3VVd0xDNXpncVdCUUR3RkVDWlRmRzBNd3JDVHFELVB4elJZLXNua21NMHha?oc=5",
+   "title": "Rogers to consider $78.2 million budget for 2023; police staffing challenges to be addressed with existing funds, mayor says - Northwest Arkansas Democrat-Gazette",
+   "text": "Rogers to consider $78.2 million budget for 2023; police staffing challenges to be addressed with existing funds, mayor says - Northwest Arkansas Democrat-Gazette. Rogers to consider $78.2 million budget for 2023; police staffing challenges to be addressed with existing funds, mayor says Northwest Arkansas Democrat-Gazette",
+   "content_hash": "aa2fab96a80606aa",
+   "raw_feed_hash": "4bdbb485bb5f078e726bc13fdc0f57b835b38bbe3146e2fcba397ffaa699d43e",
+   "published_at": 1668931200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_da02016b4d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ca547fc11dad953f",
+   "source": "Taunton Daily Gazette",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxQU0NvZmg3RTBFNWdlWDlyMHBweFdDcHZYa3d3SUQ4TmtONlBlX1JXNUt4MXpKWGZLWG1mdDl4NGllRmszVGJROTFTaTEyR1dONmhOZ2xtaUt2X3FfSVBJanZfU1dXWXhaQ3Q0d3JGNV9iQVBHUHZmNnpWVThmbmJRbk5qemZIamNzWEd2bHQyY0NFaHJnM2JQRk04a2tzeGg1OXpPTVQxY3lVSUpuaUo4WUtEMWhCOWl1SW42QmF4cmxKbktoUTA0NjdWU0dzM1VCUThIdnJaT21MQ21Ob2RsNmVNajFNbnRXakozOGp5VQ?oc=5",
+   "title": "How did Taunton school board get 100% raise without City Council's knowledge? - Taunton Daily Gazette",
+   "text": "How did Taunton school board get 100% raise without City Council's knowledge? - Taunton Daily Gazette. How did Taunton school board get 100% raise without City Council's knowledge? Taunton Daily Gazette",
+   "content_hash": "a952e0e1a312314a",
+   "raw_feed_hash": "4bdbb485bb5f078e726bc13fdc0f57b835b38bbe3146e2fcba397ffaa699d43e",
+   "published_at": 1672905600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_da02016b4d",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "66e04232a2464bcb:c0",
+   "source_id": "66e04232a2464bcb",
+   "subject": "McKinsey & Company",
+   "predicate": "published",
+   "object": "article titled 'Marketing in healthcare: Improving the consumer experience'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Marketing in healthcare: Improving the consumer experience - McKinsey & Company",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678863600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "McKinsey & Company"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_4173cf7fdf",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ae9e720442"
+   }
+  },
+  {
+   "claim_id": "fff39f7a308d7033:c0",
+   "source_id": "fff39f7a308d7033",
+   "subject": "Riley County Police Department",
+   "predicate": "has",
+   "object": "Budget & Finance",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Budget & Finance - Riley County Police Department",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678343421.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Riley County Police Department"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3fc5088706",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_90ecbb15bf"
+   }
+  },
+  {
+   "claim_id": "c02a83642bd2530b:c0",
+   "source_id": "c02a83642bd2530b",
+   "subject": "The 2023-24 Budget: Department of Justice Budget Proposals",
+   "predicate": "is",
+   "object": "a document from the Legislative Analyst\u2019s Office (.gov)",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The 2023-24 Budget: Department of Justice Budget Proposals - Legislative Analyst\u2019s Office (.gov)",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677139200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Legislative Analyst\u2019s Office"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d7d49f7c27",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_da02016b4d"
+   }
+  },
+  {
+   "claim_id": "e9a7116ae8f321cf:c0",
+   "source_id": "e9a7116ae8f321cf",
+   "subject": "2023",
+   "predicate": "is the year of",
+   "object": "the chief communications officer",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Why 2023 is the year of the chief communications officer",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1674633600.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "2023",
+    "chief communications officer"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d99aebcb69",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ae9e720442"
+   }
+  },
+  {
+   "claim_id": "10de188cd571acd0:c0",
+   "source_id": "10de188cd571acd0",
+   "subject": "Comments on New York City's Preliminary Budget for Fiscal Year 2024 and Financial Plan for Fiscal Years 2023 - 2027",
+   "predicate": "is published on",
+   "object": "NYC.gov",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Comments on New York City's Preliminary Budget for Fiscal Year 2024 and Financial Plan for Fiscal Years 2023 - 2027 - NYC.gov",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678089600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "New York City's Preliminary Budget for Fiscal Year 2024",
+    "Financial Plan for Fiscal Years 2023 - 2027",
+    "NYC.gov"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_414114247b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_90ecbb15bf"
+   }
+  },
+  {
+   "claim_id": "6f68b2abd5b6c1d5:c0",
+   "source_id": "6f68b2abd5b6c1d5",
+   "subject": "Semrush",
+   "predicate": "increases active email users by",
+   "object": "200% YoY",
+   "value": "200",
+   "units": "%",
+   "qualifiers": "YoY",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Semrush increases active email users by 200% YoY",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679036400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Semrush"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_927058f483",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_da02016b4d"
+   }
+  },
+  {
+   "claim_id": "6f68b2abd5b6c1d5:c1",
+   "source_id": "6f68b2abd5b6c1d5",
+   "subject": "Semrush",
+   "predicate": "increases paying customers via email by",
+   "object": "33%",
+   "value": "33",
+   "units": "%",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "paying customers via email by 33%",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679036400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Semrush"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_927058f483",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_da02016b4d"
+   }
+  },
+  {
+   "claim_id": "6f68b2abd5b6c1d5:c2",
+   "source_id": "6f68b2abd5b6c1d5",
+   "subject": "Semrush",
+   "predicate": "uses",
+   "object": "Adobe Marketo Engage",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "with Adobe Marketo Engage",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679036400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Semrush",
+    "Adobe Marketo Engage"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_927058f483",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_da02016b4d"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "McKinsey & Company",
+   "normalized": "mckinsey &",
+   "candidates": [
+    {
+     "entity_id": "ent_d8546ba112",
+     "canonical": "mckinsey &",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "McKinsey & Company"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Riley County Police Department",
+   "normalized": "riley county police department",
+   "candidates": [
+    {
+     "entity_id": "ent_7e90e75434",
+     "canonical": "riley county police department",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Riley County Police Department"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Legislative Analyst\u2019s Office",
+   "normalized": "legislative analyst\u2019s office",
+   "candidates": [
+    {
+     "entity_id": "ent_579c47d687",
+     "canonical": "legislative analyst\u2019s office",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Legislative Analyst\u2019s Office"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "2023",
+   "normalized": "2023",
+   "candidates": [
+    {
+     "entity_id": "ent_445cd2fd32",
+     "canonical": "2023",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "2023"
+     ]
+    },
+    {
+     "entity_id": "ent_b84571be25",
+     "canonical": "financial plan for fiscal years 2023 - 2027",
+     "support": 0.2333,
+     "evidence_mentions": [
+      "Financial Plan for Fiscal Years 2023 - 2027"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "chief communications officer",
+   "normalized": "chief communications officer",
+   "candidates": [
+    {
+     "entity_id": "ent_54f2cf136d",
+     "canonical": "chief communications officer",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "chief communications officer"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "New York City's Preliminary Budget for Fiscal Year 2024",
+   "normalized": "new york city's preliminary budget for fiscal year 2024",
+   "candidates": [
+    {
+     "entity_id": "ent_8575397bb9",
+     "canonical": "new york city's preliminary budget for fiscal year 2024",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "New York City's Preliminary Budget for Fiscal Year 2024"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Financial Plan for Fiscal Years 2023 - 2027",
+   "normalized": "financial plan for fiscal years 2023 - 2027",
+   "candidates": [
+    {
+     "entity_id": "ent_b84571be25",
+     "canonical": "financial plan for fiscal years 2023 - 2027",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Financial Plan for Fiscal Years 2023 - 2027"
+     ]
+    },
+    {
+     "entity_id": "ent_445cd2fd32",
+     "canonical": "2023",
+     "support": 0.2333,
+     "evidence_mentions": [
+      "2023"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "NYC.gov",
+   "normalized": "nyc",
+   "candidates": [
+    {
+     "entity_id": "ent_44827c2a36",
+     "canonical": "nyc",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "NYC.gov"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Semrush",
+   "normalized": "semrush",
+   "candidates": [
+    {
+     "entity_id": "ent_14a863a621",
+     "canonical": "semrush",
+     "support": 0.75,
+     "evidence_mentions": [
+      "Semrush",
+      "Semrush",
+      "Semrush"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Semrush",
+   "normalized": "semrush",
+   "candidates": [
+    {
+     "entity_id": "ent_14a863a621",
+     "canonical": "semrush",
+     "support": 0.75,
+     "evidence_mentions": [
+      "Semrush",
+      "Semrush",
+      "Semrush"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Semrush",
+   "normalized": "semrush",
+   "candidates": [
+    {
+     "entity_id": "ent_14a863a621",
+     "canonical": "semrush",
+     "support": 0.75,
+     "evidence_mentions": [
+      "Semrush",
+      "Semrush",
+      "Semrush"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Adobe Marketo Engage",
+   "normalized": "adobe marketo engage",
+   "candidates": [
+    {
+     "entity_id": "ent_ffc6fa8223",
+     "canonical": "adobe marketo engage",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Adobe Marketo Engage"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "66e04232a2464bcb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1678863600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678863600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e9a7116ae8f321cf": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1674633600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674633600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "313398bb192c4b2d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1676966400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676966400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "5267a7c7f13ceec3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1674806400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674806400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fff39f7a308d7033": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1678343421.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678343421.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "10de188cd571acd0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1678089600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678089600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "72c96e5d0684821a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1676448000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676448000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4d8c172501a9732d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1680246000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680246000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0088670df5ababb1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1674547200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674547200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "893806f9aade7b2c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1674633600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674633600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7877a8052b5d13b2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1670832000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1670832000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e4de1035274fbb1e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1678348800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678348800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c02a83642bd2530b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1677139200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677139200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6f68b2abd5b6c1d5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1679036400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679036400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6c0c55f4375c6a0b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1675238400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675238400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6be7209ae4de71b2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1678690800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678690800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2b24f969b737e3bb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1678863600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678863600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a6a350650833c6d1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1668931200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1668931200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ca547fc11dad953f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680652800.0,
+   "claimed_pubdate_ts": 1672905600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672905600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_4173cf7fdf",
+   "member_ids": [
+    "66e04232a2464bcb",
+    "66e04232a2464bcb"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "McKinsey & Company",
+   "primary_source": "McKinsey & Company",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_d99aebcb69",
+   "member_ids": [
+    "e9a7116ae8f321cf"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "PR Daily",
+   "primary_source": "PR Daily",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_be56d646e9",
+   "member_ids": [
+    "313398bb192c4b2d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9c3bf8adcf",
+   "member_ids": [
+    "5267a7c7f13ceec3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "raconteur.net",
+   "primary_source": "raconteur.net",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3fc5088706",
+   "member_ids": [
+    "fff39f7a308d7033"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Riley County Police Department",
+   "primary_source": "Riley County Police Department",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_414114247b",
+   "member_ids": [
+    "10de188cd571acd0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NYC.gov",
+   "primary_source": "NYC.gov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_dda39c821f",
+   "member_ids": [
+    "72c96e5d0684821a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Congressional Budget Office (.gov)",
+   "primary_source": "Congressional Budget Office (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_38c15af811",
+   "member_ids": [
+    "4d8c172501a9732d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Spotlight PA",
+   "primary_source": "Spotlight PA",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_413ca96bdb",
+   "member_ids": [
+    "0088670df5ababb1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NJ.gov",
+   "primary_source": "NJ.gov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d7d9d5fa2a",
+   "member_ids": [
+    "893806f9aade7b2c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Georgia Budget and Policy Institute",
+   "primary_source": "Georgia Budget and Policy Institute",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8f8bc5905f",
+   "member_ids": [
+    "7877a8052b5d13b2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "KCRA",
+   "primary_source": "KCRA",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fc830f97fc",
+   "member_ids": [
+    "e4de1035274fbb1e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Oregon Public Broadcasting - OPB",
+   "primary_source": "Oregon Public Broadcasting - OPB",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d7d49f7c27",
+   "member_ids": [
+    "c02a83642bd2530b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Legislative Analyst\u2019s Office (.gov)",
+   "primary_source": "Legislative Analyst\u2019s Office (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_927058f483",
+   "member_ids": [
+    "6f68b2abd5b6c1d5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Adobe for Business",
+   "primary_source": "Adobe for Business",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_30266165ee",
+   "member_ids": [
+    "6c0c55f4375c6a0b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Thomson Reuters",
+   "primary_source": "Thomson Reuters",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bb07c570b7",
+   "member_ids": [
+    "6be7209ae4de71b2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Police1",
+   "primary_source": "Police1",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2fa132c27f",
+   "member_ids": [
+    "2b24f969b737e3bb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "GovExec.com",
+   "primary_source": "GovExec.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c9876e8da1",
+   "member_ids": [
+    "a6a350650833c6d1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Northwest Arkansas Democrat-Gazette",
+   "primary_source": "Northwest Arkansas Democrat-Gazette",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b3cab33f66",
+   "member_ids": [
+    "ca547fc11dad953f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Taunton Daily Gazette",
+   "primary_source": "Taunton Daily Gazette",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "66e04232a2464bcb:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678863600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "fff39f7a308d7033:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678343421.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c02a83642bd2530b:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677139200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "e9a7116ae8f321cf:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674633600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "10de188cd571acd0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678089600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6f68b2abd5b6c1d5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679036400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6f68b2abd5b6c1d5:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679036400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6f68b2abd5b6c1d5:c2",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679036400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "66e04232a2464bcb:c0",
+  "fff39f7a308d7033:c0",
+  "c02a83642bd2530b:c0",
+  "e9a7116ae8f321cf:c0",
+  "10de188cd571acd0:c0",
+  "6f68b2abd5b6c1d5:c0",
+  "6f68b2abd5b6c1d5:c1",
+  "6f68b2abd5b6c1d5:c2"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_ae9e720442": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_90ecbb15bf": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_da02016b4d": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_a2cdd81d8a": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a0eee887d5": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_7a83874236": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_de28c9c130": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_828562232e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_a2cdd81d8a",
+  "req_a0eee887d5",
+  "req_7a83874236",
+  "req_de28c9c130",
+  "req_828562232e"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 19,
+  "n_contradictions": 0,
+  "n_documents": 20
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 15.712,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "e4e76a7c45ff9f84",
+ "bundle_hash": "e4e76a7c45ff9f84",
+ "_persisted_at": "2026-07-13T01:33:25Z"
+}

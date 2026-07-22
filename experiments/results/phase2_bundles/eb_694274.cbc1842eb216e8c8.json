@@ -1,0 +1,1965 @@
+{
+ "bundle_id": "eb_694274",
+ "question": "Will the party retain its majority in the state legislature?",
+ "as_of": 1692489600.0,
+ "compiler_plan_hash": "fc581296bd10",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_c0880663b0",
+   "claim_or_quantity": "retain_majority if the party holds at least 50%+1 of the seats after the election; otherwise lose_majority",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-20",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "state_legislature",
+    "governor"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3b32ce198d",
+   "claim_or_quantity": "value/context of voters.turnout_probability",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "voters.turnout_probability",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-20",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f792a2913c",
+   "claim_or_quantity": "value/context of voters.party_preference_shift",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "voters.party_preference_shift",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-20",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_fc9a454f57",
+   "claim_or_quantity": "evidence discriminating structural hypothesis baseline_incumbency",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:baseline_incumbency",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-20",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_d074980d53",
+   "claim_or_quantity": "evidence discriminating structural hypothesis national_wave",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:national_wave",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-20",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_9d4c18f9e4",
+   "claim_or_quantity": "value/context of state_legislature.district_boundaries",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "state_legislature.district_boundaries",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-20",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ce2c3e237d",
+   "claim_or_quantity": "decision rules / process of state_legislature",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "state_legislature",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-20",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a3eccf2f62",
+   "claim_or_quantity": "decision rules / process of election_commission",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "election_commission",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-20",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_c0880663b0",
+   "terms": "party retain majority state legislature state legislature governor",
+   "after": "2023-03-23",
+   "before": "2023-08-20",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_3b32ce198d",
+   "terms": "voters turnout probability",
+   "after": "2023-03-23",
+   "before": "2023-08-20",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_f792a2913c",
+   "terms": "voters party preference shift",
+   "after": "2023-03-23",
+   "before": "2023-08-20",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_c0880663b0",
+   "logical_query": "party retain majority state legislature state legislature governor after:2023-03-23 before:2023-08-20",
+   "wire_url": "https://news.google.com/rss/search?q=party+retain+majority+state+legislature+state+legislature+governor+after%3A2023-03-23+before%3A2023-08-20&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-23",
+   "before_date": "2023-08-20",
+   "retrieved_at": 1783906723.7558048,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:38:44 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw05BiSO44w5ACxBVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsaT54iU2gQ__lz9hVFJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAsO83cw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "0f59d1535276f9970b8a2357bb9d28d9f3db58bf74747900965b0793e4d11b78",
+   "n_bytes": 70129,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.693
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_3b32ce198d",
+   "logical_query": "voters turnout probability after:2023-03-23 before:2023-08-20",
+   "wire_url": "https://news.google.com/rss/search?q=voters+turnout+probability+after%3A2023-03-23+before%3A2023-08-20&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-23",
+   "before_date": "2023-08-20",
+   "retrieved_at": 1783906724.4507859,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:38:45 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1ZBiSO44w5AKxBVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcS5svXmITaOhYpqWknJRfGJ-SX1JcXJCTWJxRnFpUlloUb2RgZGZgbmCmZ2ASX2AAAE1ON6g\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "75849863ffe6c64ad9ae1402fcc62ffb1d4b39e65091a1c39a93ce0bf4f11217",
+   "n_bytes": 28349,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.558
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_f792a2913c",
+   "logical_query": "voters party preference shift after:2023-03-23 before:2023-08-20",
+   "wire_url": "https://news.google.com/rss/search?q=voters+party+preference+shift+after%3A2023-03-23+before%3A2023-08-20&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-23",
+   "before_date": "2023-08-20",
+   "retrieved_at": 1783906725.0106888,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:38:45 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1JBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcS5svXmITuPHz6nsmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC_5Tlq\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "4e63e915f63ea470d2eddcd36475900a92b19d0a8f38cb15275fc3a87054ea5e",
+   "n_bytes": 66513,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.725
+  }
+ ],
+ "raw_content_refs": [
+  "0f59d1535276f9970b8a2357bb9d28d9f3db58bf74747900965b0793e4d11b78",
+  "4e63e915f63ea470d2eddcd36475900a92b19d0a8f38cb15275fc3a87054ea5e",
+  "75849863ffe6c64ad9ae1402fcc62ffb1d4b39e65091a1c39a93ce0bf4f11217"
+ ],
+ "documents": [
+  {
+   "id": "ddbb826e182d10c7",
+   "source": "PBS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNLVFSekJZVWdreldkcXdSNWlMUDRMTG4zalJsWExtTUxDQVFhM3F6U19tRDFvWF9tQ0U4Y3E5RUp6Y1BwRUlCM3h2N2RPMGdQY3ViT0Uwcl8wbzVJSVgxNk1fdUxuYVp0VjBtZGIzdTBVeC1WWlNJUGdkRE1kaTU0VVJJV3NISlltWTZNTzgzNzg0ZUo2WkRsc1pLUVI3YTRkcnN2NDU3MnN1QTRoU3fSAbMBQVVfeXFMTVVuSjBHbXJONUZ3bDZjZGhxVGUzNjJWNm9Bc1lIbGRaaGRmZlNzNkxxYjc0ckN5d3E1bXo5eDI4M2Znc0M3WWcwWjhvQXQzMVN0a1lURUJYQklpdUczNS1VdUZ2a2VUWmY3anVITEowT3g0UWJCQUFIeDFfNWliblJ6c0xiSk5fdVphZ0tCX2V0LVgwajE5VGpDeld3eTdGcWY5ZVEwN0FWak00dDBWOGRZZEU?oc=5",
+   "title": "Democrats keep slim Pennsylvania House majority in special election win - PBS",
+   "text": "Democrats keep slim Pennsylvania House majority in special election win - PBS. Democrats keep slim Pennsylvania House majority in special election win PBS",
+   "content_hash": "16e70da000543e25",
+   "raw_feed_hash": "0f59d1535276f9970b8a2357bb9d28d9f3db58bf74747900965b0793e4d11b78",
+   "published_at": 1684306800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_c0880663b0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "470ab7f51af7bc1d",
+   "source": "Center For Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQNmpHNW1TUXl0RDBWU3ZGUDMzTzZJZFc2UHlueTBSam9hWE9qZDREcEJnWFJuTXRiZmUtdldMaW5uUGlNVGN3dDBES1lGTHM1REJmRW4wanhnNTU1VDl0U1VwaVhOd0tZclVfdk1mdDdHdHliNm9VemZCUUNKZFZGbS1lR0VzTlBpRFVlRTNjUHI1Zw?oc=5",
+   "title": "Where Both Parties Overperform in the House, 2023 Edition - Sabato's Crystal Ball - Center For Politics",
+   "text": "Where Both Parties Overperform in the House, 2023 Edition - Sabato's Crystal Ball - Center For Politics. Where Both Parties Overperform in the House, 2023 Edition - Sabato's Crystal Ball Center For Politics",
+   "content_hash": "3339bc5f9266cb1e",
+   "raw_feed_hash": "0f59d1535276f9970b8a2357bb9d28d9f3db58bf74747900965b0793e4d11b78",
+   "published_at": 1692082800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_c0880663b0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "53bca6f6cf79f43b",
+   "source": "WRAL",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFA4Q2xTMjF5b2FrTF9qbXM5c2NXbzdOODVZMzhsQ1ozNjdqNVhfNnR2MDAwdktNYjV4aDRwaVVSNG1SMWl4clhKNS14VThiZjQ?oc=5",
+   "title": "US Supreme Court rejects independent state legislature theory in NC case Moore v. Harper - WRAL",
+   "text": "US Supreme Court rejects independent state legislature theory in NC case Moore v. Harper - WRAL. US Supreme Court rejects independent state legislature theory in NC case Moore v. Harper WRAL",
+   "content_hash": "a04c62c1964330ba",
+   "raw_feed_hash": "0f59d1535276f9970b8a2357bb9d28d9f3db58bf74747900965b0793e4d11b78",
+   "published_at": 1686812400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_c0880663b0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ce630e50e3a7ea62",
+   "source": "State Court Report",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxORDVHNElJNmVtSXJYSjkxdEhCbk82bm1PMEg3TnQ3Vk51YjdoR3Q5aG1zenlnVGpza1JtejJLa2dnWDdYWkdDbzREVVBLR25zV0NyczlNaEx5ZV9oZDY2X2NPNHJJUzV5QVpuVlI0UzdjYVlNM1oybU9QRWdUWGZ6WmFHR2pvZWFTd1lMV0ZxTWFzWHZfTF9sLU1ycHRRSG0y?oc=5",
+   "title": "Constitutional Amendment Processes in the 50 States - State Court Report",
+   "text": "Constitutional Amendment Processes in the 50 States - State Court Report. Constitutional Amendment Processes in the 50 States State Court Report",
+   "content_hash": "e271bab94210fe07",
+   "raw_feed_hash": "0f59d1535276f9970b8a2357bb9d28d9f3db58bf74747900965b0793e4d11b78",
+   "published_at": 1690182000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_c0880663b0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "016a5106fbc5272f",
+   "source": "WHYY",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNNUI0RFJ5eVZiZnhQWHl2NW1vLWY3bnlpTkhYaHEzQjZFV0JkUk9JQll3c1VvZWpJUTdZQ2IxaC1OMFladWZrTlE4U0E0Q0NtM3E5aXdlTmxJeElhREVTZXVqSmxEYVJYN3pfdjdlSGxvZzhaek1fRGVfSzl4Ul9Ub2lxa0JpbGZVVmpaSHRjNFpRbGlpTndXcg?oc=5",
+   "title": "Democrat Heather Boyd defeats Republican Katie Ford in Delco special election - WHYY",
+   "text": "Democrat Heather Boyd defeats Republican Katie Ford in Delco special election - WHYY. Democrat Heather Boyd defeats Republican Katie Ford in Delco special election WHYY",
+   "content_hash": "fa86930ad887d695",
+   "raw_feed_hash": "0f59d1535276f9970b8a2357bb9d28d9f3db58bf74747900965b0793e4d11b78",
+   "published_at": 1684220400.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_c0880663b0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2c1fb39a840b1035",
+   "source": "Nevada Current",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOa1ItOW1qX2FNZlBRM1Rpd0xMWml6eGJVUzExMGJib0VEVkViZW1uWE1OTnNmbFQyZmZoWEFuekktbFN6dG11VFduUEFwU0dCWUEwcTlja0J3Z1hfN0FWc3I3eS1UUmg4SmN2WmtITjU2b2V4LW5VQXloMmZSTUlfazcyRHdsNWwxbjZhNmdMUXQxZHJiRTZ1TU9BRTRKN1VESDlLSl9kN0g3OXFSY21uX2pjdld3UzRWRmhZMUJfNmhXNUR3Mm5CMw?oc=5",
+   "title": "Nevada bill to protect abortion patients from prosecution elsewhere heads to governor\u2019s desk - Nevada Current",
+   "text": "Nevada bill to protect abortion patients from prosecution elsewhere heads to governor\u2019s desk - Nevada Current. Nevada bill to protect abortion patients from prosecution elsewhere heads to governor\u2019s desk Nevada Current",
+   "content_hash": "22b80e7f118714af",
+   "raw_feed_hash": "0f59d1535276f9970b8a2357bb9d28d9f3db58bf74747900965b0793e4d11b78",
+   "published_at": 1684825200.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_c0880663b0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0fe6e2b595c934c3",
+   "source": "Ballotpedia News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxONElxQ2I2UXVKTm9NYThWNDl4MkZSaVFkOWhLMTdDb2xVc210QndrbkF2T080ZjVKSTFYTjlQRnZaRUVOYkdNV19vbFl4RnRJTjVJN3YxZWJCbnZobHBUUnZhckpTZWptZXBVaUlpdkE3WW8wOHdiU0t0Q29LTTFGYUxTNHJpSWFES2N5bVZKejF6RkxrRVc4RHlZenk0X3VWOU9vTUlWR2FkUVhMWHZqY3VZalJXSEhLdmY3UWFCb2ttZw?oc=5",
+   "title": "Republicans get veto-proof majorities in two new states after recent party switches - Ballotpedia News",
+   "text": "Republicans get veto-proof majorities in two new states after recent party switches - Ballotpedia News. Republicans get veto-proof majorities in two new states after recent party switches Ballotpedia News",
+   "content_hash": "4dba5aa3d4646f5e",
+   "raw_feed_hash": "0f59d1535276f9970b8a2357bb9d28d9f3db58bf74747900965b0793e4d11b78",
+   "published_at": 1680764400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_c0880663b0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6ccb82113d937ff5",
+   "source": "New Jersey Globe",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQRzBoX3ptcmNjOUcyWkRRbjY2Z0NJSndIOTNQcXptb2RPNktOUkU4cmlKWmV2QUlZb281UFdacXNWbklRUHpPZldKY0YwZXhhbHQya3dtYjlDUHBGYjBuc1FmZkZ1TmhTcWxZTWNtc3Rtb1RuajRJNFo4WmY4dXNOR2Z0MXdHQ0JnMS1qQ1c3d0VUZTRwb3NGZ2JjREVVS094SUFZaW12VF9uZWdLY1h5a2pxQVBELUIxRk0w?oc=5",
+   "title": "Last time N.J. went for a governor of the same party three times in a row was 1961 - New Jersey Globe",
+   "text": "Last time N.J. went for a governor of the same party three times in a row was 1961 - New Jersey Globe. Last time N.J. went for a governor of the same party three times in a row was 1961 New Jersey Globe",
+   "content_hash": "848ec99c163b4e5d",
+   "raw_feed_hash": "0f59d1535276f9970b8a2357bb9d28d9f3db58bf74747900965b0793e4d11b78",
+   "published_at": 1683874800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_c0880663b0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f1f790db31c533fb",
+   "source": "Pew Research Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTFBKWlZGWEVwWS1FNTlIbl9DMzJlSG5sRTZtTjdvT3NCOUVpazRTMHlqU0NBMkhQZ0M3eDhIVXVDeEtHV2lMWTJCVzNnR0tUVmdfYzBGRGtKeGs5UGhnRTBIWC1NT3dlTl92d2xCTV9oSmxkQmtrZkREVWZoUjM?oc=5",
+   "title": "1. Voter turnout, 2018-2022 - Pew Research Center",
+   "text": "1. Voter turnout, 2018-2022 - Pew Research Center. 1. Voter turnout, 2018-2022 Pew Research Center",
+   "content_hash": "28e4cc09f2476db4",
+   "raw_feed_hash": "75849863ffe6c64ad9ae1402fcc62ffb1d4b39e65091a1c39a93ce0bf4f11217",
+   "published_at": 1689145200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_3b32ce198d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f1a21a72144c44e3",
+   "source": "European Consortium for Political Research (ECPR)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFA3aURqYnFHT1pkZHpIdktHbmE4U1hVVmRKV3p4aG03TE9aLU9mWUJOR2xqX1NiUEJ5Y2tlQUN5bHhPUjlyRGVpSXpTaXVxTUcxX182bFBWZmRQdzVFRTAyRjRtOA?oc=5",
+   "title": "The dilemma of postal voting - European Consortium for Political Research (ECPR)",
+   "text": "The dilemma of postal voting - European Consortium for Political Research (ECPR). The dilemma of postal voting European Consortium for Political Research (ECPR)",
+   "content_hash": "e8205b056eba89b3",
+   "raw_feed_hash": "75849863ffe6c64ad9ae1402fcc62ffb1d4b39e65091a1c39a93ce0bf4f11217",
+   "published_at": 1680159600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_3b32ce198d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0b2bf9eaeecbc385",
+   "source": "- Emerson Polling",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQLTNSTjdROXEtdU13aTdNNFd0ZDNRdElrYjA3YXVjRkl3M1h3NnRpZzM4RWN4Rk5UajZkNXFQZVRTc1J4eENqRmJHRmlHRWMwYjduaVkxWVZnNkkzTDRYbnZJZmM1OGhsZ2c5VXZYdEpqdHFlQ1N0cGMyS0M5Tlptdmh4cTVTVmtjcGlKZE82dkNJbzZOalRiSllqRTg4SnNWd3huT3JnTWxzcTdIS1BuX0RR?oc=5",
+   "title": "Chicago 2023 Poll: Vallas Holds Edge Over Johnson in Runoff Election for Mayor - - Emerson Polling",
+   "text": "Chicago 2023 Poll: Vallas Holds Edge Over Johnson in Runoff Election for Mayor - - Emerson Polling. Chicago 2023 Poll: Vallas Holds Edge Over Johnson in Runoff Election for Mayor - Emerson Polling",
+   "content_hash": "32a45c00f3692dbe",
+   "raw_feed_hash": "75849863ffe6c64ad9ae1402fcc62ffb1d4b39e65091a1c39a93ce0bf4f11217",
+   "published_at": 1679900400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_3b32ce198d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "abef16148850c2b9",
+   "source": "Pew Research Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNVUhNeU5uWTRTTlhnY2Y0VU4zQ1RLNk1VNEZ3bVdOZ3lhT0dNWmJ1TW9yY1lhWVlZbHJRREZTQUpYRjRYNHkwcDdqOEpnb2pycnphWHRoSUVfZUhTdTFjV0k5b0FYWmpRcEEtTHlNSFcyRGVuTC1LNWJrWHZUZ2drWVhMR3pGck9qZDlITHkzSQ?oc=5",
+   "title": "2. Voting patterns in the 2022 elections - Pew Research Center",
+   "text": "2. Voting patterns in the 2022 elections - Pew Research Center. 2. Voting patterns in the 2022 elections Pew Research Center",
+   "content_hash": "93e9a9fb48077fed",
+   "raw_feed_hash": "75849863ffe6c64ad9ae1402fcc62ffb1d4b39e65091a1c39a93ce0bf4f11217",
+   "published_at": 1689145200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_3b32ce198d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "23509342fa8e7c4e",
+   "source": "The Shorenstein Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPeF93LUV3VFNMdS05cnl6TEpzMVpHN18yODhkNE5xRVpfb0F4QklLNmtIMXlVbnppR1d3VG1FUTJYVThPaFlaWWJWdlZWajl0cV85NzVUZEY4R0VxVERCc05GN19iUjJGaFhCcFZmemhOZ256RUpMeGt1eWNYUDhNUW1VcVE2aXF3SVd4QW1BcG9rY1FqNDJHNUIyejlNX2trS0N4TTlNcEcyeWVLSVdFZk1lcVJXeW1DOHhGVDRsZ3d3bXlMRUpCTUdQX3A4TEY1anpPRjlXMjZteWM?oc=5",
+   "title": "Severe Depressive Symptoms Exacerbate the Relationship Between Conspiracy Beliefs and Voting for Election Doubters (WP-23-22) - The Shorenstein Center",
+   "text": "Severe Depressive Symptoms Exacerbate the Relationship Between Conspiracy Beliefs and Voting for Election Doubters (WP-23-22) - The Shorenstein Center. Severe Depressive Symptoms Exacerbate the Relationship Between Conspiracy Beliefs and Voting for Election Doubters (WP-23-22) The Shorenstein Center",
+   "content_hash": "be8e9f6da80c9d39",
+   "raw_feed_hash": "75849863ffe6c64ad9ae1402fcc62ffb1d4b39e65091a1c39a93ce0bf4f11217",
+   "published_at": 1686553200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_3b32ce198d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b3c0f85aec1f30d4",
+   "source": "Harvard Gazette",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPWm9rT0M3TVF3Vk5KQURUbkZlU0U3aFA3ZERmNjlkcjB2dnV4ZktKMENMdjFGdVJ1NDZYSVp2a3JaUW1yemZsdFBsQk5RdlpKYU1xUVVzQ1R4X1Izby1rbUpSYVFUV0c5ZGRBSWJtV1B0RmtBeTB6QXFzUlphdEpISGcxajMyN1VCQVFNenUwWmNDWG01MlVxUmtfUXU5dk9hYWphNUxFYXdiQk4zdjBCZGMwOVk?oc=5",
+   "title": "Researchers come up with a better way to forecast election results - Harvard Gazette",
+   "text": "Researchers come up with a better way to forecast election results - Harvard Gazette. Researchers come up with a better way to forecast election results Harvard Gazette",
+   "content_hash": "3f7bcac1c89f2a78",
+   "raw_feed_hash": "75849863ffe6c64ad9ae1402fcc62ffb1d4b39e65091a1c39a93ce0bf4f11217",
+   "published_at": 1679986800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_3b32ce198d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c7df6e577006809c",
+   "source": "Pacific Research Institute (PRI)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNbm5XT2VKSFd0SGp0cktELXd1VUtJbWNlaFl3bDZGY0RfYlNvdE4tVFM1aDc0R1g2OF9nV3lPZE9GODh3ejA4UF9TS2RpdjNWeXpJOVZlRmZkZm9lSlRheHJpSE1vVjBucWxpSXR0MTdXdmc5SHZURjN4X0ZYN0Z5eVlZYUszd2NCWGhCTVdUT3VCdFMyV3JXY3ptY2NwcDFCS2FpdGtHUmhuQ3pLQnpJUjVnRDExX1E0eG80bnJEVndQcWN5MFhUcDJRQnQ4NmM?oc=5",
+   "title": "Americans Satisfied with their Current Health Coverage, Lean Against Single Payer, Finds New PRI Survey - Pacific Research Institute (PRI)",
+   "text": "Americans Satisfied with their Current Health Coverage, Lean Against Single Payer, Finds New PRI Survey - Pacific Research Institute (PRI). Americans Satisfied with their Current Health Coverage, Lean Against Single Payer, Finds New PRI Survey Pacific Research Institute (PRI)",
+   "content_hash": "62f00ccc4bf44323",
+   "raw_feed_hash": "75849863ffe6c64ad9ae1402fcc62ffb1d4b39e65091a1c39a93ce0bf4f11217",
+   "published_at": 1692082800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_3b32ce198d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "94b0de60a882962d",
+   "source": "The Washington Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBjVUlWbWNlXzlyeWttZV9Obk85bXBoLVhnUWZERVJMZE43c3RkUGpDM2d0WlRIcmE0SlBwODJZMzRpaThMX3RCQmYxYjNKeWdQcmM1Z2lNdUtDUnNuZDhWRDRJZ19nd1RvZmJZb3Z1V2wyOC1RM1E?oc=5",
+   "title": "Why experts aren\u2019t all that concerned about Biden\u2019s and Trump\u2019s ages - The Washington Post",
+   "text": "Why experts aren\u2019t all that concerned about Biden\u2019s and Trump\u2019s ages - The Washington Post. Why experts aren\u2019t all that concerned about Biden\u2019s and Trump\u2019s ages The Washington Post",
+   "content_hash": "2da4b2b2832c6eb6",
+   "raw_feed_hash": "75849863ffe6c64ad9ae1402fcc62ffb1d4b39e65091a1c39a93ce0bf4f11217",
+   "published_at": 1689663600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_3b32ce198d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3c31c2643fafe5ea",
+   "source": "Public Policy Institute of California",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPcUJPWGt0T3h5S0VqR0dRNHlJMFF4V0NSRGpDMHg3dWMwLUNXazM4Z3cyOWJ4aUFFRXZwQ3NBZ1UzX2lTYVFWNjVMNW55UmE0SW1aOE0zMDFkOXNPTktBY2RTRklLLS1sbnJDRGVwZURTeHBOUE56TzhOUDFFYzljbXlhVmE?oc=5",
+   "title": "Has California\u2019s Independent Registration Boom Ended? - Public Policy Institute of California",
+   "text": "Has California\u2019s Independent Registration Boom Ended? - Public Policy Institute of California. Has California\u2019s Independent Registration Boom Ended? Public Policy Institute of California",
+   "content_hash": "1dc3178bef182d1e",
+   "raw_feed_hash": "4e63e915f63ea470d2eddcd36475900a92b19d0a8f38cb15275fc3a87054ea5e",
+   "published_at": 1689577200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_f792a2913c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "abef16148850c2b9",
+   "source": "Pew Research Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNVUhNeU5uWTRTTlhnY2Y0VU4zQ1RLNk1VNEZ3bVdOZ3lhT0dNWmJ1TW9yY1lhWVlZbHJRREZTQUpYRjRYNHkwcDdqOEpnb2pycnphWHRoSUVfZUhTdTFjV0k5b0FYWmpRcEEtTHlNSFcyRGVuTC1LNWJrWHZUZ2drWVhMR3pGck9qZDlITHkzSQ?oc=5",
+   "title": "2. Voting patterns in the 2022 elections - Pew Research Center",
+   "text": "2. Voting patterns in the 2022 elections - Pew Research Center. 2. Voting patterns in the 2022 elections Pew Research Center",
+   "content_hash": "93e9a9fb48077fed",
+   "raw_feed_hash": "4e63e915f63ea470d2eddcd36475900a92b19d0a8f38cb15275fc3a87054ea5e",
+   "published_at": 1689145200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_f792a2913c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c0fc2ae051f65586",
+   "source": "Center For Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOT3hMTklWWVZvWHBETFBMSTcySzdmRnQxUU43SmZWZ2pJZFVHaWUzZU9uaUk1VnZWVGVDYmJMNVIyclJmQmZVN1VtYWI0a0UycUVSaXJZRDNJWm02RU9xdm5iNmtaYjdlbzd0bW9wZXU4M0pnMW9uRFNaTncwcDBiSWVoZWJxeERRU0tzTkxiQUpsQQ?oc=5",
+   "title": "The Transformation of the American Electorate - Center For Politics",
+   "text": "The Transformation of the American Electorate - Center For Politics. The Transformation of the American Electorate Center For Politics",
+   "content_hash": "8848fe746212dc34",
+   "raw_feed_hash": "4e63e915f63ea470d2eddcd36475900a92b19d0a8f38cb15275fc3a87054ea5e",
+   "published_at": 1679554800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_f792a2913c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0219cb462741bae8",
+   "source": "Governing",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOR0RfTklucnF4TjdmdExMdFlLUEZEVS1jWVJvLTRIRmVfMjBCU0V6OVJrVndWblg4TkhaUm1ORXc2RldGaGRBUmdnZzRFdk5EVm1EOXI3UnVPVmFrYWNlQjE0R0NNRURNeGp5QTdJdTN2R2NkeVQtYlI4d19kd1IxUG12WnBpcWk5YjBTa2ZMZWRjYUtSYnc?oc=5",
+   "title": "How Much Could Younger Voters Affect Future Election Outcomes? - Governing",
+   "text": "How Much Could Younger Voters Affect Future Election Outcomes? - Governing. How Much Could Younger Voters Affect Future Election Outcomes? Governing",
+   "content_hash": "64b93a5721540fee",
+   "raw_feed_hash": "4e63e915f63ea470d2eddcd36475900a92b19d0a8f38cb15275fc3a87054ea5e",
+   "published_at": 1681110000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_f792a2913c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f972dc76372e912c",
+   "source": "Florida Phoenix",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQZ0Q5eXRwUi1RQVBwWHlFcDdUcVF2VjdOWEpkTVhieHBqZkRwWUp0VVhYbmt5LW5rYmo2NXQ4LVRrRk4wT0JveDR3Skh3ZXV1MmtDbUdtdEVEM2hIX2NoeGVpREpNczJ1UU8ybDJYY1lORGZPQ1FMZFJ6OG10c0VjNDF3TnNmcl9xNTlheXhrbkdHVEpuTUUtbnA0VHF4cFdSWWZLc2FkYlNQX3VNa21rWFhQb0Vpdw?oc=5",
+   "title": "No-party-affiliation \u2018NPA\u2019 voters look to find their place in Florida politics - Florida Phoenix",
+   "text": "No-party-affiliation \u2018NPA\u2019 voters look to find their place in Florida politics - Florida Phoenix. No-party-affiliation \u2018NPA\u2019 voters look to find their place in Florida politics Florida Phoenix",
+   "content_hash": "2a7514bdb6ab4a66",
+   "raw_feed_hash": "4e63e915f63ea470d2eddcd36475900a92b19d0a8f38cb15275fc3a87054ea5e",
+   "published_at": 1692082800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_f792a2913c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "118abfc7711226c4",
+   "source": "CIDRAP",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPVE9xVHpEcDNLS1lEZndjcTlpN2FXMDBhRE9uQnNzWC1nWHlfb0VPUWdZdXhQTk5wYzRKRS03a1Z6U19DYmNGeTFOUGRkLUJNMDFqakRZclMzanV3UU4zMzY4ZHQyTFlPUFVKOFJHaVYtVjRzc25xMmhFV1ZVVTV0WThGeDY3cTlWLTRLTVFDTlRNOG5n?oc=5",
+   "title": "Political party affiliation linked to excess COVID deaths - CIDRAP",
+   "text": "Political party affiliation linked to excess COVID deaths - CIDRAP. Political party affiliation linked to excess COVID deaths CIDRAP",
+   "content_hash": "3dc6bfd2800d9a54",
+   "raw_feed_hash": "4e63e915f63ea470d2eddcd36475900a92b19d0a8f38cb15275fc3a87054ea5e",
+   "published_at": 1690182000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_f792a2913c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "86a4262772f22c55",
+   "source": "Brookings",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxPcm1TTlYwWHlROUNrWWNyQ0FMOEI4bktUT1pIOEw2SkZnOVFEM2oxbUhXdngyM1ZWOGZzQUNVazRCVDdVRmkxNFZ6dzFjOXowSEJEcWx6RkNVX3J0Vnp4M2FIVVBZS1ZHUC1QVHNsTWJCUWFNRDJua2tVVmNYLWlOcGRYNWVtUTlwLXpic1duYzJRZG5RWFl4Wl8zRmFDcFIydTN6cllxaEdYeFpldFJ5c2FId2lmS1hoNG5JNy1FLTJsOTh1bGhfNVlsWWhkclhjSTJ6U2RQTW5sdVV4QnU4Q0NIMElHVXlfbUV5M0ZsaVdUUXVUbXVJ?oc=5",
+   "title": "New voter turnout data from 2022 shows some surprises, including lower turnout for youth, women, and Black Americans in some states - Brookings",
+   "text": "New voter turnout data from 2022 shows some surprises, including lower turnout for youth, women, and Black Americans in some states - Brookings. New voter turnout data from 2022 shows some surprises, including lower turnout for youth, women, and Black Americans in some states Brookings",
+   "content_hash": "516534ad2d6bd5a3",
+   "raw_feed_hash": "4e63e915f63ea470d2eddcd36475900a92b19d0a8f38cb15275fc3a87054ea5e",
+   "published_at": 1684393200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_f792a2913c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "beb82e6af308b59f",
+   "source": "Charlotte Observer",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE11QkVjejhLbEZGdTg5TzM4SUVjaWpreHBMc0E4aUM0Yzl3b0ZJZFp4RWFtTXhFdlNFUUdKakRjU19xeVZMc00wYkR4OS1aMW4yNW5DWDlJTnBtX2ZTQzZIQ2NCMFpnQ25kQzh4am12ambSAXBBVV95cUxNZEVWRWUyM0pWZzdhQWRtVUY3SFJ4cTlka201VVotSFNoTVE5VV9yU0R6anBETGNhQlM3Sm9FRVNGa3BZX2FRdmJQZG1RWVd2SDNjMW92TXRMMlNJeEF6cmxRTko0T2gyNkxJUG9DQUx5?oc=5",
+   "title": "NC Democrat Tricia Cotham changes parties, betraying her own words to voters | Opinion - Charlotte Observer",
+   "text": "NC Democrat Tricia Cotham changes parties, betraying her own words to voters | Opinion - Charlotte Observer. NC Democrat Tricia Cotham changes parties, betraying her own words to voters | Opinion Charlotte Observer",
+   "content_hash": "15fccd3d35df3105",
+   "raw_feed_hash": "4e63e915f63ea470d2eddcd36475900a92b19d0a8f38cb15275fc3a87054ea5e",
+   "published_at": 1680591600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_f792a2913c",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "ddbb826e182d10c7:c0",
+   "source_id": "ddbb826e182d10c7",
+   "subject": "Democrats",
+   "predicate": "keep",
+   "object": "slim Pennsylvania House majority",
+   "value": "",
+   "units": "",
+   "qualifiers": "in special election win",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Democrats keep slim Pennsylvania House majority in special election win",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684306800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Democrats",
+    "Pennsylvania House"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_dba4e3fd34",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c0880663b0"
+   }
+  },
+  {
+   "claim_id": "f1f790db31c533fb:c0",
+   "source_id": "f1f790db31c533fb",
+   "subject": "Voter turnout, 2018-2022",
+   "predicate": "is a report by",
+   "object": "Pew Research Center",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Voter turnout, 2018-2022 - Pew Research Center",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689145200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Pew Research Center"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_70eb87f8a6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3b32ce198d"
+   }
+  },
+  {
+   "claim_id": "3c31c2643fafe5ea:c0",
+   "source_id": "3c31c2643fafe5ea",
+   "subject": "California's independent registration boom",
+   "predicate": "has ended",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "Has California\u2019s Independent Registration Boom Ended?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689577200.0,
+   "extraction_confidence": 0.7,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "California"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_1d91b7615b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f792a2913c"
+   }
+  },
+  {
+   "claim_id": "470ab7f51af7bc1d:c0",
+   "source_id": "470ab7f51af7bc1d",
+   "subject": "article",
+   "predicate": "is titled",
+   "object": "Where Both Parties Overperform in the House, 2023 Edition",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Where Both Parties Overperform in the House, 2023 Edition - Sabato's Crystal Ball - Center For Politics",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1692082800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Sabato's Crystal Ball",
+    "Center For Politics"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a3ecd8fa9c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c0880663b0"
+   }
+  },
+  {
+   "claim_id": "470ab7f51af7bc1d:c1",
+   "source_id": "470ab7f51af7bc1d",
+   "subject": "article",
+   "predicate": "is published by",
+   "object": "Sabato's Crystal Ball - Center For Politics",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Sabato's Crystal Ball - Center For Politics",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1692082800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Sabato's Crystal Ball",
+    "Center For Politics"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a3ecd8fa9c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c0880663b0"
+   }
+  },
+  {
+   "claim_id": "f1a21a72144c44e3:c0",
+   "source_id": "f1a21a72144c44e3",
+   "subject": "The dilemma of postal voting",
+   "predicate": "is a topic of",
+   "object": "European Consortium for Political Research (ECPR)",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The dilemma of postal voting - European Consortium for Political Research (ECPR)",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680159600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "European Consortium for Political Research (ECPR)"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_23a342797b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3b32ce198d"
+   }
+  },
+  {
+   "claim_id": "abef16148850c2b9:c0",
+   "source_id": "abef16148850c2b9",
+   "subject": "Pew Research Center",
+   "predicate": "published a report on",
+   "object": "voting patterns in the 2022 elections",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "2. Voting patterns in the 2022 elections - Pew Research Center.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689145200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Pew Research Center",
+    "2022 elections"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7d3d54d9c6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f792a2913c"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Democrats",
+   "normalized": "democrats",
+   "candidates": [
+    {
+     "entity_id": "ent_f3d91dd97c",
+     "canonical": "democrats",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Democrats"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Pennsylvania House",
+   "normalized": "pennsylvania house",
+   "candidates": [
+    {
+     "entity_id": "ent_4241a1181b",
+     "canonical": "pennsylvania house",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Pennsylvania House"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Pew Research Center",
+   "normalized": "pew research center",
+   "candidates": [
+    {
+     "entity_id": "ent_155dc0b74b",
+     "canonical": "pew research center",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "Pew Research Center",
+      "Pew Research Center"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "California",
+   "normalized": "california",
+   "candidates": [
+    {
+     "entity_id": "ent_e37b030af5",
+     "canonical": "california",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "California"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Sabato's Crystal Ball",
+   "normalized": "sabato's crystal ball",
+   "candidates": [
+    {
+     "entity_id": "ent_b10b8088aa",
+     "canonical": "sabato's crystal ball",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "Sabato's Crystal Ball",
+      "Sabato's Crystal Ball"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Center For Politics",
+   "normalized": "center for politics",
+   "candidates": [
+    {
+     "entity_id": "ent_a5fef0518b",
+     "canonical": "center for politics",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "Center For Politics",
+      "Center For Politics"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Sabato's Crystal Ball",
+   "normalized": "sabato's crystal ball",
+   "candidates": [
+    {
+     "entity_id": "ent_b10b8088aa",
+     "canonical": "sabato's crystal ball",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "Sabato's Crystal Ball",
+      "Sabato's Crystal Ball"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Center For Politics",
+   "normalized": "center for politics",
+   "candidates": [
+    {
+     "entity_id": "ent_a5fef0518b",
+     "canonical": "center for politics",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "Center For Politics",
+      "Center For Politics"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "European Consortium for Political Research (ECPR)",
+   "normalized": "european consortium for political research (ecpr)",
+   "candidates": [
+    {
+     "entity_id": "ent_15a9500dc9",
+     "canonical": "european consortium for political research (ecpr)",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "European Consortium for Political Research (ECPR)"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Pew Research Center",
+   "normalized": "pew research center",
+   "candidates": [
+    {
+     "entity_id": "ent_155dc0b74b",
+     "canonical": "pew research center",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "Pew Research Center",
+      "Pew Research Center"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "2022 elections",
+   "normalized": "2022 elections",
+   "candidates": [
+    {
+     "entity_id": "ent_e53958fb6d",
+     "canonical": "2022 elections",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "2022 elections"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "ddbb826e182d10c7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1684306800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684306800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "470ab7f51af7bc1d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1692082800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692082800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "53bca6f6cf79f43b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1686812400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686812400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ce630e50e3a7ea62": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1690182000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690182000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "016a5106fbc5272f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1684220400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684220400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2c1fb39a840b1035": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1684825200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684825200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0fe6e2b595c934c3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1680764400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680764400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6ccb82113d937ff5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1683874800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683874800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f1f790db31c533fb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1689145200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689145200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f1a21a72144c44e3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1680159600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680159600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0b2bf9eaeecbc385": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1679900400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679900400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "abef16148850c2b9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1689145200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689145200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "23509342fa8e7c4e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1686553200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686553200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b3c0f85aec1f30d4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1679986800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679986800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c7df6e577006809c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1692082800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692082800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "94b0de60a882962d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1689663600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689663600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3c31c2643fafe5ea": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1689577200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689577200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c0fc2ae051f65586": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1679554800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679554800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0219cb462741bae8": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1681110000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681110000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f972dc76372e912c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1692082800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692082800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "118abfc7711226c4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1690182000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690182000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "86a4262772f22c55": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1684393200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684393200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "beb82e6af308b59f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692489600.0,
+   "claimed_pubdate_ts": 1680591600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680591600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_dba4e3fd34",
+   "member_ids": [
+    "ddbb826e182d10c7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "PBS",
+   "primary_source": "PBS",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a3ecd8fa9c",
+   "member_ids": [
+    "470ab7f51af7bc1d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Center For Politics",
+   "primary_source": "Center For Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2691035654",
+   "member_ids": [
+    "53bca6f6cf79f43b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WRAL",
+   "primary_source": "WRAL",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_dd633fca2a",
+   "member_ids": [
+    "ce630e50e3a7ea62"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "State Court Report",
+   "primary_source": "State Court Report",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ed0d145bdb",
+   "member_ids": [
+    "016a5106fbc5272f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WHYY",
+   "primary_source": "WHYY",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7aa2e91594",
+   "member_ids": [
+    "2c1fb39a840b1035"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nevada Current",
+   "primary_source": "Nevada Current",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2a38e44bba",
+   "member_ids": [
+    "0fe6e2b595c934c3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Ballotpedia News",
+   "primary_source": "Ballotpedia News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0884798d9b",
+   "member_ids": [
+    "6ccb82113d937ff5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "New Jersey Globe",
+   "primary_source": "New Jersey Globe",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_70eb87f8a6",
+   "member_ids": [
+    "f1f790db31c533fb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Pew Research Center",
+   "primary_source": "Pew Research Center",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_23a342797b",
+   "member_ids": [
+    "f1a21a72144c44e3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "European Consortium for Political Research (ECPR)",
+   "primary_source": "European Consortium for Political Research (ECPR)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_26d2a55887",
+   "member_ids": [
+    "0b2bf9eaeecbc385"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "- Emerson Polling",
+   "primary_source": "- Emerson Polling",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7d3d54d9c6",
+   "member_ids": [
+    "abef16148850c2b9",
+    "abef16148850c2b9"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Pew Research Center",
+   "primary_source": "Pew Research Center",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_af389c6658",
+   "member_ids": [
+    "23509342fa8e7c4e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Shorenstein Center",
+   "primary_source": "The Shorenstein Center",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2b9ef4b332",
+   "member_ids": [
+    "b3c0f85aec1f30d4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Harvard Gazette",
+   "primary_source": "Harvard Gazette",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b1da676053",
+   "member_ids": [
+    "c7df6e577006809c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Pacific Research Institute (PRI)",
+   "primary_source": "Pacific Research Institute (PRI)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_56878c283a",
+   "member_ids": [
+    "94b0de60a882962d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Washington Post",
+   "primary_source": "The Washington Post",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1d91b7615b",
+   "member_ids": [
+    "3c31c2643fafe5ea"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Public Policy Institute of California",
+   "primary_source": "Public Policy Institute of California",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4ee3dc0650",
+   "member_ids": [
+    "c0fc2ae051f65586"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Center For Politics",
+   "primary_source": "Center For Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_68db825f71",
+   "member_ids": [
+    "0219cb462741bae8"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Governing",
+   "primary_source": "Governing",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_800a1d9aa7",
+   "member_ids": [
+    "f972dc76372e912c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Florida Phoenix",
+   "primary_source": "Florida Phoenix",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_97a280e97c",
+   "member_ids": [
+    "118abfc7711226c4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CIDRAP",
+   "primary_source": "CIDRAP",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_57b01b0b39",
+   "member_ids": [
+    "86a4262772f22c55"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Brookings",
+   "primary_source": "Brookings",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_576d3b10b4",
+   "member_ids": [
+    "beb82e6af308b59f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Charlotte Observer",
+   "primary_source": "Charlotte Observer",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "ddbb826e182d10c7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684306800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f1f790db31c533fb:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689145200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3c31c2643fafe5ea:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689577200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "470ab7f51af7bc1d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1692082800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "470ab7f51af7bc1d:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1692082800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f1a21a72144c44e3:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680159600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "abef16148850c2b9:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689145200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "ddbb826e182d10c7:c0",
+  "f1f790db31c533fb:c0",
+  "3c31c2643fafe5ea:c0",
+  "470ab7f51af7bc1d:c0",
+  "470ab7f51af7bc1d:c1",
+  "f1a21a72144c44e3:c0",
+  "abef16148850c2b9:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_c0880663b0": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_3b32ce198d": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_f792a2913c": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_fc9a454f57": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_d074980d53": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_9d4c18f9e4": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ce2c3e237d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a3eccf2f62": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_fc9a454f57",
+  "req_d074980d53",
+  "req_9d4c18f9e4",
+  "req_ce2c3e237d",
+  "req_a3eccf2f62"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 23,
+  "n_contradictions": 0,
+  "n_documents": 24
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.404,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "cbc1842eb216e8c8",
+ "bundle_hash": "cbc1842eb216e8c8",
+ "_persisted_at": "2026-07-13T01:39:03Z"
+}

@@ -1,0 +1,509 @@
+{
+ "ukraine": {
+  "question": "When will the Russia-Ukraine conflict end?",
+  "lineage_mode_graph": {
+   "n_sources": 3,
+   "n_elicitation_passes": 3,
+   "sources": [
+    "elicitation_1",
+    "elicitation_2",
+    "elicitation_3"
+   ],
+   "agreement": 1.0,
+   "modes": [
+    {
+     "id": "russian_victory",
+     "support": "3/3",
+     "pathway": "unilateral_action"
+    },
+    {
+     "id": "ceasefire",
+     "support": "3/3",
+     "pathway": "cooperative_agreement"
+    },
+    {
+     "id": "ukrainian_victory",
+     "support": "3/3",
+     "pathway": "unilateral_action"
+    },
+    {
+     "id": "peace_treaty",
+     "support": "3/3",
+     "pathway": "cooperative_agreement"
+    }
+   ],
+   "dropped_minority_candidates": [
+    {
+     "id": "frozen_conflict_stalemate",
+     "support": "1/3"
+    },
+    {
+     "id": "nato_direct_escalation",
+     "support": "1/3"
+    }
+   ]
+  },
+  "event_time_report": {
+   "modes": [
+    "russian_victory",
+    "ceasefire",
+    "ukrainian_victory",
+    "peace_treaty"
+   ],
+   "rejected_non_absorbing_modes": [],
+   "mode_consensus": {
+    "n_sources": 3,
+    "n_elicitation_passes": 3,
+    "sources": [
+     "elicitation_1",
+     "elicitation_2",
+     "elicitation_3"
+    ],
+    "agreement": 1.0,
+    "modes": [
+     {
+      "id": "russian_victory",
+      "support": "3/3",
+      "pathway": "unilateral_action"
+     },
+     {
+      "id": "ceasefire",
+      "support": "3/3",
+      "pathway": "cooperative_agreement"
+     },
+     {
+      "id": "ukrainian_victory",
+      "support": "3/3",
+      "pathway": "unilateral_action"
+     },
+     {
+      "id": "peace_treaty",
+      "support": "3/3",
+      "pathway": "cooperative_agreement"
+     }
+    ],
+    "dropped_minority_candidates": [
+     {
+      "id": "frozen_conflict_stalemate",
+      "support": "1/3"
+     },
+     {
+      "id": "nato_direct_escalation",
+      "support": "1/3"
+     }
+    ]
+   },
+   "n_particles": 200,
+   "n_hazard_rounds": 160,
+   "rounds_per_mode": 40,
+   "n_stance_reviews": 40,
+   "persistence_window_days": 30.0,
+   "contested_mode_channels": {
+    "mode_channels": {
+     "russian_victory": "mode_progress:unilateral_action:russian_victory",
+     "ukrainian_victory": "mode_progress:unilateral_action:ukrainian_victory"
+    },
+    "principals": {
+     "cooperative_agreement": [
+      "Vladimir_Putin",
+      "Volodymyr_Zelenskyy"
+     ]
+    }
+   },
+   "agreement_hazard_ratio": {
+    "median": 0.55,
+    "lo80": 0.3,
+    "hi80": 0.9,
+    "binding_actor": "Vladimir_Putin",
+    "binding_level": "committed_to_prevent",
+    "binding_reliability": "high",
+    "binding_pathway": "cooperative_agreement",
+    "combination_rule": "unanimity",
+    "n_stances_combined": 3
+   },
+   "hazard_ratio_by_mode": {
+    "russian_victory": {
+     "median": 1.4081,
+     "lo80": 1.0943,
+     "hi80": 1.8058,
+     "binding_actor": "Vladimir_Putin",
+     "binding_level": "actively_pursuing",
+     "combination_rule": "unilateral",
+     "endogenous_split": 0.6,
+     "pathway": "unilateral_action",
+     "split_applied_at": "runtime_sampled"
+    },
+    "ceasefire": {
+     "median": 0.6986,
+     "lo80": 0.4856,
+     "hi80": 0.9387,
+     "binding_actor": "Vladimir_Putin",
+     "binding_level": "committed_to_prevent",
+     "combination_rule": "unanimity",
+     "endogenous_split": 0.6,
+     "pathway": "cooperative_agreement",
+     "split_applied_at": "runtime_sampled"
+    },
+    "ukrainian_victory": {
+     "median": 1.236,
+     "lo80": 1.0087,
+     "hi80": 1.5032,
+     "binding_actor": "Volodymyr_Zelenskyy",
+     "binding_level": "actively_pursuing",
+     "combination_rule": "unilateral",
+     "endogenous_split": 0.6,
+     "pathway": "unilateral_action",
+     "split_applied_at": "runtime_sampled"
+    },
+    "peace_treaty": {
+     "median": 0.6986,
+     "lo80": 0.4856,
+     "hi80": 0.9387,
+     "binding_actor": "Vladimir_Putin",
+     "binding_level": "committed_to_prevent",
+     "combination_rule": "unanimity",
+     "endogenous_split": 0.6,
+     "pathway": "cooperative_agreement",
+     "split_applied_at": "runtime_sampled"
+    }
+   },
+   "hazard_ratio_source": "documented_priors_unfitted",
+   "hr_pack": {
+    "source": "documented_priors_unfitted",
+    "fitted_at": null,
+    "n_rows": null,
+    "stratified": false
+   },
+   "coupling_source": {
+    "source": "documented_priors_unfitted",
+    "fitted_at": null,
+    "n_trajectories": null
+   },
+   "categorical_options": null,
+   "n_grounded_stances": 8,
+   "n_absorbing_institutional_decisions": 0,
+   "declared_pathways": [
+    "cooperative_agreement",
+    "unilateral_action"
+   ],
+   "family": "generic",
+   "hazard_curve_source": "fitted_family_survival(n=319)"
+  },
+  "stances": [
+   {
+    "actor": "Vladimir_Putin",
+    "commitment_level": "committed_to_prevent",
+    "reliability": "high",
+    "capability": "high",
+    "pathway": "cooperative_agreement",
+    "target_mode": null,
+    "quote": "Putin likely to escalate Ukraine war, despite Trump peace push (Reuters)",
+    "statement": "Escalate the war; no capitulation to a ceasefire",
+    "source": "evidence",
+    "entails": "no",
+    "control": "veto"
+   },
+   {
+    "actor": "Vladimir_Putin",
+    "commitment_level": "actively_pursuing",
+    "reliability": "high",
+    "capability": "high",
+    "pathway": "unilateral_action",
+    "target_mode": "russian_victory",
+    "quote": "objectives of the special military operation will be achieved",
+    "statement": "Pursue full military objectives in Ukraine",
+    "source": "evidence",
+    "entails": "no",
+    "control": "sole_authority"
+   },
+   {
+    "actor": "Vladimir_Putin",
+    "commitment_level": "committed_to_prevent",
+    "reliability": "medium",
+    "capability": "high",
+    "pathway": "unilateral_action",
+    "target_mode": "ukrainian_victory",
+    "quote": "Russia will never accept defeat on the battlefield",
+    "statement": "Deny Ukraine any battlefield victory",
+    "source": "model_knowledge",
+    "entails": "no",
+    "control": "operational_capability"
+   },
+   {
+    "actor": "Volodymyr_Zelenskyy",
+    "commitment_level": "conditionally_opposed",
+    "reliability": "high",
+    "capability": "high",
+    "pathway": "cooperative_agreement",
+    "target_mode": "ceasefire",
+    "quote": "we will not accept a frozen conflict without real security guarantees",
+    "statement": "No frozen conflict without security guarantees",
+    "source": "evidence",
+    "entails": "no",
+    "control": "veto"
+   },
+   {
+    "actor": "Volodymyr_Zelenskyy",
+    "commitment_level": "actively_pursuing",
+    "reliability": "high",
+    "capability": "medium",
+    "pathway": "unilateral_action",
+    "target_mode": "ukrainian_victory",
+    "quote": "we will liberate our land",
+    "statement": "Restore Ukraine's territorial integrity",
+    "source": "evidence",
+    "entails": "no",
+    "control": "sole_authority"
+   },
+   {
+    "actor": "Donald_Trump",
+    "commitment_level": "actively_pursuing",
+    "reliability": "high",
+    "capability": "medium",
+    "pathway": "cooperative_agreement",
+    "target_mode": null,
+    "quote": "Trump holds separate calls with Putin and Zelenskyy (CBS)",
+    "statement": "Broker an end to the war",
+    "source": "evidence",
+    "entails": "yes",
+    "control": "informal_influence"
+   },
+   {
+    "actor": "Verkhovna_Rada",
+    "commitment_level": "committed_to_prevent",
+    "reliability": "high",
+    "capability": "high",
+    "pathway": "cooperative_agreement",
+    "target_mode": null,
+    "quote": "the 2022 NSDC decision bans negotiations with Putin (law in force)",
+    "statement": "Law prohibits negotiating with Putin",
+    "source": "evidence",
+    "entails": "no",
+    "control": "agenda_setting"
+   },
+   {
+    "actor": "Russian_General_Staff",
+    "commitment_level": "actively_pursuing",
+    "reliability": "medium",
+    "capability": "high",
+    "pathway": "unilateral_action",
+    "target_mode": "russian_victory",
+    "quote": "summer offensive continues along the eastern front",
+    "statement": "Sustain offensive operations",
+    "source": "evidence",
+    "entails": "no",
+    "control": "operational_capability"
+   }
+  ],
+  "pathway_processes": {
+   "pathways": [
+    "cooperative_agreement",
+    "unilateral_action"
+   ],
+   "declared": {
+    "cooperative_agreement": {
+     "var": "pathway_progress:cooperative_agreement",
+     "initial": 0.3,
+     "state": "exploratory",
+     "basis": "Trump holds separate calls with Putin and Zelenskyy (CBS)"
+    },
+    "unilateral_action": {
+     "var": "pathway_progress:unilateral_action",
+     "initial": 0.5,
+     "state": "active",
+     "basis": "Putin likely to escalate Ukraine war, despite Trump peace push (Reuters)"
+    }
+   }
+  },
+  "result_distribution": {
+   "absorbed_by_horizon": 0.085,
+   "censored_beyond_horizon": 0.915
+  },
+  "event_time_readout": {
+   "n_particles": 200,
+   "n_absorbed": 17,
+   "p_censored": 0.915,
+   "cdf_grid_ts": [
+    1791927360.0,
+    1799694720.0,
+    1807462080.0,
+    1815229440.0,
+    1822996800.0,
+    1830764160.0,
+    1838531520.0,
+    1846298880.0,
+    1854066240.0,
+    1861833600.0
+   ],
+   "cdf": [
+    0.0,
+    0.0,
+    0.01,
+    0.015,
+    0.015,
+    0.02,
+    0.03,
+    0.045,
+    0.065,
+    0.085
+   ],
+   "survival": [
+    1.0,
+    1.0,
+    0.99,
+    0.985,
+    0.985,
+    0.98,
+    0.97,
+    0.955,
+    0.935,
+    0.915
+   ],
+   "first_passage_quantiles_ts": {
+    "0.1": null,
+    "0.25": null,
+    "0.5": null,
+    "0.75": null,
+    "0.9": null
+   },
+   "mode_distribution": {
+    "ukrainian_victory": 0.01,
+    "russian_victory": 0.06,
+    "ceasefire": 0.01,
+    "peace_treaty": 0.005
+   }
+  },
+  "actions_by_actor": {
+   "Vladimir_Putin": {
+    "hold_position": 302,
+    "wait": 219,
+    "delay": 264,
+    "escalate": 364,
+    "reject": 361,
+    "withdraw": 249,
+    "seek_mediator": 96,
+    "mobilize": 290,
+    "counteroffer": 199,
+    "exit": 456
+   },
+   "Volodymyr_Zelenskyy": {
+    "mobilize": 264,
+    "exit": 366,
+    "counteroffer": 237,
+    "seek_mediator": 230,
+    "delay": 272,
+    "reject": 273,
+    "accept": 90,
+    "hold_position": 260,
+    "withdraw": 239,
+    "escalate": 331,
+    "wait": 238
+   },
+   "Donald_Trump": {
+    "counteroffer": 353,
+    "escalate": 194,
+    "mobilize": 266,
+    "delay": 242,
+    "wait": 284,
+    "seek_mediator": 308,
+    "hold_position": 263,
+    "exit": 113,
+    "reject": 107,
+    "withdraw": 241,
+    "accept": 429
+   },
+   "Russian_General_Staff": {
+    "schedule": 414,
+    "defer": 402,
+    "wait": 404,
+    "place_on_agenda": 417,
+    "seek_mediator": 381,
+    "reject": 405,
+    "approve": 377
+   },
+   "Ukrainian_Ministry_of_Defense": {
+    "defer": 387,
+    "place_on_agenda": 386,
+    "wait": 386,
+    "reject": 380,
+    "approve": 409,
+    "schedule": 451,
+    "seek_mediator": 401
+   },
+   "Verkhovna_Rada": {
+    "place_on_agenda": 437,
+    "reject": 458,
+    "defer": 444,
+    "approve": 408,
+    "schedule": 406,
+    "wait": 433,
+    "seek_mediator": 214
+   }
+  },
+  "pathway_progress_at_horizon": {
+   "cooperative_agreement": 0.1387,
+   "unilateral_action": 0.6004
+  },
+  "n_deltas": 54447
+ },
+ "cross_domain": {
+  "bill": {
+   "hr": {
+    "median": 1.0774,
+    "lo80": 0.9429,
+    "hi80": 1.2193,
+    "binding_actor": "majority:4 actors (largest: Senator_Blocker)",
+    "binding_level": "committed_to_prevent",
+    "combination_rule": "majority",
+    "endogenous_split": 0.6,
+    "pathway": "institutional_procedure",
+    "split_applied_at": "runtime_sampled"
+   },
+   "distribution": {
+    "absorbed_by_horizon": 0.1125,
+    "censored_beyond_horizon": 0.8875
+   },
+   "mode_distribution": {
+    "bill_passes_senate": 0.1125
+   }
+  },
+  "launch": {
+   "hr": {
+    "median": 1.5477,
+    "lo80": 1.1434,
+    "hi80": 2.016,
+    "binding_actor": "CEO",
+    "binding_level": "formally_committed",
+    "combination_rule": "hierarchy",
+    "endogenous_split": 0.6,
+    "pathway": "operational_execution",
+    "split_applied_at": "runtime_sampled"
+   },
+   "distribution": {
+    "absorbed_by_horizon": 0.2375,
+    "censored_beyond_horizon": 0.7625
+   }
+  },
+  "inflation": {
+   "hr": {
+    "median": 0.9735,
+    "lo80": 0.9473,
+    "hi80": 0.9953,
+    "binding_actor": "aggregation:1 actors (shrunk \u00d70.25)",
+    "binding_level": "committed_to_prevent",
+    "combination_rule": "aggregation",
+    "endogenous_split": 0.6,
+    "pathway": "threshold_crossing",
+    "split_applied_at": "runtime_sampled"
+   },
+   "consumed": [
+    "nonlinear_state",
+    "pathway_progress:threshold_crossing"
+   ],
+   "distribution": {
+    "absorbed_by_horizon": 0.2625,
+    "censored_beyond_horizon": 0.7375
+   }
+  }
+ }
+}

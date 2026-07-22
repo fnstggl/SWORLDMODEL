@@ -1,0 +1,1842 @@
+{
+ "result": {
+  "question": "How will Dana react if I send this message tonight?",
+  "simulation_status": "completed",
+  "support_grade": "exploratory",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "delay_reply[multi_part]@you": 0.0417,
+   "no_reply_until_morning[private]": 0.0417,
+   "reply_later@you": 0.5,
+   "reply_now@you": 0.4167
+  },
+  "calibrated_distribution": null,
+  "raw_probability": null,
+  "calibrated_probability": null,
+  "uncertainty_decomposition": {
+   "between_model": {
+    "delay_reply[multi_part]@you": 0.008681,
+    "no_reply_until_morning[private]": 0.008681,
+    "reply_later@you": 0.041667,
+    "reply_now@you": 0.013889
+   },
+   "within_model": {},
+   "n_models": 6,
+   "weighting": "equal_weight_uncalibrated_structural_average"
+  },
+  "structural_disagreement": {
+   "m0_actor_relationship": {
+    "reply_later@you": 0.75,
+    "reply_now@you": 0.25
+   },
+   "m1_institutional_procedural": {
+    "no_reply_until_morning[private]": 0.25,
+    "reply_later@you": 0.25,
+    "reply_now@you": 0.5
+   },
+   "m2_resource_constraint": {
+    "reply_later@you": 0.5,
+    "reply_now@you": 0.5
+   },
+   "m3_information_distribution": {
+    "reply_later@you": 0.5,
+    "reply_now@you": 0.5
+   },
+   "m4_adversarial_alternative": {
+    "delay_reply[multi_part]@you": 0.25,
+    "reply_later@you": 0.25,
+    "reply_now@you": 0.5
+   },
+   "m5_adversarial_alternative": {
+    "reply_later@you": 0.75,
+    "reply_now@you": 0.25
+   }
+  },
+  "mechanism_disagreement": null,
+  "structural_ensemble": {
+   "ensemble_id": "ens_b382fc1b52fd",
+   "structural_mode": "ensemble",
+   "route": "individual_reaction_ensemble",
+   "generation_policy": {
+    "target_calls": 4,
+    "soft_ceiling": 8,
+    "min_calls": 3,
+    "max_capacity": false
+   },
+   "n_independent_generation_calls": 4,
+   "n_merged": 0,
+   "models": [
+    {
+     "model_id": "m0_actor_relationship",
+     "generation_role": "actor_relationship",
+     "causal_thesis": "Dana\u2019s reaction is determined by her perception of the message as either a strategic move to pressure her into a decision she is avoiding, or as a genuine friendly check\u2011in, with the decisive factor being the current balance of her personal loyalty to you versus her professional self\u2011interest in maintaining autonomy.",
+     "decisive_actors": [
+      "Dana (coworker and friend)",
+      "you (project lead / senior engineer)"
+     ],
+     "decisive_constraints": [
+      "Dana\u2019s current workload and stress level (unknown)",
+      "time of day (21:30 \u2013 likely after hours, implying personal vs. professional framing)",
+      "Dana\u2019s prior unspoken concerns about the project direction"
+     ],
+     "promotion_status": "promoted",
+     "final_particles": 4,
+     "prediction": {
+      "reply_later@you": 0.75,
+      "reply_now@you": 0.25
+     }
+    },
+    {
+     "model_id": "m1_institutional_procedural",
+     "generation_role": "institutional_procedural",
+     "causal_thesis": "Dana's reaction is determined by the formal escalation procedure for after-hours technical messages and the authority chain defined by the project's incident response protocol, not by personal friendship or informal norms.",
+     "decisive_actors": [
+      "Dana (as on-call engineer or designated responder)",
+      "you (as project lead and sender)",
+      "the project's incident manager (if escalation is triggered)"
+     ],
+     "decisive_constraints": [
+      "time of day (21:30 UTC, outside core hours)",
+      "Dana's current on-call status (whether she is the designated responder)",
+      "message content classification (routine vs. critical/blocking)"
+     ],
+     "promotion_status": "promoted",
+     "final_particles": 4,
+     "prediction": {
+      "no_reply_until_morning[private]": 0.25,
+      "reply_later@you": 0.25,
+      "reply_now@you": 0.5
+     }
+    },
+    {
+     "model_id": "m2_resource_constraint",
+     "generation_role": "resource_constraint",
+     "causal_thesis": "Dana\u2019s reaction is determined by her current cognitive and emotional capacity (depleted after a long workday) and the operational timing constraint that she is likely already offline or winding down, making any message tonight either ignored until tomorrow or met with a curt, low-effort reply.",
+     "decisive_actors": [
+      "Dana (the recipient)",
+      "you (the sender)"
+     ],
+     "decisive_constraints": [
+      "Dana\u2019s limited remaining attention/energy at 21:30 local time",
+      "likely end-of-day cognitive fatigue",
+      "possible device/screen-time boundaries (e.g., no work notifications after a certain hour)"
+     ],
+     "promotion_status": "promoted",
+     "final_particles": 4,
+     "prediction": {
+      "reply_later@you": 0.5,
+      "reply_now@you": 0.5
+     }
+    },
+    {
+     "model_id": "m3_information_distribution",
+     "generation_role": "information_distribution",
+     "causal_thesis": "Dana's reaction is determined by the information she has already received through shared project channels and her current attention state, not by the message's content alone; the message will be processed as one more signal in a noisy stream, and her response will reflect her pre-existing stance on the project's status.",
+     "decisive_actors": [
+      "Dana",
+      "you (project lead)"
+     ],
+     "decisive_constraints": [
+      "Dana's current attention bandwidth (likely low due to end-of-day or competing priorities)",
+      "time of day (21:30 UTC, outside core hours)",
+      "message length and urgency signal (if any)"
+     ],
+     "promotion_status": "promoted",
+     "final_particles": 4,
+     "prediction": {
+      "reply_later@you": 0.5,
+      "reply_now@you": 0.5
+     }
+    },
+    {
+     "model_id": "m4_adversarial_alternative",
+     "generation_role": "adversarial_alternative",
+     "causal_thesis": "Dana's reaction is determined by her pre-existing emotional valence toward you (e.g., unspoken resentment, romantic interest, or rivalry), which the message merely triggers regardless of content or timing.",
+     "decisive_actors": [
+      "Dana",
+      "you"
+     ],
+     "decisive_constraints": [
+      "Dana's current emotional state (unknown)",
+      "history of past interactions"
+     ],
+     "promotion_status": "promoted",
+     "final_particles": 4,
+     "prediction": {
+      "delay_reply[multi_part]@you": 0.25,
+      "reply_later@you": 0.25,
+      "reply_now@you": 0.5
+     }
+    },
+    {
+     "model_id": "m5_adversarial_alternative",
+     "generation_role": "adversarial_alternative",
+     "causal_thesis": "Dana's reaction is determined by whether she is currently in a social context (e.g., with friends, family, or partner) that shapes her interpretation and response norms for late-night messages, and specifically by the unspoken social contract of that context which the omission critic identified as missing from all prior models.",
+     "decisive_actors": [
+      "Dana",
+      "Dana's present company (partner, friends, family members present at 21:30)"
+     ],
+     "decisive_constraints": [
+      "time of day (21:30 local time for Dana)",
+      "Dana's current social setting (alone vs. with others)",
+      "the specific type of social gathering (intimate vs. casual vs. formal)",
+      "Dana's role within that gathering (host, guest, partner, parent)"
+     ],
+     "promotion_status": "promoted",
+     "final_particles": 4,
+     "prediction": {
+      "reply_later@you": 0.75,
+      "reply_now@you": 0.25
+     }
+    }
+   ],
+   "model_distributions": {
+    "m0_actor_relationship": {
+     "reply_later@you": 0.75,
+     "reply_now@you": 0.25
+    },
+    "m1_institutional_procedural": {
+     "no_reply_until_morning[private]": 0.25,
+     "reply_later@you": 0.25,
+     "reply_now@you": 0.5
+    },
+    "m2_resource_constraint": {
+     "reply_later@you": 0.5,
+     "reply_now@you": 0.5
+    },
+    "m3_information_distribution": {
+     "reply_later@you": 0.5,
+     "reply_now@you": 0.5
+    },
+    "m4_adversarial_alternative": {
+     "delay_reply[multi_part]@you": 0.25,
+     "reply_later@you": 0.25,
+     "reply_now@you": 0.5
+    },
+    "m5_adversarial_alternative": {
+     "reply_later@you": 0.75,
+     "reply_now@you": 0.25
+    }
+   },
+   "equal_weight_mixture": {
+    "delay_reply[multi_part]@you": 0.0417,
+    "no_reply_until_morning[private]": 0.0417,
+    "reply_later@you": 0.5,
+    "reply_now@you": 0.4167
+   },
+   "robust_range": {
+    "delay_reply[multi_part]@you": {
+     "min": 0.0,
+     "max": 0.25
+    },
+    "no_reply_until_morning[private]": {
+     "min": 0.0,
+     "max": 0.25
+    },
+    "reply_later@you": {
+     "min": 0.25,
+     "max": 0.75
+    },
+    "reply_now@you": {
+     "min": 0.25,
+     "max": 0.5
+    }
+   },
+   "aggregation_method": "equal_weight_uncalibrated_structural_average",
+   "structural_sensitivity": {
+    "classification": "materially_structurally_sensitive",
+    "max_spread": 0.5,
+    "per_option_spread": {
+     "delay_reply[multi_part]@you": 0.25,
+     "no_reply_until_morning[private]": 0.25,
+     "reply_later@you": 0.5,
+     "reply_now@you": 0.25
+    },
+    "modal_option_by_model": {
+     "m0_actor_relationship": "reply_later@you",
+     "m1_institutional_procedural": "reply_now@you",
+     "m2_resource_constraint": "reply_later@you",
+     "m3_information_distribution": "reply_later@you",
+     "m4_adversarial_alternative": "reply_now@you",
+     "m5_adversarial_alternative": "reply_later@you"
+    },
+    "direction_change": true,
+    "thresholds": {
+     "stable_max": 0.05,
+     "mild_max": 0.15
+    }
+   },
+   "reversal_conditions": [
+    {
+     "model_id": "m1_institutional_procedural",
+     "assumption": "Dana's reaction is determined by the formal escalation procedure for after-hours technical messages and the authority chain defined by the project's incident response protocol, not by personal friendship or informal norms.",
+     "decisive_structure": {
+      "actors": [
+       "Dana (as on-call engineer or designated responder)",
+       "you (as project lead and sender)",
+       "the project's incident manager (if escalation is triggered)"
+      ],
+      "institutions": [
+       "project incident response protocol (tiered on-call rotation)",
+       "company after-hours communication policy",
+       "formal escalation chain for senior engineers"
+      ],
+      "constraints": [
+       "time of day (21:30 UTC, outside core hours)",
+       "Dana's current on-call status (whether she is the designated responder)",
+       "message content classification (routine vs. critical/blocking)"
+      ],
+      "mechanisms": [
+       "protocol-driven triage: the message is first evaluated against severity criteria, then routed to the correct tier; Dana's reaction is a function of whether the protocol requires her to act or merely a",
+       "authority chain: if the message is deemed critical, the protocol compels Dana to escalate to the incident manager, overriding any personal discretion"
+      ]
+     },
+     "if_true_answer_becomes": {
+      "reply_now@you": 0.5
+     },
+     "ensemble_answer": {
+      "reply_later@you": 0.5
+     },
+     "evidence_that_would_confirm": [
+      "Dana reacts with a personal, non-procedural response (e.g., a friendly chat or emotional venting) despite the message being classified as critical",
+      "Dana ignores the message entirely even though she is on-call and the message meets the critical threshold",
+      "the project's incident response protocol is not followed or is overridden by a manager's informal request"
+     ]
+    },
+    {
+     "model_id": "m4_adversarial_alternative",
+     "assumption": "Dana's reaction is determined by her pre-existing emotional valence toward you (e.g., unspoken resentment, romantic interest, or rivalry), which the message merely triggers regardless of content or timing.",
+     "decisive_structure": {
+      "actors": [
+       "Dana",
+       "you"
+      ],
+      "institutions": [
+       "informal emotional history norms"
+      ],
+      "constraints": [
+       "Dana's current emotional state (unknown)",
+       "history of past interactions"
+      ],
+      "mechanisms": [
+       "emotional priming: the message activates a stored affective response that overrides rational evaluation",
+       "confirmation bias: Dana interprets ambiguous cues to fit her pre-existing feelings"
+      ]
+     },
+     "if_true_answer_becomes": {
+      "reply_now@you": 0.5
+     },
+     "ensemble_answer": {
+      "reply_later@you": 0.5
+     },
+     "evidence_that_would_confirm": [
+      "Dana reacts in a way that is clearly content-dependent (e.g., positive to a neutral message, negative to a kind one) and inconsistent with her prior emotional valence",
+      "Dana explicitly cites message content or timing as the reason for her reaction, and this explanation is corroborated by independent evidence",
+      "Dana's reaction is predicted better by her current workload or fatigue than by her emotional history with you"
+     ]
+    }
+   ],
+   "structural_value_of_information": [
+    {
+     "observation": "Dana immediately responds with enthusiasm and a long personal note (contradicts guarded\u2011reciprocity mechanism)",
+     "distinguishes_models": [
+      "m0_actor_relationship",
+      "m1_institutional_procedural"
+     ],
+     "predicted_observation_by_model": {
+      "m0_actor_relationship": "observation ABSENT if this model is right (it is this model's falsifier)",
+      "m1_institutional_procedural": "observation compatible with this model"
+     },
+     "decision_relevance": "observing it would shift the answer toward reply_now@you (models differ by 0.50 on their distributions)",
+     "available_before_decision": "unknown \u2014 availability not established from the shared evidence bundle"
+    },
+    {
+     "observation": "Dana ignores the message entirely for >24 hours (contradicts social\u2011cost mechanism)",
+     "distinguishes_models": [
+      "m0_actor_relationship",
+      "m1_institutional_procedural"
+     ],
+     "predicted_observation_by_model": {
+      "m0_actor_relationship": "observation ABSENT if this model is right (it is this model's falsifier)",
+      "m1_institutional_procedural": "observation compatible with this model"
+     },
+     "decision_relevance": "observing it would shift the answer toward reply_now@you (models differ by 0.50 on their distributions)",
+     "available_before_decision": "unknown \u2014 availability not established from the shared evidence bundle"
+    },
+    {
+     "observation": "Dana reacts with a personal, non-procedural response (e.g., a friendly chat or emotional venting) despite the message being classified as critical",
+     "distinguishes_models": [
+      "m1_institutional_procedural",
+      "m0_actor_relationship"
+     ],
+     "predicted_observation_by_model": {
+      "m1_institutional_procedural": "observation ABSENT if this model is right (it is this model's falsifier)",
+      "m0_actor_relationship": "observation compatible with this model"
+     },
+     "decision_relevance": "observing it would shift the answer toward reply_later@you (models differ by 0.50 on their distributions)",
+     "available_before_decision": "unknown \u2014 availability not established from the shared evidence bundle"
+    },
+    {
+     "observation": "Dana ignores the message entirely even though she is on-call and the message meets the critical threshold",
+     "distinguishes_models": [
+      "m1_institutional_procedural",
+      "m0_actor_relationship"
+     ],
+     "predicted_observation_by_model": {
+      "m1_institutional_procedural": "observation ABSENT if this model is right (it is this model's falsifier)",
+      "m0_actor_relationship": "observation compatible with this model"
+     },
+     "decision_relevance": "observing it would shift the answer toward reply_later@you (models differ by 0.50 on their distributions)",
+     "available_before_decision": "unknown \u2014 availability not established from the shared evidence bundle"
+    },
+    {
+     "observation": "Dana reacts in a way that is clearly content-dependent (e.g., positive to a neutral message, negative to a kind one) and inconsistent with her prior emotional valence",
+     "distinguishes_models": [
+      "m4_adversarial_alternative",
+      "m0_actor_relationship"
+     ],
+     "predicted_observation_by_model": {
+      "m4_adversarial_alternative": "observation ABSENT if this model is right (it is this model's falsifier)",
+      "m0_actor_relationship": "observation compatible with this model"
+     },
+     "decision_relevance": "observing it would shift the answer toward reply_later@you (models differ by 0.50 on their distributions)",
+     "available_before_decision": "unknown \u2014 availability not established from the shared evidence bundle"
+    },
+    {
+     "observation": "Dana explicitly cites message content or timing as the reason for her reaction, and this explanation is corroborated by independent evidence",
+     "distinguishes_models": [
+      "m4_adversarial_alternative",
+      "m0_actor_relationship"
+     ],
+     "predicted_observation_by_model": {
+      "m4_adversarial_alternative": "observation ABSENT if this model is right (it is this model's falsifier)",
+      "m0_actor_relationship": "observation compatible with this model"
+     },
+     "decision_relevance": "observing it would shift the answer toward reply_later@you (models differ by 0.50 on their distributions)",
+     "available_before_decision": "unknown \u2014 availability not established from the shared evidence bundle"
+    },
+    {
+     "observation": "Dana is alone at 21:30 but still does not respond (would falsify social context as decisive \u2014 would require alternative mechanism)",
+     "distinguishes_models": [
+      "m5_adversarial_alternative",
+      "m1_institutional_procedural"
+     ],
+     "predicted_observation_by_model": {
+      "m5_adversarial_alternative": "observation ABSENT if this model is right (it is this model's falsifier)",
+      "m1_institutional_procedural": "observation compatible with this model"
+     },
+     "decision_relevance": "observing it would shift the answer toward reply_now@you (models differ by 0.50 on their distributions)",
+     "available_before_decision": "unknown \u2014 availability not established from the shared evidence bundle"
+    },
+    {
+     "observation": "Dana is with close friends who encourage phone use but she still does not respond (would falsify audience effect mechanism)",
+     "distinguishes_models": [
+      "m5_adversarial_alternative",
+      "m1_institutional_procedural"
+     ],
+     "predicted_observation_by_model": {
+      "m5_adversarial_alternative": "observation ABSENT if this model is right (it is this model's falsifier)",
+      "m1_institutional_procedural": "observation compatible with this model"
+     },
+     "decision_relevance": "observing it would shift the answer toward reply_now@you (models differ by 0.50 on their distributions)",
+     "available_before_decision": "unknown \u2014 availability not established from the shared evidence bundle"
+    }
+   ],
+   "convergence_certificate": null,
+   "stopping_reason": "generators_converged",
+   "generation_manifest": [
+    {
+     "call_id": "gen_0_actor_relationship",
+     "role": "actor_relationship",
+     "prompt_hash": "262ff08c5e87",
+     "response_hash": "7de00d3521b2",
+     "ok": true,
+     "independent": true,
+     "error": ""
+    },
+    {
+     "call_id": "gen_1_institutional_procedural",
+     "role": "institutional_procedural",
+     "prompt_hash": "6a9f5c4ce28f",
+     "response_hash": "e5c0ea33b4ff",
+     "ok": true,
+     "independent": true,
+     "error": ""
+    },
+    {
+     "call_id": "gen_2_resource_constraint",
+     "role": "resource_constraint",
+     "prompt_hash": "19a7e251319a",
+     "response_hash": "e5a9eb8c971d",
+     "ok": true,
+     "independent": true,
+     "error": ""
+    },
+    {
+     "call_id": "gen_3_information_distribution",
+     "role": "information_distribution",
+     "prompt_hash": "57b00af8b5ea",
+     "response_hash": "d4bbb64c486e",
+     "ok": true,
+     "independent": true,
+     "error": ""
+    },
+    {
+     "call_id": "gen_4_adversarial_alternative",
+     "role": "adversarial_alternative",
+     "prompt_hash": "4d4f77246685",
+     "response_hash": "39d32f018701",
+     "ok": true,
+     "independent": false,
+     "error": ""
+    },
+    {
+     "call_id": "gen_5_adversarial_alternative",
+     "role": "adversarial_alternative",
+     "prompt_hash": "48e0b2f8ac15",
+     "response_hash": "609689a64c62",
+     "ok": true,
+     "independent": false,
+     "error": ""
+    }
+   ],
+   "critic_manifest": [
+    {
+     "critic": "structural_omission",
+     "prompt_hash": "c4a753965168",
+     "ok": true,
+     "error": "",
+     "n_candidates_seen": 4
+    },
+    {
+     "critic": "cross_model_contrast",
+     "prompt_hash": "b8c49c1fa153",
+     "ok": true,
+     "error": ""
+    }
+   ],
+   "merge_manifest": [],
+   "simulation_manifest": {
+    "m0_actor_relationship": {
+     "pilot_particles": 0,
+     "final_particles": 4,
+     "full_budget_required": 4,
+     "pilot_reused_as_prefix": false,
+     "status": "completed"
+    },
+    "m1_institutional_procedural": {
+     "pilot_particles": 0,
+     "final_particles": 4,
+     "full_budget_required": 4,
+     "pilot_reused_as_prefix": false,
+     "status": "completed"
+    },
+    "m2_resource_constraint": {
+     "pilot_particles": 0,
+     "final_particles": 4,
+     "full_budget_required": 4,
+     "pilot_reused_as_prefix": false,
+     "status": "completed"
+    },
+    "m3_information_distribution": {
+     "pilot_particles": 0,
+     "final_particles": 4,
+     "full_budget_required": 4,
+     "pilot_reused_as_prefix": false,
+     "status": "completed"
+    },
+    "m4_adversarial_alternative": {
+     "pilot_particles": 0,
+     "final_particles": 4,
+     "full_budget_required": 4,
+     "pilot_reused_as_prefix": false,
+     "status": "completed"
+    },
+    "m5_adversarial_alternative": {
+     "pilot_particles": 0,
+     "final_particles": 4,
+     "full_budget_required": 4,
+     "pilot_reused_as_prefix": false,
+     "status": "completed"
+    }
+   },
+   "cost_manifest": {
+    "llm_calls_by_stage": {
+     "structural_generation": 6,
+     "structural_critic": 2
+    },
+    "llm_calls_by_model": {},
+    "cache_hits_by_stage": {},
+    "total_llm_calls": 8,
+    "total_cache_hits": 0,
+    "prompt_chars": 27180,
+    "response_chars": 25181,
+    "errors": 0
+   },
+   "per_frame_artifacts": {
+    "m0_actor_relationship": {
+     "schema_version": "individual.reaction.v2_temporal",
+     "person_id": "dana",
+     "stimulus": "Hey Dana \u2014 I'm really sorry about how the planning meeting went on Tuesday. I should have backed you up on the timeline. Can we grab coffee this week and reset?",
+     "channel": "message",
+     "n_hypotheses": 2,
+     "samples_per_hypothesis": 2,
+     "samples": [
+      {
+       "hypothesis_id": "h0:guarded_autonomy",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784410704.9223778,
+       "noticed_ts": 1784415449.2597682,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You sent a late-night apology after the Tuesday argument, which I interpret as a strategic move to reset the dynamic on your terms.",
+        "why_it_matters": "This tests whether I will trade my professional judgment for friendship, and how I respond will set the tone for future planning disputes.",
+        "perceived_opportunities": "I can acknowledge the apology while firmly restating my position on the timeline, preserving both the relationship and my autonomy.",
+        "perceived_threats": "If I accept the coffee invitation without clarifying my stance, you may assume I've conceded on the timeline."
+       },
+       "internal_reaction": "Tired and wary, but more resolved after seeing the message.",
+       "observable_response": "reply_later",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I will not reply tonight. I need to sleep on this and respond in the morning with a clear head, so I don't get drawn into a conversation that pressures me on the timeline.",
+       "novel_action_unmodeled": false,
+       "trace_id": "7d8b893e5beb6b5d75a47374"
+      },
+      {
+       "hypothesis_id": "h1:wounded_loyalty",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784416329.7432775,
+       "noticed_ts": 1784438907.4051592,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You reached out with a direct apology and a concrete offer to reset, which shows you're thinking about the relationship, not just the project.",
+        "why_it_matters": "This is the first move toward repair, but I need to see if you understand why I was hurt, not just that the argument was unpleasant.",
+        "perceived_opportunities": "A chance to rebuild trust if we talk honestly over coffee, without rehashing the timeline blame.",
+        "perceived_threats": "That the apology is performative and you'll revert to prioritizing project speed over our dynamic once things are smooth again."
+       },
+       "internal_reaction": "Emotionally drained and reflective; the late hour gives me space to sit with my feelings rather than react impulsively.",
+       "observable_response": "reply_later",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I'm not replying yet. I need to sit with this until morning, when I can think clearly and decide if I trust the apology or if it's just project smoothing.",
+       "novel_action_unmodeled": false,
+       "trace_id": "8f5a77d7e410b04aff0faa24"
+      },
+      {
+       "hypothesis_id": "h0:guarded_autonomy",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784417127.5835283,
+       "noticed_ts": 1784421535.002442,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "Received an apology message at 00:38 from the project lead after a public argument on Tuesday.",
+        "why_it_matters": "The timing and phrasing feel calculated to catch me off-guard and re-establish rapport before I've had space to process. Accepting too quickly could set a precedent that I'll bend on timeline decisions.",
+        "perceived_opportunities": "I can use the delay to craft a response that maintains my boundary without appearing uncooperative.",
+        "perceived_threats": "If I reply now, I might be maneuvered into a coffee meeting where the real agenda is timeline pressure."
+       },
+       "internal_reaction": "Tired and slightly irritated; the late hour makes me less willing to engage.",
+       "observable_response": "reply_later",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I will not reply tonight. I'll respond tomorrow morning with a brief, neutral acknowledgment that doesn't commit to coffee or accept the apology at face value.",
+       "novel_action_unmodeled": false,
+       "trace_id": "78dea116606cbee1c375b27a"
+      },
+      {
+       "hypothesis_id": "h1:wounded_loyalty",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "responded",
+       "available_ts": 1784410715.6508899,
+       "noticed_ts": 1784423872.1310287,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "She reached out first with a sincere apology, breaking the silence and offering a reset.",
+        "why_it_matters": "This confirms she values the friendship enough to initiate repair, but I need to respond in kind without undermining my own position on the timeline.",
+        "perceived_opportunities": "A chance to rebuild trust and clarify that my silence on Tuesday was pressure, not betrayal.",
+        "perceived_threats": "If I sound too eager or apologetic, she may think I concede the timeline was wrong, which could hurt future planning credibility."
+       },
+       "internal_reaction": "Relieved but cautious; the message lifts some weight but I still feel the sting of the argument.",
+       "observable_response": "reply_now",
+       "timing_intent": "immediate",
+       "target": "you",
+       "decision_summary": "Reply now with warmth and honesty, accepting coffee and acknowledging the moment I failed to back her up, but not apologizing for the timeline itself.",
+       "novel_action_unmodeled": false,
+       "trace_id": "1ad9df743da511aff59d3559"
+      }
+     ],
+     "raw_qualitative_simulation_distribution": {
+      "reply_later@you": 0.75,
+      "reply_now@you": 0.25
+     },
+     "calibrated_distribution": {
+      "reply_later@you": 0.7722,
+      "reply_now@you": 0.2278
+     },
+     "calibration_status": "calibrated",
+     "n_excluded_numeric_fallbacks": 0,
+     "n_unread_by_horizon": 0,
+     "consequence_report": {
+      "requested_mode": "generated_actor_mediated_world",
+      "actual_mode": "generated_actor_mediated_world",
+      "actions_compiled": 0,
+      "direct_operations_applied": 0,
+      "events_scheduled": 0,
+      "processes_started": 0,
+      "objects_created": 0,
+      "facts_changed": 0,
+      "institutional_submissions": 0,
+      "actor_decisions_opened": 0,
+      "population_responses_opened": 0,
+      "information_deliveries": 0,
+      "unsupported_semantics": 0,
+      "fallbacks": 0,
+      "fallback_reasons": [
+       {
+        "kind": "no_scenario_schema",
+        "reason": "generated_actor_mediated_world requires a ScenarioSemanticModel; none is bound to this world \u2014 the branch is execution_incomplete: the exact attempt is preserved, no external consequence is claimed, and the fixed-v1 baseline is NOT served"
+       }
+      ],
+      "legacy_scalar_writes": 0,
+      "scenario_schema_id": "",
+      "scenario_schema_version": "",
+      "scenario_types_generated": 0,
+      "scenario_events_emitted": 0,
+      "schema_extensions": 0,
+      "observations_delivered": 0,
+      "actors_reconsidered": 0,
+      "actors_invoked": 0,
+      "actor_actions_executed": 0,
+      "actors_declined_to_act": 0,
+      "recursive_cascade_depth": 0,
+      "human_reactions_written_directly": 0,
+      "fixed_ontology_uses": 0,
+      "mechanistic_fallbacks": 0,
+      "numeric_fallbacks": 0,
+      "attention_events": 0,
+      "observation_bundles_delivered": 0,
+      "temporal_truncations": [],
+      "action_attempts": 4,
+      "actor_controlled_effects": 0,
+      "mechanisms_invoked": 0,
+      "mechanism_successes": 0,
+      "mechanism_failures": 0,
+      "mechanism_unresolved": 0,
+      "intended_deliveries": 0,
+      "actual_deliveries": 0,
+      "intended_publications": 0,
+      "actual_publications": 0,
+      "directness_claims_rejected": 0,
+      "external_successes_written_directly": 0,
+      "deliveries_unresolved_no_mechanism": 0,
+      "scheduled_attempts": 0,
+      "scheduled_attempts_fired": 0,
+      "structurally_under_modeled": true,
+      "causal_action_reports": [],
+      "degraded": true
+     },
+     "llm_calls": 4,
+     "temporal": {
+      "temporal_model_hash": "3c878d1727ed14e0",
+      "support_classification": "user_context_informed",
+      "horizon_s": 604800.0,
+      "history_timestamps": {
+       "n_supplied_real": 0,
+       "n_total": 3,
+       "unresolved_spacing": 3
+      },
+      "profile_evidence": [
+       "user_context:timezone",
+       "user_context:sleep_window"
+      ],
+      "profile_unresolved": [
+       "channel_check_gap"
+      ]
+     },
+     "provenance": {
+      "as_of": 1784410200.0,
+      "tier_rule": "reaction_is_the_question \u2192 Tier 1",
+      "runtime": "QualitativeActorPolicyRuntime",
+      "temporal_route": "delivery\u2192attention\u2192decision (\u00a725)",
+      "aggregation": "branch-selection counting (cluster-1.0)",
+      "structural_frame": "Dana\u2019s reaction is determined by her perception of the message as either a strategic move to pressure her into a decision she is avoiding, or as a genuine friendly check\u2011in, with the decisive factor being the current balance of her personal loyalty to you versus her professional self\u2011interest in maintaining autonomy. (decisive: Dana (coworker and friend), you (project lead / senior engineer), Dana\u2019s current workload and stress level (unknown), time of day (21:30 \u2013 likely after hours, implying personal vs. professional framing), Dana\u2019s prior unspoken concerns about the project direction)"
+     }
+    },
+    "m1_institutional_procedural": {
+     "schema_version": "individual.reaction.v2_temporal",
+     "person_id": "dana",
+     "stimulus": "Hey Dana \u2014 I'm really sorry about how the planning meeting went on Tuesday. I should have backed you up on the timeline. Can we grab coffee this week and reset?",
+     "channel": "message",
+     "n_hypotheses": 2,
+     "samples_per_hypothesis": 2,
+     "samples": [
+      {
+       "hypothesis_id": "h0:protocol_bound_responder",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784410704.9223778,
+       "noticed_ts": 1784415449.2597682,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "Received a personal apology from the project lead regarding Tuesday's planning meeting argument.",
+        "why_it_matters": "This is a boundary test: the message is personal in tone but references a procedural failure. Protocol requires me to treat any after-hours message about planning disputes as a potential escalation trigger.",
+        "perceived_opportunities": "Delaying reply until business hours allows me to assess whether the incident manager has already logged Tuesday's event, and to respond in a context where personal and procedural can be separated.",
+        "perceived_threats": "If I reply now, I risk being seen as complicit in an informal reset of a reportable incident. If I ignore entirely, I damage a five-year friendship."
+       },
+       "internal_reaction": "Alert and guarded; stress level stable but vigilance increased.",
+       "observable_response": "no_reply_until_morning",
+       "timing_intent": "delayed",
+       "target": "",
+       "decision_summary": "I will not reply tonight. The message is personal, not technical, so it does not require escalation. Replying now could be misconstrued as informal reset of a procedural breach. I will respond during business hours tomorrow.",
+       "novel_action_unmodeled": true,
+       "trace_id": "7d8b893e5beb6b5d75a47374"
+      },
+      {
+       "hypothesis_id": "h1:friendship_first_pragmatist",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "responded",
+       "available_ts": 1784416329.7432775,
+       "noticed_ts": 1784438907.4051592,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You reached out first with a genuine apology, confirming the friendship matters more than the argument.",
+        "why_it_matters": "This gives us a clear path to resolve the conflict informally without involving incident protocols.",
+        "perceived_opportunities": "We can use coffee to clarify the timeline disagreement and rebuild trust privately.",
+        "perceived_threats": "If I seem too eager, you might think I'm conceding I was wrong on Tuesday."
+       },
+       "internal_reaction": "Relieved and hopeful, but still slightly cautious about the coffee conversation.",
+       "observable_response": "reply_now",
+       "timing_intent": "immediate",
+       "target": "you",
+       "decision_summary": "Reply now to accept the apology and propose coffee Saturday afternoon to reset before the work week.",
+       "novel_action_unmodeled": false,
+       "trace_id": "8f5a77d7e410b04aff0faa24"
+      },
+      {
+       "hypothesis_id": "h0:procedural_guardian",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784417127.5835283,
+       "noticed_ts": 1784421535.002442,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You sent a personal apology message at 00:38, outside core hours, referencing the Tuesday timeline argument.",
+        "why_it_matters": "This could be a genuine social reset or an attempt to re-establish informal influence over the timeline outside the formal escalation chain.",
+        "perceived_opportunities": "I can demonstrate procedural discipline by deferring the reply to business hours, reinforcing that off-hours technical matters go through the incident manager.",
+        "perceived_threats": "If I reply now, I risk creating a precedent that after-hours messages about planning disputes are acceptable bilateral conversations."
+       },
+       "internal_reaction": "Alert and slightly tense, but confident in my decision to wait.",
+       "observable_response": "reply_later",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I will not reply now. I will wait until core business hours to respond, keeping the conversation strictly social and separate from any technical incident protocol.",
+       "novel_action_unmodeled": false,
+       "trace_id": "78dea116606cbee1c375b27a"
+      },
+      {
+       "hypothesis_id": "h1:wounded_collaborator",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "responded",
+       "available_ts": 1784410715.6508899,
+       "noticed_ts": 1784423872.1310287,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You sent a direct apology and coffee invitation, which is a concrete step toward repair after Tuesday's argument.",
+        "why_it_matters": "This tests whether the five-year friendship can survive a power struggle, and whether the informal backup norm can be restored without formal escalation.",
+        "perceived_opportunities": "Coffee could allow a genuine conversation about why the timeline mattered to me, rebuilding trust.",
+        "perceived_threats": "If the apology is only tactical, accepting too quickly might let you avoid addressing the deeper breach."
+       },
+       "internal_reaction": "Cautiously hopeful, still hurt but willing to give the friendship a chance.",
+       "observable_response": "reply_now",
+       "timing_intent": "immediate",
+       "target": "you",
+       "decision_summary": "I will reply now, accepting the coffee offer, because the five-year friendship and rapid-reply norm deserve a chance, but I will keep the tone warm yet cautious to see if this is a genuine reset or a tactical move.",
+       "novel_action_unmodeled": false,
+       "trace_id": "1ad9df743da511aff59d3559"
+      }
+     ],
+     "raw_qualitative_simulation_distribution": {
+      "no_reply_until_morning[private]": 0.25,
+      "reply_later@you": 0.25,
+      "reply_now@you": 0.5
+     },
+     "calibrated_distribution": {
+      "no_reply_until_morning[private]": 0.2404,
+      "reply_later@you": 0.2404,
+      "reply_now@you": 0.5192
+     },
+     "calibration_status": "calibrated",
+     "n_excluded_numeric_fallbacks": 0,
+     "n_unread_by_horizon": 0,
+     "consequence_report": {
+      "requested_mode": "generated_actor_mediated_world",
+      "actual_mode": "generated_actor_mediated_world",
+      "actions_compiled": 0,
+      "direct_operations_applied": 0,
+      "events_scheduled": 0,
+      "processes_started": 0,
+      "objects_created": 0,
+      "facts_changed": 0,
+      "institutional_submissions": 0,
+      "actor_decisions_opened": 0,
+      "population_responses_opened": 0,
+      "information_deliveries": 0,
+      "unsupported_semantics": 0,
+      "fallbacks": 0,
+      "fallback_reasons": [
+       {
+        "kind": "no_scenario_schema",
+        "reason": "generated_actor_mediated_world requires a ScenarioSemanticModel; none is bound to this world \u2014 the branch is execution_incomplete: the exact attempt is preserved, no external consequence is claimed, and the fixed-v1 baseline is NOT served"
+       }
+      ],
+      "legacy_scalar_writes": 0,
+      "scenario_schema_id": "",
+      "scenario_schema_version": "",
+      "scenario_types_generated": 0,
+      "scenario_events_emitted": 0,
+      "schema_extensions": 0,
+      "observations_delivered": 0,
+      "actors_reconsidered": 0,
+      "actors_invoked": 0,
+      "actor_actions_executed": 0,
+      "actors_declined_to_act": 0,
+      "recursive_cascade_depth": 0,
+      "human_reactions_written_directly": 0,
+      "fixed_ontology_uses": 0,
+      "mechanistic_fallbacks": 0,
+      "numeric_fallbacks": 0,
+      "attention_events": 0,
+      "observation_bundles_delivered": 0,
+      "temporal_truncations": [],
+      "action_attempts": 4,
+      "actor_controlled_effects": 0,
+      "mechanisms_invoked": 0,
+      "mechanism_successes": 0,
+      "mechanism_failures": 0,
+      "mechanism_unresolved": 0,
+      "intended_deliveries": 0,
+      "actual_deliveries": 0,
+      "intended_publications": 0,
+      "actual_publications": 0,
+      "directness_claims_rejected": 0,
+      "external_successes_written_directly": 0,
+      "deliveries_unresolved_no_mechanism": 0,
+      "scheduled_attempts": 0,
+      "scheduled_attempts_fired": 0,
+      "structurally_under_modeled": true,
+      "causal_action_reports": [],
+      "degraded": true
+     },
+     "llm_calls": 4,
+     "temporal": {
+      "temporal_model_hash": "3c878d1727ed14e0",
+      "support_classification": "user_context_informed",
+      "horizon_s": 604800.0,
+      "history_timestamps": {
+       "n_supplied_real": 0,
+       "n_total": 3,
+       "unresolved_spacing": 3
+      },
+      "profile_evidence": [
+       "user_context:timezone",
+       "user_context:sleep_window"
+      ],
+      "profile_unresolved": [
+       "channel_check_gap"
+      ]
+     },
+     "provenance": {
+      "as_of": 1784410200.0,
+      "tier_rule": "reaction_is_the_question \u2192 Tier 1",
+      "runtime": "QualitativeActorPolicyRuntime",
+      "temporal_route": "delivery\u2192attention\u2192decision (\u00a725)",
+      "aggregation": "branch-selection counting (cluster-1.0)",
+      "structural_frame": "Dana's reaction is determined by the formal escalation procedure for after-hours technical messages and the authority chain defined by the project's incident response protocol, not by personal friendship or informal norms. (decisive: Dana (as on-call engineer or designated responder), you (as project lead and sender), the project's incident manager (if escalation is triggered), time of day (21:30 UTC, outside core hours), Dana's current on-call status (whether she is the designated responder))"
+     }
+    },
+    "m2_resource_constraint": {
+     "schema_version": "individual.reaction.v2_temporal",
+     "person_id": "dana",
+     "stimulus": "Hey Dana \u2014 I'm really sorry about how the planning meeting went on Tuesday. I should have backed you up on the timeline. Can we grab coffee this week and reset?",
+     "channel": "message",
+     "n_hypotheses": 2,
+     "samples_per_hypothesis": 2,
+     "samples": [
+      {
+       "hypothesis_id": "h0:depleted_diplomat",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "responded",
+       "available_ts": 1784410704.9223778,
+       "noticed_ts": 1784415449.2597682,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You reached out with a sincere apology and a concrete offer to reset, which I did not expect tonight.",
+        "why_it_matters": "This is a genuine olive branch that I need to handle carefully to repair trust without overextending myself.",
+        "perceived_opportunities": "A chance to accept your apology gracefully and schedule a proper conversation when I have energy.",
+        "perceived_threats": "If I reply too curtly or too emotionally, I could worsen the rift."
+       },
+       "internal_reaction": "Still mentally depleted, but slightly relieved by your message.",
+       "observable_response": "reply_now",
+       "timing_intent": "immediate",
+       "target": "you",
+       "decision_summary": "I will reply now with a brief, warm acknowledgment of your apology and a suggestion to talk tomorrow, to show I value the friendship while protecting my low energy.",
+       "novel_action_unmodeled": false,
+       "trace_id": "7d8b893e5beb6b5d75a47374"
+      },
+      {
+       "hypothesis_id": "h1:quietly_hurt_but_hopeful",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "responded",
+       "available_ts": 1784416329.7432775,
+       "noticed_ts": 1784438907.4051592,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "She sent a direct apology and invitation to reset, which is more than I expected so soon after the argument.",
+        "why_it_matters": "This is a clear signal she values the friendship and wants to repair, which aligns with my hope that the breach wasn't permanent.",
+        "perceived_opportunities": "A chance to rebuild trust quickly if the coffee conversation goes well; also a chance to model healthy conflict resolution for the team.",
+        "perceived_threats": "If I respond too warmly, she might think the apology alone is enough without needing to change behavior; if too cold, I might push her away."
+       },
+       "internal_reaction": "Emotionally tired but not depleted; still processing the argument but feeling a cautious optimism.",
+       "observable_response": "reply_now",
+       "timing_intent": "immediate",
+       "target": "you",
+       "decision_summary": "I'll reply now with a short, warm but measured message accepting the coffee offer, signaling openness without diving into the deeper issues tonight.",
+       "novel_action_unmodeled": false,
+       "trace_id": "8f5a77d7e410b04aff0faa24"
+      },
+      {
+       "hypothesis_id": "h0:depleted_boundary_keeper",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784417127.5835283,
+       "noticed_ts": 1784421535.002442,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You sent a direct apology and coffee invitation at 00:38, which is late for me.",
+        "why_it_matters": "This signals you want to repair the relationship, but the timing pressures my boundary around evening work communication.",
+        "perceived_opportunities": "A chance to reset on my terms tomorrow with a clear head.",
+        "perceived_threats": "If I reply now, I might sound curt and undo the goodwill you're offering."
+       },
+       "internal_reaction": "Still depleted, but slightly relieved you reached out \u2014 it reduces my worry about the rift.",
+       "observable_response": "reply_later",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I will not reply tonight. I need sleep and mental space to craft a response that acknowledges the apology without reopening the argument.",
+       "novel_action_unmodeled": false,
+       "trace_id": "78dea116606cbee1c375b27a"
+      },
+      {
+       "hypothesis_id": "h1:quietly_hurt_but_strategic",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784410715.6508899,
+       "noticed_ts": 1784423872.1310287,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You sent a direct apology and invitation to reset, which I did not expect so soon after the argument.",
+        "why_it_matters": "This is a test of whether you will actually change behavior or just smooth things over; my response will set the tone for future negotiations.",
+        "perceived_opportunities": "I can use this delay to reinforce that timeline accuracy is non-negotiable, while still preserving the friendship.",
+        "perceived_threats": "If I reply too warmly, I risk being seen as a pushover; if I reply too coldly, I risk losing a trusted ally."
+       },
+       "internal_reaction": "Tired but alert; frustration is tempered by a cautious hope that this can be resolved constructively.",
+       "observable_response": "reply_later",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I will wait until tomorrow morning to reply, to avoid appearing too eager or forgiving, and to give myself time to craft a response that acknowledges the apology but reinforces the need for changed behavior.",
+       "novel_action_unmodeled": false,
+       "trace_id": "1ad9df743da511aff59d3559"
+      }
+     ],
+     "raw_qualitative_simulation_distribution": {
+      "reply_later@you": 0.5,
+      "reply_now@you": 0.5
+     },
+     "calibrated_distribution": {
+      "reply_later@you": 0.5,
+      "reply_now@you": 0.5
+     },
+     "calibration_status": "calibrated",
+     "n_excluded_numeric_fallbacks": 0,
+     "n_unread_by_horizon": 0,
+     "consequence_report": {
+      "requested_mode": "generated_actor_mediated_world",
+      "actual_mode": "generated_actor_mediated_world",
+      "actions_compiled": 0,
+      "direct_operations_applied": 0,
+      "events_scheduled": 0,
+      "processes_started": 0,
+      "objects_created": 0,
+      "facts_changed": 0,
+      "institutional_submissions": 0,
+      "actor_decisions_opened": 0,
+      "population_responses_opened": 0,
+      "information_deliveries": 0,
+      "unsupported_semantics": 0,
+      "fallbacks": 0,
+      "fallback_reasons": [
+       {
+        "kind": "no_scenario_schema",
+        "reason": "generated_actor_mediated_world requires a ScenarioSemanticModel; none is bound to this world \u2014 the branch is execution_incomplete: the exact attempt is preserved, no external consequence is claimed, and the fixed-v1 baseline is NOT served"
+       }
+      ],
+      "legacy_scalar_writes": 0,
+      "scenario_schema_id": "",
+      "scenario_schema_version": "",
+      "scenario_types_generated": 0,
+      "scenario_events_emitted": 0,
+      "schema_extensions": 0,
+      "observations_delivered": 0,
+      "actors_reconsidered": 0,
+      "actors_invoked": 0,
+      "actor_actions_executed": 0,
+      "actors_declined_to_act": 0,
+      "recursive_cascade_depth": 0,
+      "human_reactions_written_directly": 0,
+      "fixed_ontology_uses": 0,
+      "mechanistic_fallbacks": 0,
+      "numeric_fallbacks": 0,
+      "attention_events": 0,
+      "observation_bundles_delivered": 0,
+      "temporal_truncations": [],
+      "action_attempts": 4,
+      "actor_controlled_effects": 0,
+      "mechanisms_invoked": 0,
+      "mechanism_successes": 0,
+      "mechanism_failures": 0,
+      "mechanism_unresolved": 0,
+      "intended_deliveries": 0,
+      "actual_deliveries": 0,
+      "intended_publications": 0,
+      "actual_publications": 0,
+      "directness_claims_rejected": 0,
+      "external_successes_written_directly": 0,
+      "deliveries_unresolved_no_mechanism": 0,
+      "scheduled_attempts": 0,
+      "scheduled_attempts_fired": 0,
+      "structurally_under_modeled": true,
+      "causal_action_reports": [],
+      "degraded": true
+     },
+     "llm_calls": 4,
+     "temporal": {
+      "temporal_model_hash": "3c878d1727ed14e0",
+      "support_classification": "user_context_informed",
+      "horizon_s": 604800.0,
+      "history_timestamps": {
+       "n_supplied_real": 0,
+       "n_total": 3,
+       "unresolved_spacing": 3
+      },
+      "profile_evidence": [
+       "user_context:timezone",
+       "user_context:sleep_window"
+      ],
+      "profile_unresolved": [
+       "channel_check_gap"
+      ]
+     },
+     "provenance": {
+      "as_of": 1784410200.0,
+      "tier_rule": "reaction_is_the_question \u2192 Tier 1",
+      "runtime": "QualitativeActorPolicyRuntime",
+      "temporal_route": "delivery\u2192attention\u2192decision (\u00a725)",
+      "aggregation": "branch-selection counting (cluster-1.0)",
+      "structural_frame": "Dana\u2019s reaction is determined by her current cognitive and emotional capacity (depleted after a long workday) and the operational timing constraint that she is likely already offline or winding down, making any message tonight either ignored until tomorrow or met with a curt, low-effort reply. (decisive: Dana (the recipient), you (the sender), Dana\u2019s limited remaining attention/energy at 21:30 local time, likely end-of-day cognitive fatigue, possible device/screen-time boundaries (e.g., no work notifications after a certain hour))"
+     }
+    },
+    "m3_information_distribution": {
+     "schema_version": "individual.reaction.v2_temporal",
+     "person_id": "dana",
+     "stimulus": "Hey Dana \u2014 I'm really sorry about how the planning meeting went on Tuesday. I should have backed you up on the timeline. Can we grab coffee this week and reset?",
+     "channel": "message",
+     "n_hypotheses": 2,
+     "samples_per_hypothesis": 2,
+     "samples": [
+      {
+       "hypothesis_id": "h0:overloaded_pragmatist",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "responded",
+       "available_ts": 1784410704.9223778,
+       "noticed_ts": 1784415449.2597682,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You sent a direct apology and reset offer, which is more explicit than I expected from your usual conflict-avoidance pattern.",
+        "why_it_matters": "It opens a door to realign on the timeline if you mean it, but I need to test whether this is a genuine shift or just social repair.",
+        "perceived_opportunities": "A chance to get the timeline corrected before the stakeholder review without re-litigating the meeting.",
+        "perceived_threats": "The coffee meeting could become a performative gesture that doesn't change the planning process, wasting my end-of-day focus."
+       },
+       "internal_reaction": "Low attention bandwidth; end-of-day fatigue; focused on a technical issue that arose after the meeting.",
+       "observable_response": "reply_now",
+       "timing_intent": "immediate",
+       "target": "you",
+       "decision_summary": "Reply now with a brief, honest acknowledgment that accepts the apology but redirects to the real issue: the timeline needs fixing, not coffee.",
+       "novel_action_unmodeled": false,
+       "trace_id": "7d8b893e5beb6b5d75a47374"
+      },
+      {
+       "hypothesis_id": "h1:quietly_exhausted_conciliator",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "responded",
+       "available_ts": 1784416329.7432775,
+       "noticed_ts": 1784438907.4051592,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You reached out with a sincere apology and an offer to reset, which I was hoping for.",
+        "why_it_matters": "This is the opening I needed to repair the relationship and move past the argument without losing face.",
+        "perceived_opportunities": "A chance to reaffirm our friendship and get back to a collaborative footing before the next meeting.",
+        "perceived_threats": "If I reply too formally or coldly, you might interpret it as lingering anger, damaging trust further."
+       },
+       "internal_reaction": "Mentally drained but relieved; the apology lifts a weight.",
+       "observable_response": "reply_now",
+       "timing_intent": "immediate",
+       "target": "you",
+       "decision_summary": "Reply now with a brief, warm acceptance of the apology and propose a specific coffee time to reset.",
+       "novel_action_unmodeled": false,
+       "trace_id": "8f5a77d7e410b04aff0faa24"
+      },
+      {
+       "hypothesis_id": "h0:overloaded_pragmatist",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784417127.5835283,
+       "noticed_ts": 1784421535.002442,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "The project lead has reached out with a direct apology and an offer to reset, which is a shift from the post-argument silence.",
+        "why_it_matters": "It signals he recognizes the Tuesday argument was partly his fault, which could open the door to a realistic timeline discussion \u2014 but only if I handle this carefully.",
+        "perceived_opportunities": "A chance to renegotiate the timeline from a position of acknowledged correctness, without re-litigating the personal conflict.",
+        "perceived_threats": "If I reply too warmly, he might think the timeline issue is resolved when it isn't; if I reply too coldly, I risk alienating an ally I'll need for the director escalation."
+       },
+       "internal_reaction": "Still mentally exhausted but slightly less irritated now that the apology offers a path forward.",
+       "observable_response": "reply_later",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I'll reply tomorrow morning after I finish this blocking task; the apology is noted but the real problem is the schedule, not our relationship.",
+       "novel_action_unmodeled": false,
+       "trace_id": "78dea116606cbee1c375b27a"
+      },
+      {
+       "hypothesis_id": "h1:wounded_ally",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784410715.6508899,
+       "noticed_ts": 1784423872.1310287,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You reached out with an apology and a coffee invitation, acknowledging the timeline issue but not the deeper loyalty breach.",
+        "why_it_matters": "This is the first step toward healing, but it doesn't address why you stayed silent in the moment \u2014 that's the core wound.",
+        "perceived_opportunities": "If the apology is genuine, coffee could rebuild trust. If it's tactical, I'll see that in how you handle my delayed response.",
+        "perceived_threats": "If I respond too warmly, you might think a simple apology resets everything without understanding the depth of the betrayal."
+       },
+       "internal_reaction": "Still emotionally drained, but slightly less alone now that you've reached out.",
+       "observable_response": "reply_later",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I will not reply immediately. I need to sit with this overnight to see if the apology feels like a real understanding of why I'm hurt, or just a move to get me back on board.",
+       "novel_action_unmodeled": false,
+       "trace_id": "1ad9df743da511aff59d3559"
+      }
+     ],
+     "raw_qualitative_simulation_distribution": {
+      "reply_later@you": 0.5,
+      "reply_now@you": 0.5
+     },
+     "calibrated_distribution": {
+      "reply_later@you": 0.5,
+      "reply_now@you": 0.5
+     },
+     "calibration_status": "calibrated",
+     "n_excluded_numeric_fallbacks": 0,
+     "n_unread_by_horizon": 0,
+     "consequence_report": {
+      "requested_mode": "generated_actor_mediated_world",
+      "actual_mode": "generated_actor_mediated_world",
+      "actions_compiled": 0,
+      "direct_operations_applied": 0,
+      "events_scheduled": 0,
+      "processes_started": 0,
+      "objects_created": 0,
+      "facts_changed": 0,
+      "institutional_submissions": 0,
+      "actor_decisions_opened": 0,
+      "population_responses_opened": 0,
+      "information_deliveries": 0,
+      "unsupported_semantics": 0,
+      "fallbacks": 0,
+      "fallback_reasons": [
+       {
+        "kind": "no_scenario_schema",
+        "reason": "generated_actor_mediated_world requires a ScenarioSemanticModel; none is bound to this world \u2014 the branch is execution_incomplete: the exact attempt is preserved, no external consequence is claimed, and the fixed-v1 baseline is NOT served"
+       }
+      ],
+      "legacy_scalar_writes": 0,
+      "scenario_schema_id": "",
+      "scenario_schema_version": "",
+      "scenario_types_generated": 0,
+      "scenario_events_emitted": 0,
+      "schema_extensions": 0,
+      "observations_delivered": 0,
+      "actors_reconsidered": 0,
+      "actors_invoked": 0,
+      "actor_actions_executed": 0,
+      "actors_declined_to_act": 0,
+      "recursive_cascade_depth": 0,
+      "human_reactions_written_directly": 0,
+      "fixed_ontology_uses": 0,
+      "mechanistic_fallbacks": 0,
+      "numeric_fallbacks": 0,
+      "attention_events": 0,
+      "observation_bundles_delivered": 0,
+      "temporal_truncations": [],
+      "action_attempts": 4,
+      "actor_controlled_effects": 0,
+      "mechanisms_invoked": 0,
+      "mechanism_successes": 0,
+      "mechanism_failures": 0,
+      "mechanism_unresolved": 0,
+      "intended_deliveries": 0,
+      "actual_deliveries": 0,
+      "intended_publications": 0,
+      "actual_publications": 0,
+      "directness_claims_rejected": 0,
+      "external_successes_written_directly": 0,
+      "deliveries_unresolved_no_mechanism": 0,
+      "scheduled_attempts": 0,
+      "scheduled_attempts_fired": 0,
+      "structurally_under_modeled": true,
+      "causal_action_reports": [],
+      "degraded": true
+     },
+     "llm_calls": 4,
+     "temporal": {
+      "temporal_model_hash": "3c878d1727ed14e0",
+      "support_classification": "user_context_informed",
+      "horizon_s": 604800.0,
+      "history_timestamps": {
+       "n_supplied_real": 0,
+       "n_total": 3,
+       "unresolved_spacing": 3
+      },
+      "profile_evidence": [
+       "user_context:timezone",
+       "user_context:sleep_window"
+      ],
+      "profile_unresolved": [
+       "channel_check_gap"
+      ]
+     },
+     "provenance": {
+      "as_of": 1784410200.0,
+      "tier_rule": "reaction_is_the_question \u2192 Tier 1",
+      "runtime": "QualitativeActorPolicyRuntime",
+      "temporal_route": "delivery\u2192attention\u2192decision (\u00a725)",
+      "aggregation": "branch-selection counting (cluster-1.0)",
+      "structural_frame": "Dana's reaction is determined by the information she has already received through shared project channels and her current attention state, not by the message's content alone; the message will be processed as one more signal in a noisy stream, and her response will reflect her pre-existing stance on the project's status. (decisive: Dana, you (project lead), Dana's current attention bandwidth (likely low due to end-of-day or competing priorities), time of day (21:30 UTC, outside core hours), message length and urgency signal (if any))"
+     }
+    },
+    "m4_adversarial_alternative": {
+     "schema_version": "individual.reaction.v2_temporal",
+     "person_id": "dana",
+     "stimulus": "Hey Dana \u2014 I'm really sorry about how the planning meeting went on Tuesday. I should have backed you up on the timeline. Can we grab coffee this week and reset?",
+     "channel": "message",
+     "n_hypotheses": 2,
+     "samples_per_hypothesis": 2,
+     "samples": [
+      {
+       "hypothesis_id": "h0:unspoken_resentment",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784410704.9223778,
+       "noticed_ts": 1784415449.2597682,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You reached out with an apology and an offer to reset, but the timing feels like guilt management, not genuine understanding.",
+        "why_it_matters": "This is a test of whether you will follow through with changed behavior or just check a box. My response sets the tone for future dynamics.",
+        "perceived_opportunities": "I can use this pause to clarify what I actually need from you before engaging.",
+        "perceived_threats": "If I respond too warmly, I risk being seen as a pushover; if too cold, I lose the friendship entirely."
+       },
+       "internal_reaction": "Hurt and guarded; replaying the meeting in her mind, feeling a mix of anger and exhaustion.",
+       "observable_response": "reply_later",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I will not reply tonight. I need to let the sting settle and avoid a rushed, performative exchange. I'll respond tomorrow morning with a brief, neutral acknowledgment that keeps distance.",
+       "novel_action_unmodeled": false,
+       "trace_id": "7d8b893e5beb6b5d75a47374"
+      },
+      {
+       "hypothesis_id": "h1:hidden_romantic_interest_and_vulnerabili",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "responded",
+       "available_ts": 1784416329.7432775,
+       "noticed_ts": 1784438907.4051592,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "He apologized first, and specifically mentioned backing me up \u2014 he noticed my hurt, not just the schedule.",
+        "why_it_matters": "This feels personal, not just professional repair; it reopens the hope I was trying to close off.",
+        "perceived_opportunities": "Coffee could clarify whether he feels more than collegial guilt.",
+        "perceived_threats": "I might read too much into a simple gesture and get hurt again."
+       },
+       "internal_reaction": "Anxious but hopeful; heart racing slightly.",
+       "observable_response": "reply_now",
+       "timing_intent": "immediate",
+       "target": "you",
+       "decision_summary": "I will reply now, accepting the coffee invitation with a light, professional tone to avoid showing how much this apology means to me.",
+       "novel_action_unmodeled": false,
+       "trace_id": "8f5a77d7e410b04aff0faa24"
+      },
+      {
+       "hypothesis_id": "h0:unspoken_resentment_and_strategic_distan",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784417127.5835283,
+       "noticed_ts": 1784421535.002442,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You sent a direct apology and proposed a reset, which is more than I expected but still feels like damage control.",
+        "why_it_matters": "This is the first explicit acknowledgment of the slight, but it came after the fact and without public repair. It forces me to decide whether to accept a private fix for a public wound.",
+        "perceived_opportunities": "I can use the delay to gauge your follow-through and set terms for rebuilding trust.",
+        "perceived_threats": "If I accept too quickly, I signal that my boundaries are weak and that public undermining can be erased with a coffee chat."
+       },
+       "internal_reaction": "Simmering resentment masked by professional composure; the apology has slightly cooled the anger but not the distrust.",
+       "observable_response": "delay_reply",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I will not reply tonight. Letting the message sit until morning tests whether this is genuine remorse or a quick fix. It also protects my own composure.",
+       "novel_action_unmodeled": false,
+       "trace_id": "78dea116606cbee1c375b27a"
+      },
+      {
+       "hypothesis_id": "h1:hidden_romantic_interest_and_vulnerabili",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "responded",
+       "available_ts": 1784410715.6508899,
+       "noticed_ts": 1784423872.1310287,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You apologized and explicitly invited me to coffee to reset, which is more direct than I expected.",
+        "why_it_matters": "This could be a genuine attempt to repair the professional rift, or it could be an opening for something personal \u2014 I need to navigate carefully.",
+        "perceived_opportunities": "A chance to restore our easy rapport and maybe test if there's mutual interest in a low-stakes setting.",
+        "perceived_threats": "If I misread this as romantic and act on it, I could ruin our working relationship and face workplace gossip."
+       },
+       "internal_reaction": "Still emotionally raw, but relieved that you reached out \u2014 my anxiety is mixed with a flicker of hope.",
+       "observable_response": "reply_now",
+       "timing_intent": "immediate",
+       "target": "you",
+       "decision_summary": "I will reply now, accepting the coffee invitation with a simple, gracious message that leaves room for either a professional reset or something more, without committing to either.",
+       "novel_action_unmodeled": false,
+       "trace_id": "1ad9df743da511aff59d3559"
+      }
+     ],
+     "raw_qualitative_simulation_distribution": {
+      "delay_reply[multi_part]@you": 0.25,
+      "reply_later@you": 0.25,
+      "reply_now@you": 0.5
+     },
+     "calibrated_distribution": {
+      "delay_reply[multi_part]@you": 0.2404,
+      "reply_later@you": 0.2404,
+      "reply_now@you": 0.5192
+     },
+     "calibration_status": "calibrated",
+     "n_excluded_numeric_fallbacks": 0,
+     "n_unread_by_horizon": 0,
+     "consequence_report": {
+      "requested_mode": "generated_actor_mediated_world",
+      "actual_mode": "generated_actor_mediated_world",
+      "actions_compiled": 0,
+      "direct_operations_applied": 0,
+      "events_scheduled": 0,
+      "processes_started": 0,
+      "objects_created": 0,
+      "facts_changed": 0,
+      "institutional_submissions": 0,
+      "actor_decisions_opened": 0,
+      "population_responses_opened": 0,
+      "information_deliveries": 0,
+      "unsupported_semantics": 0,
+      "fallbacks": 0,
+      "fallback_reasons": [
+       {
+        "kind": "no_scenario_schema",
+        "reason": "generated_actor_mediated_world requires a ScenarioSemanticModel; none is bound to this world \u2014 the branch is execution_incomplete: the exact attempt is preserved, no external consequence is claimed, and the fixed-v1 baseline is NOT served"
+       }
+      ],
+      "legacy_scalar_writes": 0,
+      "scenario_schema_id": "",
+      "scenario_schema_version": "",
+      "scenario_types_generated": 0,
+      "scenario_events_emitted": 0,
+      "schema_extensions": 0,
+      "observations_delivered": 0,
+      "actors_reconsidered": 0,
+      "actors_invoked": 0,
+      "actor_actions_executed": 0,
+      "actors_declined_to_act": 0,
+      "recursive_cascade_depth": 0,
+      "human_reactions_written_directly": 0,
+      "fixed_ontology_uses": 0,
+      "mechanistic_fallbacks": 0,
+      "numeric_fallbacks": 0,
+      "attention_events": 0,
+      "observation_bundles_delivered": 0,
+      "temporal_truncations": [],
+      "action_attempts": 4,
+      "actor_controlled_effects": 0,
+      "mechanisms_invoked": 0,
+      "mechanism_successes": 0,
+      "mechanism_failures": 0,
+      "mechanism_unresolved": 0,
+      "intended_deliveries": 0,
+      "actual_deliveries": 0,
+      "intended_publications": 0,
+      "actual_publications": 0,
+      "directness_claims_rejected": 0,
+      "external_successes_written_directly": 0,
+      "deliveries_unresolved_no_mechanism": 0,
+      "scheduled_attempts": 0,
+      "scheduled_attempts_fired": 0,
+      "structurally_under_modeled": true,
+      "causal_action_reports": [],
+      "degraded": true
+     },
+     "llm_calls": 4,
+     "temporal": {
+      "temporal_model_hash": "3c878d1727ed14e0",
+      "support_classification": "user_context_informed",
+      "horizon_s": 604800.0,
+      "history_timestamps": {
+       "n_supplied_real": 0,
+       "n_total": 3,
+       "unresolved_spacing": 3
+      },
+      "profile_evidence": [
+       "user_context:timezone",
+       "user_context:sleep_window"
+      ],
+      "profile_unresolved": [
+       "channel_check_gap"
+      ]
+     },
+     "provenance": {
+      "as_of": 1784410200.0,
+      "tier_rule": "reaction_is_the_question \u2192 Tier 1",
+      "runtime": "QualitativeActorPolicyRuntime",
+      "temporal_route": "delivery\u2192attention\u2192decision (\u00a725)",
+      "aggregation": "branch-selection counting (cluster-1.0)",
+      "structural_frame": "Dana's reaction is determined by her pre-existing emotional valence toward you (e.g., unspoken resentment, romantic interest, or rivalry), which the message merely triggers regardless of content or timing. (decisive: Dana, you, Dana's current emotional state (unknown), history of past interactions)"
+     }
+    },
+    "m5_adversarial_alternative": {
+     "schema_version": "individual.reaction.v2_temporal",
+     "person_id": "dana",
+     "stimulus": "Hey Dana \u2014 I'm really sorry about how the planning meeting went on Tuesday. I should have backed you up on the timeline. Can we grab coffee this week and reset?",
+     "channel": "message",
+     "n_hypotheses": 2,
+     "samples_per_hypothesis": 2,
+     "samples": [
+      {
+       "hypothesis_id": "h0:guarded_professional",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "responded",
+       "available_ts": 1784410704.9223778,
+       "noticed_ts": 1784415449.2597682,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You sent a direct apology and invitation to reset, which is a step but doesn't yet address my core concern about professional solidarity.",
+        "why_it_matters": "This is my chance to set the terms for rebuilding trust, not just smooth things over.",
+        "perceived_opportunities": "I can clarify my expectations for future planning meetings and protect my standing.",
+        "perceived_threats": "If I accept too easily, you may think a simple apology is enough without behavioral change."
+       },
+       "internal_reaction": "Still hurt, but now cautiously open to dialogue if you show genuine understanding.",
+       "observable_response": "reply_now",
+       "timing_intent": "immediate",
+       "target": "you",
+       "decision_summary": "I will reply now, thanking you for the apology but stating that I need to understand why you didn't back me up before we reset over coffee.",
+       "novel_action_unmodeled": false,
+       "trace_id": "7d8b893e5beb6b5d75a47374"
+      },
+      {
+       "hypothesis_id": "h1:hurt_friend",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784416329.7432775,
+       "noticed_ts": 1784438907.4051592,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "The friend reached out with an apology and a request to reset, which is a positive step but doesn't yet address the deeper personal betrayal I feel.",
+        "why_it_matters": "This is the first move toward repair, but I need to see if they understand why their silence hurt me personally, not just professionally.",
+        "perceived_opportunities": "A chance to rebuild trust if the coffee conversation goes deep enough; an opening to express my hurt without it being a surprise.",
+        "perceived_threats": "If I accept too quickly, they might think a simple apology fixes everything and not change their behavior; if I wait too long, they might think I'm done with the friendship."
+       },
+       "internal_reaction": "Emotionally raw, reflective, possibly tearful or withdrawn; replaying the meeting in her mind.",
+       "observable_response": "reply_later",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I will wait until tomorrow morning to reply, giving myself time to think about what I really need from this conversation beyond the apology.",
+       "novel_action_unmodeled": false,
+       "trace_id": "8f5a77d7e410b04aff0faa24"
+      },
+      {
+       "hypothesis_id": "h0:guarded_professional",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784417127.5835283,
+       "noticed_ts": 1784421535.002442,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "Received a direct apology and coffee invitation from a colleague who failed to back me in a planning meeting.",
+        "why_it_matters": "This is a test of whether the colleague understands the severity of the breach, and whether I can maintain professional boundaries without burning the bridge entirely.",
+        "perceived_opportunities": "Opportunity to set a precedent that apologies must be followed by changed behavior, not just words.",
+        "perceived_threats": "Risk that accepting too quickly will be seen as weakness, or that the colleague will revert to form in future meetings."
+       },
+       "internal_reaction": "Calm but guarded; emotionally detached from the incident to avoid vulnerability.",
+       "observable_response": "reply_later",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I will not reply tonight. I need to let the apology sit, and respond tomorrow with a measured tone that acknowledges the message but sets clear expectations for future behavior.",
+       "novel_action_unmodeled": false,
+       "trace_id": "78dea116606cbee1c375b27a"
+      },
+      {
+       "hypothesis_id": "h1:emotionally_exhausted_friend",
+       "decision_source": "persistent_qualitative_llm",
+       "temporal_state": "read_but_deferred",
+       "available_ts": 1784410715.6508899,
+       "noticed_ts": 1784423872.1310287,
+       "delivery_provenance": "unmodeled_channel_broad_band",
+       "notice_provenance": "unmodeled_attention_broad_band",
+       "availability_latent": "",
+       "interpretation": {
+        "what_changed": "You reached out with a direct apology and offered to reset.",
+        "why_it_matters": "It shows you value the friendship enough to take the first step, but I need to hear your tone in person to know if it's real.",
+        "perceived_opportunities": "A chance to rebuild trust if the coffee meeting is genuine.",
+        "perceived_threats": "If the apology is just to smooth things over for the project, I'll feel even more hurt."
+       },
+       "internal_reaction": "Emotionally drained but slightly hopeful.",
+       "observable_response": "reply_later",
+       "timing_intent": "delayed",
+       "target": "you",
+       "decision_summary": "I'll wait until morning to reply, after I've had time to think and talk it through with my partner.",
+       "novel_action_unmodeled": false,
+       "trace_id": "1ad9df743da511aff59d3559"
+      }
+     ],
+     "raw_qualitative_simulation_distribution": {
+      "reply_later@you": 0.75,
+      "reply_now@you": 0.25
+     },
+     "calibrated_distribution": {
+      "reply_later@you": 0.7722,
+      "reply_now@you": 0.2278
+     },
+     "calibration_status": "calibrated",
+     "n_excluded_numeric_fallbacks": 0,
+     "n_unread_by_horizon": 0,
+     "consequence_report": {
+      "requested_mode": "generated_actor_mediated_world",
+      "actual_mode": "generated_actor_mediated_world",
+      "actions_compiled": 0,
+      "direct_operations_applied": 0,
+      "events_scheduled": 0,
+      "processes_started": 0,
+      "objects_created": 0,
+      "facts_changed": 0,
+      "institutional_submissions": 0,
+      "actor_decisions_opened": 0,
+      "population_responses_opened": 0,
+      "information_deliveries": 0,
+      "unsupported_semantics": 0,
+      "fallbacks": 0,
+      "fallback_reasons": [
+       {
+        "kind": "no_scenario_schema",
+        "reason": "generated_actor_mediated_world requires a ScenarioSemanticModel; none is bound to this world \u2014 the branch is execution_incomplete: the exact attempt is preserved, no external consequence is claimed, and the fixed-v1 baseline is NOT served"
+       }
+      ],
+      "legacy_scalar_writes": 0,
+      "scenario_schema_id": "",
+      "scenario_schema_version": "",
+      "scenario_types_generated": 0,
+      "scenario_events_emitted": 0,
+      "schema_extensions": 0,
+      "observations_delivered": 0,
+      "actors_reconsidered": 0,
+      "actors_invoked": 0,
+      "actor_actions_executed": 0,
+      "actors_declined_to_act": 0,
+      "recursive_cascade_depth": 0,
+      "human_reactions_written_directly": 0,
+      "fixed_ontology_uses": 0,
+      "mechanistic_fallbacks": 0,
+      "numeric_fallbacks": 0,
+      "attention_events": 0,
+      "observation_bundles_delivered": 0,
+      "temporal_truncations": [],
+      "action_attempts": 4,
+      "actor_controlled_effects": 0,
+      "mechanisms_invoked": 0,
+      "mechanism_successes": 0,
+      "mechanism_failures": 0,
+      "mechanism_unresolved": 0,
+      "intended_deliveries": 0,
+      "actual_deliveries": 0,
+      "intended_publications": 0,
+      "actual_publications": 0,
+      "directness_claims_rejected": 0,
+      "external_successes_written_directly": 0,
+      "deliveries_unresolved_no_mechanism": 0,
+      "scheduled_attempts": 0,
+      "scheduled_attempts_fired": 0,
+      "structurally_under_modeled": true,
+      "causal_action_reports": [],
+      "degraded": true
+     },
+     "llm_calls": 4,
+     "temporal": {
+      "temporal_model_hash": "3c878d1727ed14e0",
+      "support_classification": "user_context_informed",
+      "horizon_s": 604800.0,
+      "history_timestamps": {
+       "n_supplied_real": 0,
+       "n_total": 3,
+       "unresolved_spacing": 3
+      },
+      "profile_evidence": [
+       "user_context:timezone",
+       "user_context:sleep_window"
+      ],
+      "profile_unresolved": [
+       "channel_check_gap"
+      ]
+     },
+     "provenance": {
+      "as_of": 1784410200.0,
+      "tier_rule": "reaction_is_the_question \u2192 Tier 1",
+      "runtime": "QualitativeActorPolicyRuntime",
+      "temporal_route": "delivery\u2192attention\u2192decision (\u00a725)",
+      "aggregation": "branch-selection counting (cluster-1.0)",
+      "structural_frame": "Dana's reaction is determined by whether she is currently in a social context (e.g., with friends, family, or partner) that shapes her interpretation and response norms for late-night messages, and specifically by the unspoken social contract of that context which the omission critic identified as missing from all prior models. (decisive: Dana, Dana's present company (partner, friends, family members present at 21:30), time of day (21:30 local time for Dana), Dana's current social setting (alone vs. with others), the specific type of social gathering (intimate vs. casual vs. formal))"
+     }
+    }
+   },
+   "human_summary": {
+    "answer": {
+     "reply_later@you": 0.5
+    },
+    "survives_across_models": false,
+    "structural_sensitivity": "materially_structurally_sensitive",
+    "most_important_competing_explanation": "Dana's reaction is determined by the formal escalation procedure for after-hours technical messages and the authority chain defined by the project's incident response protocol, not by personal friendship or informal norms.",
+    "assumption_that_reverses_answer": "Dana's reaction is determined by the formal escalation procedure for after-hours technical messages and the authority chain defined by the project's incident response protocol, not by personal friendship or informal norms.",
+    "information_that_would_resolve": "Dana immediately responds with enthusiasm and a long personal note (contradicts guarded\u2011reciprocity mechanism)"
+   }
+  },
+  "posterior_inference": null,
+  "evidence_quality": "",
+  "limitations": [
+   "reaction distributions are counted from qualitative simulations per structural frame and are unvalidated (no fitted calibrator)",
+   "the predicted reaction depends materially on which causal frame of the relationship/situation is true \u2014 see structural_ensemble"
+  ],
+  "fallbacks_used": [],
+  "mechanism_tiers": {},
+  "omitted_high_sensitivity_variables": [],
+  "sensitivity_contributors": [],
+  "interpretation_hypotheses": [
+   {
+    "model_id": "m0_actor_relationship",
+    "thesis": "Dana\u2019s reaction is determined by her perception of the message as either a strategic move to pressure her into a decision she is avoiding, or as a genuine friendly check\u2011in, with the decisive factor being the current balance of her personal loyalty to you versus her professional self\u2011interest in maintaining autonomy."
+   },
+   {
+    "model_id": "m1_institutional_procedural",
+    "thesis": "Dana's reaction is determined by the formal escalation procedure for after-hours technical messages and the authority chain defined by the project's incident response protocol, not by personal friendship or informal norms."
+   },
+   {
+    "model_id": "m2_resource_constraint",
+    "thesis": "Dana\u2019s reaction is determined by her current cognitive and emotional capacity (depleted after a long workday) and the operational timing constraint that she is likely already offline or winding down, making any message tonight either ignored until tomorrow or met with a curt, low-effort reply."
+   },
+   {
+    "model_id": "m3_information_distribution",
+    "thesis": "Dana's reaction is determined by the information she has already received through shared project channels and her current attention state, not by the message's content alone; the message will be processed as one more signal in a noisy stream, and her response will reflect her pre-existing stance on the project's status."
+   },
+   {
+    "model_id": "m4_adversarial_alternative",
+    "thesis": "Dana's reaction is determined by her pre-existing emotional valence toward you (e.g., unspoken resentment, romantic interest, or rivalry), which the message merely triggers regardless of content or timing."
+   },
+   {
+    "model_id": "m5_adversarial_alternative",
+    "thesis": "Dana's reaction is determined by whether she is currently in a social context (e.g., with friends, family, or partner) that shapes her interpretation and response norms for late-night messages, and specifically by the unspoken social contract of that context which the omission critic identified as missing from all prior models."
+   }
+  ],
+  "failure_taxonomy": "",
+  "clarification_reason": "",
+  "execution_trace_ref": "",
+  "plan_hash": "",
+  "provenance": {
+   "runtime": "unified-2.0-structural-ensemble",
+   "structural_mode": "ensemble",
+   "route": "individual_reaction_ensemble",
+   "ensemble_id": "ens_b382fc1b52fd",
+   "actor_policy_report": {
+    "requested_actor_policy_mode": "hybrid_relevant_actor_policy",
+    "actual_actor_policy_mode": "persistent_qualitative_llm_policy",
+    "route": "individual_reaction_ensemble",
+    "reason": "reaction_is_the_question",
+    "degraded": false,
+    "construction_error": "",
+    "fallbacks": 0
+   }
+  },
+  "cost_usd": 0.0,
+  "latency_s": 890.644,
+  "abstain": false,
+  "abstain_reason": "",
+  "_semantics": "no_abstention_v2"
+ }
+}

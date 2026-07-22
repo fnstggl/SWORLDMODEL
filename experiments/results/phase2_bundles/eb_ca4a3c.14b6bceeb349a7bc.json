@@ -1,0 +1,2213 @@
+{
+ "bundle_id": "eb_ca4a3c",
+ "question": "Will the appropriations bill clear both chambers before the fiscal deadline?",
+ "as_of": 1692057600.0,
+ "compiler_plan_hash": "c440c7037c2e",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_0352db7f5d",
+   "claim_or_quantity": "pass if both chambers vote to approve the bill and it is enacted by the deadline; otherwise fail",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "President",
+    "Speaker_House",
+    "Senate_Majority_Leader",
+    "House_Appropriations_Chair"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c71bbcc028",
+   "claim_or_quantity": "value/context of House_members.ideology",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "House_members.ideology",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_d2d232723d",
+   "claim_or_quantity": "value/context of Senate_members.ideology",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "Senate_members.ideology",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6c1774dc5c",
+   "claim_or_quantity": "value/context of Speaker_House.agenda_priority",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "Speaker_House.agenda_priority",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c99a715d34",
+   "claim_or_quantity": "evidence discriminating structural hypothesis bipartisan_compromise",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:bipartisan_compromise",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_10fffe78ad",
+   "claim_or_quantity": "evidence discriminating structural hypothesis partisan_standoff",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:partisan_standoff",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2d2a1059de",
+   "claim_or_quantity": "decision rules / process of US_Congress",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "US_Congress",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_44ceba7f53",
+   "claim_or_quantity": "decision rules / process of House_Rules_Committee",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "House_Rules_Committee",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_0352db7f5d",
+   "terms": "appropriations bill clear both chambers fiscal deadline President Speaker House Senate Majority Leader",
+   "after": "2023-03-18",
+   "before": "2023-08-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_c71bbcc028",
+   "terms": "House members ideology",
+   "after": "2023-03-18",
+   "before": "2023-08-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_d2d232723d",
+   "terms": "Senate members ideology",
+   "after": "2023-03-18",
+   "before": "2023-08-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_0352db7f5d",
+   "logical_query": "appropriations bill clear both chambers fiscal deadline President Speaker House Senate Majority Leader after:2023-03-18 before:2023-08-15",
+   "wire_url": "https://news.google.com/rss/search?q=appropriations+bill+clear+both+chambers+fiscal+deadline+President+Speaker+House+Senate+Majority+Leader+after%3A2023-03-18+before%3A2023-08-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-18",
+   "before_date": "2023-08-15",
+   "retrieved_at": 1783906854.390961,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:40:55 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1JBiSO44w5AKxJVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcy1suXmIT2LGvx1tJOSm_MD4lv6S4uCAnsTijOLWoLLUo3sjAyMzA3MBMz8AkvsAAAF5wOB0\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "0f914fe81272aa8fae75bb1cc92d78da5cb0689365f38e6fc119933a1f87ed08",
+   "n_bytes": 16208,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.708
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_c71bbcc028",
+   "logical_query": "House members ideology after:2023-03-18 before:2023-08-15",
+   "wire_url": "https://news.google.com/rss/search?q=House+members+ideology+after%3A2023-03-18+before%3A2023-08-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-18",
+   "before_date": "2023-08-15",
+   "retrieved_at": 1783906855.1010795,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:40:55 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0pBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcy1suXmITWPHn-hUmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC2YDkp\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "5090fabf5e7e6ece0e6a6e0bbbb560525dd67fd0e1e154d460ad8237ca251658",
+   "n_bytes": 41346,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.558
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_d2d232723d",
+   "logical_query": "Senate members ideology after:2023-03-18 before:2023-08-15",
+   "wire_url": "https://news.google.com/rss/search?q=Senate+members+ideology+after%3A2023-03-18+before%3A2023-08-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-18",
+   "before_date": "2023-08-15",
+   "retrieved_at": 1783906855.6608617,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:40:56 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw05BiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcK1ouXmITOLH9X5qSclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAHrnOL4\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "52e2a2213ba992d5880b025090358fecd55b543104f0b5fbaeda07793f5702ed",
+   "n_bytes": 15041,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.474
+  }
+ ],
+ "raw_content_refs": [
+  "0f914fe81272aa8fae75bb1cc92d78da5cb0689365f38e6fc119933a1f87ed08",
+  "5090fabf5e7e6ece0e6a6e0bbbb560525dd67fd0e1e154d460ad8237ca251658",
+  "52e2a2213ba992d5880b025090358fecd55b543104f0b5fbaeda07793f5702ed"
+ ],
+ "documents": [
+  {
+   "id": "c25c490c74a9c894",
+   "source": "CNBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBxV3lJVF9RV3I2aDdhUUY4T3dCTll6a0F3VTBRMjBMN1IzWDEwOEpsbkFjQ1U2RTUtYWxmQ053QnVmdUpqNFhHWV80RHJsTWdSUUxNWkQxMUw5YzFiQ0w2RWFqeXNDZTVlRjlSUjFHN1A3bUnSAXhBVV95cUxOaVpVZnhsMFRKS3dLNm1PUEdBZG1xbnBldXZxdThIVUdybzJOZEt2SWY1WlVQWWh4c1ROQzNkVnVneW1hRTNtaDlGRG1RRHkzUXJ2MHpEdEVFSjZYMXZ0S0d2RlpiVHI4dEdDM0pRVnZnc0ttNHNnZV8?oc=5",
+   "title": "Debt ceiling bill passes in the House, advances to the Senate days ahead of default deadline - CNBC",
+   "text": "Debt ceiling bill passes in the House, advances to the Senate days ahead of default deadline - CNBC. Debt ceiling bill passes in the House, advances to the Senate days ahead of default deadline CNBC",
+   "content_hash": "c256bc5bcfac6f91",
+   "raw_feed_hash": "0f914fe81272aa8fae75bb1cc92d78da5cb0689365f38e6fc119933a1f87ed08",
+   "published_at": 1685516400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_0352db7f5d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f9f488b5b09819dd",
+   "source": "NPR",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBEWmVKVURuRlFJTnBsaEp2VXZTRWZmQ0dmV0FMMFlNWXU3aHJwX2xUVmxDd2VjWWZTOGFublBYUG5rOG1GcEdRN3FwZVlZYXlmSWJLamxZemFuYWVpYnRMYnlSZzQ3RndCT3hlSmE2a2VOVGI3?oc=5",
+   "title": "Senate sends debt ceiling legislation to President Biden's desk with days to spare - NPR",
+   "text": "Senate sends debt ceiling legislation to President Biden's desk with days to spare - NPR. Senate sends debt ceiling legislation to President Biden's desk with days to spare NPR",
+   "content_hash": "284950e7c534d602",
+   "raw_feed_hash": "0f914fe81272aa8fae75bb1cc92d78da5cb0689365f38e6fc119933a1f87ed08",
+   "published_at": 1685602800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_0352db7f5d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fcde2e30bd9b592f",
+   "source": "PBS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPb3N0VFdoWkUzM3Iyb0NTN1pkZk4yUGdoWW1SbVBKTU1yNlpMZ3dBN1p4TXdUVy1rTEJTOGhYTzNWNXl0Q1ppQ2VnM0J2UmpDT2hmNHJtaWc4dzBVRHJhYzFLbnFTNFMxblRpRE1TeURHOTU2bnZtdUZaN0Q2SHZyUTg0RFV6eFQ4SG5PRTdNQ0daMXFTLUHSAZsBQVVfeXFMTTRqU3FTOHVrUHlfVXFTWnYyQ2pfVnc5eWtyQXpGSUF6OWdqeFRvLTI3Z3FxNmwzYnhjQ0RMUUhpNU1JMnV2clloTHV2MFktRlhSVlV2eDF2eVBOYWdoRERhVW9lOXpHOTlDSUtNd2F1UVNoZHNuUFJVQWJzUkhkaG1IQ1BlRG8xMzI3NWx5bFR6WTFDc1FWNE1mb0E?oc=5",
+   "title": "Who are the 4 negotiators in the U.S. debt limit fight? - PBS",
+   "text": "Who are the 4 negotiators in the U.S. debt limit fight? - PBS. Who are the 4 negotiators in the U.S. debt limit fight? PBS",
+   "content_hash": "4f09b1fe5c2633a8",
+   "raw_feed_hash": "0f914fe81272aa8fae75bb1cc92d78da5cb0689365f38e6fc119933a1f87ed08",
+   "published_at": 1684306800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_0352db7f5d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f3edb11d442dc1c9",
+   "source": "WCVB",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNU0dPRWU4WktYU0RKazdDd1piejlDZkdsd2dtR2dfOEtzclBCcFhuYTlmNGdYZW0zeDJxTGJMZmdBM21udUQ4VHBla3Rjd2NGNW9uak16WkZtWnJPM1h0MHIwc29PRjA0eEJNVTBoVVBHenlycEpxZW5sVHU0RVBhTUVsOFVYN0MwMWZUdFJpUU14WC04?oc=5",
+   "title": "Why both senators from Mass. voted against debt ceiling deal - WCVB",
+   "text": "Why both senators from Mass. voted against debt ceiling deal - WCVB. Why both senators from Mass. voted against debt ceiling deal WCVB",
+   "content_hash": "6b487851a3416314",
+   "raw_feed_hash": "0f914fe81272aa8fae75bb1cc92d78da5cb0689365f38e6fc119933a1f87ed08",
+   "published_at": 1685689200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_0352db7f5d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6fd27d8b4e637936",
+   "source": "NBC News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQZWplcWJXRnNER1hnZ29SRld4TWtTNTNTSWlwYnJWSzlaTTJYTGUyUHREd3BwZE1KVVpsdng0azFzMnFLZ0x5eGlId1dkNGdsV2xmNmdzLU0zcVNVWkVDYUlCbnFBRU8zZTdIZVZZVUVZQkthMVk1TldpV2FYVG9WazhkVHRfRVVRdGtTWGJrRGNQRlBCU3YzSHlQUEFVYkxsYWNqYg?oc=5",
+   "title": "Biden and McCarthy hold a 'productive' debt ceiling meeting, but no deal yet - NBC News",
+   "text": "Biden and McCarthy hold a 'productive' debt ceiling meeting, but no deal yet - NBC News. Biden and McCarthy hold a 'productive' debt ceiling meeting, but no deal yet NBC News",
+   "content_hash": "79bef8eb30fb0bb5",
+   "raw_feed_hash": "0f914fe81272aa8fae75bb1cc92d78da5cb0689365f38e6fc119933a1f87ed08",
+   "published_at": 1684738800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_0352db7f5d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e74453c504b2119c",
+   "source": "ABC News - Breaking News, Latest News and Videos",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQbURGOWVKeGxNdGZoV0dSMnpIMEZMTGpubHNCbGRBTXNxUVVjR1ZkQUN3LTg5Z1hSLVR3NnZqTnVxalpzZWJ6N0R3UVU2R1FTeG9yOXNPbHdVdmRmMjB1TGlCdHRnTWxsTlRZZzQ2U0g2Qkw0akotRHkxX1FHM19zbFYxNFA0Qk8wNUJ1WHVFSVpHUVZSUk8wMG5Kd9IBoAFBVV95cUxNc2E3MmZteFEzMWhwOTh2R1lCUFdXaUdWNE1MNU44ZjlJSS02MkNIdGRWQ1dkU1N1REZWSTMxQ0hncFZJbnZ2Yk1yRng4bERpY1hKUEwtNDEwSHV1dmgzRlJxMUxWQUpaUjZ3RUNIYklSWGVmTXdMNjd1bEpnMUgzbGQ2WTVKdmJlOG5yUlpCTmM0NlpyUGRvd3BkbUQ3TTNs?oc=5",
+   "title": "Debt ceiling deal to prevent default narrowly passes 1st big test in key House committee - ABC News - Breaking News, Latest News and Videos",
+   "text": "Debt ceiling deal to prevent default narrowly passes 1st big test in key House committee - ABC News - Breaking News, Latest News and Videos. Debt ceiling deal to prevent default narrowly passes 1st big test in key House committee ABC News - Breaking News, Latest News and Videos",
+   "content_hash": "b7f0f2feb3a5e619",
+   "raw_feed_hash": "0f914fe81272aa8fae75bb1cc92d78da5cb0689365f38e6fc119933a1f87ed08",
+   "published_at": 1685430000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_0352db7f5d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9f05b1cc803e5198",
+   "source": "Boston 25 News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPNlgxYmVZUEV3SmpCSUJJanFHcVJuQm9tZE1sMFNfdzJrcjhjZGQxUUhRVzV1LWIyU3ZPRWFhajBXaFBRdzhCU0hxMW9IZnp3YkcyNHk1akpJVXRDeTJSZXNuZHBLcU1BUEJNWkhOVy1FdEhneDUtclV2TXhZVTIyNnVaYkM2QlR3NDZKVEpSZ0tkekdXSFhtNUluS3Jyb2djTmFEMWY3ei1NeU4xTnB6TlFwbXh4UWlkMWszc3NLX3pzSjdRYThWZ1NDanBxdmlxdC1IT2F4UDNDNFpGdGVV0gHzAUFVX3lxTE9JZ3VmTnVVeFBZRS1MeVl2SGc0OTR5ZlFXYXJHU0ZNOVdpOG1UVm9QTUtaLXM3ZWp5T2EtMDB3NFFILUQ0SGFvd2VwYlpSR09qQjZlWGxzbEF2OThvd1BPNTMzX040eGlJaVJrZmpuRjRGQ0xOMWpvQ1FBSVJGcHpzWEttWWsyVVlLcUFrX3NxSHhNZXBTbGZ2WVZEM0JENWNZa3FUXzMyMmdNVjEyU25PY0ZPRFRwTlpTaVlBRnpYMDdCOHU5ZWJGZXh5eDFwbGwxaEJ0d2NPdHdfNGxKcl9RclJPS2tCRnM2MWV2Q3MyOXl2OA?oc=5",
+   "title": "Just days to spare, Senate gives final approval to debt ceiling deal, sending it to Biden - Boston 25 News",
+   "text": "Just days to spare, Senate gives final approval to debt ceiling deal, sending it to Biden - Boston 25 News. Just days to spare, Senate gives final approval to debt ceiling deal, sending it to Biden Boston 25 News",
+   "content_hash": "0ab80727f241a420",
+   "raw_feed_hash": "0f914fe81272aa8fae75bb1cc92d78da5cb0689365f38e6fc119933a1f87ed08",
+   "published_at": 1685689200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_0352db7f5d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7fec00b0e0d75be2",
+   "source": "Roll Call",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOXy1pYVc2S2oxRjlONjhhZEQyNW9fUDFpYnUwNW5SWjk3c0g2cl9vaFhCWUtvZTBrMWRZbHZuV2VjejkzTnNvb2JIdVZWaVJuejkzM2FLUHJYSjdNaFhSaVVNTHNjWXBvWVh5V0VveENCS0xWQm5VZjdlZUpNdndWbUFXcHZ4NGx1VGh1dE5sRVp2OTdFczhEQ2o0cw?oc=5",
+   "title": "Parties moving closer on debt ceiling deal as talks drag on - Roll Call",
+   "text": "Parties moving closer on debt ceiling deal as talks drag on - Roll Call. Parties moving closer on debt ceiling deal as talks drag on Roll Call",
+   "content_hash": "ee34ca560e4c8cc1",
+   "raw_feed_hash": "0f914fe81272aa8fae75bb1cc92d78da5cb0689365f38e6fc119933a1f87ed08",
+   "published_at": 1684998000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_0352db7f5d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fb1e0705f2c33719",
+   "source": "The Texas Tribune",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPcGVIZGtTcmVHSFF0c3dWSTE2SlFNNVhOYnI3d2hGZzFneUZuVFZ5ZEluN05jR29feENJNFZ2aGVnclFqUDBSMEFWZ3A2MWVKOWxqSkJRRHF3MGJwZFdULUF5OUY5TDdMUmlPWU9vSDdxUXkzNTRPVEk0MHFqamNOb3liQTFUQQ?oc=5",
+   "title": "Analysis: The 2023 Texas House, from right to left - The Texas Tribune",
+   "text": "Analysis: The 2023 Texas House, from right to left - The Texas Tribune. Analysis: The 2023 Texas House, from right to left The Texas Tribune",
+   "content_hash": "d4170a9343c2b671",
+   "raw_feed_hash": "5090fabf5e7e6ece0e6a6e0bbbb560525dd67fd0e1e154d460ad8237ca251658",
+   "published_at": 1687244400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_c71bbcc028",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "be3273df9411b0f0",
+   "source": "The Washington Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNWUduaUlfU19Kd2FucXR4S0llc2N4dWlRVDg5UGJCZTcxTHlRYzNWU2pIUi05WlhJNzkwM00xRVlFVHJEbFF3TWFMTk1Ubm1OZkpOLW9XdDJZSGtHb1hsS0dpaUFvR2o2djRmdFRuejRlLWp2RkV0ckpKX2M2Y242OUpocWE0eTlXUURuVE92YTJXUQ?oc=5",
+   "title": "Meet \u2018the five families\u2019 that wield power in McCarthy\u2019s House majority - The Washington Post",
+   "text": "Meet \u2018the five families\u2019 that wield power in McCarthy\u2019s House majority - The Washington Post. Meet \u2018the five families\u2019 that wield power in McCarthy\u2019s House majority The Washington Post",
+   "content_hash": "eb1091af8ba8a462",
+   "raw_feed_hash": "5090fabf5e7e6ece0e6a6e0bbbb560525dd67fd0e1e154d460ad8237ca251658",
+   "published_at": 1679641200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_c71bbcc028",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d1f25b5d67ef56d2",
+   "source": "Florida Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOYVZycmpvRWg4VktSLXJqV1ZtcjBaOVp1MV9GSUoyak95dXZDaGpsazctZFdKT1BQNFE1Z1pOS3RJbl9LQVk3UDBpbGNnR2JSQzZCRElVM3VUOTdaYkhjanhFLW11aXBFLXlCcFcxZGdBeG9ZcVpVaVQyaF9RV2xVa3AzZlRNMFdzeXBpNnhqVnBXRFhJUkxmcnFSbUluVEVGS01UOVNoaDhFOTMwOEFRMmpwcnR6OGlwMnc1MnlYMA?oc=5",
+   "title": "Black Republicans counter calls for boycott by NAACP, Legislative Black Caucus - Florida Politics",
+   "text": "Black Republicans counter calls for boycott by NAACP, Legislative Black Caucus - Florida Politics. Black Republicans counter calls for boycott by NAACP, Legislative Black Caucus Florida Politics",
+   "content_hash": "e546b788a4e5c83a",
+   "raw_feed_hash": "5090fabf5e7e6ece0e6a6e0bbbb560525dd67fd0e1e154d460ad8237ca251658",
+   "published_at": 1684911600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_c71bbcc028",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5fa41b5d0606bf8d",
+   "source": "Center for American Progress Action",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQWkRKVmJmc0ZMZVcwVzd3dF9SUXNSVU51MFdnVW9qVDNLNjV3ZmNaREMzUzdMZjBHWjJNa2RoaXJKbHF6UWdXSF9qRkR0M0QxUlFHdDJEU2ZaLXNFV2YySnZmY0JxdkhGb0R4QjNtak9xZDMxTTBkNmdhQzBhSDJnUThJVDFDVEw0dUFSaVJJWi13MkZuZlljZG1nQXpBRVFTeVNGRDZFbW5yLU84SzltZU5ib09yYUtCa0hDWnlkdmIwMVk?oc=5",
+   "title": "The MAGA Scorecard: How House Republicans Vote With Rep. Marjorie Taylor Greene - Center for American Progress Action",
+   "text": "The MAGA Scorecard: How House Republicans Vote With Rep. Marjorie Taylor Greene - Center for American Progress Action. The MAGA Scorecard: How House Republicans Vote With Rep. Marjorie Taylor Greene Center for American Progress Action",
+   "content_hash": "64785887e9abd4be",
+   "raw_feed_hash": "5090fabf5e7e6ece0e6a6e0bbbb560525dd67fd0e1e154d460ad8237ca251658",
+   "published_at": 1690441200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_c71bbcc028",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3d488b932ed9c0ef",
+   "source": "Cambridge University Press & Assessment",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxQb3Z0TWNOUzlkUUNvQWE2Z0ZldGJScUdwQ1JpSjVlRDNBTmhLRk0zTVpJbFVMaTNlc01NMnhYaHlTUnFoUkxWVWFFSXd5R3FWX0JRNHpXc3Foci10NGpQVTFZSFo1UTlKSDR2d0tyanRHS2hkUGVZRkc4ZFFUQkVnM0o4eWl5bC1wTmpkbXp0T2Mya2ZFbzZNMTQ4NjRHNFpCd2hsQ3R6WkZkakZUVnBkbjlaUVNKOTl5TXFaQzY2UGpRbExLRkhnbGxlWm9CTE4zalNDMTY0dHZCcjdhQlZYb2tnbDRfNUN4blpKRWJXMVE3VjFST2JXNjNRejllSEZnYkZrbEhwRG1fUQ?oc=5",
+   "title": "Timing Their Positions: Cosponsorship in the State Legislature - Cambridge University Press & Assessment",
+   "text": "Timing Their Positions: Cosponsorship in the State Legislature - Cambridge University Press & Assessment. Timing Their Positions: Cosponsorship in the State Legislature Cambridge University Press & Assessment",
+   "content_hash": "0502cbf414301e00",
+   "raw_feed_hash": "5090fabf5e7e6ece0e6a6e0bbbb560525dd67fd0e1e154d460ad8237ca251658",
+   "published_at": 1683010800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_c71bbcc028",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f8ffcad2ccabde76",
+   "source": "Brookings",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNd04xTWhQY0sxVUR5Q0Qzd1JhYl9hU2MtMHRaNE5iNHdjWlVzbDdPTHFWb1ZIWjlaSTVSMXI1NWhvYURVVHNSRGZ3QXZjMElLd2RDYmROUUZhMnUzZXo4bnJiZ0QtSERtdi1VVHNBaGJBMWJSNE5fMFVmQTFnUlRKRWtTbE5QbjJQQ2ZydTFPbFR3ZUdjcWtYbEMyeDRBZ3hsTWNfdVM4Zm9oS3g1RlNyWTBLLVctVVZEM3hpag?oc=5",
+   "title": "How partisan and policy dynamics shape congressional oversight in the post-Trump era - Brookings",
+   "text": "How partisan and policy dynamics shape congressional oversight in the post-Trump era - Brookings. How partisan and policy dynamics shape congressional oversight in the post-Trump era Brookings",
+   "content_hash": "56b74d6c369ed06a",
+   "raw_feed_hash": "5090fabf5e7e6ece0e6a6e0bbbb560525dd67fd0e1e154d460ad8237ca251658",
+   "published_at": 1690786800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_c71bbcc028",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "487a7f61ae585a6e",
+   "source": "European Consortium for Political Research (ECPR)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQakRRS3dKamhFT0ZWZzZRRF9TY1RMOHcxVjF5cnNHaGJ3ODlfbm9MR2c5SVFSQUlUd2tUTFJvcjFSMDc4UEIzX01EdXE5b1ppUzQzdlRUTHpwM1JzYkYxR1VIMEtNU2U1SnUwa3c2eVQ1R3U3cnF4cm05V1NxUHpLQU52ZTVGeHdtcU1GUEVfT1VpX21zVWxKM0liWUkxRFRiSmxR?oc=5",
+   "title": "Women politicians in Colombia succeed on Twitter \u2013 depending on their ideology - European Consortium for Political Research (ECPR)",
+   "text": "Women politicians in Colombia succeed on Twitter \u2013 depending on their ideology - European Consortium for Political Research (ECPR). Women politicians in Colombia succeed on Twitter \u2013 depending on their ideology European Consortium for Political Research (ECPR)",
+   "content_hash": "281c88681f61401f",
+   "raw_feed_hash": "5090fabf5e7e6ece0e6a6e0bbbb560525dd67fd0e1e154d460ad8237ca251658",
+   "published_at": 1686553200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_c71bbcc028",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e9745c06d84c5d07",
+   "source": "House.gov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPcVZ5YTBraUNRTGI1MWZRZEVUc1RFaW51a2FhODR3MVMyZmd4MUxUdDBXbGJBVE9abTJNMEVZbnpBUHVzaWJUdng5VENJVnlHX3JmbDUxbE1QRkJfbWJzbWY5eEQ1anFNeWI4RTd4TTUtSHRZblZvS0JsYjBsR0FLLTlPNF90amFSVHRfd0FIZE5pVEd2d3JKSWRCSkNlSHUwWEc3Xzdob3JINERwdm5xMHhCRG8zVGdzOTlrY0NTeXZ6TE1VMmhZMXYxWVBqMzZ0QUFjcnViOEl6dEU?oc=5",
+   "title": "Hearing Wrap Up: ESG Agenda Prioritizes Leftist Ideology Over the Interests of the American People - House.gov",
+   "text": "Hearing Wrap Up: ESG Agenda Prioritizes Leftist Ideology Over the Interests of the American People - House.gov. Hearing Wrap Up: ESG Agenda Prioritizes Leftist Ideology Over the Interests of the American People House.gov",
+   "content_hash": "e144195c02c4e458",
+   "raw_feed_hash": "5090fabf5e7e6ece0e6a6e0bbbb560525dd67fd0e1e154d460ad8237ca251658",
+   "published_at": 1683702000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_c71bbcc028",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "44f36ef4424b9b47",
+   "source": "The Texas Tribune",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNamlFUG81cmNjaFpHT2ppZnJ3cEZjTkFZT1J3UVpuOVBUVUF0ODF2blM0UFVodFlETGNFSnYtVzl6cXJYeWhTV0RSUDF5Qm9tNjhXNl9SbjV3c0dhVk4xeVNzWjNYekhtVEJsOXFPLWY0TWNsb01xR2o3dkJRSlQtWVZJSlE4SDQ?oc=5",
+   "title": "Analysis: The 2023 Texas Senate, from right to left - The Texas Tribune",
+   "text": "Analysis: The 2023 Texas Senate, from right to left - The Texas Tribune. Analysis: The 2023 Texas Senate, from right to left The Texas Tribune",
+   "content_hash": "040f23d6894079a1",
+   "raw_feed_hash": "52e2a2213ba992d5880b025090358fecd55b543104f0b5fbaeda07793f5702ed",
+   "published_at": 1687330800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_d2d232723d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "68da79f036b551a2",
+   "source": "Kentucky Senate GOP",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwJBVV95cUxOZlZDQ3pJVUx0Q1VLTlNIVW94TGoyeWNDZmFIV0dYMEhDQ1M3cmx0a1hkWWZvTEdDbFJQeWp4OXZxTWo0ZXdOaEJhSEFHYjNEaHh6cGtDcWp6c0FtYTFPanZkbHBrMEhMV256dkQ3akZJRGZHbFhHTDZlYVE0NVZBdUE3dUt5dXJRbTZkYUw0VmZKWWZkUGZLeGpiSERZUTJ1MnF5bmExMzYxTzVpU0NickhSNGlJM2RPa3dJYWlBQnJ2RnZXTkN5b0hRV1NBTVYxd2V0X2U3UmpNazJhUFVSekQzVzlFLUJKVE0wT29takMtb2M1VGVXLTdQZllHd3NuMFlmc1NlYi0zbklIS2JLOVpfYlNNNTMtT29OU2tXV3ZDQTR1YzFleHFMM0QwMXFZZEk3a0FqWQ?oc=5",
+   "title": "Senator Max Wise Admonishes Governor Beshear\u2019s Veto of SB 150 Beshear Puts Party over Kentuckians\u2019 Wish to Eliminate Woke Ideologies in Our Children\u2019s Schools - Kentucky Senate GOP",
+   "text": "Senator Max Wise Admonishes Governor Beshear\u2019s Veto of SB 150 Beshear Puts Party over Kentuckians\u2019 Wish to Eliminate Woke Ideologies in Our Children\u2019s Schools - Kentucky Senate GOP. Senator Max Wise Admonishes Governor Beshear\u2019s Veto of SB 150 Beshear Puts Party over Kentuckians\u2019 Wish to Eliminate Woke Ideologies in Our Children\u2019s Schools Kentucky Senate GOP",
+   "content_hash": "218eb8ec03b45b5b",
+   "raw_feed_hash": "52e2a2213ba992d5880b025090358fecd55b543104f0b5fbaeda07793f5702ed",
+   "published_at": 1681282800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_d2d232723d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ba850d2c01e6ea23",
+   "source": "Florida Phoenix",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNNE1tc3c5V09EbWN1UGlnZkVQeEF1cU5SZkpBSk55ZWc4T1RKajdIdmMtaF81VVNyQWs5anRpVVFNSWJIRDVQS2JBVld4UzY5akY4OTdKVkRmMVYxQy1ubkVmNDNpZWpGZWhLOXNKck16YUhsZUNHNVlYR3dNeVhyQmJRX0gtRFhZTzFPdnRzNVRiaUdGRXBtaTdGOXM3TEFDam9KV2pfWUpyN3htTTl6dUpwSGFJSXpEX0w3ZUdTSQ?oc=5",
+   "title": "Fate of New College includes ideology, religion, accreditation, attendance and funding - Florida Phoenix",
+   "text": "Fate of New College includes ideology, religion, accreditation, attendance and funding - Florida Phoenix. Fate of New College includes ideology, religion, accreditation, attendance and funding Florida Phoenix",
+   "content_hash": "b45b567a6d23d35e",
+   "raw_feed_hash": "52e2a2213ba992d5880b025090358fecd55b543104f0b5fbaeda07793f5702ed",
+   "published_at": 1682319600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_d2d232723d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "be3273df9411b0f0",
+   "source": "The Washington Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNWUduaUlfU19Kd2FucXR4S0llc2N4dWlRVDg5UGJCZTcxTHlRYzNWU2pIUi05WlhJNzkwM00xRVlFVHJEbFF3TWFMTk1Ubm1OZkpOLW9XdDJZSGtHb1hsS0dpaUFvR2o2djRmdFRuejRlLWp2RkV0ckpKX2M2Y242OUpocWE0eTlXUURuVE92YTJXUQ?oc=5",
+   "title": "Meet \u2018the five families\u2019 that wield power in McCarthy\u2019s House majority - The Washington Post",
+   "text": "Meet \u2018the five families\u2019 that wield power in McCarthy\u2019s House majority - The Washington Post. Meet \u2018the five families\u2019 that wield power in McCarthy\u2019s House majority The Washington Post",
+   "content_hash": "eb1091af8ba8a462",
+   "raw_feed_hash": "52e2a2213ba992d5880b025090358fecd55b543104f0b5fbaeda07793f5702ed",
+   "published_at": 1679641200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_d2d232723d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "76b2551ef4176c21",
+   "source": "Florida Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPRC1MclFtWFpWRVd5NURscEM1czdfb1g2eng2anRVeW1hbklIYzBxTWN5MlJ2UE1JOU9pQkV2Mk1LT1RpZlkwWVdDdkNtX2owcGRLZThpSWtWYWhMd3pQU1I0Ymdkd0xEUVE0S3JSalBCTkZwQndlaUR3ZnMxSnA2Q3hsd2NiT0I5Z0lNc2tnZkxDcnlzQkZZMnlLSTdna0U?oc=5",
+   "title": "Marco Rubio ranked as No. 3 most effective U.S. Senator - Florida Politics",
+   "text": "Marco Rubio ranked as No. 3 most effective U.S. Senator - Florida Politics. Marco Rubio ranked as No. 3 most effective U.S. Senator Florida Politics",
+   "content_hash": "05a6536833acc75a",
+   "raw_feed_hash": "52e2a2213ba992d5880b025090358fecd55b543104f0b5fbaeda07793f5702ed",
+   "published_at": 1679468400.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_d2d232723d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "25cd9a88afe61d7c",
+   "source": "The Hastings Center for Bioethics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPZFNJd3dtYUE3cHBlSDBWQmxEQThjMEVTX0dYLVNOeGp5ZDBrbWEzVWZObDF1VDV5ckl2ZGY0OWxBS0RkV0tGNWhLdWNtaHBPaHpIVVM1eXExMmFBSGhjZDBTc1ZCNG4wV2NhaWpvZDJGV09KZE1jc3JoWWdlTDhiNXdn?oc=5",
+   "title": "Keep Politics Out of State Medical Policy - The Hastings Center for Bioethics",
+   "text": "Keep Politics Out of State Medical Policy - The Hastings Center for Bioethics. Keep Politics Out of State Medical Policy The Hastings Center for Bioethics",
+   "content_hash": "ceac37a46fc94ba5",
+   "raw_feed_hash": "52e2a2213ba992d5880b025090358fecd55b543104f0b5fbaeda07793f5702ed",
+   "published_at": 1688022000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_d2d232723d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5fa41b5d0606bf8d",
+   "source": "Center for American Progress Action",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQWkRKVmJmc0ZMZVcwVzd3dF9SUXNSVU51MFdnVW9qVDNLNjV3ZmNaREMzUzdMZjBHWjJNa2RoaXJKbHF6UWdXSF9qRkR0M0QxUlFHdDJEU2ZaLXNFV2YySnZmY0JxdkhGb0R4QjNtak9xZDMxTTBkNmdhQzBhSDJnUThJVDFDVEw0dUFSaVJJWi13MkZuZlljZG1nQXpBRVFTeVNGRDZFbW5yLU84SzltZU5ib09yYUtCa0hDWnlkdmIwMVk?oc=5",
+   "title": "The MAGA Scorecard: How House Republicans Vote With Rep. Marjorie Taylor Greene - Center for American Progress Action",
+   "text": "The MAGA Scorecard: How House Republicans Vote With Rep. Marjorie Taylor Greene - Center for American Progress Action. The MAGA Scorecard: How House Republicans Vote With Rep. Marjorie Taylor Greene Center for American Progress Action",
+   "content_hash": "64785887e9abd4be",
+   "raw_feed_hash": "52e2a2213ba992d5880b025090358fecd55b543104f0b5fbaeda07793f5702ed",
+   "published_at": 1690441200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_d2d232723d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d8f92de0b406132e",
+   "source": "Ohio Capital Journal",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNdTVkX1RtS1pZVmJvOEVrd1FwbWlUTVdvemlJMFhHWmM0a2czZ19iV0NwajNZMklhYnZGV3g0Z3gwblR2TEJrNktQbkY0Y0EtUm5EZGZfN3NHVDlhblhqeWtQWXlWQWdkVThycDA4Zl9pV3c3aFo1bnZWbmtkN1BvbldmU0R3SExfejVoYWFBSkNrQ2dNOGFtbWtmYnFXTUgwRC1DS2EtTUgzYW1QNndyVU90TWJFTWIwTmxSSW9yUlpTUEhpOWZFbXExTDJ0SEJGZHM0?oc=5",
+   "title": "Ohio House lawmakers proposing extremist right-wing rewrite of state social studies curriculum - Ohio Capital Journal",
+   "text": "Ohio House lawmakers proposing extremist right-wing rewrite of state social studies curriculum - Ohio Capital Journal. Ohio House lawmakers proposing extremist right-wing rewrite of state social studies curriculum Ohio Capital Journal",
+   "content_hash": "7f57ff7961b67e44",
+   "raw_feed_hash": "52e2a2213ba992d5880b025090358fecd55b543104f0b5fbaeda07793f5702ed",
+   "published_at": 1684306800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_d2d232723d",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "c25c490c74a9c894:c0",
+   "source_id": "c25c490c74a9c894",
+   "subject": "Debt ceiling bill",
+   "predicate": "passes",
+   "object": "in the House",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Debt ceiling bill passes in the House",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685516400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Debt ceiling bill",
+    "House"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_81df1f8d5e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0352db7f5d"
+   }
+  },
+  {
+   "claim_id": "c25c490c74a9c894:c1",
+   "source_id": "c25c490c74a9c894",
+   "subject": "Debt ceiling bill",
+   "predicate": "advances to",
+   "object": "the Senate",
+   "value": "",
+   "units": "",
+   "qualifiers": "days ahead of default deadline",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "advances to the Senate days ahead of default deadline",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685516400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Debt ceiling bill",
+    "Senate",
+    "default deadline"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_81df1f8d5e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0352db7f5d"
+   }
+  },
+  {
+   "claim_id": "fb1e0705f2c33719:c0",
+   "source_id": "fb1e0705f2c33719",
+   "subject": "The 2023 Texas House",
+   "predicate": "is analyzed from",
+   "object": "right to left",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Analysis: The 2023 Texas House, from right to left - The Texas Tribune",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687244400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The 2023 Texas House",
+    "The Texas Tribune"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_04460eba1a",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c71bbcc028"
+   }
+  },
+  {
+   "claim_id": "44f36ef4424b9b47:c0",
+   "source_id": "44f36ef4424b9b47",
+   "subject": "The 2023 Texas Senate",
+   "predicate": "is analyzed",
+   "object": "from right to left",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Analysis: The 2023 Texas Senate, from right to left",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687330800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Texas Senate"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6d2d127e1b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d2d232723d"
+   }
+  },
+  {
+   "claim_id": "44f36ef4424b9b47:c1",
+   "source_id": "44f36ef4424b9b47",
+   "subject": "The Texas Tribune",
+   "predicate": "published",
+   "object": "analysis",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Texas Tribune",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687330800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Texas Tribune"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6d2d127e1b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d2d232723d"
+   }
+  },
+  {
+   "claim_id": "f9f488b5b09819dd:c0",
+   "source_id": "f9f488b5b09819dd",
+   "subject": "Senate",
+   "predicate": "sends",
+   "object": "debt ceiling legislation",
+   "value": "",
+   "units": "",
+   "qualifiers": "to President Biden's desk",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Senate sends debt ceiling legislation to President Biden's desk with days to spare",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685602800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Senate",
+    "President Biden"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0e8f05852c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0352db7f5d"
+   }
+  },
+  {
+   "claim_id": "be3273df9411b0f0:c0",
+   "source_id": "be3273df9411b0f0",
+   "subject": "the five families",
+   "predicate": "wield power in",
+   "object": "McCarthy\u2019s House majority",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Meet \u2018the five families\u2019 that wield power in McCarthy\u2019s House majority",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679641200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "the five families",
+    "McCarthy\u2019s House majority"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7810553815",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c71bbcc028"
+   }
+  },
+  {
+   "claim_id": "68da79f036b551a2:c0",
+   "source_id": "68da79f036b551a2",
+   "subject": "Senator Max Wise",
+   "predicate": "admonishes",
+   "object": "Governor Beshear\u2019s veto of SB 150",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Senator Max Wise Admonishes Governor Beshear\u2019s Veto of SB 150",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681282800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Senator Max Wise",
+    "Governor Beshear",
+    "SB 150"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d8c36ab97b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d2d232723d"
+   }
+  },
+  {
+   "claim_id": "68da79f036b551a2:c1",
+   "source_id": "68da79f036b551a2",
+   "subject": "Governor Beshear",
+   "predicate": "puts party over",
+   "object": "Kentuckians\u2019 wish to eliminate woke ideologies in our children\u2019s schools",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "allegation",
+   "supporting_span": "Beshear Puts Party over Kentuckians\u2019 Wish to Eliminate Woke Ideologies in Our Children\u2019s Schools",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681282800.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Governor Beshear",
+    "Kentuckians"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d8c36ab97b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d2d232723d"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Debt ceiling bill",
+   "normalized": "debt ceiling bill",
+   "candidates": [
+    {
+     "entity_id": "ent_0da5894e24",
+     "canonical": "debt ceiling bill",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Debt ceiling bill",
+      "Debt ceiling bill"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "House",
+   "normalized": "house",
+   "candidates": [
+    {
+     "entity_id": "ent_5be93480bd",
+     "canonical": "house",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "House"
+     ]
+    },
+    {
+     "entity_id": "ent_552b33b0fe",
+     "canonical": "2023 texas house",
+     "support": 0.2056,
+     "evidence_mentions": [
+      "The 2023 Texas House"
+     ]
+    },
+    {
+     "entity_id": "ent_49b96daf45",
+     "canonical": "mccarthy\u2019s house majority",
+     "support": 0.2056,
+     "evidence_mentions": [
+      "McCarthy\u2019s House majority"
+     ]
+    }
+   ],
+   "resolved": false,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Debt ceiling bill",
+   "normalized": "debt ceiling bill",
+   "candidates": [
+    {
+     "entity_id": "ent_0da5894e24",
+     "canonical": "debt ceiling bill",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Debt ceiling bill",
+      "Debt ceiling bill"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Senate",
+   "normalized": "senate",
+   "candidates": [
+    {
+     "entity_id": "ent_c81927b569",
+     "canonical": "senate",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Senate",
+      "Senate"
+     ]
+    },
+    {
+     "entity_id": "ent_a1d014973b",
+     "canonical": "texas senate",
+     "support": 0.2056,
+     "evidence_mentions": [
+      "Texas Senate"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "default deadline",
+   "normalized": "default deadline",
+   "candidates": [
+    {
+     "entity_id": "ent_de831922f3",
+     "canonical": "default deadline",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "default deadline"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The 2023 Texas House",
+   "normalized": "2023 texas house",
+   "candidates": [
+    {
+     "entity_id": "ent_552b33b0fe",
+     "canonical": "2023 texas house",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "The 2023 Texas House"
+     ]
+    },
+    {
+     "entity_id": "ent_5be93480bd",
+     "canonical": "house",
+     "support": 0.2056,
+     "evidence_mentions": [
+      "House"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Texas Tribune",
+   "normalized": "texas tribune",
+   "candidates": [
+    {
+     "entity_id": "ent_4c4eaf0e77",
+     "canonical": "texas tribune",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "The Texas Tribune",
+      "Texas Tribune"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Texas Senate",
+   "normalized": "texas senate",
+   "candidates": [
+    {
+     "entity_id": "ent_a1d014973b",
+     "canonical": "texas senate",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Texas Senate"
+     ]
+    },
+    {
+     "entity_id": "ent_c81927b569",
+     "canonical": "senate",
+     "support": 0.2611,
+     "evidence_mentions": [
+      "Senate",
+      "Senate"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Texas Tribune",
+   "normalized": "texas tribune",
+   "candidates": [
+    {
+     "entity_id": "ent_4c4eaf0e77",
+     "canonical": "texas tribune",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "The Texas Tribune",
+      "Texas Tribune"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Senate",
+   "normalized": "senate",
+   "candidates": [
+    {
+     "entity_id": "ent_c81927b569",
+     "canonical": "senate",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Senate",
+      "Senate"
+     ]
+    },
+    {
+     "entity_id": "ent_a1d014973b",
+     "canonical": "texas senate",
+     "support": 0.2056,
+     "evidence_mentions": [
+      "Texas Senate"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "President Biden",
+   "normalized": "biden",
+   "candidates": [
+    {
+     "entity_id": "ent_d1a4be2894",
+     "canonical": "biden",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "President Biden"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "the five families",
+   "normalized": "five families",
+   "candidates": [
+    {
+     "entity_id": "ent_e96eb140e9",
+     "canonical": "five families",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "the five families"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "McCarthy\u2019s House majority",
+   "normalized": "mccarthy\u2019s house majority",
+   "candidates": [
+    {
+     "entity_id": "ent_49b96daf45",
+     "canonical": "mccarthy\u2019s house majority",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "McCarthy\u2019s House majority"
+     ]
+    },
+    {
+     "entity_id": "ent_5be93480bd",
+     "canonical": "house",
+     "support": 0.2056,
+     "evidence_mentions": [
+      "House"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Senator Max Wise",
+   "normalized": "max wise",
+   "candidates": [
+    {
+     "entity_id": "ent_a55937f99d",
+     "canonical": "max wise",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Senator Max Wise"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Governor Beshear",
+   "normalized": "beshear",
+   "candidates": [
+    {
+     "entity_id": "ent_2bbef1a553",
+     "canonical": "beshear",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Governor Beshear",
+      "Governor Beshear"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "SB 150",
+   "normalized": "sb 150",
+   "candidates": [
+    {
+     "entity_id": "ent_c3924449da",
+     "canonical": "sb 150",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "SB 150"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Governor Beshear",
+   "normalized": "beshear",
+   "candidates": [
+    {
+     "entity_id": "ent_2bbef1a553",
+     "canonical": "beshear",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Governor Beshear",
+      "Governor Beshear"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Kentuckians",
+   "normalized": "kentuckians",
+   "candidates": [
+    {
+     "entity_id": "ent_2008ab059b",
+     "canonical": "kentuckians",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Kentuckians"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "c25c490c74a9c894": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1685516400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685516400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f9f488b5b09819dd": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1685602800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685602800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fcde2e30bd9b592f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1684306800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684306800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f3edb11d442dc1c9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1685689200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685689200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6fd27d8b4e637936": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1684738800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684738800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e74453c504b2119c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1685430000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685430000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9f05b1cc803e5198": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1685689200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685689200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7fec00b0e0d75be2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1684998000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684998000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fb1e0705f2c33719": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1687244400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687244400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "be3273df9411b0f0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1679641200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679641200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d1f25b5d67ef56d2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1684911600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684911600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "5fa41b5d0606bf8d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1690441200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690441200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3d488b932ed9c0ef": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1683010800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683010800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f8ffcad2ccabde76": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1690786800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690786800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "487a7f61ae585a6e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1686553200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686553200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e9745c06d84c5d07": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1683702000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683702000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "44f36ef4424b9b47": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1687330800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687330800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "68da79f036b551a2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1681282800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681282800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ba850d2c01e6ea23": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1682319600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682319600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "76b2551ef4176c21": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1679468400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679468400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "25cd9a88afe61d7c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1688022000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688022000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d8f92de0b406132e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1684306800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684306800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_81df1f8d5e",
+   "member_ids": [
+    "c25c490c74a9c894"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CNBC",
+   "primary_source": "CNBC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0e8f05852c",
+   "member_ids": [
+    "f9f488b5b09819dd"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NPR",
+   "primary_source": "NPR",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9b11831c9a",
+   "member_ids": [
+    "fcde2e30bd9b592f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "PBS",
+   "primary_source": "PBS",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_643e20e065",
+   "member_ids": [
+    "f3edb11d442dc1c9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WCVB",
+   "primary_source": "WCVB",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_518329e697",
+   "member_ids": [
+    "6fd27d8b4e637936"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NBC News",
+   "primary_source": "NBC News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fbab8dfaa8",
+   "member_ids": [
+    "e74453c504b2119c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "ABC News - Breaking News, Latest News and Videos",
+   "primary_source": "ABC News - Breaking News, Latest News and Videos",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_cea9579cbc",
+   "member_ids": [
+    "9f05b1cc803e5198"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Boston 25 News",
+   "primary_source": "Boston 25 News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_17945a3629",
+   "member_ids": [
+    "7fec00b0e0d75be2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Roll Call",
+   "primary_source": "Roll Call",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_04460eba1a",
+   "member_ids": [
+    "fb1e0705f2c33719"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Texas Tribune",
+   "primary_source": "The Texas Tribune",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7810553815",
+   "member_ids": [
+    "be3273df9411b0f0",
+    "be3273df9411b0f0"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "The Washington Post",
+   "primary_source": "The Washington Post",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_ac2f94728c",
+   "member_ids": [
+    "d1f25b5d67ef56d2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Florida Politics",
+   "primary_source": "Florida Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_939f5abff3",
+   "member_ids": [
+    "5fa41b5d0606bf8d",
+    "5fa41b5d0606bf8d"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Center for American Progress Action",
+   "primary_source": "Center for American Progress Action",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_f5cfa05473",
+   "member_ids": [
+    "3d488b932ed9c0ef"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Cambridge University Press & Assessment",
+   "primary_source": "Cambridge University Press & Assessment",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_10e5f664bf",
+   "member_ids": [
+    "f8ffcad2ccabde76"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Brookings",
+   "primary_source": "Brookings",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c6543af86a",
+   "member_ids": [
+    "487a7f61ae585a6e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "European Consortium for Political Research (ECPR)",
+   "primary_source": "European Consortium for Political Research (ECPR)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a41d0aa8d6",
+   "member_ids": [
+    "e9745c06d84c5d07"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "House.gov",
+   "primary_source": "House.gov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6d2d127e1b",
+   "member_ids": [
+    "44f36ef4424b9b47"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Texas Tribune",
+   "primary_source": "The Texas Tribune",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d8c36ab97b",
+   "member_ids": [
+    "68da79f036b551a2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Kentucky Senate GOP",
+   "primary_source": "Kentucky Senate GOP",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8b8702ae97",
+   "member_ids": [
+    "ba850d2c01e6ea23"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Florida Phoenix",
+   "primary_source": "Florida Phoenix",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3b8b62bb8e",
+   "member_ids": [
+    "76b2551ef4176c21"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Florida Politics",
+   "primary_source": "Florida Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f265d57454",
+   "member_ids": [
+    "25cd9a88afe61d7c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Hastings Center for Bioethics",
+   "primary_source": "The Hastings Center for Bioethics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a0a2f331d7",
+   "member_ids": [
+    "d8f92de0b406132e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Ohio Capital Journal",
+   "primary_source": "Ohio Capital Journal",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "c25c490c74a9c894:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685516400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c25c490c74a9c894:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685516400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "fb1e0705f2c33719:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687244400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "44f36ef4424b9b47:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687330800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "44f36ef4424b9b47:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687330800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f9f488b5b09819dd:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685602800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "be3273df9411b0f0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679641200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "68da79f036b551a2:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681282800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "68da79f036b551a2:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681282800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "c25c490c74a9c894:c0",
+  "c25c490c74a9c894:c1",
+  "fb1e0705f2c33719:c0",
+  "44f36ef4424b9b47:c0",
+  "44f36ef4424b9b47:c1",
+  "f9f488b5b09819dd:c0",
+  "be3273df9411b0f0:c0",
+  "68da79f036b551a2:c0",
+  "68da79f036b551a2:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_0352db7f5d": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_c71bbcc028": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_d2d232723d": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_6c1774dc5c": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c99a715d34": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_10fffe78ad": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_2d2a1059de": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_44ceba7f53": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_6c1774dc5c",
+  "req_c99a715d34",
+  "req_10fffe78ad",
+  "req_2d2a1059de",
+  "req_44ceba7f53"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 22,
+  "n_contradictions": 0,
+  "n_documents": 24
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 15.805,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "14b6bceeb349a7bc",
+ "bundle_hash": "14b6bceeb349a7bc",
+ "_persisted_at": "2026-07-13T01:41:18Z"
+}

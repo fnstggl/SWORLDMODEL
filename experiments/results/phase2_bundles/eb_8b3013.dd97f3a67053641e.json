@@ -1,0 +1,1594 @@
+{
+ "bundle_id": "eb_8b3013",
+ "question": "Will the founders accept the all-stock acquisition offer?",
+ "as_of": 1685577600.0,
+ "compiler_plan_hash": "843cd172993d",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_112987eea9",
+   "claim_or_quantity": "majority of founders vote to accept or reject by 2023-08-01",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "founder_1",
+    "founder_2",
+    "founder_3",
+    "acquirer"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0a4428aa3f",
+   "claim_or_quantity": "value/context of founder_1.risk_tolerance",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "founder_1.risk_tolerance",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_1b892dd313",
+   "claim_or_quantity": "value/context of founder_2.risk_tolerance",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "founder_2.risk_tolerance",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2a2232e24a",
+   "claim_or_quantity": "value/context of founder_3.risk_tolerance",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "founder_3.risk_tolerance",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_315dc6eb6e",
+   "claim_or_quantity": "decision rules / process of company_board",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "company_board",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_112987eea9",
+   "terms": "founders accept stock acquisition offer founder 1 founder 2 founder 3",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_0a4428aa3f",
+   "terms": "founder risk tolerance",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_1b892dd313",
+   "terms": "founder risk tolerance",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_112987eea9",
+   "logical_query": "founders accept stock acquisition offer founder 1 founder 2 founder 3 after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=founders+accept+stock+acquisition+offer+founder+1+founder+2+founder+3+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908924.6152418,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:15:25 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw15BiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsXfKxUtsAj--t01mVFJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAApvc3Kw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "16f398629dd7c98ebd913b1b74ceee48360f0be0a6eabe5ce862caea830138e5",
+   "n_bytes": 10135,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 5,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.59
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_0a4428aa3f",
+   "logical_query": "founder risk tolerance after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=founder+risk+tolerance+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908925.2069755,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:15:25 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw0pBiSO44w5ACxBVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsXfKxUtsAgc-zpjMrKSclF8Yn5JfUlxckJNYnFGcWlSWWhRvZGBkZmBuYKZnYBJfYAAAmYk29Q\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "n_bytes": 25931,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.556
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_1b892dd313",
+   "logical_query": "founder risk tolerance after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=founder+risk+tolerance+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908925.7650588,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Pragma": "no-cache",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw0pBiSO44w5ACxBVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsXfKxUtsAgc-zpjMrKSclF8Yn5JfUlxckJNYnFGcWlSWWhRvZGBkZmBuYKZnYBJfYAAAmYk29Q\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Mon, 13 Jul 2026 02:15:25 GMT",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Content-Type": "application/xml; charset=utf-8",
+    "Age": "1",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding"
+   },
+   "raw_content_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "n_bytes": 25931,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.149
+  }
+ ],
+ "raw_content_refs": [
+  "16f398629dd7c98ebd913b1b74ceee48360f0be0a6eabe5ce862caea830138e5",
+  "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a"
+ ],
+ "documents": [
+  {
+   "id": "33ad5ff450801741",
+   "source": "Columbia Business School",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNdEk2NmtfcURSQXZNUFpWMVR0NlNkNGoybHh2WGltZkJiU2VYdUNfemNIcnk5NkVJZTBvTzBJMk5vM0NtWnA5RzQ2ZWtnd3ZLcm41MnBoSVdFMWprRW81RmM2LTh1VkpOOXFudDZwRHlQVTloT3VCWTh0QTBuUHNCU3Baa0JiMFZkVm91eFpBMzNPUWNUSHhwMGN0aVBSUlh5MzJLNHBiRmdaVjBaYk50dlBxNnpGdGs?oc=5",
+   "title": "How Ju Rhyu, Hero Cosmetics Founder, Achieved a $630 Million Exit - Columbia Business School",
+   "text": "How Ju Rhyu, Hero Cosmetics Founder, Achieved a $630 Million Exit - Columbia Business School. How Ju Rhyu, Hero Cosmetics Founder, Achieved a $630 Million Exit Columbia Business School",
+   "content_hash": "e6b1b9c0299a3947",
+   "raw_feed_hash": "16f398629dd7c98ebd913b1b74ceee48360f0be0a6eabe5ce862caea830138e5",
+   "published_at": 1683010800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_112987eea9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "08af6ca1dfced8a5",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOcHYwSlBKakNmbkNUanVISFZpQmtXUnZMNktsYW13c2tkMktkRVVMUlI2RnI3Y1Q1RmxrODMtVHRFQnNaV0F5S24yVXZHZTNLZzUzcDBScG5wTDZ2eWxyWWhJb3d0TC1zdmdEeFlvV2xaM2I3MUY4M2lXUThlSmtDNEtHY0E0dDhqaXAyTk4ydkNHWGdlTjBj?oc=5",
+   "title": "Meet the 71 Black women who raised $1 million or more in VC funding since 2021 - Business Insider",
+   "text": "Meet the 71 Black women who raised $1 million or more in VC funding since 2021 - Business Insider. Meet the 71 Black women who raised $1 million or more in VC funding since 2021 Business Insider",
+   "content_hash": "601bc47b13340d3b",
+   "raw_feed_hash": "16f398629dd7c98ebd913b1b74ceee48360f0be0a6eabe5ce862caea830138e5",
+   "published_at": 1682060400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_112987eea9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "cc3c657918c7e0af",
+   "source": "The Low Down - Momentum Works",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOSmFTLXRQTno1ZlFqNXlBVUNSYXM2dWIxTGFQcXRRWjEwd1JVV1JWcjliR085T1FGdDZ1eGVUWmhMVUFLZVNrOXFUeGlsSDNfbFJyYmJJYnhlc3lTSGh3ZFNtTWhlcUpfcGFpWnpsSkVpOFFTY3hNVVhwQUtRTEZfcl94UnlVVTA2NU91SlN4Y2tJQ2VWZ284TldTekppS1hVR18wT2lJYw?oc=5",
+   "title": "Pinduoduo and Temu founder: my life lessons and reflections (Part 1 of 2) - The Low Down - Momentum Works",
+   "text": "Pinduoduo and Temu founder: my life lessons and reflections (Part 1 of 2) - The Low Down - Momentum Works. Pinduoduo and Temu founder: my life lessons and reflections (Part 1 of 2) The Low Down - Momentum Works",
+   "content_hash": "5e2cad8e70779498",
+   "raw_feed_hash": "16f398629dd7c98ebd913b1b74ceee48360f0be0a6eabe5ce862caea830138e5",
+   "published_at": 1684738800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_112987eea9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "35326a57679b447a",
+   "source": "Moneycontrol.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxPdW1aU241SmFOOTVVQnlxMXBJdkYxSmxiLVBXVU5pdFhzRkRwamdibmtJeEJXamlZcVhZMzhUcVJseEJEOXdjck9VbmJLU0g2dE5SNGMyT2J2c0NSamJvWEJEV2pKUHdpbmtyWjVhVU9YTV9MMXJxS1FNeHhNaEFpSWtGMGNCWHBYMlFvOEZ4YkM0LUFHVGtYelVNMUdGcFhxeHQ5d3Y0c0dVZDRPS0RKSmJiTEZkWWtRbmdKRnVTLXg3YjM3T2dfc1JSWnVqdVMxWEN5SkVseVdzQdIB3wFBVV95cUxOUTIxNE1vSEVBSUVCcnFhcEJqa180VWg1QVFDVHJtZG02Z2RfY2ctU0tRNFZYMGhyZ3dsXzRVQXBPQ3g3aVkyYWlucEJhY2tTaTlZWk84SERTN01HTlJHOUZKREJqTXptdjM3YVU5X1RVN09DV283dTFVaUhic2VaU1NURmttYVg5UE5pcm1NYXJiM2s2Rno2cXFXbHBseExSQ2xGWlNlLUlocVBBWkM4N29hNV9lVjZXYmZZTjY2UDhTYjVKMTZIY2FOd2JLdkRKeVl4OFNKdERseWd4cjc0?oc=5",
+   "title": "Organic Harvest and Sirona founders to exit The Good Glamm Group by next year - Moneycontrol.com",
+   "text": "Organic Harvest and Sirona founders to exit The Good Glamm Group by next year - Moneycontrol.com. Organic Harvest and Sirona founders to exit The Good Glamm Group by next year Moneycontrol.com",
+   "content_hash": "48158518a21f1da2",
+   "raw_feed_hash": "16f398629dd7c98ebd913b1b74ceee48360f0be0a6eabe5ce862caea830138e5",
+   "published_at": 1679641200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_112987eea9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2bd92a6eb2af9f6e",
+   "source": "Business Today",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNU2RuZmlfNVJfZ0hLazJvTkpGSGs2NXJkMTczMGlabGpHX2NLd1RXa0JzaV94dzBjaUZEM2UwUVUyWFZLX0c3ZmFuM3MtRHpZVUlmdEtRTTVCeTBvQXpWTTJlT3FDOHFjcUhlekVESkdGU1lMVW9KYjlCekVXbnVSMzhIWmlIUTJ2S0JOQU0xUm9PNkFZMXNVUFE4amVLbDA4cmZNYXoxMDNRVVExRm96TmpNQ0JIbVptcVJvZzEzWU5jUF9wV1NNWDJ5RmRpNUNGdFJGMTlxYW9rZDEtTXRrelZ0SGVScDJoRnRR0gHwAUFVX3lxTE5nWUF0S05ISDU3eUI5ell3V3BSTGdIaTczUElDbkZrbGZJNi1Ic003RFFUTWc0dlNGVmNwSGpfdUtSSlNFVjcyZUI3LU9aTlRmNzUxSlQ2ZkN0SnZLcTM4NEhmNzZMRm81blZPN2xRaUswNmdrZk9TcnVyTWRSN2NrMEQwcHg4SllpWVlVcFF0bm84Tnk3MWl3MUxISHlhU05WNTJOTUhaRXF1U2l3U3NMMnJQcEFfc0lRRm5pcVVoVWpPRTl3RGFyaDYxNVQtZU5yZG5xV1YyanBDUVJUOWxZMjlkWDdlbnhCZU43ZDVsVQ?oc=5",
+   "title": "Tata won't buy Bisleri; founder's daughter Jayanti Chauhan to lead mineral water company - Business Today",
+   "text": "Tata won't buy Bisleri; founder's daughter Jayanti Chauhan to lead mineral water company - Business Today. Tata won't buy Bisleri; founder's daughter Jayanti Chauhan to lead mineral water company Business Today",
+   "content_hash": "d5861f76dfec1bea",
+   "raw_feed_hash": "16f398629dd7c98ebd913b1b74ceee48360f0be0a6eabe5ce862caea830138e5",
+   "published_at": 1679295600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_112987eea9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b98acdca9bca1c38",
+   "source": "InvestmentNews",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPUTUyS2ZFcTJIMlJsczNmbU5qSmxOd0RkMmVFX2Z0VHFVZVRIcE9RV0p1aC1QOGZ6THU2Slh6eDFVcGhDM3NSc0xLaV84ZWJnRWc1dXRpN2I2ZlVoSEZpeEJJQTgteXZ1NWJreU9mbkRGX0h0aWRTU0ZUd2ZiX1RLSm93?oc=5",
+   "title": "Riskalyze rebrands as Nitrogen - InvestmentNews",
+   "text": "Riskalyze rebrands as Nitrogen - InvestmentNews. Riskalyze rebrands as Nitrogen InvestmentNews",
+   "content_hash": "b41750226f2011da",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1683615600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_0a4428aa3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f37d6b9ae4c00f2c",
+   "source": "observer.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPVDU2T00yeTFKc1BQYWJsMDhVdURqeVo3QXJaYzlHV0pWVlB0UXpLVUZMQjk5cS16eS0zNC1SWkFYbUdMdHduejhpUktlM002elptRFpZeURpQzBDUktUdTdNWWNQN2RDTEpEc21qTkM3QS1KZUtmTGhKUGp0bFhuLXJ2bERTeGM?oc=5",
+   "title": "Is Robinhood\u2019s New Media Venture Actually \u2018Brilliant\u2019? - observer.com",
+   "text": "Is Robinhood\u2019s New Media Venture Actually \u2018Brilliant\u2019? - observer.com. Is Robinhood\u2019s New Media Venture Actually \u2018Brilliant\u2019? observer.com",
+   "content_hash": "df4b6e07ba849694",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1674028800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_0a4428aa3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "903f870570749180",
+   "source": "Money Crashers",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPVmNnMXEzaElzeFBZZ3BrY2ZRNWdTbDEtRmtlRnQ0TDB5Y1JwWGlCOVUyenB1Qzhqb1pGbnkwVE1mbXdua2o1QURhUHR2eTVaeDhUb0pUbjhhM2E5N0ZjNEtBQ3Fodzk0czFBUl9CVm5GUF9iUDRaSmxVaUlPQnJNdnNnTFhUQ2c?oc=5",
+   "title": "Top 7 Equity Crowdfunding Sites for Investors & Entrepreneurs - Money Crashers",
+   "text": "Top 7 Equity Crowdfunding Sites for Investors & Entrepreneurs - Money Crashers. Top 7 Equity Crowdfunding Sites for Investors & Entrepreneurs Money Crashers",
+   "content_hash": "1e3765a2d16b738a",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1685516400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_0a4428aa3f",
+   "temporal_status": "uncertain"
+  },
+  {
+   "id": "37d55f33858b8722",
+   "source": "providenceonline.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxPajlTWXhzSm4yd2ItRDdXTVdWLS1BXzBHTWkzYkM2TWhwSW9JQm5zSEtXTHQ0UWlHTnliSVFZSmR3TGZWOUQtRzE2QzFEel9yVW9STFR1STZXX0xqclRqQmhtNDVpWGNvX2hjOVZFQUUxM2w4MmpEWWYyQmtzVE10aGJpLXl2VDhTZFU3ckpoa1l5MVNwdFhKN2dnTm9yd0tOWWV6allReG5SYTZuLUgzYUVlZjJsb2gydGcyTFBlWUxBdGlFemtramhieUxuZXYteEFlUmRjLW8yd19PLUlzRUdKTQ?oc=5",
+   "title": "JOAN M. CAINE, CFA\u00ae, Managing Director at Parsons Capital - providenceonline.com",
+   "text": "JOAN M. CAINE, CFA\u00ae, Managing Director at Parsons Capital - providenceonline.com. JOAN M. CAINE, CFA\u00ae, Managing Director at Parsons Capital providenceonline.com",
+   "content_hash": "99217466b058150e",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1677225600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_0a4428aa3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4f7ffd30635f3547",
+   "source": "Via Satellite",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNVUlKc1QyWUNkZTAySFI0STh6b0Nrc1pSZXpkbVJ5SUcyTGpZY2VOWm4wNjBrT1pwUndqS1ltX1ptLVFuYzVJSjNCUG5qVm00bzlHM3I4ZExKRExLc2xLZTIzMjFsci1KcXZGa3ZMSjV5N1lQZUtMckJJUFY1WUE5YnhJTVdNeGNEQmlYNE52VmNuVWtReEg1MWlyQW5zMk4yQi1ETE9BamJmUUFMYnMxTkZ2OEFOaDNyT1VzNHZJblNBeDNIanR5Qw?oc=5",
+   "title": "How SpaceX Alums Are Branching Out and Shaping the Startup Economy - Via Satellite",
+   "text": "How SpaceX Alums Are Branching Out and Shaping the Startup Economy - Via Satellite. How SpaceX Alums Are Branching Out and Shaping the Startup Economy Via Satellite",
+   "content_hash": "05a9da937fdf8fcd",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1679986800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_0a4428aa3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5d719e5b66358e69",
+   "source": "TechTarget",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOU1lGRjkxZ1BiYTVLN1QxSHlCX0REWGFEdndHd1pxVnNBVmxXV19HZnhyM1FaVlJwOVNoWlF5WVZOYUdsNWZwRlp0U1dCWEpScFg1amJNckdqcXhhb1Buakwtb0c3TlhfaUxDNkpOSTZGZ2VqSHZDNzlxek5OeXBJZWttX1Zfb3JNQkZDT1lLb0Jpd2JjSHY4Z2xHaw?oc=5",
+   "title": "Project Portfolio Risk Management: Learn the Key Tenets - TechTarget",
+   "text": "Project Portfolio Risk Management: Learn the Key Tenets - TechTarget. Project Portfolio Risk Management: Learn the Key Tenets TechTarget",
+   "content_hash": "70916af6690764c5",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1674028800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_0a4428aa3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "07bc391c4d2ffe18",
+   "source": "The Guardian",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPQTJZSDlLOEY3LTNPYkRkQmhGYWNURnV5WFRmbDE3OGtvTV96T3RoVGtXNlAwTDRUU0J3bGlQZThxeHVGTkg5dHg0ZU9BUDd5ZGRrZHlNS0lobl9aN0Z5Q0c4X25Pc1RxX1FPV190dGZzWHo0UlBrWDIya0M1OWJaelU0S1dFaFViU0s2Y1dHZWFCanVDWXBreFNfT3dXNk1xTXNnU1ROeVA?oc=5",
+   "title": "\u2018We are a little bit scared\u2019: OpenAI CEO warns of risks of artificial intelligence - The Guardian",
+   "text": "\u2018We are a little bit scared\u2019: OpenAI CEO warns of risks of artificial intelligence - The Guardian. \u2018We are a little bit scared\u2019: OpenAI CEO warns of risks of artificial intelligence The Guardian",
+   "content_hash": "8e86cded40a523a0",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1679036400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_0a4428aa3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a74fe60bd075b44c",
+   "source": "livemint.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxNX05hRTMxbjQ5aXJXVk5Lem8yazduS1FtcGhfU1I1d0pTb2MtNHlQSDh3LWptc21GcF9UMjd5T3RoN2dFQmpJQnBlM01lMHdEcUZRQ3laUWNNVEptdU9LYjdzdWhrR1J2bGRDSU5vZmc2VWNoNzRHSGZUelgySDdFaVpWeU1RZkUwTTM1TVRrbzJtcVNQcFhKNTk1RmRPcG5uRUNQOU44MW1lMi1iQTJCdUl6ZEZvYXBndl9iREh4ampwVzhKZXVqc3dic3J2TjZDZkJlZU85alrSAd4BQVVfeXFMTUtOYzg0SThldVJHNHV0VnI3dTJvRnQ1amhBSUkwUG5mQlFSZllISDRCZ3BON2NQZFp6THl3NDd2Y0diYUZMOGJzS2ZrYzJtQW1mVU9rd0FmQjRjaDFvUVhiVXl2YlVSTzh0UzIyM3d4RVE0OUc3cHhoQndNdmtuckFpYlJ1aFBIOXJpdTY0LWd3elA1Rm93dlNvX1dYV1RwUlpabkhzQTVIai1ZS3lYNXFUOU5rYnRHZGJOZDhsc1d5azR6U2lQdDduUzB0WVhfV1BQMDFxZjNhVkhBbjBR?oc=5",
+   "title": "Bank FD, bond to Mutual Funds: Which asset is ideal for investing explained - livemint.com",
+   "text": "Bank FD, bond to Mutual Funds: Which asset is ideal for investing explained - livemint.com. Bank FD, bond to Mutual Funds: Which asset is ideal for investing explained livemint.com",
+   "content_hash": "1b1c5b6fb2cd19b3",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1685602800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_0a4428aa3f",
+   "temporal_status": "uncertain"
+  },
+  {
+   "id": "b98acdca9bca1c38",
+   "source": "InvestmentNews",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPUTUyS2ZFcTJIMlJsczNmbU5qSmxOd0RkMmVFX2Z0VHFVZVRIcE9RV0p1aC1QOGZ6THU2Slh6eDFVcGhDM3NSc0xLaV84ZWJnRWc1dXRpN2I2ZlVoSEZpeEJJQTgteXZ1NWJreU9mbkRGX0h0aWRTU0ZUd2ZiX1RLSm93?oc=5",
+   "title": "Riskalyze rebrands as Nitrogen - InvestmentNews",
+   "text": "Riskalyze rebrands as Nitrogen - InvestmentNews. Riskalyze rebrands as Nitrogen InvestmentNews",
+   "content_hash": "b41750226f2011da",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1683615600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_1b892dd313",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f37d6b9ae4c00f2c",
+   "source": "observer.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPVDU2T00yeTFKc1BQYWJsMDhVdURqeVo3QXJaYzlHV0pWVlB0UXpLVUZMQjk5cS16eS0zNC1SWkFYbUdMdHduejhpUktlM002elptRFpZeURpQzBDUktUdTdNWWNQN2RDTEpEc21qTkM3QS1KZUtmTGhKUGp0bFhuLXJ2bERTeGM?oc=5",
+   "title": "Is Robinhood\u2019s New Media Venture Actually \u2018Brilliant\u2019? - observer.com",
+   "text": "Is Robinhood\u2019s New Media Venture Actually \u2018Brilliant\u2019? - observer.com. Is Robinhood\u2019s New Media Venture Actually \u2018Brilliant\u2019? observer.com",
+   "content_hash": "df4b6e07ba849694",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1674028800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_1b892dd313",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "903f870570749180",
+   "source": "Money Crashers",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPVmNnMXEzaElzeFBZZ3BrY2ZRNWdTbDEtRmtlRnQ0TDB5Y1JwWGlCOVUyenB1Qzhqb1pGbnkwVE1mbXdua2o1QURhUHR2eTVaeDhUb0pUbjhhM2E5N0ZjNEtBQ3Fodzk0czFBUl9CVm5GUF9iUDRaSmxVaUlPQnJNdnNnTFhUQ2c?oc=5",
+   "title": "Top 7 Equity Crowdfunding Sites for Investors & Entrepreneurs - Money Crashers",
+   "text": "Top 7 Equity Crowdfunding Sites for Investors & Entrepreneurs - Money Crashers. Top 7 Equity Crowdfunding Sites for Investors & Entrepreneurs Money Crashers",
+   "content_hash": "1e3765a2d16b738a",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1685516400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_1b892dd313",
+   "temporal_status": "uncertain"
+  },
+  {
+   "id": "37d55f33858b8722",
+   "source": "providenceonline.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxPajlTWXhzSm4yd2ItRDdXTVdWLS1BXzBHTWkzYkM2TWhwSW9JQm5zSEtXTHQ0UWlHTnliSVFZSmR3TGZWOUQtRzE2QzFEel9yVW9STFR1STZXX0xqclRqQmhtNDVpWGNvX2hjOVZFQUUxM2w4MmpEWWYyQmtzVE10aGJpLXl2VDhTZFU3ckpoa1l5MVNwdFhKN2dnTm9yd0tOWWV6allReG5SYTZuLUgzYUVlZjJsb2gydGcyTFBlWUxBdGlFemtramhieUxuZXYteEFlUmRjLW8yd19PLUlzRUdKTQ?oc=5",
+   "title": "JOAN M. CAINE, CFA\u00ae, Managing Director at Parsons Capital - providenceonline.com",
+   "text": "JOAN M. CAINE, CFA\u00ae, Managing Director at Parsons Capital - providenceonline.com. JOAN M. CAINE, CFA\u00ae, Managing Director at Parsons Capital providenceonline.com",
+   "content_hash": "99217466b058150e",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1677225600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_1b892dd313",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4f7ffd30635f3547",
+   "source": "Via Satellite",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNVUlKc1QyWUNkZTAySFI0STh6b0Nrc1pSZXpkbVJ5SUcyTGpZY2VOWm4wNjBrT1pwUndqS1ltX1ptLVFuYzVJSjNCUG5qVm00bzlHM3I4ZExKRExLc2xLZTIzMjFsci1KcXZGa3ZMSjV5N1lQZUtMckJJUFY1WUE5YnhJTVdNeGNEQmlYNE52VmNuVWtReEg1MWlyQW5zMk4yQi1ETE9BamJmUUFMYnMxTkZ2OEFOaDNyT1VzNHZJblNBeDNIanR5Qw?oc=5",
+   "title": "How SpaceX Alums Are Branching Out and Shaping the Startup Economy - Via Satellite",
+   "text": "How SpaceX Alums Are Branching Out and Shaping the Startup Economy - Via Satellite. How SpaceX Alums Are Branching Out and Shaping the Startup Economy Via Satellite",
+   "content_hash": "05a9da937fdf8fcd",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1679986800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_1b892dd313",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5d719e5b66358e69",
+   "source": "TechTarget",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOU1lGRjkxZ1BiYTVLN1QxSHlCX0REWGFEdndHd1pxVnNBVmxXV19HZnhyM1FaVlJwOVNoWlF5WVZOYUdsNWZwRlp0U1dCWEpScFg1amJNckdqcXhhb1Buakwtb0c3TlhfaUxDNkpOSTZGZ2VqSHZDNzlxek5OeXBJZWttX1Zfb3JNQkZDT1lLb0Jpd2JjSHY4Z2xHaw?oc=5",
+   "title": "Project Portfolio Risk Management: Learn the Key Tenets - TechTarget",
+   "text": "Project Portfolio Risk Management: Learn the Key Tenets - TechTarget. Project Portfolio Risk Management: Learn the Key Tenets TechTarget",
+   "content_hash": "70916af6690764c5",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1674028800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_1b892dd313",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "07bc391c4d2ffe18",
+   "source": "The Guardian",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPQTJZSDlLOEY3LTNPYkRkQmhGYWNURnV5WFRmbDE3OGtvTV96T3RoVGtXNlAwTDRUU0J3bGlQZThxeHVGTkg5dHg0ZU9BUDd5ZGRrZHlNS0lobl9aN0Z5Q0c4X25Pc1RxX1FPV190dGZzWHo0UlBrWDIya0M1OWJaelU0S1dFaFViU0s2Y1dHZWFCanVDWXBreFNfT3dXNk1xTXNnU1ROeVA?oc=5",
+   "title": "\u2018We are a little bit scared\u2019: OpenAI CEO warns of risks of artificial intelligence - The Guardian",
+   "text": "\u2018We are a little bit scared\u2019: OpenAI CEO warns of risks of artificial intelligence - The Guardian. \u2018We are a little bit scared\u2019: OpenAI CEO warns of risks of artificial intelligence The Guardian",
+   "content_hash": "8e86cded40a523a0",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1679036400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_1b892dd313",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a74fe60bd075b44c",
+   "source": "livemint.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxNX05hRTMxbjQ5aXJXVk5Lem8yazduS1FtcGhfU1I1d0pTb2MtNHlQSDh3LWptc21GcF9UMjd5T3RoN2dFQmpJQnBlM01lMHdEcUZRQ3laUWNNVEptdU9LYjdzdWhrR1J2bGRDSU5vZmc2VWNoNzRHSGZUelgySDdFaVpWeU1RZkUwTTM1TVRrbzJtcVNQcFhKNTk1RmRPcG5uRUNQOU44MW1lMi1iQTJCdUl6ZEZvYXBndl9iREh4ampwVzhKZXVqc3dic3J2TjZDZkJlZU85alrSAd4BQVVfeXFMTUtOYzg0SThldVJHNHV0VnI3dTJvRnQ1amhBSUkwUG5mQlFSZllISDRCZ3BON2NQZFp6THl3NDd2Y0diYUZMOGJzS2ZrYzJtQW1mVU9rd0FmQjRjaDFvUVhiVXl2YlVSTzh0UzIyM3d4RVE0OUc3cHhoQndNdmtuckFpYlJ1aFBIOXJpdTY0LWd3elA1Rm93dlNvX1dYV1RwUlpabkhzQTVIai1ZS3lYNXFUOU5rYnRHZGJOZDhsc1d5azR6U2lQdDduUzB0WVhfV1BQMDFxZjNhVkhBbjBR?oc=5",
+   "title": "Bank FD, bond to Mutual Funds: Which asset is ideal for investing explained - livemint.com",
+   "text": "Bank FD, bond to Mutual Funds: Which asset is ideal for investing explained - livemint.com. Bank FD, bond to Mutual Funds: Which asset is ideal for investing explained livemint.com",
+   "content_hash": "1b1c5b6fb2cd19b3",
+   "raw_feed_hash": "df34b1ff62861d31c890a5c330a85208690a099e4f8fedea19ab468eac562a5a",
+   "published_at": 1685602800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_1b892dd313",
+   "temporal_status": "uncertain"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "33ad5ff450801741:c0",
+   "source_id": "33ad5ff450801741",
+   "subject": "Ju Rhyu",
+   "predicate": "is founder of",
+   "object": "Hero Cosmetics",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Ju Rhyu, Hero Cosmetics Founder",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683010800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Ju Rhyu",
+    "Hero Cosmetics"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9f3e48a9bf",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_112987eea9"
+   }
+  },
+  {
+   "claim_id": "33ad5ff450801741:c1",
+   "source_id": "33ad5ff450801741",
+   "subject": "Ju Rhyu",
+   "predicate": "achieved",
+   "object": "a $630 million exit",
+   "value": "630000000",
+   "units": "USD",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Achieved a $630 Million Exit",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683010800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Ju Rhyu",
+    "Hero Cosmetics"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9f3e48a9bf",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_112987eea9"
+   }
+  },
+  {
+   "claim_id": "b98acdca9bca1c38:c0",
+   "source_id": "b98acdca9bca1c38",
+   "subject": "Riskalyze",
+   "predicate": "rebrands as",
+   "object": "Nitrogen",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Riskalyze rebrands as Nitrogen",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683615600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Riskalyze",
+    "Nitrogen"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_85e0e95676",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0a4428aa3f"
+   }
+  },
+  {
+   "claim_id": "08af6ca1dfced8a5:c0",
+   "source_id": "08af6ca1dfced8a5",
+   "subject": "71 Black women",
+   "predicate": "raised",
+   "object": "$1 million or more in VC funding",
+   "value": "1",
+   "units": "million dollars",
+   "qualifiers": "since 2021",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Meet the 71 Black women who raised $1 million or more in VC funding since 2021",
+   "span_verified": true,
+   "event_time": "since 2021",
+   "publication_time": 1682060400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "71 Black women"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_23256f528e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_112987eea9"
+   }
+  },
+  {
+   "claim_id": "f37d6b9ae4c00f2c:c0",
+   "source_id": "f37d6b9ae4c00f2c",
+   "subject": "Robinhood's New Media Venture",
+   "predicate": "is being questioned as",
+   "object": "actually 'brilliant'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Is Robinhood\u2019s New Media Venture Actually \u2018Brilliant\u2019?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674028800.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Robinhood"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6becb6654d",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0a4428aa3f"
+   }
+  },
+  {
+   "claim_id": "cc3c657918c7e0af:c0",
+   "source_id": "cc3c657918c7e0af",
+   "subject": "Pinduoduo and Temu founder",
+   "predicate": "shared",
+   "object": "life lessons and reflections",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Pinduoduo and Temu founder: my life lessons and reflections (Part 1 of 2)",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684738800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Pinduoduo",
+    "Temu"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6f30fafb5c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_112987eea9"
+   }
+  },
+  {
+   "claim_id": "35326a57679b447a:c0",
+   "source_id": "35326a57679b447a",
+   "subject": "Organic Harvest and Sirona founders",
+   "predicate": "to exit",
+   "object": "The Good Glamm Group",
+   "value": "",
+   "units": "",
+   "qualifiers": "by next year",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "Organic Harvest and Sirona founders to exit The Good Glamm Group by next year",
+   "span_verified": true,
+   "event_time": "next year",
+   "publication_time": 1679641200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Organic Harvest",
+    "Sirona",
+    "The Good Glamm Group"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_16bf9cf4c7",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_112987eea9"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Ju Rhyu",
+   "normalized": "ju rhyu",
+   "candidates": [
+    {
+     "entity_id": "ent_e8a274962a",
+     "canonical": "ju rhyu",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Ju Rhyu",
+      "Ju Rhyu"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Hero Cosmetics",
+   "normalized": "hero cosmetics",
+   "candidates": [
+    {
+     "entity_id": "ent_21877cf7cc",
+     "canonical": "hero cosmetics",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Hero Cosmetics",
+      "Hero Cosmetics"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Ju Rhyu",
+   "normalized": "ju rhyu",
+   "candidates": [
+    {
+     "entity_id": "ent_e8a274962a",
+     "canonical": "ju rhyu",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Ju Rhyu",
+      "Ju Rhyu"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Hero Cosmetics",
+   "normalized": "hero cosmetics",
+   "candidates": [
+    {
+     "entity_id": "ent_21877cf7cc",
+     "canonical": "hero cosmetics",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Hero Cosmetics",
+      "Hero Cosmetics"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Riskalyze",
+   "normalized": "riskalyze",
+   "candidates": [
+    {
+     "entity_id": "ent_68d493e92c",
+     "canonical": "riskalyze",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Riskalyze"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Nitrogen",
+   "normalized": "nitrogen",
+   "candidates": [
+    {
+     "entity_id": "ent_d80dab391d",
+     "canonical": "nitrogen",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Nitrogen"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "71 Black women",
+   "normalized": "71 black women",
+   "candidates": [
+    {
+     "entity_id": "ent_6ffb4bbc15",
+     "canonical": "71 black women",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "71 Black women"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Robinhood",
+   "normalized": "robinhood",
+   "candidates": [
+    {
+     "entity_id": "ent_2d57cba717",
+     "canonical": "robinhood",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Robinhood"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Pinduoduo",
+   "normalized": "pinduoduo",
+   "candidates": [
+    {
+     "entity_id": "ent_cbd1bb9cbf",
+     "canonical": "pinduoduo",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Pinduoduo"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Temu",
+   "normalized": "temu",
+   "candidates": [
+    {
+     "entity_id": "ent_0aba09a12d",
+     "canonical": "temu",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Temu"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Organic Harvest",
+   "normalized": "organic harvest",
+   "candidates": [
+    {
+     "entity_id": "ent_2c9d0b5ecc",
+     "canonical": "organic harvest",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Organic Harvest"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Sirona",
+   "normalized": "sirona",
+   "candidates": [
+    {
+     "entity_id": "ent_314fd55bba",
+     "canonical": "sirona",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Sirona"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Good Glamm Group",
+   "normalized": "good glamm",
+   "candidates": [
+    {
+     "entity_id": "ent_f42b3d2fd5",
+     "canonical": "good glamm",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "The Good Glamm Group"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "33ad5ff450801741": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1683010800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683010800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "08af6ca1dfced8a5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1682060400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682060400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "cc3c657918c7e0af": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1684738800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684738800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "35326a57679b447a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1679641200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679641200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2bd92a6eb2af9f6e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1679295600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679295600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b98acdca9bca1c38": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1683615600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683615600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f37d6b9ae4c00f2c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1674028800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674028800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "903f870570749180": {
+   "status": "uncertain",
+   "confidence": 0.5,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1685516400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685516400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "37d55f33858b8722": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1677225600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677225600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4f7ffd30635f3547": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1679986800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679986800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "5d719e5b66358e69": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1674028800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674028800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "07bc391c4d2ffe18": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1679036400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679036400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a74fe60bd075b44c": {
+   "status": "uncertain",
+   "confidence": 0.5,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1685602800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685602800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_9f3e48a9bf",
+   "member_ids": [
+    "33ad5ff450801741"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Columbia Business School",
+   "primary_source": "Columbia Business School",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_23256f528e",
+   "member_ids": [
+    "08af6ca1dfced8a5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6f30fafb5c",
+   "member_ids": [
+    "cc3c657918c7e0af"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Low Down - Momentum Works",
+   "primary_source": "The Low Down - Momentum Works",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_16bf9cf4c7",
+   "member_ids": [
+    "35326a57679b447a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Moneycontrol.com",
+   "primary_source": "Moneycontrol.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4083f1c543",
+   "member_ids": [
+    "2bd92a6eb2af9f6e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Today",
+   "primary_source": "Business Today",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_85e0e95676",
+   "member_ids": [
+    "b98acdca9bca1c38",
+    "b98acdca9bca1c38"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "InvestmentNews",
+   "primary_source": "InvestmentNews",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_6becb6654d",
+   "member_ids": [
+    "f37d6b9ae4c00f2c",
+    "f37d6b9ae4c00f2c"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "observer.com",
+   "primary_source": "observer.com",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_d14decff5a",
+   "member_ids": [
+    "903f870570749180",
+    "903f870570749180"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Money Crashers",
+   "primary_source": "Money Crashers",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_ea07f72163",
+   "member_ids": [
+    "37d55f33858b8722",
+    "37d55f33858b8722"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "providenceonline.com",
+   "primary_source": "providenceonline.com",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_010ec70399",
+   "member_ids": [
+    "4f7ffd30635f3547",
+    "4f7ffd30635f3547"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Via Satellite",
+   "primary_source": "Via Satellite",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_3fcf4b972a",
+   "member_ids": [
+    "5d719e5b66358e69",
+    "5d719e5b66358e69"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "TechTarget",
+   "primary_source": "TechTarget",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_82eb258741",
+   "member_ids": [
+    "07bc391c4d2ffe18",
+    "07bc391c4d2ffe18"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "The Guardian",
+   "primary_source": "The Guardian",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_a58c759f0a",
+   "member_ids": [
+    "a74fe60bd075b44c",
+    "a74fe60bd075b44c"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "livemint.com",
+   "primary_source": "livemint.com",
+   "confidence": 0.99
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "33ad5ff450801741:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683010800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "33ad5ff450801741:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683010800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b98acdca9bca1c38:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683615600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "08af6ca1dfced8a5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682060400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f37d6b9ae4c00f2c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674028800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "cc3c657918c7e0af:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684738800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "35326a57679b447a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679641200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "33ad5ff450801741:c0",
+  "33ad5ff450801741:c1",
+  "b98acdca9bca1c38:c0",
+  "08af6ca1dfced8a5:c0",
+  "f37d6b9ae4c00f2c:c0",
+  "cc3c657918c7e0af:c0",
+  "35326a57679b447a:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_112987eea9": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_0a4428aa3f": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_1b892dd313": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_2a2232e24a": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_315dc6eb6e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_1b892dd313",
+  "req_2a2232e24a",
+  "req_315dc6eb6e"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 13,
+  "n_contradictions": 0,
+  "n_documents": 21
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 12.328,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "dd97f3a67053641e",
+ "bundle_hash": "dd97f3a67053641e",
+ "_persisted_at": "2026-07-13T02:15:39Z"
+}

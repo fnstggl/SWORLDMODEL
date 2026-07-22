@@ -1,0 +1,102 @@
+{
+ "_meta": {
+  "harness": "experiments/wmv2_phase10_extract.py",
+  "note": "LLM proposes formalizations; only source-span-grounded + deterministically-valid rules accepted; scored vs manually-verified ground truth"
+ },
+ "documents": {
+  "art1": {
+   "source_id": "usconst_art1",
+   "source_tag": "llm_deepseek",
+   "n_candidates": 2,
+   "n_accepted": 2,
+   "n_rejected": 0,
+   "score": {
+    "extracted": [
+     "('override', 0.67)",
+     "('quorum', 0.5)"
+    ],
+    "ground_truth": [
+     "('override', 0.67)",
+     "('quorum', 0.5)",
+     "('threshold', 0.5)"
+    ],
+    "true_positives": 2,
+    "precision": 1.0,
+    "recall": 0.667,
+    "missed": [
+     "('threshold', 0.5)"
+    ],
+    "spurious": []
+   },
+   "accepted_rules": [
+    {
+     "rule_id": "usconst_art1:extracted:0",
+     "kind": "quorum",
+     "params": {
+      "kind": "simple_majority",
+      "fraction": 0.5,
+      "base": "all_members",
+      "quorum_fraction": 0.5
+     }
+    },
+    {
+     "rule_id": "usconst_art1:extracted:1",
+     "kind": "override",
+     "params": {
+      "kind": "supermajority",
+      "fraction": 0.6667,
+      "base": "present",
+      "quorum_fraction": 0.6667
+     }
+    }
+   ],
+   "rejected": []
+  },
+  "dgcl": {
+   "source_id": "dgcl_141b",
+   "source_tag": "llm_deepseek",
+   "n_candidates": 2,
+   "n_accepted": 2,
+   "n_rejected": 0,
+   "score": {
+    "extracted": [
+     "('quorum', 0.5)",
+     "('threshold', 0.5)"
+    ],
+    "ground_truth": [
+     "('quorum', 0.5)",
+     "('threshold', 0.5)"
+    ],
+    "true_positives": 2,
+    "precision": 1.0,
+    "recall": 1.0,
+    "missed": [],
+    "spurious": []
+   },
+   "accepted_rules": [
+    {
+     "rule_id": "dgcl_141b:extracted:0",
+     "kind": "quorum",
+     "params": {
+      "kind": "simple_majority",
+      "fraction": 0.5,
+      "base": "all_members",
+      "quorum_fraction": 0.5
+     }
+    },
+    {
+     "rule_id": "dgcl_141b:extracted:1",
+     "kind": "threshold",
+     "params": {
+      "kind": "simple_majority",
+      "fraction": 0.5,
+      "base": "present"
+     }
+    }
+   ],
+   "rejected": []
+  }
+ },
+ "macro_precision": 1.0,
+ "macro_recall": 0.834
+}

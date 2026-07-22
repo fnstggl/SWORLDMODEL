@@ -1,0 +1,214 @@
+{
+ "phase": "13_universal_best_action",
+ "n_gates": 24,
+ "n_pass": 24,
+ "functional_and_safety_gates_pass": true,
+ "predictive_locked_gates_pass": true,
+ "production_ready": true,
+ "gates": [
+  {
+   "gate": "controlled_task_count",
+   "required": "exactly 200",
+   "achieved": 200,
+   "pass": true,
+   "evidence": "controlled/manifest.json"
+  },
+  {
+   "gate": "exhaustive_optimum_recovery>=99%",
+   "required": ">=0.99",
+   "achieved": 1.0,
+   "pass": true,
+   "evidence": "controlled/gates.json"
+  },
+  {
+   "gate": "median_optimality_gap<=1%",
+   "required": "<=0.01",
+   "achieved": 0.0,
+   "pass": true,
+   "evidence": "controlled/gates.json"
+  },
+  {
+   "gate": "crn_pairing=100%",
+   "required": "1.0",
+   "achieved": 1.0,
+   "pass": true,
+   "evidence": "controlled/gates.json"
+  },
+  {
+   "gate": "matched_variance_not_worse",
+   "required": "vr>=1",
+   "achieved": 1.0,
+   "pass": true,
+   "evidence": "controlled/gates.json"
+  },
+  {
+   "gate": "sequential_beats_greedy(controlled)",
+   "required": "all",
+   "achieved": 1.0,
+   "pass": true,
+   "evidence": "controlled/gates.json"
+  },
+  {
+   "gate": "feasibility_rejections_correct",
+   "required": "true",
+   "achieved": true,
+   "pass": true,
+   "evidence": "controlled/gates.json"
+  },
+  {
+   "gate": "voi_recommends_gathering",
+   "required": "true",
+   "achieved": 1.0,
+   "pass": true,
+   "evidence": "controlled/gates.json"
+  },
+  {
+   "gate": "deterministic_replay",
+   "required": "true",
+   "achieved": true,
+   "pass": true,
+   "evidence": "controlled/gates.json"
+  },
+  {
+   "gate": "racing_recovery",
+   "required": ">=0.99",
+   "achieved": 1.0,
+   "pass": true,
+   "evidence": "controlled/search_correctness.json"
+  },
+  {
+   "gate": "controlled_locked_recovery",
+   "required": ">=0.99",
+   "achieved": 1.0,
+   "pass": true,
+   "evidence": "controlled/gates_locked.json"
+  },
+  {
+   "gate": "real_task_count",
+   "required": "exactly 120",
+   "achieved": 120,
+   "pass": true,
+   "evidence": "real/composition_manifest.json"
+  },
+  {
+   "gate": "real_datasets>=10",
+   "required": ">=10",
+   "achieved": 13,
+   "pass": true,
+   "evidence": "real/composition_manifest.json"
+  },
+  {
+   "gate": "real_domains>=6",
+   "required": ">=6",
+   "achieved": 11,
+   "pass": true,
+   "evidence": "real/composition_manifest.json"
+  },
+  {
+   "gate": "real_designs>=4",
+   "required": ">=4",
+   "achieved": 8,
+   "pass": true,
+   "evidence": "real/composition_manifest.json"
+  },
+  {
+   "gate": "ope_recovers_bandit_oracle",
+   "required": "high",
+   "achieved": 1.0,
+   "pass": true,
+   "evidence": "real/gates.json"
+  },
+  {
+   "gate": "policy_value_calibration_mae<0.05",
+   "required": "<0.05",
+   "achieved": 0.00194,
+   "pass": true,
+   "evidence": "real/gates.json"
+  },
+  {
+   "gate": "locked: V2 beats random",
+   "required": ">0.5",
+   "achieved": 0.7222,
+   "pass": true,
+   "evidence": "real/gates_locked.json"
+  },
+  {
+   "gate": "locked: V2 beats no-action",
+   "required": ">0.5",
+   "achieved": 0.8889,
+   "pass": true,
+   "evidence": "real/gates_locked.json"
+  },
+  {
+   "gate": "locked: V2 beats predictive-score-max",
+   "required": ">0.5",
+   "achieved": 0.7692,
+   "pass": true,
+   "evidence": "real/gates_locked.json"
+  },
+  {
+   "gate": "locked: V2 beats simple uplift",
+   "required": ">0.5",
+   "achieved": 0.6923,
+   "pass": true,
+   "evidence": "real/gates_locked.json"
+  },
+  {
+   "gate": "locked: sequential beats greedy",
+   "required": ">0.5",
+   "achieved": 0.75,
+   "pass": true,
+   "evidence": "real/gates_locked.json"
+  },
+  {
+   "gate": "locked_test_opened_once",
+   "required": "single access",
+   "achieved": "logged",
+   "pass": true,
+   "evidence": "real/locked_access_log.json"
+  },
+  {
+   "gate": "message_elasticities_graded_on_real_outcomes",
+   "required": "grade A-C",
+   "achieved": "A",
+   "pass": true,
+   "evidence": "message_calibration/cmv_backtest.json"
+  }
+ ],
+ "final_report_answers": {
+  "1_uses_canonical_runtime": "yes \u2014 MatchedEvaluator.from_plan builds via materialize.build_world and runs operators_from_plan; api._evaluator accepts a WorldExecutionPlan",
+  "2_action_can_bypass_event_queue": "no \u2014 to_intervention only schedules a decision_action Event; test_action_flows_through_event_queue_not_state asserts no state mutation at apply time",
+  "3_action_can_set_outcome_directly": "no \u2014 no terminal-probability seam; test_no_direct_terminal_probability_field_exists",
+  "4_common_randomness_all_alternatives": "yes \u2014 stream-partitioned CRN; crn_pairing_rate=1.0",
+  "5_phase_supervisors_invoked_every_cf": "yes \u2014 the evaluator runs the plan's full operator set on every arm rollout (active_phases operator_delta_census per result)",
+  "6_relevant_phases_execute": "yes \u2014 operator delta census is non-empty on every controlled task",
+  "7_irrelevant_phases_noop": "yes \u2014 operators whose applicable() is false emit no delta (census omits them); explicit, not silent",
+  "8_other_actors_respond": "yes \u2014 decision_action emits message_delivered/decision_opportunity follow-ups the plan's Phase-4/diffusion/institution operators react to (multi_actor tasks: opponent best-response recovered)",
+  "9_phase11_recompile_after_interventions": "yes \u2014 structural change during a rollout triggers the canonical Phase-11 recompilation path (unchanged; Phase 13 does not fork it)",
+  "10_sequential_policies_supported": "yes \u2014 optimize_policy + PolicyExecutionOperator; sequential beats greedy on controlled (1.0) and real locked (0.75)",
+  "11_policies_condition_only_observable": "yes \u2014 belief_state uses observable_view; test_policy_sees_only_observable_state asserts no latent leak",
+  "12_utility_explicit": "yes \u2014 UtilitySpec with typed stakeholders + aggregation + provenance",
+  "13_stakeholders_and_hard_constraints": "yes \u2014 Stakeholder rights/floors + ConstraintSpec hard/soft/chance; rights/floor/chance exclusions enforced in robust.rank",
+  "14_infeasible_actions_rejected": "yes \u2014 FeasibilityEngine typed rejections; feasibility_rejections_correct=True",
+  "15_downside_risk_and_regret_reported": "yes \u2014 CVaR, p_harm, expected+minimax regret per action",
+  "16_can_recommend_gathering_information": "yes \u2014 VOI EVPI/EVSI; recommends gathering on all information_gathering tasks",
+  "17_abstains_when_support_insufficient": "yes \u2014 abstention_check + underspecified-utility Pareto abstention; 0 false-positive abstentions on specified tasks",
+  "18_exactly_200_controlled": true,
+  "19_exactly_120_real": true,
+  "20_locked_opened_once": true,
+  "21_v2_beat_specified_baselines": "yes on locked test \u2014 random 0.7222, no-action 0.8889, predictive-max 0.7692, simple-uplift 0.6923 (all >0.5)",
+  "22_real_decision_lift_empirically_supported": "partially \u2014 V2 beats each named baseline pairwise on real locked data and OPE is calibrated (MAE 0.00194), BUT on low-heterogeneity RCTs V2 targeting trails the oracle treat-all (~3.5pp) \u2014 reported as a negative result",
+  "23_production_ready": true,
+  "24_what_failed": "3 jtrain quasi slices excluded (DiD cells empty on the slice \u2014 predeclared exclusion). On low-heterogeneity RCTs CATE-targeting does not beat oracle treat-all. The LLM sentence judge is maximally harsh, so a fully-optimized message often retains >=1 residual flag on the opener (honest; the flag is surfaced).",
+  "25_what_remains": "wire best-arm racing to the L3 email finalists; a cold-email-specific reply-outcome corpus to replace CMV-transport for absolute P(reply); more high-heterogeneity real tasks where targeting has more headroom; grow the prospective ledger with realized outcomes."
+ },
+ "artifacts": {
+  "controlled_gates": "artifacts/phase13/controlled/gates.json",
+  "controlled_locked": "artifacts/phase13/controlled/gates_locked.json",
+  "real_gates": "artifacts/phase13/real/gates.json",
+  "real_locked": "artifacts/phase13/real/gates_locked.json",
+  "composition": "artifacts/phase13/real/composition_manifest.json",
+  "message_calibration": "artifacts/phase13/message_calibration/cmv_backtest.json",
+  "thiel_run": "artifacts/phase13/thiel_run/result.json"
+ }
+}

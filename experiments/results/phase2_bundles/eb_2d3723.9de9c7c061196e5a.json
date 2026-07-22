@@ -1,0 +1,1556 @@
+{
+ "bundle_id": "eb_2d3723",
+ "question": "Will the hospital committee approve the new triage protocol?",
+ "as_of": 1682899200.0,
+ "compiler_plan_hash": "e0e8488fe16e",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_35b72f1675",
+   "claim_or_quantity": "majority vote of the committee",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "committee_chair",
+    "committee_member_1",
+    "committee_member_2",
+    "committee_member_3"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_79086c4871",
+   "claim_or_quantity": "value/context of committee_chair.vote_lean",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "committee_chair.vote_lean",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a77b3da3af",
+   "claim_or_quantity": "value/context of committee_member_1.vote_lean",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "committee_member_1.vote_lean",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5ece26787d",
+   "claim_or_quantity": "value/context of committee_member_2.vote_lean",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "committee_member_2.vote_lean",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3d2f677e51",
+   "claim_or_quantity": "decision rules / process of hospital_committee",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "hospital_committee",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_685a2aa66e",
+   "claim_or_quantity": "decision rules / process of hospital_administration",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "hospital_administration",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_35b72f1675",
+   "terms": "hospital committee approve triage protocol committee chair committee member 1 committee member 2",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_79086c4871",
+   "terms": "committee chair lean",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_a77b3da3af",
+   "terms": "committee member lean",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_35b72f1675",
+   "logical_query": "hospital committee approve triage protocol committee chair committee member 1 committee member 2 after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=hospital+committee+approve+triage+protocol+committee+chair+committee+member+1+committee+member+2+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783908841.7103844,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:14:02 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1pBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcryZfvMQm0HD_QRejknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCr6Djs\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "69ec87fdc470fe6f13515e446e2cf81bbd3ece6e39300e677e97b3ce5957f8d2",
+   "n_bytes": 1357,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.479
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_79086c4871",
+   "logical_query": "committee chair lean after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=committee+chair+lean+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783908842.1908963,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:14:02 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmLw1ZBiSO44w5ACxJVA3AjEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YR4OF5NvniJTeDE_ndzmJWUk_IL41PyS4qLC3ISizOKU4vKUovijQyMzAzMDcz0DEziCwwAmGE6rg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "7ab8030ec629ef835e92a6eaba5f1d000bafd840961cd01be10b4adf52d1bc71",
+   "n_bytes": 16269,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.595
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_a77b3da3af",
+   "logical_query": "committee member lean after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=committee+member+lean+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783908842.787701,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:14:03 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1JBiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcrydfvMQmcOPomfuMSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgC-iDlp\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "aeeaba8cccc19795a06530a9200a32470d22a3c75a478f52a308355f2756d39a",
+   "n_bytes": 9632,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 7,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.58
+  }
+ ],
+ "raw_content_refs": [
+  "7ab8030ec629ef835e92a6eaba5f1d000bafd840961cd01be10b4adf52d1bc71",
+  "aeeaba8cccc19795a06530a9200a32470d22a3c75a478f52a308355f2756d39a"
+ ],
+ "documents": [
+  {
+   "id": "0e5ba3a0c4666e23",
+   "source": "City & State New York",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPWmhHNm1IRnhtNkg0YnQ0UDQ4YVBQSUVFUFJLM1NDRnl2aVloTmwxYWxRNE9tRzlWNzdGUjNBNTJsUWh3WEVrQ0x0LVc3VS1OM1dfLVllWGpqUTN1M1BqMmxkZmFSSHZwcXhyOWRFUS12dnFLaVNJMnZFN1hsckx5Vk5CLTFiZUxhZkljQzI5VTBha1R0YW16clFaelUzSUZTUU04ZTJZbnJTV09VRlJjMFFiMjJIRFN0eG5uVlZhTQ?oc=5",
+   "title": "Amy Paulin has big shoes to fill leading the Assembly Health Committee - City & State New York",
+   "text": "Amy Paulin has big shoes to fill leading the Assembly Health Committee - City & State New York. Amy Paulin has big shoes to fill leading the Assembly Health Committee City & State New York",
+   "content_hash": "3467ad62e99ba4cf",
+   "raw_feed_hash": "7ab8030ec629ef835e92a6eaba5f1d000bafd840961cd01be10b4adf52d1bc71",
+   "published_at": 1674460800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_79086c4871",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9f5c5271d04eafb5",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE55cEdMNUYxbVRNVng2TklSRzQ3am0tUWNLR0I2cVlCaTRlbWppVzZLWUZKbU5DS3dEaW5PdVM0cVlUMUFCSDVCREZtaTBXY2MzMHhzZGRhSENpNzJXRmU0?oc=5",
+   "title": "Bone metabolism during strict head-down tilt bed rest and exposure to elevated levels of ambient CO2 | npj Microgravity - Nature",
+   "text": "Bone metabolism during strict head-down tilt bed rest and exposure to elevated levels of ambient CO2 | npj Microgravity - Nature. Bone metabolism during strict head-down tilt bed rest and exposure to elevated levels of ambient CO2 | npj Microgravity Nature",
+   "content_hash": "1632e9ac92cb391e",
+   "raw_feed_hash": "7ab8030ec629ef835e92a6eaba5f1d000bafd840961cd01be10b4adf52d1bc71",
+   "published_at": 1671177600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_79086c4871",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c5159bc44a9d8030",
+   "source": "Newport This Week",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPVjRzR3dXQUM3TkNyZzY2ZHItS0hSMDZQb3FvZ0UwNVo4SG9JTzk3VjREYTJEcmJpU0VrSk9xTGhlYlNFd3Vib3lVTjZrM181TnhpYkNBRGMzSmxVNThabnYyTVlWMGVyWjV4VENHeGNreWpZZ0xFSGo2RHZ2N203dEdkQ3lqLTA3T0s1Q0RMWHEyOWxuN3RsMXVVU3h6OWZ3Q25CM29LbmNxRU9mckszc0dJYnV2U0RLcTVTWkZ5M2VkY0E?oc=5",
+   "title": "this week\u2019s Conversation with St. Patrick\u2019s Day Parade Committee Chair Dennis Sullivan - Newport This Week",
+   "text": "this week\u2019s Conversation with St. Patrick\u2019s Day Parade Committee Chair Dennis Sullivan - Newport This Week. this week\u2019s Conversation with St. Patrick\u2019s Day Parade Committee Chair Dennis Sullivan Newport This Week",
+   "content_hash": "3ab39a107d0215fe",
+   "raw_feed_hash": "7ab8030ec629ef835e92a6eaba5f1d000bafd840961cd01be10b4adf52d1bc71",
+   "published_at": 1677744000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_79086c4871",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "de5e288f5d615054",
+   "source": "El Paso Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOTWdzd0oyX3NZbmNEVFlmMzdsVnUwbng2aVIyTUZCMHJfMXNvQmFiRWxac0dCbHJoVlpTbXBiUDI3ZzhISER4X2cwVjlJT1IyNU1MbjREWG5Xb0FBN0xScUhNRHRna1MxRjlZQzZOUVJBMm9pdzc5VldCS19QeUhQRkFGcnlhTGlmaEdZci04MHJPZXgxNmI4dl95YkZHQXllakt5MENGUzhXMGlOUWJQNGpRQjBzeTgxWlNOel9vbm9PVnBOOUJaN3dKR3ZKa3J2Tm5wYzhBdDF1azc1R0VMMXJUd0RTZw?oc=5",
+   "title": "US Rep. Veronica Escobar 'floored' to be part of President Biden's reelection committee - El Paso Times",
+   "text": "US Rep. Veronica Escobar 'floored' to be part of President Biden's reelection committee - El Paso Times. US Rep. Veronica Escobar 'floored' to be part of President Biden's reelection committee El Paso Times",
+   "content_hash": "4ed7a660a6c02ff9",
+   "raw_feed_hash": "7ab8030ec629ef835e92a6eaba5f1d000bafd840961cd01be10b4adf52d1bc71",
+   "published_at": 1682578800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_79086c4871",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e7b233dbb91fdc5e",
+   "source": "The Nome Nugget",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNeG9BeEpqOU05MTR2Nnp5a1R6R0t3YXlSN3JnZC1rdEpIQWdCZGJFeEJ3WlJaMnFJMVd3SHp1ZWpuMFFlbklob0hQQzJBSThsM0VJNk40T2NaMHY2T3RSamp4eVpkTUZyUTM0WlJnREF6YnQyeWVXRXRTTTAtLUpiMzBHSEc3a3Jhb0E?oc=5",
+   "title": "Musk ox hunt quota around Nome raised from 9 to 30 animals - The Nome Nugget",
+   "text": "Musk ox hunt quota around Nome raised from 9 to 30 animals - The Nome Nugget. Musk ox hunt quota around Nome raised from 9 to 30 animals The Nome Nugget",
+   "content_hash": "87cea42bcd0b1f0f",
+   "raw_feed_hash": "7ab8030ec629ef835e92a6eaba5f1d000bafd840961cd01be10b4adf52d1bc71",
+   "published_at": 1680764400.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_79086c4871",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "646de0d226bae023",
+   "source": "Atlanta Journal-Constitution",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOVXI4bEljQU1GbW9LTmtycHZMYl9VRkJybUFNNTFvN0FPQWhVU3FWNUotblhmUVM3SUd0ZVZIZjlLc255SFRIeVVNUVNKaWRQaWwyWkU4QWFISXFLc2ZmdEJxWWJsVUl0WGNkLVR6Uy1SUVRzMDRoV3hjd2Q3NUNwbTRoOVNEejVjcllUQ1haM1hMZVFoai13TVNsbVhzMUh1Qi1pVmVyTlExbWNfZG9kaHNoSU9SeVZMVTA4cG05UXo0eUxsdGg1VUF0T3RZWUE?oc=5",
+   "title": "Atlanta leaning into changes to 3-year-old inspector general\u2019s office - Atlanta Journal-Constitution",
+   "text": "Atlanta leaning into changes to 3-year-old inspector general\u2019s office - Atlanta Journal-Constitution. Atlanta leaning into changes to 3-year-old inspector general\u2019s office Atlanta Journal-Constitution",
+   "content_hash": "26c297fdfbd7be7a",
+   "raw_feed_hash": "7ab8030ec629ef835e92a6eaba5f1d000bafd840961cd01be10b4adf52d1bc71",
+   "published_at": 1677225600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_79086c4871",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "067aef08d6c99180",
+   "source": "Florida Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQTWd1bnZFRGlha2Y4bDhsRHFfUXNLOWlHWlc3Qkw5V3Q3LXZFUFo4UUowOVhsSUk4aHExX3k2Z2l2QkxZMXEwQm11RjJFM0pnX1NNaXQ1Tjc3LXpLWFAwd2lBcGlzVkZjb1VJbmhmSGFLbUxFcWRVamtHblRaOVpsNmZkTzhOUQ?oc=5",
+   "title": "Tom Leek to run for Senate in 2024 - Florida Politics",
+   "text": "Tom Leek to run for Senate in 2024 - Florida Politics. Tom Leek to run for Senate in 2024 Florida Politics",
+   "content_hash": "0ae84c216d8d1cbb",
+   "raw_feed_hash": "7ab8030ec629ef835e92a6eaba5f1d000bafd840961cd01be10b4adf52d1bc71",
+   "published_at": 1672905600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_79086c4871",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "96dabc55a2fe7fee",
+   "source": "Politico",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPVU04MDdPRkpGTUgxNms2VnpMUVZpRnkzVVgxZWZCZ3ZvbGN1MUd1emRlYkNwR185bERqQ25MeU1lSk80bm1BYjJsWlQ2d0VTUWhiem1zOW1sRkNQczNHTlNaMlJqZkFKOEpod0d0b2VCc2xTOXp0QS1lUC1YUXk5N1UwOWlBb3dXM0F2TGY3R1AzbjliZHc?oc=5",
+   "title": "White House to Jim Jordan, James Comer: Sorry, but you have to restart your oversight requests - Politico",
+   "text": "White House to Jim Jordan, James Comer: Sorry, but you have to restart your oversight requests - Politico. White House to Jim Jordan, James Comer: Sorry, but you have to restart your oversight requests Politico",
+   "content_hash": "05b72f352fd168c7",
+   "raw_feed_hash": "7ab8030ec629ef835e92a6eaba5f1d000bafd840961cd01be10b4adf52d1bc71",
+   "published_at": 1672300800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_79086c4871",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e7b233dbb91fdc5e",
+   "source": "The Nome Nugget",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNeG9BeEpqOU05MTR2Nnp5a1R6R0t3YXlSN3JnZC1rdEpIQWdCZGJFeEJ3WlJaMnFJMVd3SHp1ZWpuMFFlbklob0hQQzJBSThsM0VJNk40T2NaMHY2T3RSamp4eVpkTUZyUTM0WlJnREF6YnQyeWVXRXRTTTAtLUpiMzBHSEc3a3Jhb0E?oc=5",
+   "title": "Musk ox hunt quota around Nome raised from 9 to 30 animals - The Nome Nugget",
+   "text": "Musk ox hunt quota around Nome raised from 9 to 30 animals - The Nome Nugget. Musk ox hunt quota around Nome raised from 9 to 30 animals The Nome Nugget",
+   "content_hash": "87cea42bcd0b1f0f",
+   "raw_feed_hash": "aeeaba8cccc19795a06530a9200a32470d22a3c75a478f52a308355f2756d39a",
+   "published_at": 1680764400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_a77b3da3af",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3b4cffe5dbd01bd0",
+   "source": "raskin.house.gov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNeUgxLVMwTXhfMDZHbWw3RkdJWVk0SnN2RF9fUEp1SWp5WURXcm14am4tajBKb0RrNFNlZ1dYSG1GR2xmY2dtRlZ4WnZMeEpHbEhhVjRQQTU4anh4NXdPU0QtVEsxaTQ5cTZXTTlKSjRFZC1zbTBUc2lkbm9NdzM5RmlHSFNsOVZUcDZIbDJR?oc=5",
+   "title": "Congressman Raskin Announces Staff Leadership Changes - raskin.house.gov",
+   "text": "Congressman Raskin Announces Staff Leadership Changes - raskin.house.gov. Congressman Raskin Announces Staff Leadership Changes raskin.house.gov",
+   "content_hash": "64b60c2a056552aa",
+   "raw_feed_hash": "aeeaba8cccc19795a06530a9200a32470d22a3c75a478f52a308355f2756d39a",
+   "published_at": 1672732800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_a77b3da3af",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "593076eb78bbcd87",
+   "source": "Jacksonville Journal-Courier",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPZUUyRlprNmRrRmtpU2s0a0NqZ1I5aW5PMEhQOHhVcEpHUnVzZDB0YkdzZ2R1SG15cnpWdU1WVHh3NGkzTmJqYkwzS1F1RDhfQ0J4ZnlpT2JtLVg4WlF1N1BNc2ZrbHNWdTJvSHVXZ1ZJd1pBSW1TVWRlTXg0Uy1qQWYzVGV4cXpYMG5FV0dJQXJwSUxCb1BVMVg5dDdJQkw3ejYyT3lMM1NqZw?oc=5",
+   "title": "Betty Hillig celebrating her 80th birthday with reception - Jacksonville Journal-Courier",
+   "text": "Betty Hillig celebrating her 80th birthday with reception - Jacksonville Journal-Courier. Betty Hillig celebrating her 80th birthday with reception Jacksonville Journal-Courier",
+   "content_hash": "9ce9dd3a66a18f4e",
+   "raw_feed_hash": "aeeaba8cccc19795a06530a9200a32470d22a3c75a478f52a308355f2756d39a",
+   "published_at": 1670659200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_a77b3da3af",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4ea73ce75ca7a73d",
+   "source": "Mondoweiss",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQT19vRk51Tm9JSUQwREJCNTY1ZE12NGlBVGpWSUZsUndoMWU3X3Fwc3M0SUtNY0Jqd1ZkRW1pRmo0dm11RXpDSGMyOGs4RHNyWjQ1eF9xWWl3ZC1BQWJNZXhZLVBhUlc0emlGSHk2b0hhZjhMTFlfS21lQXVHSFBZV25IdzA0OHAzNXUzUTRCVGEzOVU3RDA3NVBrR05BdThk?oc=5",
+   "title": "Pro-Israel groups see another ally in Fetterman - Mondoweiss",
+   "text": "Pro-Israel groups see another ally in Fetterman - Mondoweiss. Pro-Israel groups see another ally in Fetterman Mondoweiss",
+   "content_hash": "5da7d0b0edfda072",
+   "raw_feed_hash": "aeeaba8cccc19795a06530a9200a32470d22a3c75a478f52a308355f2756d39a",
+   "published_at": 1670659200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_a77b3da3af",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "66e0ff34b6b6a2a6",
+   "source": "The Art Newspaper",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPX0piRlQ3NlJCZ0FVOHJSLVpxalJpSHpWdmk5UFQtMDlmR1lmdDdKTUhHcDRMSlIyWkFwNEZIUUxGdnZhZGdvSjVPR1pyWC1lZEdtQmgxNkxWSmVwMjBLU3dObUxFVVZ2Snh5a3NyVHByWXJscHhrSWE2dm8xMFVtWXlDcFVvNzRzSTkzZFA1aVBybW52SlF4cFQwQ2FwNEc4WXpjOGV2QXNrX0ktaW5BT21vbnZJV1E?oc=5",
+   "title": "Defying gravity\u2014Leaning Tower of Pisa leans like in the early 19th century - The Art Newspaper",
+   "text": "Defying gravity\u2014Leaning Tower of Pisa leans like in the early 19th century - The Art Newspaper. Defying gravity\u2014Leaning Tower of Pisa leans like in the early 19th century The Art Newspaper",
+   "content_hash": "0dddeb8638a8a118",
+   "raw_feed_hash": "aeeaba8cccc19795a06530a9200a32470d22a3c75a478f52a308355f2756d39a",
+   "published_at": 1672300800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_a77b3da3af",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6bf82c9a1200c75f",
+   "source": "AfricaBrief",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1pS3V3dFp0MlB4eUNsS0NfM215bkhRLV96aVNVSElVQWR2ZndzclNtYTJiN2ZRNGp0cjcwVGdwSFpKbjNhWnpjYmx0QnFGNTFMTU1jd0JqSjktVGNXdlk3UG93Vl91Zm9FOGM4U2tJOU4xUFVWdk1SUA?oc=5",
+   "title": "Malawian VSLA Agent Finds Solution to Food Insecurity in Rumphi Village - AfricaBrief",
+   "text": "Malawian VSLA Agent Finds Solution to Food Insecurity in Rumphi Village - AfricaBrief. Malawian VSLA Agent Finds Solution to Food Insecurity in Rumphi Village AfricaBrief",
+   "content_hash": "739d341fd4dbfc5f",
+   "raw_feed_hash": "aeeaba8cccc19795a06530a9200a32470d22a3c75a478f52a308355f2756d39a",
+   "published_at": 1679295600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_a77b3da3af",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "582a9f90805185a6",
+   "source": "Cook Islands News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQVk1HbDRNWDl3MmpMUm1CRmVWTmVDejUtWU5tNW1ROEZPNTNUbElqX25EdE02UFloazdtMFI4bEpTQkJ0dW5oREcteEFhdURhVWREVWwwSU9TOTYtZGZoZG5ub3FBQTZKOV9HeTFTd0dfRDlXQno5NDhQX21ZMkRvbE8ySkdRUEFuaWd0T3BUU1JORTdxQi04MXkxVS0yZnN1RXdiUWctay0xM1ZWZUxuYUY1WDRwU3M?oc=5",
+   "title": "New MPs get the nod: Committees established - Cook Islands News",
+   "text": "New MPs get the nod: Committees established - Cook Islands News. New MPs get the nod: Committees established Cook Islands News",
+   "content_hash": "bed98c11faf9f079",
+   "raw_feed_hash": "aeeaba8cccc19795a06530a9200a32470d22a3c75a478f52a308355f2756d39a",
+   "published_at": 1679554800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_a77b3da3af",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "0e5ba3a0c4666e23:c0",
+   "source_id": "0e5ba3a0c4666e23",
+   "subject": "Amy Paulin",
+   "predicate": "has big shoes to fill",
+   "object": "leading the Assembly Health Committee",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Amy Paulin has big shoes to fill leading the Assembly Health Committee",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674460800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Amy Paulin",
+    "Assembly Health Committee"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_b0afca9238",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_79086c4871"
+   }
+  },
+  {
+   "claim_id": "e7b233dbb91fdc5e:c0",
+   "source_id": "e7b233dbb91fdc5e",
+   "subject": "Musk ox hunt quota around Nome",
+   "predicate": "raised from",
+   "object": "9 to 30 animals",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Musk ox hunt quota around Nome raised from 9 to 30 animals",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680764400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Musk ox",
+    "Nome"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_4b5eff951b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a77b3da3af"
+   }
+  },
+  {
+   "claim_id": "9f5c5271d04eafb5:c0",
+   "source_id": "9f5c5271d04eafb5",
+   "subject": "Bone metabolism",
+   "predicate": "is studied during",
+   "object": "strict head-down tilt bed rest and exposure to elevated levels of ambient CO2",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Bone metabolism during strict head-down tilt bed rest and exposure to elevated levels of ambient CO2",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1671177600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Bone metabolism",
+    "strict head-down tilt bed rest",
+    "elevated levels of ambient CO2"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_627585d86e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_79086c4871"
+   }
+  },
+  {
+   "claim_id": "9f5c5271d04eafb5:c1",
+   "source_id": "9f5c5271d04eafb5",
+   "subject": "The article",
+   "predicate": "is published in",
+   "object": "npj Microgravity - Nature",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "npj Microgravity - Nature",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1671177600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "npj Microgravity",
+    "Nature"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_627585d86e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_79086c4871"
+   }
+  },
+  {
+   "claim_id": "3b4cffe5dbd01bd0:c0",
+   "source_id": "3b4cffe5dbd01bd0",
+   "subject": "Congressman Raskin",
+   "predicate": "announces",
+   "object": "staff leadership changes",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Congressman Raskin Announces Staff Leadership Changes",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672732800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Congressman Raskin"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_41a2e68a83",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a77b3da3af"
+   }
+  },
+  {
+   "claim_id": "c5159bc44a9d8030:c0",
+   "source_id": "c5159bc44a9d8030",
+   "subject": "this week\u2019s Conversation with St. Patrick\u2019s Day Parade Committee Chair Dennis Sullivan",
+   "predicate": "is",
+   "object": "Newport This Week",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "this week\u2019s Conversation with St. Patrick\u2019s Day Parade Committee Chair Dennis Sullivan - Newport This Week",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677744000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "St. Patrick\u2019s Day Parade Committee Chair Dennis Sullivan",
+    "Newport This Week"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_058f1f00ed",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_79086c4871"
+   }
+  },
+  {
+   "claim_id": "593076eb78bbcd87:c0",
+   "source_id": "593076eb78bbcd87",
+   "subject": "Betty Hillig",
+   "predicate": "celebrating",
+   "object": "her 80th birthday with reception",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Betty Hillig celebrating her 80th birthday with reception",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1670659200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Betty Hillig"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c2d5547af5",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a77b3da3af"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Amy Paulin",
+   "normalized": "amy paulin",
+   "candidates": [
+    {
+     "entity_id": "ent_764b547476",
+     "canonical": "amy paulin",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Amy Paulin"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Assembly Health Committee",
+   "normalized": "assembly health committee",
+   "candidates": [
+    {
+     "entity_id": "ent_75f667b1eb",
+     "canonical": "assembly health committee",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Assembly Health Committee"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Musk ox",
+   "normalized": "musk ox",
+   "candidates": [
+    {
+     "entity_id": "ent_1f6a98094e",
+     "canonical": "musk ox",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Musk ox"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Nome",
+   "normalized": "nome",
+   "candidates": [
+    {
+     "entity_id": "ent_de4da44e7e",
+     "canonical": "nome",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Nome"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Bone metabolism",
+   "normalized": "bone metabolism",
+   "candidates": [
+    {
+     "entity_id": "ent_cdcc7943e7",
+     "canonical": "bone metabolism",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Bone metabolism"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "strict head-down tilt bed rest",
+   "normalized": "strict head-down tilt bed rest",
+   "candidates": [
+    {
+     "entity_id": "ent_963876549a",
+     "canonical": "strict head-down tilt bed rest",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "strict head-down tilt bed rest"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "elevated levels of ambient CO2",
+   "normalized": "elevated levels of ambient co2",
+   "candidates": [
+    {
+     "entity_id": "ent_081a897fc6",
+     "canonical": "elevated levels of ambient co2",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "elevated levels of ambient CO2"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "npj Microgravity",
+   "normalized": "npj microgravity",
+   "candidates": [
+    {
+     "entity_id": "ent_322c013bba",
+     "canonical": "npj microgravity",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "npj Microgravity"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Nature",
+   "normalized": "nature",
+   "candidates": [
+    {
+     "entity_id": "ent_a5197f1026",
+     "canonical": "nature",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Nature"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Congressman Raskin",
+   "normalized": "congressman raskin",
+   "candidates": [
+    {
+     "entity_id": "ent_7c47367010",
+     "canonical": "congressman raskin",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Congressman Raskin"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "St. Patrick\u2019s Day Parade Committee Chair Dennis Sullivan",
+   "normalized": "st patrick\u2019s day parade committee chair dennis sullivan",
+   "candidates": [
+    {
+     "entity_id": "ent_042367aa65",
+     "canonical": "st patrick\u2019s day parade committee chair dennis sullivan",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "St. Patrick\u2019s Day Parade Committee Chair Dennis Sullivan"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Newport This Week",
+   "normalized": "newport this week",
+   "candidates": [
+    {
+     "entity_id": "ent_381f09d4c3",
+     "canonical": "newport this week",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Newport This Week"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Betty Hillig",
+   "normalized": "betty hillig",
+   "candidates": [
+    {
+     "entity_id": "ent_2bde1958fb",
+     "canonical": "betty hillig",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Betty Hillig"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "0e5ba3a0c4666e23": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1674460800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674460800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9f5c5271d04eafb5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1671177600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1671177600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c5159bc44a9d8030": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1677744000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677744000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "de5e288f5d615054": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1682578800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682578800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e7b233dbb91fdc5e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1680764400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680764400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "646de0d226bae023": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1677225600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677225600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "067aef08d6c99180": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1672905600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672905600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "96dabc55a2fe7fee": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1672300800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672300800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3b4cffe5dbd01bd0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1672732800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672732800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "593076eb78bbcd87": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1670659200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1670659200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4ea73ce75ca7a73d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1670659200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1670659200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "66e0ff34b6b6a2a6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1672300800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672300800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6bf82c9a1200c75f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1679295600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679295600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "582a9f90805185a6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1679554800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679554800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_b0afca9238",
+   "member_ids": [
+    "0e5ba3a0c4666e23"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "City & State New York",
+   "primary_source": "City & State New York",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_627585d86e",
+   "member_ids": [
+    "9f5c5271d04eafb5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_058f1f00ed",
+   "member_ids": [
+    "c5159bc44a9d8030"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Newport This Week",
+   "primary_source": "Newport This Week",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b560a6700a",
+   "member_ids": [
+    "de5e288f5d615054"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "El Paso Times",
+   "primary_source": "El Paso Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4b5eff951b",
+   "member_ids": [
+    "e7b233dbb91fdc5e",
+    "e7b233dbb91fdc5e"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "The Nome Nugget",
+   "primary_source": "The Nome Nugget",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_1fd9f93c74",
+   "member_ids": [
+    "646de0d226bae023"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Atlanta Journal-Constitution",
+   "primary_source": "Atlanta Journal-Constitution",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_cced4327f3",
+   "member_ids": [
+    "067aef08d6c99180"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Florida Politics",
+   "primary_source": "Florida Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d8cd4465f2",
+   "member_ids": [
+    "96dabc55a2fe7fee"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Politico",
+   "primary_source": "Politico",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_41a2e68a83",
+   "member_ids": [
+    "3b4cffe5dbd01bd0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "raskin.house.gov",
+   "primary_source": "raskin.house.gov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c2d5547af5",
+   "member_ids": [
+    "593076eb78bbcd87"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Jacksonville Journal-Courier",
+   "primary_source": "Jacksonville Journal-Courier",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5c8260db2e",
+   "member_ids": [
+    "4ea73ce75ca7a73d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Mondoweiss",
+   "primary_source": "Mondoweiss",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_54e7365af6",
+   "member_ids": [
+    "66e0ff34b6b6a2a6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Art Newspaper",
+   "primary_source": "The Art Newspaper",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_374bcca882",
+   "member_ids": [
+    "6bf82c9a1200c75f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "AfricaBrief",
+   "primary_source": "AfricaBrief",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c961550c26",
+   "member_ids": [
+    "582a9f90805185a6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Cook Islands News",
+   "primary_source": "Cook Islands News",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "0e5ba3a0c4666e23:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674460800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "e7b233dbb91fdc5e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680764400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "9f5c5271d04eafb5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1671177600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "9f5c5271d04eafb5:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1671177600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3b4cffe5dbd01bd0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672732800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c5159bc44a9d8030:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677744000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "593076eb78bbcd87:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1670659200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "0e5ba3a0c4666e23:c0",
+  "e7b233dbb91fdc5e:c0",
+  "9f5c5271d04eafb5:c0",
+  "9f5c5271d04eafb5:c1",
+  "3b4cffe5dbd01bd0:c0",
+  "c5159bc44a9d8030:c0",
+  "593076eb78bbcd87:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_35b72f1675": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_79086c4871": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_a77b3da3af": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_5ece26787d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_3d2f677e51": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_685a2aa66e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_35b72f1675",
+  "req_5ece26787d",
+  "req_3d2f677e51",
+  "req_685a2aa66e"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 14,
+  "n_contradictions": 0,
+  "n_documents": 15
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.175,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "9de9c7c061196e5a",
+ "bundle_hash": "9de9c7c061196e5a",
+ "_persisted_at": "2026-07-13T02:14:16Z"
+}

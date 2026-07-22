@@ -1,0 +1,208 @@
+{
+ "question": "Should we send the discount offer now or wait until the customer's renewal date to maximize retention?",
+ "as_of": "2023-06-01",
+ "horizon": "2023-07-01",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "renew",
+   "not_renew"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "The outcome is resolved by a generic_outcome_prior per customer segment, with lean toward renewal depending on timing and discount sensitivity."
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The decision is whether sending a discount offer now versus at the customer's renewal date maximizes retention, measured as the probability the customer renews.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 2,
+ "n_institutions": 1,
+ "n_populations": 1,
+ "n_latents": 3,
+ "sample_entities": [
+  "customer",
+  "company"
+ ],
+ "sample_latents": [
+  {
+   "path": "customer.discount_sensitivity",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.9
+  },
+  {
+   "path": "customer.attention_to_offer",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "customer.current_satisfaction",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.7
+  }
+ ],
+ "accepted_mechanisms": [
+  "agent_decision",
+  "belief_update",
+  "resource_update",
+  "background_dynamics",
+  "generic_outcome_prior",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [
+  [
+   "exposure_response_hazard",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "memory_decay",
+   "no executable operator ('swm.world_model_v2.inform"
+  ],
+  [
+   "quantal_response_choice",
+   "no executable operator ('swm.world_model_v2.policy"
+  ]
+ ],
+ "experimental_mechanisms": [
+  "discount_effect_on_renewal"
+ ],
+ "mechanism_tiers": {
+  "customer_decision_to_renew": 7,
+  "discount_offer_impact_on_decision": 7,
+  "timing_effect_on_attention_and_salience": 7,
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "timing_irrelevant",
+   "lean": "neutral",
+   "prior": 0.2
+  },
+  {
+   "id": "now_better",
+   "lean": "weak_yes",
+   "prior": 0.4
+  },
+  {
+   "id": "renewal_better",
+   "lean": "weak_yes",
+   "prior": 0.4
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "customer",
+   "company",
+   "customer_segments",
+   "customer.discount_sensitivity",
+   "customer.attention_to_offer",
+   "customer.current_satisfaction"
+  ],
+  "marginalized_with_uncertainty": [],
+  "n_particles": 61
+ },
+ "omissions": [
+  {
+   "component": "competitor offers",
+   "sensitivity": 0.1,
+   "reason": "negligible sensitivity because no evidence of competitor activity in this scenar"
+  },
+  {
+   "component": "customer demographics",
+   "sensitivity": 0.1,
+   "reason": "negligible sensitivity because no evidence that demographics materially change d"
+  }
+ ],
+ "world_provenance_statuses": {},
+ "n_deltas": 272,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "timing_irrelevant": 0.1967,
+  "now_better": 0.3934,
+  "renewal_better": 0.4098
+ },
+ "delta_log_sample": [
+  {
+   "at": 1686787200.0,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1688169599.0,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1688169599.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=neutral"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "renew": 0.541,
+   "not_renew": 0.459
+  },
+  "raw_probability": 0.541,
+  "structural_disagreement": {
+   "timing_irrelevant": 0.1967,
+   "now_better": 0.3934,
+   "renewal_better": 0.4098
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 61,
+   "structural_model_uncertainty": 0.958,
+   "structural_posterior": {
+    "timing_irrelevant": 0.1967,
+    "now_better": 0.3934,
+    "renewal_better": 0.4098
+   },
+   "state_parameter_uncertainty": 0.2427,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "omitted (negligible-sensitivity): competitor offers",
+   "omitted (negligible-sensitivity): customer demographics",
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "d04d912f30d2"
+ },
+ "plan_hash": "d04d912f30d2",
+ "latency_s": 15.37
+}

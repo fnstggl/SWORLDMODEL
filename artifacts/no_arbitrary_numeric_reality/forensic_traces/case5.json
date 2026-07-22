@@ -1,0 +1,111 @@
+{
+  "case": "case5_launch_persistence",
+  "question": "Will the product launch and remain generally available for >=14 consecutive days?",
+  "conversion_report": {
+    "contract": "binary_first_passage",
+    "scheduling": "provenance_gated_event_time",
+    "n_residual_processes": 1,
+    "n_absorbing_fact_events": 0,
+    "absorbing_institutions": [],
+    "residual_skipped_reason": null,
+    "posterior_calibrated": true,
+    "family_rate_rejected": {
+      "family": "announcement_or_visit",
+      "provenance": "fitted_family_prior(n=1)",
+      "value": 0.5778
+    },
+    "n_ungrounded_facts_unresolved": 0
+  },
+  "numeric_causal_inputs": {
+    "approved_and_consumed": [
+      {
+        "name": "residual_target_mass",
+        "value": 0.8,
+        "units": "absorbed_mass_share",
+        "causal_role": "evidence-updated posterior outcome rate parameterizing the residual outcome process",
+        "source_class": "derived_deterministic",
+        "consumer": "first_passage.calibrated_resolution",
+        "evidence_id": "phase3_posterior",
+        "fitted_on": {},
+        "architecture_compat": "",
+        "applicability": "posterior requires \u22651 effective as-of observation; its broad unfitted prior is a recorded remaining assumption",
+        "can_alter_terminal": true,
+        "production_eligible": true,
+        "rejection_reason": "",
+        "consumed": true,
+        "n_occurrences": 150
+      }
+    ],
+    "approved_unused": [],
+    "rejected": [
+      {
+        "name": "family_fallback_rate",
+        "value": 0.5778,
+        "units": "probability",
+        "causal_role": "keyword-selected reference-class outcome rate",
+        "source_class": "keyword_family_rate",
+        "consumer": "convert_binary_to_event_time",
+        "evidence_id": "",
+        "fitted_on": {},
+        "architecture_compat": "",
+        "applicability": "",
+        "can_alter_terminal": true,
+        "production_eligible": false,
+        "rejection_reason": "family pack (announcement_or_visit, fitted_family_prior(n=1)) is a keyword reference class without held-out validation/transport eligibility \u2014 diagnostic only",
+        "consumed": false,
+        "n_occurrences": 1
+      },
+      {
+        "name": "lean_beta_target",
+        "value": null,
+        "units": "beta_params",
+        "causal_role": "qualitative lean \u2192 broad Beta outcome mass",
+        "source_class": "lean_beta",
+        "consumer": "convert_binary_to_event_time",
+        "evidence_id": "",
+        "fitted_on": {},
+        "architecture_compat": "",
+        "applicability": "",
+        "can_alter_terminal": true,
+        "production_eligible": false,
+        "rejection_reason": "broad-prior outcome manufacturing is removed from production (\u00a7NAP)",
+        "consumed": false,
+        "n_occurrences": 1
+      }
+    ],
+    "compute_safety_only": [],
+    "analysis_display_only": [],
+    "ablation_only": [],
+    "n_inputs": 3,
+    "n_rejected": 2
+  },
+  "branch_terminals": {
+    "resolved_yes": 0.84,
+    "resolved_no": 0.16,
+    "censored_by_real_horizon": 0.84,
+    "unresolved_mechanism": 0.0
+  },
+  "unresolved_share": 0.0,
+  "bounds": {
+    "yes": {
+      "min_supported": 0.84,
+      "max_possible": 0.84
+    },
+    "no": {
+      "min_supported": 0.16,
+      "max_possible": 0.16
+    }
+  },
+  "missing_mechanisms": [],
+  "terminal_classification": "completed",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+    "yes": 0.84,
+    "no": 0.16
+  },
+  "frequency_semantics": "simulated_scenario_frequency",
+  "notes": [
+    "persistence window (14 days) comes from the criterion's literal text (institutional_rule provenance)",
+    "provisional launches confirm by OBSERVATION; the 1/3 of branches carrying a modeled rollback event collapse \u2014 no 0.85 survival coin anywhere"
+  ]
+}

@@ -1,0 +1,217 @@
+{
+ "question": "Will the engineering VP approve the request to hire two more backend engineers this quarter?",
+ "as_of": "2023-07-01",
+ "horizon": "2023-09-30",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "approve",
+   "reject"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "The VP's final decision as recorded in the company's hiring system or official communication by 2023-09-30."
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The engineering VP will decide whether to approve hiring two backend engineers this quarter, influenced by organizational priorities, resource constraints, and the VP's own decision-making process.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 4,
+ "n_institutions": 2,
+ "n_populations": 2,
+ "n_latents": 6,
+ "sample_entities": [
+  "engineering_vp",
+  "ceo",
+  "cto",
+  "hr_head"
+ ],
+ "sample_latents": [
+  {
+   "path": "engineering_vp.risk_tolerance",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.7
+  },
+  {
+   "path": "engineering_vp.priority_engineering_projects",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "ceo.strategic_priorities",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.6
+  },
+  {
+   "path": "cto.technical_strategy",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.5
+  }
+ ],
+ "accepted_mechanisms": [
+  "agent_decision",
+  "belief_update",
+  "relationship_update",
+  "resource_update",
+  "background_dynamics",
+  "generic_outcome_prior",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [],
+ "experimental_mechanisms": [
+  "organizational_decision_making"
+ ],
+ "mechanism_tiers": {
+  "VP's decision process considering budget, priorities, and advice": 7,
+  "Budget review and allocation": 7,
+  "Potential turnover events affecting workload": 7,
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "budget_constraint_driven",
+   "lean": "weak_yes",
+   "prior": 0.4
+  },
+  {
+   "id": "strategic_priority_driven",
+   "lean": "weak_yes",
+   "prior": 0.4
+  },
+  {
+   "id": "risk_averse_vp",
+   "lean": "weak_no",
+   "prior": 0.2
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "engineering_vp",
+   "ceo",
+   "cto",
+   "engineering_team",
+   "company_leadership",
+   "company_hiring_policy",
+   "quarterly_budget_review",
+   "engineering_vp.risk_tolerance",
+   "engineering_vp.priority_engineering_projects",
+   "ceo.strategic_priorities",
+   "cto.technical_strategy",
+   "engineering_team.backend_engineers.morale",
+   "engineering_team.backend_engineers.turnover_risk"
+  ],
+  "marginalized_with_uncertainty": [
+   "hr_head"
+  ],
+  "n_particles": 76
+ },
+ "omissions": [
+  {
+   "component": "company stock price",
+   "sensitivity": 0.1,
+   "reason": "negligible sensitivity because VP's hiring decision is unlikely to be materially"
+  },
+  {
+   "component": "external market conditions for engineers",
+   "sensitivity": 0.1,
+   "reason": "negligible sensitivity because the decision is internal and not directly driven "
+  }
+ ],
+ "world_provenance_statuses": {},
+ "n_deltas": 237,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "budget_constraint_driven": 0.3947,
+  "strategic_priority_driven": 0.3947,
+  "risk_averse_vp": 0.2105
+ },
+ "delta_log_sample": [
+  {
+   "at": 1689379200.0,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1696031999.0,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1696031999.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=weak_yes"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "approve": 0.6053,
+   "reject": 0.3947
+  },
+  "raw_probability": 0.6053,
+  "structural_disagreement": {
+   "budget_constraint_driven": 0.3947,
+   "strategic_priority_driven": 0.3947,
+   "risk_averse_vp": 0.2105
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 76,
+   "structural_model_uncertainty": 0.9666,
+   "structural_posterior": {
+    "budget_constraint_driven": 0.3947,
+    "strategic_priority_driven": 0.3947,
+    "risk_averse_vp": 0.2105
+   },
+   "state_parameter_uncertainty": 0.2474,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "omitted (negligible-sensitivity): company stock price",
+   "omitted (negligible-sensitivity): external market conditions for engineers",
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "94f55d735f6b"
+ },
+ "plan_hash": "94f55d735f6b",
+ "latency_s": 15.98
+}

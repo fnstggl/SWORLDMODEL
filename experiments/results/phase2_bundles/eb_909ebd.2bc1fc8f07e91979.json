@@ -1,0 +1,1414 @@
+{
+ "bundle_id": "eb_909ebd",
+ "question": "Will the department head authorize remote work for the new hire?",
+ "as_of": 1684108800.0,
+ "compiler_plan_hash": "001dce30fda4",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_2460f791ff",
+   "claim_or_quantity": "The terminal value of department_head.decision at the horizon determines the outcome.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "department_head",
+    "new_hire",
+    "hr_representative"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4ce7f5cfb7",
+   "claim_or_quantity": "value/context of department_head.remote_attitude",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "department_head.remote_attitude",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c4c0dcd2f0",
+   "claim_or_quantity": "evidence discriminating structural hypothesis policy_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:policy_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a851ccd22f",
+   "claim_or_quantity": "evidence discriminating structural hypothesis attitude_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:attitude_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2f6eb9e229",
+   "claim_or_quantity": "value/context of department_head.risk_aversion",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "department_head.risk_aversion",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_65f7b4100e",
+   "claim_or_quantity": "decision rules / process of university_policy",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "university_policy",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-15",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_1c6163b62e",
+   "claim_or_quantity": "decision rules / process of hr_department",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "hr_department",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-15",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5e9a6d5ec2",
+   "claim_or_quantity": "value/context of department_head.perceived_pressure_from_faculty",
+   "why_relevant": "high-sensitivity latent (0.60) driving the outcome distribution",
+   "affected_component": "department_head.perceived_pressure_from_faculty",
+   "expected_sensitivity": 0.6,
+   "expected_voi": 0.6,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_2460f791ff",
+   "terms": "department head authorize remote work hire department head new hire hr representative",
+   "after": "2022-12-16",
+   "before": "2023-05-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_4ce7f5cfb7",
+   "terms": "department head remote attitude",
+   "after": "2022-12-16",
+   "before": "2023-05-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_c4c0dcd2f0",
+   "terms": "structural hypothesis policy driven evidence discriminating",
+   "after": "2022-12-16",
+   "before": "2023-05-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_2460f791ff",
+   "logical_query": "department head authorize remote work hire department head new hire hr representative after:2022-12-16 before:2023-05-15",
+   "wire_url": "https://news.google.com/rss/search?q=department+head+authorize+remote+work+hire+department+head+new+hire+hr+representative+after%3A2022-12-16+before%3A2023-05-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-16",
+   "before_date": "2023-05-15",
+   "retrieved_at": 1783906520.1121993,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:35:20 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiSO44w5AKxBVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcNxovXmITOPB_5z5mJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC7Pzk-\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "e0d0bb7b4f10d84208eaaad9b1eaea795f52d2a64643015be1c3a1b58dc770d6",
+   "n_bytes": 6837,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 5,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.745
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_4ce7f5cfb7",
+   "logical_query": "department head remote attitude after:2022-12-16 before:2023-05-15",
+   "wire_url": "https://news.google.com/rss/search?q=department+head+remote+attitude+after%3A2022-12-16+before%3A2023-05-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-16",
+   "before_date": "2023-05-15",
+   "retrieved_at": 1783906520.859134,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:35:21 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1JBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcNxsvXmITaHjQcZhRSTkpvzA-Jb-kuLggJ7E4ozi1qCy1KN7IwMjMwNzATM_AJL7AAACkfziy\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "feb0e680f72dce4b9d8a8b6fc169603353cc3052236d931a369e435d19ec1407",
+   "n_bytes": 1227,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.471
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_c4c0dcd2f0",
+   "logical_query": "structural hypothesis policy driven evidence discriminating after:2022-12-16 before:2023-05-15",
+   "wire_url": "https://news.google.com/rss/search?q=structural+hypothesis+policy+driven+evidence+discriminating+after%3A2022-12-16+before%3A2023-05-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-16",
+   "before_date": "2023-05-15",
+   "retrieved_at": 1783906521.331706,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:35:21 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0ZBiSO44w5AKxJVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcNxsvXmIT6Hj7dhezknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCxFzkb\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "0ae7cd5590d313a8017e43ee9ffd793e9bb8ab16bc33791347b94deaec263897",
+   "n_bytes": 3855,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.518
+  }
+ ],
+ "raw_content_refs": [
+  "0ae7cd5590d313a8017e43ee9ffd793e9bb8ab16bc33791347b94deaec263897",
+  "e0d0bb7b4f10d84208eaaad9b1eaea795f52d2a64643015be1c3a1b58dc770d6"
+ ],
+ "documents": [
+  {
+   "id": "575cf91cd278f6d5",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNSWxYc1lTVjc0bnFhcE13b2ZIbnJ0ejBORHFwZUtxbGFkRUJPLWZXYmtqZGhSZlRQMUxvaWJWLTFDVmE4aUNjZ292WFZ0Um0zZDlFQmxiamlRR3FaaGRrY094MHpVbjVfV2RQZGNXN1U3ZklxWXdOUURBdzIxVVdsS3NVaTIzRWFLaXZ1d0E3NFp1NU1ab3l0eGZIdVRHcER2YUdOckdleWNUcWhtUFlxcnBSQQ?oc=5",
+   "title": "Here's why employee-experience manager is one of the fastest-growing jobs in the US - Business Insider",
+   "text": "Here's why employee-experience manager is one of the fastest-growing jobs in the US - Business Insider. Here's why employee-experience manager is one of the fastest-growing jobs in the US Business Insider",
+   "content_hash": "d0aa68a6e3a7581f",
+   "raw_feed_hash": "e0d0bb7b4f10d84208eaaad9b1eaea795f52d2a64643015be1c3a1b58dc770d6",
+   "published_at": 1674547200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_2460f791ff",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a92caf579df855bd",
+   "source": "AARP",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9SeXBLUnVYUE1ONmJzOFdoLXNJMi0wMlNndF92a0ZMaFY3WTgxeGh3MmdLRVVGRkZ1THRUdTlrNXN2QVNSTXhjUjdrRXNWcVBSNzFINW9NTExtaUdsb0c2dEFB?oc=5",
+   "title": "No Degree? That\u2019s No Problem for These Jobs - AARP",
+   "text": "No Degree? That\u2019s No Problem for These Jobs - AARP. No Degree? That\u2019s No Problem for These Jobs AARP",
+   "content_hash": "c31b87fa64f2c4a7",
+   "raw_feed_hash": "e0d0bb7b4f10d84208eaaad9b1eaea795f52d2a64643015be1c3a1b58dc770d6",
+   "published_at": 1682492400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_2460f791ff",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b9750efd4f4232cd",
+   "source": "BetterUp",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1FSVFYTFBGVzJFY2dPMjd0U3hUMThZbmU4LUVhWC1xbHhPemZPMnJmQjFibnlFdkxOalloTWRneENpakpDTUdCa0tkcWhza3hBU0QwbVFiQnByX1k1ZkI2X2QyVQ?oc=5",
+   "title": "Favoritism in the Workplace: How to Manage It - BetterUp",
+   "text": "Favoritism in the Workplace: How to Manage It - BetterUp. Favoritism in the Workplace: How to Manage It BetterUp",
+   "content_hash": "59a133b9483beee7",
+   "raw_feed_hash": "e0d0bb7b4f10d84208eaaad9b1eaea795f52d2a64643015be1c3a1b58dc770d6",
+   "published_at": 1678777200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_2460f791ff",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "55a3ca4c7ff0df83",
+   "source": "Canadian Business",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBwNHRnLUhkT2Q0SmRJRUNJTDF3WUJCSFNOcFhBd0ZfOWFZUFFIeDV6TUcySlJlS2dwUC1BaTcxZlNNdFdPbm1KQ3pCd3M3aDZSYUxJQnE1Sk14VGt1T0Z2RkFCM295eF9leUE1NlFXcWdYSDlMSTE0?oc=5",
+   "title": "Scammers Are Posing as Recruiters on LinkedIn and Swindling Job Seekers - Canadian Business",
+   "text": "Scammers Are Posing as Recruiters on LinkedIn and Swindling Job Seekers - Canadian Business. Scammers Are Posing as Recruiters on LinkedIn and Swindling Job Seekers Canadian Business",
+   "content_hash": "8309a0cdf2951d43",
+   "raw_feed_hash": "e0d0bb7b4f10d84208eaaad9b1eaea795f52d2a64643015be1c3a1b58dc770d6",
+   "published_at": 1678690800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_2460f791ff",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "75dfb70acfb624ef",
+   "source": "Winnipeg Free Press",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPRDl3WllkTE05dldnSThJNzhYelVfel9kWnhQUGVDTUFVX25BX09JRTh3R2d5RGFOcUV1UWtsY1hWV2ZEMmpWNl96NlV2cFFFcG1CTHhLWEFmNFRKcHZyTjhLWUdtLU54bjVHdkRnUWtLSl9YN2cxb21iSjUzZHJaWExMaw?oc=5",
+   "title": "May 2023: Wawanesa Insurance allowing staff to decide where they\u2019ll get their work done, despite construction of new 21-storey tower - Winnipeg Free Press",
+   "text": "May 2023: Wawanesa Insurance allowing staff to decide where they\u2019ll get their work done, despite construction of new 21-storey tower - Winnipeg Free Press. May 2023: Wawanesa Insurance allowing staff to decide where they\u2019ll get their work done, despite construction of new 21-storey tower Winnipeg Free Press",
+   "content_hash": "1d7d71c2f4cf402b",
+   "raw_feed_hash": "e0d0bb7b4f10d84208eaaad9b1eaea795f52d2a64643015be1c3a1b58dc770d6",
+   "published_at": 1683270000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_2460f791ff",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "82840b19bdf1a8dd",
+   "source": "Center for American Progress",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOYUVQa01GSWlaNlpMaUM3ZHpqeWhaUVFIeTMzMVVyUnUwNXVUTktYdWxxcS1ON2l1SHEyN0NIWjFsenpLV21feXktYzRVYi1GRHN5OG1qNzI0T2NqYkdaNHg3RUM1c1NpellHdXhPVnNoUU1VYkdXUXhxUlQ3NTRMOGNURUJYbzFUQ2xmakRSa0lpNTd2cWw2T1RwNGhiYTc0ekE3X0M2V3V0dVBFWGM3V1VYVmFCY2xfdjltTVdxRzNkalU?oc=5",
+   "title": "Discrimination and Barriers to Well-Being: The State of the LGBTQI+ Community in 2022 - Center for American Progress",
+   "text": "Discrimination and Barriers to Well-Being: The State of the LGBTQI+ Community in 2022 - Center for American Progress. Discrimination and Barriers to Well-Being: The State of the LGBTQI+ Community in 2022 Center for American Progress",
+   "content_hash": "d95cd03cc3212eb8",
+   "raw_feed_hash": "0ae7cd5590d313a8017e43ee9ffd793e9bb8ab16bc33791347b94deaec263897",
+   "published_at": 1673510400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_c4c0dcd2f0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2147069a66dae52f",
+   "source": "Urban Institute",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQOEEtNl90eV81WVB4LWdSbkVKMTVKZGt6TlFaUXZLdG9SRU56cjI3MmUxeE9tSFVPc0NFbGZkTnVQYzRVdnU4b0pfTUlOYWQ0NUhDeGJsZ05HQmpxcnRURkVWR01RclRDS0pONEdjSWthNV9KLXdlSmRWU0lXY1FzMEZrUFVWQlNfMGc?oc=5",
+   "title": "The Ghosts of Housing Discrimination Reach Beyond Redlining - Urban Institute",
+   "text": "The Ghosts of Housing Discrimination Reach Beyond Redlining - Urban Institute. The Ghosts of Housing Discrimination Reach Beyond Redlining Urban Institute",
+   "content_hash": "e4f57fa25ea009e6",
+   "raw_feed_hash": "0ae7cd5590d313a8017e43ee9ffd793e9bb8ab16bc33791347b94deaec263897",
+   "published_at": 1678863600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_c4c0dcd2f0",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "575cf91cd278f6d5:c0",
+   "source_id": "575cf91cd278f6d5",
+   "subject": "employee-experience manager",
+   "predicate": "is one of the fastest-growing jobs in the US",
+   "object": "fastest-growing jobs in the US",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "employee-experience manager is one of the fastest-growing jobs in the US",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674547200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "employee-experience manager",
+    "US"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_853e81ca48",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_2460f791ff"
+   }
+  },
+  {
+   "claim_id": "82840b19bdf1a8dd:c0",
+   "source_id": "82840b19bdf1a8dd",
+   "subject": "Discrimination and Barriers to Well-Being: The State of the LGBTQI+ Community in 2022",
+   "predicate": "is a report by",
+   "object": "Center for American Progress",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Discrimination and Barriers to Well-Being: The State of the LGBTQI+ Community in 2022 - Center for American Progress",
+   "span_verified": true,
+   "event_time": "2022",
+   "publication_time": 1673510400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Center for American Progress"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_83bc268af0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c4c0dcd2f0"
+   }
+  },
+  {
+   "claim_id": "a92caf579df855bd:c0",
+   "source_id": "a92caf579df855bd",
+   "subject": "these jobs",
+   "predicate": "are accessible without a degree",
+   "object": "no degree",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "No Degree? That\u2019s No Problem for These Jobs",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682492400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "AARP"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d464e487be",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_2460f791ff"
+   }
+  },
+  {
+   "claim_id": "2147069a66dae52f:c0",
+   "source_id": "2147069a66dae52f",
+   "subject": "The Ghosts of Housing Discrimination",
+   "predicate": "reach beyond",
+   "object": "Redlining",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Ghosts of Housing Discrimination Reach Beyond Redlining",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678863600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Ghosts of Housing Discrimination",
+    "Redlining"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_821e45e570",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c4c0dcd2f0"
+   }
+  },
+  {
+   "claim_id": "2147069a66dae52f:c1",
+   "source_id": "2147069a66dae52f",
+   "subject": "The Ghosts of Housing Discrimination",
+   "predicate": "is from",
+   "object": "Urban Institute",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Ghosts of Housing Discrimination Reach Beyond Redlining - Urban Institute",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678863600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Ghosts of Housing Discrimination",
+    "Urban Institute"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_821e45e570",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c4c0dcd2f0"
+   }
+  },
+  {
+   "claim_id": "b9750efd4f4232cd:c0",
+   "source_id": "b9750efd4f4232cd",
+   "subject": "BetterUp",
+   "predicate": "published",
+   "object": "article titled 'Favoritism in the Workplace: How to Manage It'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Favoritism in the Workplace: How to Manage It - BetterUp",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678777200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "BetterUp"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e0e7018991",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_2460f791ff"
+   }
+  },
+  {
+   "claim_id": "55a3ca4c7ff0df83:c0",
+   "source_id": "55a3ca4c7ff0df83",
+   "subject": "Scammers",
+   "predicate": "are posing as",
+   "object": "Recruiters on LinkedIn",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Scammers Are Posing as Recruiters on LinkedIn",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678690800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Scammers",
+    "Recruiters",
+    "LinkedIn"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_09be15ac32",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_2460f791ff"
+   }
+  },
+  {
+   "claim_id": "55a3ca4c7ff0df83:c1",
+   "source_id": "55a3ca4c7ff0df83",
+   "subject": "Scammers",
+   "predicate": "are swindling",
+   "object": "Job Seekers",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Swindling Job Seekers",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678690800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Scammers",
+    "Job Seekers"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_09be15ac32",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_2460f791ff"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "employee-experience manager",
+   "normalized": "employee-experience manager",
+   "candidates": [
+    {
+     "entity_id": "ent_f40d2ca921",
+     "canonical": "employee-experience manager",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "employee-experience manager"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "US",
+   "normalized": "us",
+   "candidates": [
+    {
+     "entity_id": "ent_da2b128800",
+     "canonical": "us",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "US"
+     ]
+    },
+    {
+     "entity_id": "ent_eafb9ec60e",
+     "canonical": "ghosts of housing discrimination",
+     "support": 0.2929,
+     "evidence_mentions": [
+      "The Ghosts of Housing Discrimination",
+      "The Ghosts of Housing Discrimination"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Center for American Progress",
+   "normalized": "center for american progress",
+   "candidates": [
+    {
+     "entity_id": "ent_0f5c0d783f",
+     "canonical": "center for american progress",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Center for American Progress"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "AARP",
+   "normalized": "aarp",
+   "candidates": [
+    {
+     "entity_id": "ent_e6bb51e27f",
+     "canonical": "aarp",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "AARP"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Ghosts of Housing Discrimination",
+   "normalized": "ghosts of housing discrimination",
+   "candidates": [
+    {
+     "entity_id": "ent_eafb9ec60e",
+     "canonical": "ghosts of housing discrimination",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "The Ghosts of Housing Discrimination",
+      "The Ghosts of Housing Discrimination"
+     ]
+    },
+    {
+     "entity_id": "ent_da2b128800",
+     "canonical": "us",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "US"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Redlining",
+   "normalized": "redlining",
+   "candidates": [
+    {
+     "entity_id": "ent_0df139c8c2",
+     "canonical": "redlining",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Redlining"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Ghosts of Housing Discrimination",
+   "normalized": "ghosts of housing discrimination",
+   "candidates": [
+    {
+     "entity_id": "ent_eafb9ec60e",
+     "canonical": "ghosts of housing discrimination",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "The Ghosts of Housing Discrimination",
+      "The Ghosts of Housing Discrimination"
+     ]
+    },
+    {
+     "entity_id": "ent_da2b128800",
+     "canonical": "us",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "US"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Urban Institute",
+   "normalized": "urban institute",
+   "candidates": [
+    {
+     "entity_id": "ent_88ffaa891a",
+     "canonical": "urban institute",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Urban Institute"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "BetterUp",
+   "normalized": "betterup",
+   "candidates": [
+    {
+     "entity_id": "ent_7bdf762caf",
+     "canonical": "betterup",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "BetterUp"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Scammers",
+   "normalized": "scammers",
+   "candidates": [
+    {
+     "entity_id": "ent_f5ce342d60",
+     "canonical": "scammers",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "Scammers",
+      "Scammers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Recruiters",
+   "normalized": "recruiters",
+   "candidates": [
+    {
+     "entity_id": "ent_3e2d6a4f9c",
+     "canonical": "recruiters",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Recruiters"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "LinkedIn",
+   "normalized": "linkedin",
+   "candidates": [
+    {
+     "entity_id": "ent_7728240c80",
+     "canonical": "linkedin",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "LinkedIn"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Scammers",
+   "normalized": "scammers",
+   "candidates": [
+    {
+     "entity_id": "ent_f5ce342d60",
+     "canonical": "scammers",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "Scammers",
+      "Scammers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Job Seekers",
+   "normalized": "job seekers",
+   "candidates": [
+    {
+     "entity_id": "ent_29bd876e58",
+     "canonical": "job seekers",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Job Seekers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "575cf91cd278f6d5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1684108800.0,
+   "claimed_pubdate_ts": 1674547200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674547200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a92caf579df855bd": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1684108800.0,
+   "claimed_pubdate_ts": 1682492400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682492400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b9750efd4f4232cd": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1684108800.0,
+   "claimed_pubdate_ts": 1678777200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678777200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "55a3ca4c7ff0df83": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1684108800.0,
+   "claimed_pubdate_ts": 1678690800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678690800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "75dfb70acfb624ef": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1684108800.0,
+   "claimed_pubdate_ts": 1683270000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683270000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "82840b19bdf1a8dd": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1684108800.0,
+   "claimed_pubdate_ts": 1673510400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673510400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2147069a66dae52f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1684108800.0,
+   "claimed_pubdate_ts": 1678863600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678863600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_853e81ca48",
+   "member_ids": [
+    "575cf91cd278f6d5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d464e487be",
+   "member_ids": [
+    "a92caf579df855bd"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "AARP",
+   "primary_source": "AARP",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e0e7018991",
+   "member_ids": [
+    "b9750efd4f4232cd"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "BetterUp",
+   "primary_source": "BetterUp",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_09be15ac32",
+   "member_ids": [
+    "55a3ca4c7ff0df83"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Canadian Business",
+   "primary_source": "Canadian Business",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c3f50ef338",
+   "member_ids": [
+    "75dfb70acfb624ef"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Winnipeg Free Press",
+   "primary_source": "Winnipeg Free Press",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_83bc268af0",
+   "member_ids": [
+    "82840b19bdf1a8dd"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Center for American Progress",
+   "primary_source": "Center for American Progress",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_821e45e570",
+   "member_ids": [
+    "2147069a66dae52f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Urban Institute",
+   "primary_source": "Urban Institute",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "575cf91cd278f6d5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674547200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "82840b19bdf1a8dd:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1673510400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a92caf579df855bd:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682492400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2147069a66dae52f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678863600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2147069a66dae52f:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678863600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b9750efd4f4232cd:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678777200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "55a3ca4c7ff0df83:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678690800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "55a3ca4c7ff0df83:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678690800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "575cf91cd278f6d5:c0",
+  "82840b19bdf1a8dd:c0",
+  "a92caf579df855bd:c0",
+  "2147069a66dae52f:c0",
+  "2147069a66dae52f:c1",
+  "b9750efd4f4232cd:c0",
+  "55a3ca4c7ff0df83:c0",
+  "55a3ca4c7ff0df83:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_2460f791ff": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_4ce7f5cfb7": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c4c0dcd2f0": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_a851ccd22f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_2f6eb9e229": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_65f7b4100e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_1c6163b62e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_5e9a6d5ec2": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_4ce7f5cfb7",
+  "req_a851ccd22f",
+  "req_2f6eb9e229",
+  "req_65f7b4100e",
+  "req_1c6163b62e",
+  "req_5e9a6d5ec2"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 7,
+  "n_contradictions": 0,
+  "n_documents": 7
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.544,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "2bc1fc8f07e91979",
+ "bundle_hash": "2bc1fc8f07e91979",
+ "_persisted_at": "2026-07-13T01:35:36Z"
+}

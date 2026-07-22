@@ -1,0 +1,610 @@
+{
+ "case_id": "founder_launch_timing",
+ "input": {
+  "question": "Will Maya Chen's two-person startup reach 500 active users within three weeks of launching their scheduling app?",
+  "as_of": "2026-07-06",
+  "horizon": "2026-08-10",
+  "intervention": "launch the app publicly on Sunday evening rather than mid-workweek",
+  "user_context": {
+   "note": "solo founder, product is feature-complete, main channel is a product forum post plus direct messages to 40 beta users; a competitor demo is rumored for July 15"
+  }
+ },
+ "simulation_status": "completed_with_degradation",
+ "support_grade": "exploratory",
+ "distribution": {
+  "reached_500_active_users": 0.0,
+  "did_not_reach_500_active_users": 1.0
+ },
+ "generated_causal_world": {
+  "plan_hash": "ed01ff12ceb4",
+  "manifest": {
+   "phase1_compiler": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "always required",
+    "version": "compiler",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase2_evidence": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "as_of supplied",
+    "version": "phase2-1.0",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase3_posterior": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "evidence bundle present",
+    "version": "phase3",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase4_actor_policy": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "causal signal ['causal_dependencies.strategic_actor_decisions'] + declared strategic actors",
+    "version": "phase4",
+    "n_events": 0,
+    "n_state_deltas": 2,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": true,
+     "why": "causal signal ['causal_dependencies.strategic_actor_decisions'] + declared strategic actors"
+    },
+    "status": "causally_active"
+   },
+   "phase6_registry": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "social causal mechanism required (dependency signal)",
+    "version": "phase6",
+    "n_events": 0,
+    "n_state_deltas": 4,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": true,
+     "why": "social causal mechanism required (dependency signal)"
+    },
+    "status": "causally_active"
+   },
+   "phase7_nonlinear": {
+    "available": true,
+    "selected": false,
+    "executed": false,
+    "omitted": true,
+    "reason": "no nonlinear causal structure named",
+    "version": "phase7",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": true,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": false,
+     "why": "no nonlinear causal structure named"
+    },
+    "status": "no_op_causally_irrelevant"
+   },
+   "phase8_persistence": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "default-on persistence-aware rollout",
+    "version": "phase8-1.0",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase9_populations": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "causal signal ['causal_dependencies.aggregate_population_behavior'] + declared populations (constructible)",
+    "version": "phase9-pop",
+    "n_events": 0,
+    "n_state_deltas": 4,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": true,
+     "why": "causal signal ['causal_dependencies.aggregate_population_behavior'] + declared populations (constructible)"
+    },
+    "status": "causally_active"
+   },
+   "phase9_networks": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "causal signal ['causal_dependencies.networked_transmission'] + declared relations (or inferable entity/population substrate)",
+    "version": "",
+    "n_events": 0,
+    "n_state_deltas": 2,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": true,
+     "why": "causal signal ['causal_dependencies.networked_transmission'] + declared relations (or inferable entity/population substrate)"
+    },
+    "status": "causally_active"
+   },
+   "phase10_institutions": {
+    "available": true,
+    "selected": false,
+    "executed": false,
+    "omitted": true,
+    "reason": "institutions declared but no causal process of this kind \u2014 context only",
+    "version": "",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": true,
+    "removal_changes_terminal": null,
+    "normalization": {
+     "executable_rules_before": 1,
+     "executable_rules_after": 2,
+     "institutions": 2,
+     "rules_total": 2,
+     "already_executable": 1,
+     "normalized": 0,
+     "unmapped_to_procedure": 1
+    },
+    "relevance": {
+     "required": false,
+     "why": "institutions declared but no causal process of this kind \u2014 context only"
+    },
+    "status": "no_op_causally_irrelevant"
+   },
+   "phase11_recompilation": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "observations available",
+    "version": "phase11",
+    "n_events": 12,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   }
+  },
+  "fidelity": {
+   "entities_added": 0,
+   "relations_added": 0,
+   "institutions_grounded": 0
+  },
+  "scheduled_reality": {
+   "n_facts_extracted": 0,
+   "n_scheduled_in_window": 0,
+   "n_outcome_entailing": 0,
+   "facts": []
+  },
+  "event_time": {
+   "contract": "binary_first_passage",
+   "options": [
+    "reached_500_active_users",
+    "did_not_reach_500_active_users"
+   ],
+   "event_polarity": "occurrence_resolves_yes",
+   "polarity_source": "criterion_parser",
+   "deadline_ts": 1786320000.0,
+   "n_absorbing_fact_events": 0,
+   "fact_floor": 0.0,
+   "n_opposite_direction_facts": 0,
+   "absorbing_institutions": [],
+   "n_residual_processes": 1,
+   "scheduling": "continuous_first_passage",
+   "residual_skipped_reason": null,
+   "consumed_state": [
+    {
+     "var": "actor_intentions",
+     "weight": 0.2
+    },
+    {
+     "var": "population_aggregate:potential_users_sf_bay_area",
+     "weight": 0.2
+    },
+    {
+     "var": "population_aggregate:potential_users_online_global",
+     "weight": 0.05
+    },
+    {
+     "var": "pathway_progress:competitive_interaction",
+     "weight": 0.6
+    },
+    {
+     "var": "pathway_progress:cooperative_agreement",
+     "weight": 0.6
+    },
+    {
+     "var": "pathway_progress:institutional_procedure",
+     "weight": 0.6
+    },
+    {
+     "var": "pathway_progress:operational_execution",
+     "weight": 0.6
+    }
+   ],
+   "endogenous_channels": [
+    "pathway_progress:competitive_interaction",
+    "pathway_progress:cooperative_agreement",
+    "pathway_progress:institutional_procedure",
+    "pathway_progress:operational_execution"
+   ],
+   "family": "announcement_or_visit",
+   "hazard_curve_source": "fitted_family_survival(n=6)",
+   "fallback_rate_provenance": "fitted_family_prior(n=1)",
+   "posterior_calibrated": true,
+   "n_resolver_events_removed": 2
+  }
+ },
+ "temporal_model_report": {
+  "temporal_model_hash": "88e6a197f236d407",
+  "n_channels": 3,
+  "n_actor_profiles": 0,
+  "n_institutional_processes": 1,
+  "n_continuous_processes": 0,
+  "n_deadline_events": 2,
+  "n_recurrence_events": 0,
+  "n_recurrences_accepted": 0,
+  "n_critic_findings": 12,
+  "n_llm_calls": 4,
+  "degraded": null,
+  "unresolved": [
+   "user_acquisition_curve_from_forum_post",
+   "competitor_demo_impact_on_user_attention",
+   "deadlines.competitor_demo_rumor.timing: demoted by temporal_critic_B \u2014 Exact timestamp 2026-07-15 for a rumor is invented precision; should be a range or unresolved.",
+   "deadlines.three_week_horizon.timing: demoted by temporal_critic_B \u2014 Exact timestamp for horizon is given but scenario start is as-of 2026-07-06; three weeks later is 2026-07-27, not 2026-08-10.",
+   "channels.direct_message.modifiers[0]: demoted by temporal_critic_B \u2014 Weekend delay factor of 2 for direct messages is unrealistic and lacks evidence; should be unresolved.",
+   "channels.product_forum_post.modifiers[0]: demoted by temporal_critic_B \u2014 Sunday evening visibility factor of 0.5 is invented precision; no evidence for exact multiplier."
+  ]
+ },
+ "temporal_runtime": {
+  "event_counts": {
+   "external_shock": 2,
+   "observe_evidence": 16,
+   "deadline": 4,
+   "decision_opportunity": 2,
+   "population_aggregation": 4,
+   "network_diffusion": 2,
+   "first_passage_beyond_horizon": 2,
+   "structural_process_prior": 4,
+   "actor_action_aggregation": 2
+  },
+  "actor_invocations": {},
+  "n_decision_triggers": 0,
+  "decision_triggers": [],
+  "delivery_to_attention_delays_s": null,
+  "attention_to_decision_delays_s": null,
+  "decision_to_action_delays_s": null,
+  "action_to_completion_delays_s": null,
+  "same_time_batches": 16,
+  "max_batch_size": 8,
+  "max_microsteps": 1,
+  "simultaneity_conflicts": [],
+  "n_simultaneity_conflicts": 0,
+  "events_canceled": 0,
+  "events_rescheduled": 2,
+  "pending_at_horizon": [],
+  "temporally_truncated": false,
+  "truncation": null,
+  "safety_limits": {
+   "safety_max_events": 2000
+  },
+  "unresolved_timing": [],
+  "interval_advances": 12,
+  "attention_batch_sizes": [],
+  "n_branches": 2,
+  "n_branches_truncated": 0,
+  "truncated_branch_share": 0.0,
+  "temporal_model_hashes": [
+   "88e6a197f236d407"
+  ],
+  "temporal_model_id": "97520e23ccde",
+  "temporal_model_hash": "88e6a197f236d407",
+  "as_of": 1783296000.0,
+  "horizon_ts": 1786320000.0,
+  "timezone_assumptions": {
+   "maya_chen": "America/Los_Angeles",
+   "cofounder": "America/Los_Angeles",
+   "apple_app_store": "America/Los_Angeles",
+   "product_hunt": "America/New_York",
+   "tech_crunch": "America/New_York"
+  },
+  "calendar_assumptions": {
+   "maya_chen_work": {
+    "tz": "America/Los_Angeles",
+    "business_days": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "open_hour": 9.0,
+    "close_hour": 21.0,
+    "holidays": [],
+    "provenance": "model_knowledge"
+   },
+   "apple_app_store_review": {
+    "tz": "America/Los_Angeles",
+    "business_days": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "open_hour": 8.0,
+    "close_hour": 17.0,
+    "holidays": [
+     "2026-07-04"
+    ],
+    "provenance": "model_knowledge"
+   },
+   "product_hunt_launch": {
+    "tz": "America/New_York",
+    "business_days": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "open_hour": 9.0,
+    "close_hour": 24.0,
+    "holidays": [],
+    "provenance": "model_knowledge"
+   }
+  },
+  "known_scheduled_facts": [],
+  "generated_channels": [
+   "app_store_submission",
+   "direct_message",
+   "product_forum_post"
+  ],
+  "generated_actor_profiles": [],
+  "institutional_stage_processes": [
+   "app_store_review"
+  ],
+  "continuous_processes": [],
+  "temporal_latent_hypotheses": [
+   {
+    "latent_id": "weekend_attention_dip",
+    "affects": [
+     "potential_users_sf_bay_area"
+    ],
+    "hypotheses": [
+     {
+      "state": "lower_engagement_on_sunday_evening",
+      "prior": 0.7,
+      "why": "typical_consumer_behavior"
+     },
+     {
+      "state": "no_significant_difference",
+      "prior": 0.3,
+      "why": "niche_b2b_audience_may_check_anytime"
+     }
+    ]
+   }
+  ],
+  "temporal_uncertainties": [
+   {
+    "about": "app_store_review_duration",
+    "why_unknown": "apple_does_not_publish_precise_times",
+    "impact": "delays_public_availability_by_1-3_days"
+   },
+   {
+    "about": "product_forum_post_virality",
+    "why_unknown": "depends_on_algorithm_and_community_activity",
+    "impact": "affects_initial_user_acquisition_rate"
+   },
+   {
+    "about": "beta_user_conversion_rate",
+    "why_unknown": "no_prior_data_on_this_cohort",
+    "impact": "affects_whether_40_dms_yield_significant_users"
+   },
+   {
+    "about": "channels.direct_message.modifiers[0]",
+    "why_unknown": "Weekend delay factor of 2 for direct messages is unrealistically low; many professionals do not check work DMs on weekends at all, effectively a 24-48h delay.",
+    "impact": "critic-adjusted timing: {\"when\": \"weekend\", \"effect\": \"delayed_read\", \"factor\": 8}",
+    "critic": "temporal_critic_A"
+   }
+  ],
+  "unresolved_timing_mechanisms": [
+   "user_acquisition_curve_from_forum_post",
+   "competitor_demo_impact_on_user_attention",
+   "deadlines.competitor_demo_rumor.timing: demoted by temporal_critic_B \u2014 Exact timestamp 2026-07-15 for a rumor is invented precision; should be a range or unresolved.",
+   "deadlines.three_week_horizon.timing: demoted by temporal_critic_B \u2014 Exact timestamp for horizon is given but scenario start is as-of 2026-07-06; three weeks later is 2026-07-27, not 2026-08-10.",
+   "channels.direct_message.modifiers[0]: demoted by temporal_critic_B \u2014 Weekend delay factor of 2 for direct messages is unrealistic and lacks evidence; should be unresolved.",
+   "channels.product_forum_post.modifiers[0]: demoted by temporal_critic_B \u2014 Sunday evening visibility factor of 0.5 is invented precision; no evidence for exact multiplier."
+  ],
+  "timing_support_classification": "scenario_generated_unvalidated",
+  "temporal_compilation_llm_calls": 4,
+  "critic_findings": [
+   {
+    "critic": "temporal_critic_A",
+    "class": "missing_stages",
+    "where": "institutional_processes.app_store_review",
+    "problem": "Apple App Store review includes a 'Prepare for Submission' stage (metadata, screenshots, privacy policy) that is collapsed into a single submission event.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_A",
+    "class": "missing_implementation_lag",
+    "where": "dependencies.user_acquisition_acceleration",
+    "problem": "App Store approval does not instantly make the app visible to users; there is a propagation delay (indexing, search caches) of 1\u20136 hours.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_A",
+    "class": "missing_availability",
+    "where": "calendars.maya_chen_work",
+    "problem": "Maya Chen is a single human with two-person startup; no sleep/rest constraints modeled (e.g., 8h sleep, meal breaks, personal time), which would limit her ability to work 12-hour days continuously.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_A",
+    "class": "missing_availability",
+    "where": "calendars.cofounder",
+    "problem": "Cofounder is not modeled with any calendar or availability, yet is a critical human resource for development, marketing, and support.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_A",
+    "class": "missing_process",
+    "where": "channels",
+    "problem": "No channel for beta user onboarding or referral mechanics (e.g., invite links, waitlist), which are typical for early-stage user acquisition and could accelerate growth.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_A",
+    "class": "too_fast",
+    "where": "channels.direct_message.modifiers",
+    "problem": "Weekend delay factor of 2 for direct messages is unrealistically low; many professionals do not check work DMs on weekends at all, effectively a 24-48h delay.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "invented_precision",
+    "where": "deadlines.competitor_demo_rumor.timing",
+    "problem": "Exact timestamp 2026-07-15 for a rumor is invented precision; should be a range or unresolved.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "invented_precision",
+    "where": "deadlines.three_week_horizon.timing",
+    "problem": "Exact timestamp for horizon is given but scenario start is as-of 2026-07-06; three weeks later is 2026-07-27, not 2026-08-10.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_calendar_effect",
+    "where": "channels.direct_message.modifiers[0]",
+    "problem": "Weekend delay factor of 2 for direct messages is unrealistic and lacks evidence; should be unresolved.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_calendar_effect",
+    "where": "channels.product_forum_post.modifiers[0]",
+    "problem": "Sunday evening visibility factor of 0.5 is invented precision; no evidence for exact multiplier.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_deadline",
+    "where": "institutional_processes.app_store_review.stages[0].deadline",
+    "problem": "App Store submission queue stage has no deadline; Apple's SLA implies a maximum wait time that should be modeled.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_deadline",
+    "where": "institutional_processes.app_store_review.stages[1].deadline",
+    "problem": "Review stage has no deadline; Apple's typical review time is 24-48 hours but should be bounded.",
+    "applied": true
+   }
+  ],
+  "degraded": null
+ },
+ "individual_temporal": null,
+ "actor_policy_report": {
+  "requested_actor_policy_mode": "hybrid_relevant_actor_policy",
+  "actual_actor_policy_mode": "hybrid_relevant_actor_policy",
+  "construction_error": "",
+  "degraded": false,
+  "actors_routed_qualitatively": [
+   "maya_chen"
+  ],
+  "actors_routed_numerically": [],
+  "fallbacks": 0,
+  "fallback_reasons": []
+ },
+ "consequence_report": {
+  "requested_mode": "generated_actor_mediated_world",
+  "actual_mode": "generated_actor_mediated_world",
+  "actions_compiled": 0,
+  "direct_operations_applied": 0,
+  "events_scheduled": 0,
+  "processes_started": 0,
+  "objects_created": 0,
+  "facts_changed": 0,
+  "institutional_submissions": 0,
+  "actor_decisions_opened": 0,
+  "population_responses_opened": 0,
+  "information_deliveries": 0,
+  "unsupported_semantics": 0,
+  "fallbacks": 0,
+  "fallback_reasons": [],
+  "legacy_scalar_writes": 0,
+  "scenario_schema_id": "",
+  "scenario_schema_version": "",
+  "scenario_types_generated": 0,
+  "scenario_events_emitted": 0,
+  "schema_extensions": 0,
+  "observations_delivered": 0,
+  "actors_reconsidered": 0,
+  "actors_invoked": 0,
+  "actor_actions_executed": 0,
+  "actors_declined_to_act": 0,
+  "recursive_cascade_depth": 0,
+  "human_reactions_written_directly": 0,
+  "fixed_ontology_uses": 0,
+  "mechanistic_fallbacks": 0,
+  "numeric_fallbacks": 0,
+  "attention_events": 0,
+  "observation_bundles_delivered": 0,
+  "temporal_truncations": []
+ },
+ "limitations": [
+  "degraded: support grade exploratory; 3 fallback mechanism(s) used"
+ ],
+ "llm": {
+  "n_calls": 32,
+  "chars_in": 92160,
+  "chars_out": 67556,
+  "cost_usd": "not_reported_by_backend (deepseek-v4-flash; call/char proxy recorded)"
+ },
+ "runtime_s": 214.02,
+ "verification": {
+  "no_periodic_strategic_review": true,
+  "no_six_actor_truncation": true,
+  "no_fixed_30min_reconsideration": true,
+  "no_fixed_one_hour_broadcast": true,
+  "no_numeric_actor_fallback_on_truncation": true,
+  "same_time_batches_live": true,
+  "canonical_runtime_used": true,
+  "temporal_model_compiled": true,
+  "decision_triggers_recorded": true,
+  "all_passed": true
+ }
+}

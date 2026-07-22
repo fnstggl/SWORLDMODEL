@@ -1,0 +1,220 @@
+{
+ "domain": "court_ruling",
+ "question": "Will a US court rule on the Google antitrust search case?",
+ "as_of": "2023-09-01",
+ "horizon": "2024-01-01",
+ "n_requirements": 7,
+ "requirements": [
+  {
+   "id": "req_5500c6a916",
+   "need": "A ruling on the merits (e.g., summary judgment, trial verdict, or dispositive mo",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_a0edf2dad0",
+   "need": "value/context of us_district_court_dc.judge_mehta.decision_speed_factor",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  },
+  {
+   "id": "req_6da7c2b8a4",
+   "need": "evidence discriminating structural hypothesis expedited_ruling",
+   "why": "a fact that reweights competing structural hypotheses materially changes the out",
+   "voi": 0.8
+  },
+  {
+   "id": "req_ff9cb0b9fe",
+   "need": "evidence discriminating structural hypothesis standard_pace",
+   "why": "a fact that reweights competing structural hypotheses materially changes the out",
+   "voi": 0.8
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "court rule Google antitrust search case us government google llc us district court dc after:2023-04-04 before:2023-09-01",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "5e9607f7f0db"
+  },
+  {
+   "query": "district court judge mehta decision speed after:2023-04-04 before:2023-09-01",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 1,
+   "raw_hash": "1e31aa05816d"
+  },
+  {
+   "query": "structural hypothesis expedited ruling evidence discriminating after:2023-04-04 before:2023-09-01",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "0b8434076e59"
+  }
+ ],
+ "n_documents": 1,
+ "documents": [
+  {
+   "source": "Convenience Store News",
+   "title": "Judge Tosses FDA's Rule Over Premium Cigars - Convenience Store News",
+   "pub": 1691650800.0,
+   "temporal": "likely_pre_asof"
+  }
+ ],
+ "temporal_summary": {
+  "likely_pre_asof": 1
+ },
+ "included_claims": [
+  {
+   "id": "56803fe5fe4a27b4:c0",
+   "class": "observed_fact",
+   "subject": "Judge",
+   "predicate": "tosses",
+   "span": "Judge Tosses FDA's Rule Over Premium Cigars"
+  },
+  {
+   "id": "56803fe5fe4a27b4:c1",
+   "class": "official_record",
+   "subject": "Convenience Store News",
+   "predicate": "reports",
+   "span": "Judge Tosses FDA's Rule Over Premium Cigars - Convenience Store News"
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 0,
+ "entities": [
+  {
+   "mention": "Judge",
+   "top": "fda",
+   "resolved": false
+  },
+  {
+   "mention": "FDA",
+   "top": "fda",
+   "resolved": true
+  },
+  {
+   "mention": "Premium Cigars",
+   "top": "premium cigars",
+   "resolved": true
+  },
+  {
+   "mention": "Convenience Store News",
+   "top": "convenience store news",
+   "resolved": true
+  },
+  {
+   "mention": "Judge",
+   "top": "fda",
+   "resolved": false
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "independent",
+   "n": 1
+  }
+ ],
+ "n_independent_sources": 1,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 2
+ },
+ "leakage_flags": [],
+ "bundle_hash": "0bf1085ff674bfae",
+ "plan_diff": {
+  "n_entries": 8,
+  "n_structural_changes": 7,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "lean_changed",
+    "component": "outcome_lean",
+    "detail": "",
+    "supporting_claim_ids": [],
+    "before": "weak_no",
+    "after": "neutral"
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_5500c6a916",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_a0edf2dad0",
+    "detail": "2 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_6da7c2b8a4",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_ff9cb0b9fe",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_a300ff9f0e",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_25d770b12f",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_51c48477de",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 7,
+ "lean_only": false,
+ "n_institutions_pre": 1,
+ "n_institutions_post": 1,
+ "n_events_pre": 3,
+ "n_events_post": 5,
+ "observation_state_deltas": 0,
+ "terminal_pre": {
+  "no": 0.62,
+  "yes": 0.38
+ },
+ "terminal_post": {
+  "no": 0.62,
+  "yes": 0.38
+ },
+ "terminal_changed": false,
+ "evidence_is_causal": true
+}

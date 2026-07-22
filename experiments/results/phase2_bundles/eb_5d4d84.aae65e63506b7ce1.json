@@ -1,0 +1,1648 @@
+{
+ "bundle_id": "eb_5d4d84",
+ "question": "Will the infrastructure bill pass the Senate before the recess?",
+ "as_of": 1685577600.0,
+ "compiler_plan_hash": "09fc2a9bbd26",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_de49296302",
+   "claim_or_quantity": "pass if the bill receives >=60 votes in the Senate on or before 2023-08-01; otherwise fail",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "Senate",
+    "President"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8e783f1be9",
+   "claim_or_quantity": "value/context of Senators.vote_lean",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "Senators.vote_lean",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_818936b74a",
+   "claim_or_quantity": "evidence discriminating structural hypothesis party_line_vote",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:party_line_vote",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c99a715d34",
+   "claim_or_quantity": "evidence discriminating structural hypothesis bipartisan_compromise",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:bipartisan_compromise",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_7134fbd76f",
+   "claim_or_quantity": "value/context of Senate.leadership_effectiveness",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "Senate.leadership_effectiveness",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_9a81f19a5e",
+   "claim_or_quantity": "decision rules / process of Senate",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "Senate",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_dfd5ada9fc",
+   "claim_or_quantity": "value/context of Voters.support",
+   "why_relevant": "high-sensitivity latent (0.50) driving the outcome distribution",
+   "affected_component": "Voters.support",
+   "expected_sensitivity": 0.5,
+   "expected_voi": 0.5,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_de49296302",
+   "terms": "infrastructure bill pass Senate recess Senate President",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_8e783f1be9",
+   "terms": "Senators lean",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_818936b74a",
+   "terms": "structural hypothesis party line evidence discriminating",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_de49296302",
+   "logical_query": "infrastructure bill pass Senate recess Senate President after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=infrastructure+bill+pass+Senate+recess+Senate+President+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783906758.8286338,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:39:19 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw0JBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDcbz54iU2gRkdW9cwKSkn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAj4Y2ng\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "59326db173031624d734261902f142c8b40ded816d972851938f91ecba66f00a",
+   "n_bytes": 15944,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.742
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_8e783f1be9",
+   "logical_query": "Senators lean after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=Senators+lean+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783906759.572301,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:39:20 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0pBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcJ5ovXmITODH5p5OSclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAHKWOIw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "6a74516166cd58a07437331c3a43e57118cca8597d53b1107a2c85aeb97a21fc",
+   "n_bytes": 31287,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.513
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_818936b74a",
+   "logical_query": "structural hypothesis party line evidence discriminating after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=structural+hypothesis+party+line+evidence+discriminating+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783906760.0876274,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:39:20 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw0ZBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDcaL54iU2gQVzmhczKSkn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAjUc2hA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "f92c90d099a918abf431e80c7445631dc83ad4007c9c9548575b2a8631fbe800",
+   "n_bytes": 1277,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.441
+  }
+ ],
+ "raw_content_refs": [
+  "59326db173031624d734261902f142c8b40ded816d972851938f91ecba66f00a",
+  "6a74516166cd58a07437331c3a43e57118cca8597d53b1107a2c85aeb97a21fc"
+ ],
+ "documents": [
+  {
+   "id": "f1fb231a3077d48e",
+   "source": "Montana Free Press",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQUmpsSGNfUTN4YmpnMVZkdVpQNkN6QXpnNkxBSmlJWW9YWFlSQUxZU25UOUtaQnl4azJLSmpyZ2xyQ3hkaHdBRGdUTjB3TFJSMzd1WXNZQ25lYk9YM3FoV1lRclphTTJiNXg5VVBwYVBraFhsN2NYbkhvUVFWUHdkRTY0SlRBdUFfbEFmbkhZRmxnWEU?oc=5",
+   "title": "The Senate\u2019s infrastructure spending spree - Montana Free Press",
+   "text": "The Senate\u2019s infrastructure spending spree - Montana Free Press. The Senate\u2019s infrastructure spending spree Montana Free Press",
+   "content_hash": "e52d0f8d2e56f869",
+   "raw_feed_hash": "59326db173031624d734261902f142c8b40ded816d972851938f91ecba66f00a",
+   "published_at": 1682319600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_de49296302",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "963091a13c86ba91",
+   "source": "PBS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNTzdOMDZiNTJaYWItdnF4b1JOd3pJbkNEWm0xZVhvNzVocVQyYmFGcVdlWDBfWkhPbUk0UXo5NGVoU2toTDFTQTBtRUpGTXBKMm1YRFpKcTcyWUZ5aG1sQ25lVnc4UjduSDdNT0E3ZlowRXBoY3RJMXkzdUhKQmZDYm1qclZUNFhIekVXMDhxWFItdG9qMEdURVJkalB5YzkzRWRBZmctQnMwTm_SAbABQVVfeXFMTjNiRUV2V2RCZXJrbm4yV3o3cHp4djZrS0tNa0JCRlIzeGxWM2U1OTlNaThGd0hERkdSMklQSVdnUE91b3hacDZCbEVVNkNmbFVUbTh4eWx3NUFBUWdjaC1XVHRJT3REcjVUR1k2a2FfWFpGendJNkttek9BeFdxU01sRWh4ODdJZ21RNmZSR2t5UDRSZEo3NjM1MUpMYVpoVmNSX3JvMS1DZEVHYWQwdXc?oc=5",
+   "title": "Biden celebrates infrastructure projects with Mitch McConnell in Kentucky - PBS",
+   "text": "Biden celebrates infrastructure projects with Mitch McConnell in Kentucky - PBS. Biden celebrates infrastructure projects with Mitch McConnell in Kentucky PBS",
+   "content_hash": "0359c9750f1ce765",
+   "raw_feed_hash": "59326db173031624d734261902f142c8b40ded816d972851938f91ecba66f00a",
+   "published_at": 1672819200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_de49296302",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "904561b9d6add6b1",
+   "source": "The Sum and Substance",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQdlh4RlhHa1hrbTRwSnlnYTM1REhpLVd4cjJSSHp4M1ZGZUpRb0pCcldScDYzeE5lX1ZWWjBNNDNydzdZb3VnSGZUZzQ1NWw2NzBqRUxCRkxDN2ljS0o0OV9hdjRsRFlkdEkxVUNHMjEzNVVFLXZRNzZXQXd6VlZOX1dJYXBhVy0xRE53emw0T2tNZEtTVXpQRDNwdEttZVE?oc=5",
+   "title": "Bill seeks to rein in utility rates by limiting several current practices - The Sum and Substance",
+   "text": "Bill seeks to rein in utility rates by limiting several current practices - The Sum and Substance. Bill seeks to rein in utility rates by limiting several current practices The Sum and Substance",
+   "content_hash": "ff3713e68964c453",
+   "raw_feed_hash": "59326db173031624d734261902f142c8b40ded816d972851938f91ecba66f00a",
+   "published_at": 1681887600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_de49296302",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a48d1dacb13e4f9b",
+   "source": "Roll Call",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNM3NuVE9VaHJfZ3ZVV0RTYW5UMWhrdzZQdGRZc2JVTGxKMVhpb1VreFNIMmpYYWdzSzVEb0lEVHJ2bVhtUUV3R2s4eEZMbFJyYTNDRXV5RFp5anNpTTBrUnZfUW82OUVqM2RTOWtkSWVtdURLaEZRaFl2NEVzdU5TMGczbTZCSWZPX1M3ag?oc=5",
+   "title": "Amid House GOP tussle, Biden and McConnell make nice - Roll Call",
+   "text": "Amid House GOP tussle, Biden and McConnell make nice - Roll Call. Amid House GOP tussle, Biden and McConnell make nice Roll Call",
+   "content_hash": "f12a1a78d1e5b080",
+   "raw_feed_hash": "59326db173031624d734261902f142c8b40ded816d972851938f91ecba66f00a",
+   "published_at": 1672819200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_de49296302",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e3821050058f2e0f",
+   "source": "Nevada Current",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOUDlrTlNHMVJKa3JxMEZHMk43VVFwWWpKVW5xQV9RMHp4MmdNdEhYWklWWkRXZGY5Q1JpWTJkWkpFMEduX2VMaVhOZE10MXVlTmltS0lkZlBGTU0xUXh3OVlRd0xOTFA1a0MxWXNaUE44eXRaaTU4bmZSLWFMYUNvZkVwaGRGeXdRb0pPR3ZlenhWUXNaVTE5c2lWZkxpVFo1QzF1UGpkbDRPS0tMNlcxWXBWaXdqZl9wak5hbml4UG50MUpObjhz?oc=5",
+   "title": "Once upon a time\u2026 in Summerlin? Nevada considers record-smashing tax break for film industry - Nevada Current",
+   "text": "Once upon a time\u2026 in Summerlin? Nevada considers record-smashing tax break for film industry - Nevada Current. Once upon a time\u2026 in Summerlin? Nevada considers record-smashing tax break for film industry Nevada Current",
+   "content_hash": "d6f1b4181efaff01",
+   "raw_feed_hash": "59326db173031624d734261902f142c8b40ded816d972851938f91ecba66f00a",
+   "published_at": 1684306800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_de49296302",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fa14da2f3571940b",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNRWpOaWwxeVdsYlVILU1Ka3hXcElhd25VTlVBeTFoVzR3Wmo2ZHQ1RGpaY09kWEVxdmJva3VWbGFwd3JOZkVtMVNWTFFkZzhDN1dkSXIwN0JaYWpRU2FZWjFpNVlkZzVBblNDRVduS0pmQTBJeC1IV1h4M1V4QTNveA?oc=5",
+   "title": "Inside the marriage of Elaine Chao and Mitch McConnell, a political power couple who met later in life - Business Insider",
+   "text": "Inside the marriage of Elaine Chao and Mitch McConnell, a political power couple who met later in life - Business Insider. Inside the marriage of Elaine Chao and Mitch McConnell, a political power couple who met later in life Business Insider",
+   "content_hash": "9ccd1ad4fad9e8f8",
+   "raw_feed_hash": "59326db173031624d734261902f142c8b40ded816d972851938f91ecba66f00a",
+   "published_at": 1678348800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_de49296302",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "96deea0156817e80",
+   "source": "CNBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNanFEdFlDdXNycnIxRURvR053bl81UXB0bTdQY2gzNzMwV2tkNVEwajNYRmNycGtsdVNTYW4yM3NGY2NYOTZmeWJfMm0tQmlnMTdMMVVsUWZ4RHFpeGxlZWMwQzZZUmVURWt5WE9nRGd1VVl3LWstRUZTRFRyQmRmcDY3VEpIaXU0bVRFNWtkVnpVLThjZG8yNDFGOHZPNGEzR1haSXhiUW4zUdIBrwFBVV95cUxOMFA0ekFzX1J0UzZ4M0JNd3RVSDJ0X04xWTZ1eTRINzNqTVNBNGdJdHJMWXpfYjlDZ3hQUFZYa1MyZWFHTXkzSlJqTlNIWlhpUG9Ccm9mSWNiLUxnUC0wU2l2TE1zb2tscG52ak8yMEtLNlptcWJISEVKOVlWanVZTkJhTUxuV2swZzdMeVBTRkYwaC1qbkl4alhRZlVTSFVjVXlGLUtEUENobHdUYnFJ?oc=5",
+   "title": "Debt limit bill would speed completion of controversial West Virginia gas pipeline - CNBC",
+   "text": "Debt limit bill would speed completion of controversial West Virginia gas pipeline - CNBC. Debt limit bill would speed completion of controversial West Virginia gas pipeline CNBC",
+   "content_hash": "9151391552562037",
+   "raw_feed_hash": "59326db173031624d734261902f142c8b40ded816d972851938f91ecba66f00a",
+   "published_at": 1685430000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_de49296302",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "aa81a8e0a385f707",
+   "source": "Inquirer.net",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOTDNPejVjT3NyOXJXaTFfNWtVS01XaEtzVnl1ZHNhM2NwTThGem1QdFVrWllxV3BCdlhjejFubnZKd3pQU0NYME05S2F2V21tRlNjUC0zNmxoRFVVYWFEdFd1RnVfeklqUEdGQ1hfRHdOX2tYdG9ndjdtNHJEZXN1S0lKUHhRdDFNQ1JV0gGQAUFVX3lxTFBXQVlYYlo0ZFhwcWQzZ0ZLRUdDcjJ5dTdCV2tvX1ZkaDllMV9QMk0yc1dxMnJWT2tPZ2VkSXB2aUo5dzRDUl9Xb1N6akhzVG1BOHJwZ2M4TmFaWEJFT2VZWWk2SHdiMnZBRVpiUTBzVWlNR1RhRE9LYWNYTXRPeEtvbWRDeXRfdHktMUc1d0tuNg?oc=5",
+   "title": "Congress vows passage of Maharlika, wage bills - Inquirer.net",
+   "text": "Congress vows passage of Maharlika, wage bills - Inquirer.net. Congress vows passage of Maharlika, wage bills Inquirer.net",
+   "content_hash": "305cb0e987f5baf5",
+   "raw_feed_hash": "59326db173031624d734261902f142c8b40ded816d972851938f91ecba66f00a",
+   "published_at": 1683529200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_de49296302",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6f0e336c2d11cb4a",
+   "source": "Third Way",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPdkFhWnM3MWdja1NkQVUtVi10YkU4MUwzZV9ENkRhNzZJOGQtZVVnd1RkcWk0YTZ3ejJWQlJHa21icVpTREFjZ1l3R0IxMFBJZm5uNE1TZ0V6dFA1aUx0WnY4ZFpna0I1ODZRZFNUQXNLRzROREpnTXIyVFZhZENyMWxicUVUY0VBMkx4NUtKaldIemR0THRrNTczLTJsdzdFVUE3cEJ1bw?oc=5",
+   "title": "Senate Democrats Must Win Conservative-Leaning States\u2014Especially in 2024 - Third Way",
+   "text": "Senate Democrats Must Win Conservative-Leaning States\u2014Especially in 2024 - Third Way. Senate Democrats Must Win Conservative-Leaning States\u2014Especially in 2024 Third Way",
+   "content_hash": "313ac2520f26c6ec",
+   "raw_feed_hash": "6a74516166cd58a07437331c3a43e57118cca8597d53b1107a2c85aeb97a21fc",
+   "published_at": 1683874800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_8e783f1be9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "72b5d36c0a0d62cc",
+   "source": "The Nevada Independent",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNTmhORUJTdXI5UWNPS1dpQWpIOHlHZVZBRGJMRDV2ZkRNMVRPQ0MwUEtRZUdBRHhQRDdJbEo5RjVlQnhzMjdxalFBN3BwVjN0SEhWTDN0SWhCaXlmbEZlVHNfY1NPdkI1UDFubWtrdXNvMFRIeTVxNHFKVnlocW16RE1fQm9oTE1IaXphYmR0NzY5bzNTb0tkMGVNZDlOdXJVc1IwRFFaWEQ1YlVLWEIwRElaLUhHcVg2c3BHTHNIRQ?oc=5",
+   "title": "Rosen raises $2.4 million, has record $6 million on hand after first quarter of 2023 - The Nevada Independent",
+   "text": "Rosen raises $2.4 million, has record $6 million on hand after first quarter of 2023 - The Nevada Independent. Rosen raises $2.4 million, has record $6 million on hand after first quarter of 2023 The Nevada Independent",
+   "content_hash": "6d0390bf4f08feff",
+   "raw_feed_hash": "6a74516166cd58a07437331c3a43e57118cca8597d53b1107a2c85aeb97a21fc",
+   "published_at": 1680850800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_8e783f1be9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "067aef08d6c99180",
+   "source": "Florida Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQTWd1bnZFRGlha2Y4bDhsRHFfUXNLOWlHWlc3Qkw5V3Q3LXZFUFo4UUowOVhsSUk4aHExX3k2Z2l2QkxZMXEwQm11RjJFM0pnX1NNaXQ1Tjc3LXpLWFAwd2lBcGlzVkZjb1VJbmhmSGFLbUxFcWRVamtHblRaOVpsNmZkTzhOUQ?oc=5",
+   "title": "Tom Leek to run for Senate in 2024 - Florida Politics",
+   "text": "Tom Leek to run for Senate in 2024 - Florida Politics. Tom Leek to run for Senate in 2024 Florida Politics",
+   "content_hash": "0ae84c216d8d1cbb",
+   "raw_feed_hash": "6a74516166cd58a07437331c3a43e57118cca8597d53b1107a2c85aeb97a21fc",
+   "published_at": 1672905600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_8e783f1be9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "63c1cca6a1d83122",
+   "source": "New Jersey Globe",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOTU14OThVNGVSRjlYY1VsMWVSQVdLa2w0ZEliYzVxY211NjRibkpWbkVrNHJKVjhJLUpNeWhXSml1elAwZ0cxR1hQUzk4N0JRYk9faVlDUEYtU0NTT3V6ZlVOVzVjdXpiYmxLbHJ6RGNZeWg5eHRNX0k1Y2VPQ3pGYTJIbzhWWE84OGV3?oc=5",
+   "title": "Greenstein, Zwicker are yes votes on Noriega - New Jersey Globe",
+   "text": "Greenstein, Zwicker are yes votes on Noriega - New Jersey Globe. Greenstein, Zwicker are yes votes on Noriega New Jersey Globe",
+   "content_hash": "8244f5beb2967211",
+   "raw_feed_hash": "6a74516166cd58a07437331c3a43e57118cca8597d53b1107a2c85aeb97a21fc",
+   "published_at": 1684738800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_8e783f1be9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d0718e14cc15e124",
+   "source": "ABC News - Breaking News, Latest News and Videos",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNc25iRHpfT2VlcGFvNG5vUFE1VGktWFVMLVFJRE1vek1Qc19OOFB3YTlOWWVmOTJHSVl4QjI3aE9tVkhZZ3h3ZnFSRW5maXNDV2dSX2R0VXlLYmxUSFJqTjdybWlzNDR2WUs0NmpnRE5SYWk1VUZqbzFWckdURXFxb3lqeDNjZ040WG9QZlEyX29GNWdJR0x2N1E5RzRqcU1LTlo1TkFzYjAxVGPSAbABQVVfeXFMTUlDMThscHhLNzNFV212TzBsaGd5WkZjS0M3MkYtQ1picUpxeXhmS2tLckMzemh4bkFiM3RKOWpySVlyTnVEUFhlLUxiZ2FKZlRGZTNIWk9FQXBNT3VtZ1p6Skxxdl9nMUs3WmdubXF0ek1HTDRlUjVuYWNaV0hmNXMwM0VIQjRtZVNqYVFMb2ZpYkpjZ3BZMGdNMm1LbDFWYWpHQ291bmwxRGRDcy16eGw?oc=5",
+   "title": "Indiana Republicans face blessing and curse in jockeying for 2024 Senate seat - ABC News - Breaking News, Latest News and Videos",
+   "text": "Indiana Republicans face blessing and curse in jockeying for 2024 Senate seat - ABC News - Breaking News, Latest News and Videos. Indiana Republicans face blessing and curse in jockeying for 2024 Senate seat ABC News - Breaking News, Latest News and Videos",
+   "content_hash": "7275245cf067086f",
+   "raw_feed_hash": "6a74516166cd58a07437331c3a43e57118cca8597d53b1107a2c85aeb97a21fc",
+   "published_at": 1674460800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_8e783f1be9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "afe6d8a8e83c6842",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNODgzeVpKQnZCUjJUQzRDQmN6bzRPVURUcDRpZ2tHVE5CQ0pqYVFnZHo5VERyeWViNHJqWkNPVGszQU16Y0s1M3VZYjV0anVVVENNaVpUcV9zSy0tQlpCSnU2QjlXT2t3eUxuTlNKS3ZtS25OWExuNVdnUmp2UXNNS3pPcWhILUY3c1Jib3ZHa01uNGhuUHFJVXBDc0hDTm5DQkhoMV8wNGlTMFRUMUI0eVVua2tBQQ?oc=5",
+   "title": "Only 5 States Will Have Politically-Split Senate Delegations in 2023 - Business Insider",
+   "text": "Only 5 States Will Have Politically-Split Senate Delegations in 2023 - Business Insider. Only 5 States Will Have Politically-Split Senate Delegations in 2023 Business Insider",
+   "content_hash": "9334f67c2a769cb3",
+   "raw_feed_hash": "6a74516166cd58a07437331c3a43e57118cca8597d53b1107a2c85aeb97a21fc",
+   "published_at": 1672646400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_8e783f1be9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "30ff1de963667e01",
+   "source": "The Guardian",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNZGpsb3RsRWFaNGRFWGY0cWlLblBBaXFlMXN6TEZ4Q05KN1JtdkptY1hUdTVmT3VpRjh2dzlWaDBKR0ZZTC0tUnE2cVk1cGxZRm5OR0xpRnlZd3J3M0dnUHhBMWtNZnpqZjY5ejRlYjhocHZCcjlxYXZtWGZjOTZaSVU5QklzVXpTT1F3ZTIyb1VJc2R2bWpiYkhZNTB0TkVzM2x1SQ?oc=5",
+   "title": "Tim Scott: 10 things to know about the Republican entering the 2024 race - The Guardian",
+   "text": "Tim Scott: 10 things to know about the Republican entering the 2024 race - The Guardian. Tim Scott: 10 things to know about the Republican entering the 2024 race The Guardian",
+   "content_hash": "7068b647be0a4f51",
+   "raw_feed_hash": "6a74516166cd58a07437331c3a43e57118cca8597d53b1107a2c85aeb97a21fc",
+   "published_at": 1684738800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_8e783f1be9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "99261b5d686dd0f3",
+   "source": "Las Cruces Sun-News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPMHNIMWJFRW5GenZTb016UHAxS19DMDJ0MXRCeWU2WU1EN1pHV3dEeU96anpxUGNWNG1seE9qR291Q2dlWVJtVUhCcnc5Um5jR2V1b1I0eWU2M3RfTFp2LVR3OXBBTVNrd0JFa3NwbFlHXzF5b2NZMnIzRlUxWG5aa2Yzbno0WTZfUmRGMmZnckRuSWJ1U0lOdk1KUzBPaGpXSXBGeE8wNzJ5TFVKMW03WXlVZk8taUdSRklid0pocjduTndONGNvNV9PTnlTQQ?oc=5",
+   "title": "This year's legislative session chugs along - Las Cruces Sun-News",
+   "text": "This year's legislative session chugs along - Las Cruces Sun-News. This year's legislative session chugs along Las Cruces Sun-News",
+   "content_hash": "ee1389038b94a562",
+   "raw_feed_hash": "6a74516166cd58a07437331c3a43e57118cca8597d53b1107a2c85aeb97a21fc",
+   "published_at": 1677139200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_8e783f1be9",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "f1fb231a3077d48e:c0",
+   "source_id": "f1fb231a3077d48e",
+   "subject": "The Senate",
+   "predicate": "is engaged in",
+   "object": "infrastructure spending spree",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Senate\u2019s infrastructure spending spree",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682319600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Senate"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d4c62310d4",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_de49296302"
+   }
+  },
+  {
+   "claim_id": "6f0e336c2d11cb4a:c0",
+   "source_id": "6f0e336c2d11cb4a",
+   "subject": "Senate Democrats",
+   "predicate": "must win",
+   "object": "conservative-leaning states",
+   "value": "",
+   "units": "",
+   "qualifiers": "especially in 2024",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Senate Democrats Must Win Conservative-Leaning States\u2014Especially in 2024",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683874800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Senate Democrats",
+    "conservative-leaning states"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_8f46ebfd81",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8e783f1be9"
+   }
+  },
+  {
+   "claim_id": "963091a13c86ba91:c0",
+   "source_id": "963091a13c86ba91",
+   "subject": "Biden",
+   "predicate": "celebrates",
+   "object": "infrastructure projects",
+   "value": "",
+   "units": "",
+   "qualifiers": "with Mitch McConnell in Kentucky",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Biden celebrates infrastructure projects with Mitch McConnell in Kentucky",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672819200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Biden",
+    "Mitch McConnell",
+    "Kentucky"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5fb0bcebb4",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_de49296302"
+   }
+  },
+  {
+   "claim_id": "72b5d36c0a0d62cc:c0",
+   "source_id": "72b5d36c0a0d62cc",
+   "subject": "Rosen",
+   "predicate": "raised",
+   "object": "$2.4 million",
+   "value": "2.4",
+   "units": "million dollars",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Rosen raises $2.4 million",
+   "span_verified": true,
+   "event_time": "first quarter of 2023",
+   "publication_time": 1680850800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Rosen"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e077c65799",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8e783f1be9"
+   }
+  },
+  {
+   "claim_id": "72b5d36c0a0d62cc:c1",
+   "source_id": "72b5d36c0a0d62cc",
+   "subject": "Rosen",
+   "predicate": "has",
+   "object": "$6 million on hand",
+   "value": "6",
+   "units": "million dollars",
+   "qualifiers": "record",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "has record $6 million on hand after first quarter of 2023",
+   "span_verified": true,
+   "event_time": "after first quarter of 2023",
+   "publication_time": 1680850800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Rosen"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e077c65799",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8e783f1be9"
+   }
+  },
+  {
+   "claim_id": "904561b9d6add6b1:c0",
+   "source_id": "904561b9d6add6b1",
+   "subject": "Bill",
+   "predicate": "seeks to rein in",
+   "object": "utility rates",
+   "value": "",
+   "units": "",
+   "qualifiers": "by limiting several current practices",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Bill seeks to rein in utility rates by limiting several current practices",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681887600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Bill"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3c82bf8d01",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_de49296302"
+   }
+  },
+  {
+   "claim_id": "067aef08d6c99180:c0",
+   "source_id": "067aef08d6c99180",
+   "subject": "Tom Leek",
+   "predicate": "will run for",
+   "object": "Senate",
+   "value": "",
+   "units": "",
+   "qualifiers": "in 2024",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "Tom Leek to run for Senate in 2024",
+   "span_verified": true,
+   "event_time": "2024",
+   "publication_time": 1672905600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Tom Leek",
+    "Senate"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_cced4327f3",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8e783f1be9"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "The Senate",
+   "normalized": "senate",
+   "candidates": [
+    {
+     "entity_id": "ent_c81927b569",
+     "canonical": "senate",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "The Senate",
+      "Senate"
+     ]
+    },
+    {
+     "entity_id": "ent_b44bd54e3e",
+     "canonical": "senate democrats",
+     "support": 0.2409,
+     "evidence_mentions": [
+      "Senate Democrats"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Senate Democrats",
+   "normalized": "senate democrats",
+   "candidates": [
+    {
+     "entity_id": "ent_b44bd54e3e",
+     "canonical": "senate democrats",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Senate Democrats"
+     ]
+    },
+    {
+     "entity_id": "ent_c81927b569",
+     "canonical": "senate",
+     "support": 0.3318,
+     "evidence_mentions": [
+      "The Senate",
+      "Senate"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "conservative-leaning states",
+   "normalized": "conservative-leaning states",
+   "candidates": [
+    {
+     "entity_id": "ent_d34e60acd7",
+     "canonical": "conservative-leaning states",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "conservative-leaning states"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Biden",
+   "normalized": "biden",
+   "candidates": [
+    {
+     "entity_id": "ent_d1a4be2894",
+     "canonical": "biden",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Biden"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Mitch McConnell",
+   "normalized": "mitch mcconnell",
+   "candidates": [
+    {
+     "entity_id": "ent_58b42671c3",
+     "canonical": "mitch mcconnell",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Mitch McConnell"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Kentucky",
+   "normalized": "kentucky",
+   "candidates": [
+    {
+     "entity_id": "ent_709b828eaf",
+     "canonical": "kentucky",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Kentucky"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Rosen",
+   "normalized": "rosen",
+   "candidates": [
+    {
+     "entity_id": "ent_2f8ede0d22",
+     "canonical": "rosen",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "Rosen",
+      "Rosen"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Rosen",
+   "normalized": "rosen",
+   "candidates": [
+    {
+     "entity_id": "ent_2f8ede0d22",
+     "canonical": "rosen",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "Rosen",
+      "Rosen"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Bill",
+   "normalized": "bill",
+   "candidates": [
+    {
+     "entity_id": "ent_c692d6a105",
+     "canonical": "bill",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Bill"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Tom Leek",
+   "normalized": "tom leek",
+   "candidates": [
+    {
+     "entity_id": "ent_25fdbb38c7",
+     "canonical": "tom leek",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Tom Leek"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Senate",
+   "normalized": "senate",
+   "candidates": [
+    {
+     "entity_id": "ent_c81927b569",
+     "canonical": "senate",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "The Senate",
+      "Senate"
+     ]
+    },
+    {
+     "entity_id": "ent_b44bd54e3e",
+     "canonical": "senate democrats",
+     "support": 0.2409,
+     "evidence_mentions": [
+      "Senate Democrats"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "f1fb231a3077d48e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1682319600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682319600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "963091a13c86ba91": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1672819200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672819200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "904561b9d6add6b1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1681887600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681887600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a48d1dacb13e4f9b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1672819200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672819200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e3821050058f2e0f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1684306800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684306800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fa14da2f3571940b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1678348800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678348800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "96deea0156817e80": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1685430000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685430000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "aa81a8e0a385f707": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1683529200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683529200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6f0e336c2d11cb4a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1683874800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683874800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "72b5d36c0a0d62cc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1680850800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680850800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "067aef08d6c99180": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1672905600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672905600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "63c1cca6a1d83122": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1684738800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684738800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d0718e14cc15e124": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1674460800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674460800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "afe6d8a8e83c6842": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1672646400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672646400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "30ff1de963667e01": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1684738800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684738800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "99261b5d686dd0f3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1677139200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677139200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_d4c62310d4",
+   "member_ids": [
+    "f1fb231a3077d48e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Montana Free Press",
+   "primary_source": "Montana Free Press",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5fb0bcebb4",
+   "member_ids": [
+    "963091a13c86ba91"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "PBS",
+   "primary_source": "PBS",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3c82bf8d01",
+   "member_ids": [
+    "904561b9d6add6b1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Sum and Substance",
+   "primary_source": "The Sum and Substance",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5f44ef35c4",
+   "member_ids": [
+    "a48d1dacb13e4f9b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Roll Call",
+   "primary_source": "Roll Call",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_97e6ec69cf",
+   "member_ids": [
+    "e3821050058f2e0f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nevada Current",
+   "primary_source": "Nevada Current",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_78e0d0fd3d",
+   "member_ids": [
+    "fa14da2f3571940b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8c7e4c2638",
+   "member_ids": [
+    "96deea0156817e80"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CNBC",
+   "primary_source": "CNBC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5cb95edb60",
+   "member_ids": [
+    "aa81a8e0a385f707"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Inquirer.net",
+   "primary_source": "Inquirer.net",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8f46ebfd81",
+   "member_ids": [
+    "6f0e336c2d11cb4a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Third Way",
+   "primary_source": "Third Way",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e077c65799",
+   "member_ids": [
+    "72b5d36c0a0d62cc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Nevada Independent",
+   "primary_source": "The Nevada Independent",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_cced4327f3",
+   "member_ids": [
+    "067aef08d6c99180"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Florida Politics",
+   "primary_source": "Florida Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8e77278eb8",
+   "member_ids": [
+    "63c1cca6a1d83122"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "New Jersey Globe",
+   "primary_source": "New Jersey Globe",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_71323d301f",
+   "member_ids": [
+    "d0718e14cc15e124"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "ABC News - Breaking News, Latest News and Videos",
+   "primary_source": "ABC News - Breaking News, Latest News and Videos",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c98ae01764",
+   "member_ids": [
+    "afe6d8a8e83c6842"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b40558f2e1",
+   "member_ids": [
+    "30ff1de963667e01"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Guardian",
+   "primary_source": "The Guardian",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e0b80d57ba",
+   "member_ids": [
+    "99261b5d686dd0f3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Las Cruces Sun-News",
+   "primary_source": "Las Cruces Sun-News",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "f1fb231a3077d48e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682319600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6f0e336c2d11cb4a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683874800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "963091a13c86ba91:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672819200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "72b5d36c0a0d62cc:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680850800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "72b5d36c0a0d62cc:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680850800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "904561b9d6add6b1:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681887600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "067aef08d6c99180:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672905600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "f1fb231a3077d48e:c0",
+  "6f0e336c2d11cb4a:c0",
+  "963091a13c86ba91:c0",
+  "72b5d36c0a0d62cc:c0",
+  "72b5d36c0a0d62cc:c1",
+  "904561b9d6add6b1:c0",
+  "067aef08d6c99180:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_de49296302": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_8e783f1be9": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_818936b74a": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c99a715d34": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_7134fbd76f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_9a81f19a5e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_dfd5ada9fc": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_818936b74a",
+  "req_c99a715d34",
+  "req_7134fbd76f",
+  "req_9a81f19a5e",
+  "req_dfd5ada9fc"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.144,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "aae65e63506b7ce1",
+ "bundle_hash": "aae65e63506b7ce1",
+ "_persisted_at": "2026-07-13T01:39:36Z"
+}

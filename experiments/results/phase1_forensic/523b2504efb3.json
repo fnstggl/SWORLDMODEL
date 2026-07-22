@@ -1,0 +1,416 @@
+{
+ "question": "Will the startup close its Series B round within the quarter?",
+ "as_of": "2023-06-01",
+ "horizon": "2023-09-30",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "closed",
+   "not_closed"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "closed if the startup receives a binding term sheet and funds are transferred by 2023-09-30, else not_closed"
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The startup's ability to close a Series B round within the quarter depends on investor decisions, market conditions, and the startup's performance, all of which are uncertain without evidence.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 3,
+ "n_institutions": 2,
+ "n_populations": 1,
+ "n_latents": 8,
+ "sample_entities": [
+  "startup",
+  "lead_investor",
+  "syndicate_members"
+ ],
+ "sample_latents": [
+  {
+   "path": "startup.valuation_ask",
+   "candidates": {
+    "mean": 55000000.0,
+    "sd": 22500000.0,
+    "lo": 10000000.0,
+    "hi": 100000000.0
+   },
+   "sensitivity": 0.9
+  },
+  {
+   "path": "startup.revenue_run_rate",
+   "candidates": {
+    "mean": 25000000.0,
+    "sd": 12500000.0,
+    "lo": 0.0,
+    "hi": 50000000.0
+   },
+   "sensitivity": 0.9
+  },
+  {
+   "path": "startup.burn_rate",
+   "candidates": {
+    "mean": 2550000.0,
+    "sd": 1225000.0,
+    "lo": 100000.0,
+    "hi": 5000000.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "startup.cash_on_hand",
+   "candidates": {
+    "mean": 10250000.0,
+    "sd": 4875000.0,
+    "lo": 500000.0,
+    "hi": 20000000.0
+   },
+   "sensitivity": 0.8
+  }
+ ],
+ "accepted_mechanisms": [
+  "agent_decision",
+  "belief_update",
+  "relationship_update",
+  "resource_update",
+  "background_dynamics",
+  "generic_outcome_prior",
+  "poisson_arrival",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [
+  [
+   "rare_event_arrival",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "quantal_response_choice",
+   "no executable operator ('swm.world_model_v2.policy"
+  ],
+  [
+   "donation_response",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "negotiation_concession",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "trust_formation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "trust_violation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "trust_repair",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "bargaining_rubinstein",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "belief_learning",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "belief_update_exposure",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "observation_exposure",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "information_interpretation",
+   "no executable operator ('swm.world_model_v2.actor_"
+  ],
+  [
+   "information_aging",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "memory_decay",
+   "no executable operator ('swm.world_model_v2.inform"
+  ],
+  [
+   "attention_allocation",
+   "no executable operator ('swm.world_model_v2.actor_"
+  ],
+  [
+   "attention_dynamics",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "engagement_momentum_persistence",
+   "no executable operator ('swm.world_model_v2.refere"
+  ],
+  [
+   "mobilization",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "network_rewiring",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "reciprocity",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "relationship_strength_inference",
+   "no executable operator ('swm.world_model_v2.actor_"
+  ],
+  [
+   "relationship_update_bounded",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "resource_depletion",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "social_preference_population",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "norm_compliance",
+   "no executable operator ('swm.world_model_v2.actor_"
+  ],
+  [
+   "habit_formation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "reinforcement_learning",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "experience_weighted_attraction",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "hierarchical_rate_shrinkage",
+   "no executable operator ('swm.world_model_v2.infere"
+  ],
+  [
+   "susceptibility_frailty",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "finite_population_saturation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "complex_contagion_hazard",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "simple_contagion_hazard",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "threshold_adoption",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "bounded_confidence",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "degroot_influence",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "coalition_formation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "institutional_vote",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "voting_turnout",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "poll_error_aggregation",
+   "no executable operator ('')"
+  ],
+  [
+   "whipcount_binomial",
+   "no executable operator ('')"
+  ],
+  [
+   "agenda_stage_control",
+   "no executable operator ('swm.world_model_v2.instit"
+  ],
+  [
+   "bernoulli_detection",
+   "no executable operator ('swm.world_model_v2.observ"
+  ],
+  [
+   "gaussian_measurement",
+   "no executable operator ('swm.world_model_v2.observ"
+  ],
+  [
+   "platform_examination",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "platform_ranking",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "exposure_response_hazard",
+   "no executable operator ('swm.world_model_v2.regist"
+  ]
+ ],
+ "experimental_mechanisms": [
+  "investment_committee_decision",
+  "term_sheet_negotiation"
+ ],
+ "mechanism_tiers": {
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "strong_lead_investor",
+   "lean": "weak_yes",
+   "prior": 0.3
+  },
+  {
+   "id": "valuation_gap",
+   "lean": "weak_no",
+   "prior": 0.3
+  },
+  {
+   "id": "market_downturn",
+   "lean": "strong_no",
+   "prior": 0.2
+  },
+  {
+   "id": "existing_backers_support",
+   "lean": "weak_yes",
+   "prior": 0.2
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "startup",
+   "lead_investor",
+   "syndicate_members",
+   "potential_investors",
+   "board_of_directors",
+   "market_conditions",
+   "startup.valuation_ask",
+   "startup.revenue_run_rate",
+   "startup.burn_rate",
+   "startup.cash_on_hand",
+   "lead_investor.due_diligence_status",
+   "lead_investor.decision_timeline",
+   "market_sentiment_index",
+   "interest_rate"
+  ],
+  "marginalized_with_uncertainty": [],
+  "n_particles": 80
+ },
+ "omissions": [],
+ "world_provenance_statuses": {},
+ "n_deltas": 561,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "strong_lead_investor": 0.3,
+  "valuation_gap": 0.3,
+  "market_downturn": 0.2,
+  "existing_backers_support": 0.2
+ },
+ "delta_log_sample": [
+  {
+   "at": 1688720907.7183197,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1689450250.687319,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1691706077.940838,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1692063489.2164218,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1696031999.0,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1696031999.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=weak_yes"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "not_closed": 0.55,
+   "closed": 0.45
+  },
+  "raw_probability": 0.45,
+  "structural_disagreement": {
+   "strong_lead_investor": 0.3,
+   "valuation_gap": 0.3,
+   "market_downturn": 0.2,
+   "existing_backers_support": 0.2
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 80,
+   "structural_model_uncertainty": 0.9855,
+   "structural_posterior": {
+    "strong_lead_investor": 0.3,
+    "valuation_gap": 0.3,
+    "market_downturn": 0.2,
+    "existing_backers_support": 0.2
+   },
+   "state_parameter_uncertainty": 0.2388,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "76ce112ac5ce"
+ },
+ "plan_hash": "76ce112ac5ce",
+ "latency_s": 17.07
+}

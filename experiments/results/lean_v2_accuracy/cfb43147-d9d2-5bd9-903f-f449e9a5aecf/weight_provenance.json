@@ -1,0 +1,307 @@
+{
+ "grounding": {
+  "version": "lean_v2.grounding.v1",
+  "shared_world_conditions": {
+   "easing_cycle_ended": {
+    "claim": "Banxico declared its two-year easing cycle over at the May 7, 2026 meeting, signaling a shift to a more cautious stance.",
+    "affects_actors": [],
+    "states": [
+     "easing_cycle_active",
+     "easing_cycle_ended"
+    ],
+    "table": {
+     "key": "f751bd5320ef777e",
+     "quantity": "shared:easing_cycle_ended",
+     "source_class": "counted_reference_class",
+     "rate": 0.75,
+     "interval": [
+      0.3387,
+      1.0
+     ],
+     "n": 1,
+     "provenance": {
+      "definition": "Banxico declared its two-year easing cycle over at the May 7, 2026 meeting, signaling a shift to a more cautious stance.",
+      "inclusion_criteria": "",
+      "exclusion_criteria": "",
+      "hierarchy_level": "broad_human_decision_class",
+      "level_fallback_reason": "all levels sparse (total 1 usable case(s)); rate is wide by construction",
+      "n_considered": 1,
+      "n_included": 1,
+      "numerator": 1,
+      "denominator": 1,
+      "rate_mean": 0.75,
+      "rate_interval": [
+       0.3387,
+       1.0
+      ],
+      "evidence_cutoff": "2026-05-14",
+      "cases": [
+       {
+        "case_id": "case_0",
+        "description": "Banxico ends easing cycle with split vote, citing contraction and upward inflation revision.",
+        "date": "2026-05-07",
+        "outcome": true,
+        "source": "https://www.investing.com/news/economy-news/mexicos-central-bank-reduces-benchmark-rate-to-650-in-split-vote-...",
+        "basis_quote": "The central bank cited a contraction in economic activity and revised its inflation forecast for Q2 2026 upward to 4.1%, while targeting convergence to its 3% goal by Q2 2027.",
+        "hierarchy_level": "same_institution",
+        "included": true,
+        "exclusion_reason": ""
+       }
+      ],
+      "version": "lean_v2.grounding.v1"
+     }
+    },
+    "evidence_ids": []
+   },
+   "internal_disagreement_persists": {
+    "claim": "The 3-2 split at the May 7, 2026 meeting indicates meaningful internal disagreement on the board, with two members preferring to hold rates.",
+    "affects_actors": [],
+    "states": [
+     "unanimous_recent",
+     "split_recent"
+    ],
+    "table": {
+     "key": "9174232966cbc60f",
+     "quantity": "shared:internal_disagreement_persists",
+     "source_class": "counted_reference_class",
+     "rate": 0.75,
+     "interval": [
+      0.3387,
+      1.0
+     ],
+     "n": 1,
+     "provenance": {
+      "definition": "The 3-2 split at the May 7, 2026 meeting indicates meaningful internal disagreement on the board, with two members preferring to hold rates.",
+      "inclusion_criteria": "",
+      "exclusion_criteria": "",
+      "hierarchy_level": "broad_human_decision_class",
+      "level_fallback_reason": "all levels sparse (total 1 usable case(s)); rate is wide by construction",
+      "n_considered": 1,
+      "n_included": 1,
+      "numerator": 1,
+      "denominator": 1,
+      "rate_mean": 0.75,
+      "rate_interval": [
+       0.3387,
+       1.0
+      ],
+      "evidence_cutoff": "2026-05-14",
+      "cases": [
+       {
+        "case_id": "case_0",
+        "description": "Banxico's May 7, 2026 vote was 3-2, with Heath and Espinosa dissenting in favor of a hold.",
+        "date": "2026-05-07",
+        "outcome": true,
+        "source": "https://www.investing.com/news/economy-news/mexicos-central-bank-reduces-benchmark-rate-to-650-in-split-vote-...",
+        "basis_quote": "Board members Jonathan Heath and Irene Espinosa Cantellano dissented, preferring to hold the rate at 6.75%.",
+        "hierarchy_level": "same_institution",
+        "included": true,
+        "exclusion_reason": ""
+       }
+      ],
+      "version": "lean_v2.grounding.v1"
+     }
+    },
+    "evidence_ids": []
+   }
+  },
+  "actor_state_reference_classes": {},
+  "outcome_reference_class": {
+   "key": "775872783e9bb285",
+   "quantity": "board vote is unanimous",
+   "source_class": "counted_reference_class",
+   "rate": 0.75,
+   "interval": [
+    0.3387,
+    1.0
+   ],
+   "n": 1,
+   "provenance": {
+    "definition": "All five Governing Board members vote for the same policy action (hold, cut, or hike) at the scheduled meeting.",
+    "inclusion_criteria": "Official Banxico statement or minutes showing a 5-0 vote for the same action.",
+    "exclusion_criteria": "Any vote split (4-1, 3-2, etc.) or meeting cancellation/postponement beyond July 1, 2026.",
+    "hierarchy_level": "broad_human_decision_class",
+    "level_fallback_reason": "all levels sparse (total 1 usable case(s)); rate is wide by construction",
+    "n_considered": 1,
+    "n_included": 1,
+    "numerator": 1,
+    "denominator": 1,
+    "rate_mean": 0.75,
+    "rate_interval": [
+     0.3387,
+     1.0
+    ],
+    "evidence_cutoff": "2026-05-14",
+    "cases": [
+     {
+      "case_id": "case_0",
+      "description": "Banxico's previous unanimous decisions before the split; e.g., the March 2026 meeting was unanimous.",
+      "date": "2026-03-26",
+      "outcome": true,
+      "source": "https://www.banxico.org.mx/publications-and-press/minutes-of-the-board-of-governors-meetings-regardi/minutes-regarding-m",
+      "basis_quote": "The Governing Board unanimously decided to cut the target for the overnight interbank funding rate by 25 basis points to 6.75%.",
+      "hierarchy_level": "same_institution",
+      "included": true,
+      "exclusion_reason": ""
+     }
+    ],
+    "version": "lean_v2.grounding.v1"
+   }
+  },
+  "institutional_obligations": {
+   "banxico_gb": {
+    "deadline_day": "2026-06-25",
+    "required_participants": [
+     "heath",
+     "espinosa",
+     "board_majority"
+    ],
+    "allowed_terminal_actions": [
+     "hold",
+     "cut",
+     "hike",
+     "abstain",
+     "recuse",
+     "absent",
+     "delegate"
+    ],
+    "abstention_allowed": false,
+    "recusal_allowed": false,
+    "absence_allowed": false,
+    "delegation_allowed": false,
+    "quorum": "At least 3 members must be present to vote.",
+    "waiting_allowed_before_deadline": true,
+    "consequence_of_nonparticipation": "If fewer than 3 members are present, the meeting is postponed; if postponed beyond July 1, 2026, the question resolves No."
+   }
+  },
+  "numeric_rejections": [],
+  "grounding_call_made": true
+ },
+ "state_posteriors": {
+  "victoria_rodriguez_ceja": [
+   {
+    "combo": {
+     "easing_cycle_ended": "easing_cycle_active",
+     "internal_disagreement_persists": "unanimous_recent"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "governor_consensus_builder": 0.425,
+     "governor_dove_leader": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "easing_cycle_ended": "easing_cycle_active",
+     "internal_disagreement_persists": "split_recent"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "governor_consensus_builder": 0.425,
+     "governor_dove_leader": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "easing_cycle_ended": "easing_cycle_ended",
+     "internal_disagreement_persists": "unanimous_recent"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "governor_consensus_builder": 0.425,
+     "governor_dove_leader": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "easing_cycle_ended": "easing_cycle_ended",
+     "internal_disagreement_persists": "split_recent"
+    },
+    "unknown": 0.15,
+    "weights": {
+     "governor_consensus_builder": 0.425,
+     "governor_dove_leader": 0.425
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   }
+  ]
+ },
+ "shared_condition_worlds": [
+  {
+   "combo": {
+    "easing_cycle_ended": "easing_cycle_active",
+    "internal_disagreement_persists": "unanimous_recent"
+   },
+   "weight": 0.5625
+  },
+  {
+   "combo": {
+    "easing_cycle_ended": "easing_cycle_active",
+    "internal_disagreement_persists": "split_recent"
+   },
+   "weight": 0.1875
+  },
+  {
+   "combo": {
+    "easing_cycle_ended": "easing_cycle_ended",
+    "internal_disagreement_persists": "unanimous_recent"
+   },
+   "weight": 0.1875
+  },
+  {
+   "combo": {
+    "easing_cycle_ended": "easing_cycle_ended",
+    "internal_disagreement_persists": "split_recent"
+   },
+   "weight": 0.0625
+  }
+ ],
+ "unknown_state_mass": {
+  "victoria_rodriguez_ceja": 0.15
+ },
+ "dependence": null,
+ "no_label_derived_weights_invariant": {
+  "ok": true,
+  "label_derived_weights_found": 0,
+  "rule": "every weight traces to a counted reference class or is explicit unknown mass; no qualitative label is mapped to a number"
+ }
+}

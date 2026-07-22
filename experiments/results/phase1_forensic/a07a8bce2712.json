@@ -1,0 +1,212 @@
+{
+ "question": "Will the new smartphone model launch on the announced date?",
+ "as_of": "2023-08-01",
+ "horizon": "2023-10-01",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "yes",
+   "no"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "The outcome is 'yes' if the smartphone model is available for purchase or delivery to customers on the announced date; 'no' otherwise, including delays, cancell"
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The question asks whether the new smartphone model will be released to the public on the date that was previously announced by the manufacturer.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 4,
+ "n_institutions": 3,
+ "n_populations": 2,
+ "n_latents": 4,
+ "sample_entities": [
+  "manufacturer_company",
+  "supplier_chipset",
+  "regulatory_body",
+  "retail_partner"
+ ],
+ "sample_latents": [
+  {
+   "path": "manufacturer_company.production_status",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.9
+  },
+  {
+   "path": "manufacturer_company.supply_chain_health",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.9
+  },
+  {
+   "path": "manufacturer_company.regulatory_approval_status",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.7
+  },
+  {
+   "path": "manufacturing_workforce.labor_dispute_risk",
+   "candidates": {
+    "mean": 0.15,
+    "sd": 0.075,
+    "lo": 0.0,
+    "hi": 0.3
+   },
+   "sensitivity": 0.6
+  }
+ ],
+ "accepted_mechanisms": [
+  "agent_decision",
+  "belief_update",
+  "resource_update",
+  "poisson_arrival",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [
+  [
+   "institutional_vote",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "agenda_stage_control",
+   "no executable operator ('swm.world_model_v2.instit"
+  ],
+  [
+   "bernoulli_detection",
+   "no executable operator ('swm.world_model_v2.observ"
+  ],
+  [
+   "rare_event_arrival",
+   "no executable operator ('swm.world_model_v2.transi"
+  ]
+ ],
+ "experimental_mechanisms": [
+  "production_throughput",
+  "supply_chain_delay_propagation"
+ ],
+ "mechanism_tiers": {
+  "production_completion": 7,
+  "regulatory_certification": 7,
+  "supply": 7,
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "baseline_on_time",
+   "lean": "strong_yes",
+   "prior": 0.5
+  },
+  {
+   "id": "supply_chain_disruption",
+   "lean": "strong_no",
+   "prior": 0.3
+  },
+  {
+   "id": "regulatory_hold",
+   "lean": "strong_no",
+   "prior": 0.1
+  },
+  {
+   "id": "strategic_delay",
+   "lean": "weak_no",
+   "prior": 0.1
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "manufacturer_company",
+   "supplier_chipset",
+   "regulatory_body",
+   "retail_partner",
+   "manufacturing_workforce",
+   "manufacturer_company.production_status",
+   "manufacturer_company.supply_chain_health",
+   "manufacturer_company.regulatory_approval_status",
+   "manufacturing_workforce.labor_dispute_risk"
+  ],
+  "marginalized_with_uncertainty": [
+   "consumer_base"
+  ],
+  "n_particles": 74
+ },
+ "omissions": [],
+ "world_provenance_statuses": {},
+ "n_deltas": 74,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "baseline_on_time": 0.5,
+  "supply_chain_disruption": 0.2973,
+  "regulatory_hold": 0.0946,
+  "strategic_delay": 0.1081
+ },
+ "delta_log_sample": [
+  {
+   "at": 1696118399.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=strong_yes"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "yes": 0.5,
+   "no": 0.5
+  },
+  "raw_probability": 0.5,
+  "structural_disagreement": {
+   "baseline_on_time": 0.5,
+   "supply_chain_disruption": 0.2973,
+   "regulatory_hold": 0.0946,
+   "strategic_delay": 0.1081
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 74,
+   "structural_model_uncertainty": 0.8445,
+   "structural_posterior": {
+    "baseline_on_time": 0.5,
+    "supply_chain_disruption": 0.2973,
+    "regulatory_hold": 0.0946,
+    "strategic_delay": 0.1081
+   },
+   "state_parameter_uncertainty": 0.2514,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "e13a524bcec5"
+ },
+ "plan_hash": "e13a524bcec5",
+ "latency_s": 16.52
+}

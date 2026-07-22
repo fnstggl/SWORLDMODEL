@@ -2,6 +2,31 @@
 
 *A first-principles answer to: is our approach right, how far are we, and how do we build the real vision?*
 
+> **Core architecture (default-on for every V2 simulation):** explicit dynamically expandable
+> world boundaries per structural model; a residual outside-world event process; mechanically
+> bounded, heterogeneous LLM cognition (attention → finite working memory → imperfect persistent
+> memory → interpretation → limited action search → one choice); a hybrid runtime where LLM
+> actors and real institutional/population/numerical/operational/physical mechanisms share one
+> typed world, clock and `StateDelta` contract; and an absolute prohibition on silently
+> replacing an LLM actor with a different numerical psychology when compute is exhausted — the
+> branch truncates and is reported. Results classify honestly: `completed`,
+> `completed_with_degradation`, `under_modeled` (+subtypes), `truncated`, `unresolved`,
+> `partially_resolved`, `clarification_required`, `execution_failed`.
+> See **docs/WMV2_CORE_ARCHITECTURE.md**.
+>
+> **§NAP — no arbitrary numeric reality (default-on):** a numerical value may alter production
+> execution only under approved causal provenance (observed measurement, explicit user input,
+> literal institutional rule, physical identity, an empirically fitted artifact passing the
+> eligibility gate, or deterministic derivation from those). Qualitative social facts never
+> become invented numbers: no process-progress bars, no stance→hazard ratios, no hand-authored
+> action magnitudes, no capacity psychology, no persistence-survival coins, no keyword
+> family-rate or lean-Beta outcome manufacturing, no LLM-minted mode priors, and no equal-weight
+> structural averaging served as a headline probability. Missing mechanisms are recorded
+> `unresolved_mechanism`; that branch mass is preserved with honest bounds and gates
+> recommendations. Every result carries a `numeric_causal_inputs` provenance manifest. The
+> historical tables are buried in `legacy_numeric_ablations` behind an acknowledgement token.
+> See **artifacts/no_arbitrary_numeric_reality/deliverables.md**.
+
 ---
 
 ## 1. Your thesis, stated precisely — and where it is right vs wrong
@@ -110,6 +135,40 @@ QUESTION
   the reducible/irreducible split.
 
 ---
+
+## 2b. Structural-model uncertainty is DEFAULT-ON (the ensemble compiler)
+
+Law 1 says accuracy lives in matching the causal **structure** — which makes *uncertainty about the
+structure itself* the first-class uncertainty. Compiling one causally-sufficient schema and simulating
+uncertainty inside it is not enough: a perfectly executed simulation of the wrong causal model is still
+wrong. The canonical runtime therefore no longer begins with one `compile_world(...)`; it begins with a
+**structural ensemble** (`swm/world_model_v2/ensemble_compiler.py` + `structural_runtime.py`):
+
+- several **independent** actual LLM generation calls (normal target four, adaptive up to a soft
+  ceiling) each propose a materially different causal model — separate calls, blind to each other,
+  through general causal perspectives (actors, institutions, constraints, information, exogenous
+  systems, adversarial alternative);
+- adversarial critics hunt for missing decisive actors/institutions/constraints/mechanisms and can
+  spawn expansion candidates; invalid or evidence-contradicted candidates are rejected with cited
+  claims; equivalent candidates merge conservatively (deterministic structural comparison first, a
+  blind LLM judge only for near-matches);
+- every surviving model compiles into its **own executable plan** against ONE shared immutable as-of
+  evidence bundle, receives its **own posterior**, its own event-time conversion and Phase-11 lineage;
+- every plausible model gets a **real pilot** through the full canonical funnel (reduced particle count
+  only), and every promoted model then receives **at least the complete single-model particle budget**,
+  with pilot particles reused as a deterministic prefix — budgets are never divided across models;
+- results report per-model distributions, a labeled equal-weight compatibility mixture (no LLM-minted
+  model probabilities, ever), robust ranges, a structural-sensitivity classification, the assumption
+  that would reverse the answer, and the observation that would distinguish the surviving models;
+- Phase 13 evaluates every action across the surviving models (winner-by-model, minimax regret,
+  conditional strategies when models disagree); personal-reaction questions run several causal frames
+  of the reaction through the same machinery.
+
+Single-model compilation survives only as the explicit
+`execution_policy={"structural_mode": "single_structural_model"}` ablation (plus frozen-artifact
+compatibility and isolated compiler tests); enforcement tests fail if a production route reaches the
+single-plan compiler any other way. Full contract, budgets, cost controls and known limitations:
+`docs/WMV2_STRUCTURAL_ENSEMBLE.md`.
 
 ## 3. How far are we — honestly
 

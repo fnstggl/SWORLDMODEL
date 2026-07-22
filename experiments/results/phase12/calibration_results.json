@@ -1,0 +1,708 @@
+{
+  "manifest_hash": "1b0e1aa1740d0fdc",
+  "n_calibration": 75,
+  "n_validation": 32,
+  "n_test": 41,
+  "selected_calibrator": "identity",
+  "selected_params": {
+    "n_fit": 75,
+    "fitted_on": "phase12/calibration",
+    "version": "1.0"
+  },
+  "selection_comparison_on_validation": [
+    {
+      "name": "identity",
+      "val_brier": 0.1985,
+      "val_logloss": 0.5883,
+      "val_ece": 0.1393
+    },
+    {
+      "name": "platt",
+      "val_brier": 0.2156,
+      "val_logloss": 0.6115,
+      "val_ece": 0.1873
+    },
+    {
+      "name": "beta",
+      "val_brier": 0.2126,
+      "val_logloss": 0.6036,
+      "val_ece": 0.1775
+    },
+    {
+      "name": "isotonic",
+      "val_brier": 0.2127,
+      "val_logloss": 0.9248,
+      "val_ece": 0.1992
+    }
+  ],
+  "test_raw": {
+    "n": 41,
+    "brier": 0.2407,
+    "log_loss": 0.6706,
+    "ece": 0.1783
+  },
+  "test_calibrated": {
+    "n": 41,
+    "brier": 0.2407,
+    "log_loss": 0.6706,
+    "ece": 0.1783
+  },
+  "per_method_on_test": {
+    "identity": {
+      "n": 41,
+      "brier": 0.2407,
+      "log_loss": 0.6706,
+      "ece": 0.1783
+    },
+    "platt": {
+      "n": 41,
+      "brier": 0.2112,
+      "log_loss": 0.6197,
+      "ece": 0.1169
+    },
+    "beta": {
+      "n": 41,
+      "brier": 0.2125,
+      "log_loss": 0.6276,
+      "ece": 0.0906
+    },
+    "isotonic": {
+      "n": 41,
+      "brier": 0.2267,
+      "log_loss": 1.2157,
+      "ece": 0.144
+    }
+  },
+  "conditioned_comparison_on_test": {
+    "no_calibration": {
+      "n": 41,
+      "brier": 0.2407,
+      "log_loss": 0.6706,
+      "ece": 0.1783
+    },
+    "global": {
+      "n": 41,
+      "brier": 0.2407,
+      "log_loss": 0.6706,
+      "ece": 0.1783
+    },
+    "domain_only": {
+      "n": 41,
+      "brier": 0.1944,
+      "log_loss": 0.5849,
+      "ece": 0.1458
+    },
+    "horizon_only": {
+      "n": 41,
+      "brier": 0.1893,
+      "log_loss": 0.5577,
+      "ece": 0.0877
+    },
+    "support_conditioned": {
+      "n": 41,
+      "brier": 0.2068,
+      "log_loss": 0.6051,
+      "ece": 0.098
+    },
+    "hierarchical_domain_support": {
+      "n": 41,
+      "brier": 0.1963,
+      "log_loss": 0.5903,
+      "ece": 0.1069
+    }
+  },
+  "reliability_raw_test": [
+    {
+      "bucket": "0%-50%",
+      "mean_pred": 0.372,
+      "observed_freq": 0.706,
+      "n": 17
+    },
+    {
+      "bucket": "50%-60%",
+      "mean_pred": 0.539,
+      "observed_freq": 0.5,
+      "n": 8
+    },
+    {
+      "bucket": "60%-70%",
+      "mean_pred": 0.668,
+      "observed_freq": 0.8,
+      "n": 5
+    },
+    {
+      "bucket": "70%-80%",
+      "mean_pred": 0.754,
+      "observed_freq": 0.833,
+      "n": 6
+    },
+    {
+      "bucket": "80%-90%",
+      "mean_pred": 0.837,
+      "observed_freq": 0.8,
+      "n": 5
+    }
+  ],
+  "reliability_calibrated_test": [
+    {
+      "bucket": "0%-50%",
+      "mean_pred": 0.372,
+      "observed_freq": 0.706,
+      "n": 17
+    },
+    {
+      "bucket": "50%-60%",
+      "mean_pred": 0.539,
+      "observed_freq": 0.5,
+      "n": 8
+    },
+    {
+      "bucket": "60%-70%",
+      "mean_pred": 0.668,
+      "observed_freq": 0.8,
+      "n": 5
+    },
+    {
+      "bucket": "70%-80%",
+      "mean_pred": 0.754,
+      "observed_freq": 0.833,
+      "n": 6
+    },
+    {
+      "bucket": "80%-90%",
+      "mean_pred": 0.837,
+      "observed_freq": 0.8,
+      "n": 5
+    }
+  ],
+  "per_domain_calibrated_test": {
+    "elections": {
+      "n": 8,
+      "brier": 0.2779,
+      "log_loss": 0.7515,
+      "ece": 0.3812
+    },
+    "econ": {
+      "n": 6,
+      "brier": 0.2833,
+      "log_loss": 0.76,
+      "ece": 0.404
+    },
+    "finance": {
+      "n": 8,
+      "brier": 0.1842,
+      "log_loss": 0.546,
+      "ece": 0.1495
+    },
+    "tech": {
+      "n": 2,
+      "brier": 0.2273,
+      "log_loss": 0.6387,
+      "ece": 0.4447
+    },
+    "sports": {
+      "n": 4,
+      "brier": 0.4083,
+      "log_loss": 1.0593,
+      "ece": 0.6253
+    },
+    "science": {
+      "n": 5,
+      "brier": 0.1543,
+      "log_loss": 0.4758,
+      "ece": 0.3597
+    },
+    "politics": {
+      "n": 4,
+      "brier": 0.1561,
+      "log_loss": 0.4808,
+      "ece": 0.3388
+    },
+    "macro": {
+      "n": 2,
+      "brier": 0.2181,
+      "log_loss": 0.6289,
+      "ece": 0.0426
+    },
+    "geopolitics": {
+      "n": 2,
+      "brier": 0.2773,
+      "log_loss": 0.7397,
+      "ece": 0.4497
+    }
+  },
+  "per_horizon_calibrated_test": {
+    "long": {
+      "n": 25,
+      "brier": 0.2301,
+      "log_loss": 0.6465,
+      "ece": 0.1783
+    },
+    "short": {
+      "n": 16,
+      "brier": 0.2573,
+      "log_loss": 0.7082,
+      "ece": 0.3579
+    }
+  },
+  "calibration_uncertainty_test": [
+    {
+      "row_id": "phase3acc_locked:indonesia_2024",
+      "raw_p": 0.3286,
+      "calibrated": 0.3286,
+      "cal_ci90": [
+        0.3286,
+        0.3286
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:romania_2024",
+      "raw_p": 0.697,
+      "calibrated": 0.697,
+      "cal_ci90": [
+        0.697,
+        0.697
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:ghana_2024",
+      "raw_p": 0.4744,
+      "calibrated": 0.4744,
+      "cal_ci90": [
+        0.4744,
+        0.4744
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:senegal_2024",
+      "raw_p": 0.7606,
+      "calibrated": 0.7606,
+      "cal_ci90": [
+        0.7606,
+        0.7606
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:poland_2025",
+      "raw_p": 0.2958,
+      "calibrated": 0.2958,
+      "cal_ci90": [
+        0.2958,
+        0.2958
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:rba_nov24",
+      "raw_p": 0.7375,
+      "calibrated": 0.7375,
+      "cal_ci90": [
+        0.7375,
+        0.7375
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:riksbank_2024",
+      "raw_p": 0.3125,
+      "calibrated": 0.3125,
+      "cal_ci90": [
+        0.3125,
+        0.3125
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:rbi_2024",
+      "raw_p": 0.3784,
+      "calibrated": 0.3784,
+      "cal_ci90": [
+        0.3784,
+        0.3784
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:silver_40_2024",
+      "raw_p": 0.5333,
+      "calibrated": 0.5333,
+      "cal_ci90": [
+        0.5333,
+        0.5333
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:arm_ipo_2023",
+      "raw_p": 0.5789,
+      "calibrated": 0.5789,
+      "cal_ci90": [
+        0.5789,
+        0.5789
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:spirit_bk_2024",
+      "raw_p": 0.7875,
+      "calibrated": 0.7875,
+      "cal_ci90": [
+        0.7875,
+        0.7875
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:vision_pro_2024",
+      "raw_p": 0.7273,
+      "calibrated": 0.7273,
+      "cal_ci90": [
+        0.7273,
+        0.7273
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:worldseries_2024",
+      "raw_p": 0.3333,
+      "calibrated": 0.3333,
+      "cal_ci90": [
+        0.3333,
+        0.3333
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:tdf_2024",
+      "raw_p": 0.475,
+      "calibrated": 0.475,
+      "cal_ci90": [
+        0.475,
+        0.475
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:chandrayaan3_2023",
+      "raw_p": 0.6552,
+      "calibrated": 0.6552,
+      "cal_ci90": [
+        0.6552,
+        0.6552
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:polaris_2024",
+      "raw_p": 0.8971,
+      "calibrated": 0.8971,
+      "cal_ci90": [
+        0.8971,
+        0.8971
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:h5n1_dairy_2024",
+      "raw_p": 0.6984,
+      "calibrated": 0.6984,
+      "cal_ci90": [
+        0.6984,
+        0.6984
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:nobel_ai_2024",
+      "raw_p": 0.4918,
+      "calibrated": 0.4918,
+      "cal_ci90": [
+        0.4918,
+        0.4918
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:sbf_2023",
+      "raw_p": 0.8,
+      "calibrated": 0.8,
+      "cal_ci90": [
+        0.8,
+        0.8
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:boeing_strike_2024",
+      "raw_p": 0.7879,
+      "calibrated": 0.7879,
+      "cal_ci90": [
+        0.7879,
+        0.7879
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:macron_resign_2024",
+      "raw_p": 0.4754,
+      "calibrated": 0.4754,
+      "cal_ci90": [
+        0.4754,
+        0.4754
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:jpy_130_2024",
+      "raw_p": 0.3521,
+      "calibrated": 0.3521,
+      "cal_ci90": [
+        0.3521,
+        0.3521
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:djokovic_2024",
+      "raw_p": 0.8219,
+      "calibrated": 0.8219,
+      "cal_ci90": [
+        0.8219,
+        0.8219
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:covid_voc_2024",
+      "raw_p": 0.541,
+      "calibrated": 0.541,
+      "cal_ci90": [
+        0.541,
+        0.541
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:ez_recession_2024",
+      "raw_p": 0.5077,
+      "calibrated": 0.5077,
+      "cal_ci90": [
+        0.5077,
+        0.5077
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3acc_locked:nk_nuke_2024",
+      "raw_p": 0.7237,
+      "calibrated": 0.7237,
+      "cal_ci90": [
+        0.7237,
+        0.7237
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_locked:fr_nfp",
+      "raw_p": 0.3182,
+      "calibrated": 0.3182,
+      "cal_ci90": [
+        0.3182,
+        0.3182
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_locked:boe_aug24",
+      "raw_p": 0.5,
+      "calibrated": 0.5,
+      "cal_ci90": [
+        0.5,
+        0.5
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_locked:unemp_jul24",
+      "raw_p": 0.5775,
+      "calibrated": 0.5775,
+      "cal_ci90": [
+        0.5775,
+        0.5775
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_locked:us10y_5pct",
+      "raw_p": 0.56,
+      "calibrated": 0.56,
+      "cal_ci90": [
+        0.56,
+        0.56
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_locked:eth_5000",
+      "raw_p": 0.3924,
+      "calibrated": 0.3924,
+      "cal_ci90": [
+        0.3924,
+        0.3924
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_locked:tesla_robotaxi",
+      "raw_p": 0.3833,
+      "calibrated": 0.3833,
+      "cal_ci90": [
+        0.3833,
+        0.3833
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_locked:iran_israel",
+      "raw_p": 0.8243,
+      "calibrated": 0.8243,
+      "cal_ci90": [
+        0.8243,
+        0.8243
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_locked:paramount",
+      "raw_p": 0.8421,
+      "calibrated": 0.8421,
+      "cal_ci90": [
+        0.8421,
+        0.8421
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_locked:cannabis",
+      "raw_p": 0.254,
+      "calibrated": 0.254,
+      "cal_ci90": [
+        0.254,
+        0.254
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_diagnostic:trump_2024",
+      "raw_p": 0.6,
+      "calibrated": 0.6,
+      "cal_ci90": [
+        0.6,
+        0.6
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_diagnostic:shutdown_dec24",
+      "raw_p": 0.6892,
+      "calibrated": 0.6892,
+      "cal_ci90": [
+        0.6892,
+        0.6892
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_diagnostic:fed_sep24",
+      "raw_p": 0.3443,
+      "calibrated": 0.3443,
+      "cal_ci90": [
+        0.3443,
+        0.3443
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_diagnostic:fed_jan25",
+      "raw_p": 0.303,
+      "calibrated": 0.303,
+      "cal_ci90": [
+        0.303,
+        0.303
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_diagnostic:sp500_6000",
+      "raw_p": 0.4085,
+      "calibrated": 0.4085,
+      "cal_ci90": [
+        0.4085,
+        0.4085
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    },
+    {
+      "row_id": "phase3b_diagnostic:real_ucl",
+      "raw_p": 0.5125,
+      "calibrated": 0.5125,
+      "cal_ci90": [
+        0.5125,
+        0.5125
+      ],
+      "cal_sd": 0.0,
+      "eff_cal_n": 75
+    }
+  ],
+  "gate_calibration": {
+    "selected_is_identity": true,
+    "calibrated_improves_ece_or_identity": true,
+    "calibrated_not_worse_on_both_proper_scores": true,
+    "method_selected_on_validation_only": true
+  },
+  "honest_note": "The selector fell back to IDENTITY \u2014 no calibrator reliably beat the raw probabilities on validation (preserved negative)."
+}

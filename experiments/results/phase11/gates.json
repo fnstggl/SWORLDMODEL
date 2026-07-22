@@ -1,0 +1,56 @@
+{
+ "gates_version": "phase11-gates-1.0",
+ "frozen_before_eval": true,
+ "safety": {
+  "silent_state_loss": 0,
+  "silent_event_loss": 0,
+  "duplicate_executed_event_ids": 0,
+  "time_reversals": 0,
+  "circular_lineage_cycles": 0,
+  "checkpoint_integrity": 1.0,
+  "rollback_success_on_injected_failure": 1.0,
+  "deterministic_replay_parity": 1.0,
+  "post_as_of_leakage": 0,
+  "llm_invented_rules_accepted": 0
+ },
+ "trigger": {
+  "recall_min": 0.85,
+  "precision_min": 0.8,
+  "false_trigger_rate_on_controls_max": 0.1
+ },
+ "scope": {
+  "affected_recall_min": 0.85,
+  "affected_precision_min": 0.75,
+  "exact_or_equiv_min": 0.75,
+  "always_full_recompile_is_production": false
+ },
+ "migration": {
+  "unchanged_field_parity_min": 0.999,
+  "duplicate_event_rate": 0.0,
+  "lost_valid_event_rate": 0.0,
+  "time_reversal": 0,
+  "lineage_integrity": 1.0,
+  "replay_parity": 1.0
+ },
+ "predictive": {
+  "beats_no_recompile_after_change": true,
+  "improves_recovery_vs_no_recompile": true,
+  "noninferior_to_full_reset_with_less_loss": true,
+  "credible_wins_min_families": 3,
+  "no_regression_on_unchanged_controls": true,
+  "calibration_preserved_or_improved": true
+ },
+ "production_eligibility": [
+  "software_implemented",
+  "executes_end_to_end",
+  "real_held_out_validation",
+  "trigger_gates_pass",
+  "migration_gates_pass",
+  "predictive_gates_pass",
+  "safety_gates_pass",
+  "three_real_trigger_family_wins",
+  "no_critical_corruption_risk",
+  "no_hidden_manual_triggers",
+  "acceptable_cost_latency"
+ ]
+}

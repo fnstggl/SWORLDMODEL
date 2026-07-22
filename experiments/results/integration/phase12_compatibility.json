@@ -1,0 +1,15 @@
+{
+  "purpose": "Part O — Phase-12 must refit against the current runtime fingerprint; old corpora/calibrators are invalid.",
+  "current_runtime_fingerprint": "8cf389ba0ec96da8",
+  "old_phase12_corpus": {"status": "diagnostic_only",
+    "reason": "produced on the pre-unification / pre-integration-completion distribution; software-compatibility testing ONLY, NOT product-performance evidence"},
+  "old_phase12_calibrator": {"status": "INCOMPATIBLE",
+    "reason": "unified + integration-completion runtime changed the forecast distribution"},
+  "required_before_product_calibration": [
+    "all integration acceptance gates pass",
+    "regenerate the raw forecast corpus through simulate_world under the current fingerprint",
+    "refit calibration + support grading from scratch",
+    "do NOT begin the definitive sealed historical/prospective benchmark in this PR"
+  ],
+  "refit_command": "PYTHONPATH=. python experiments/phase12_refit.py --regen   # only AFTER gates pass; stamps the current fingerprint"
+}

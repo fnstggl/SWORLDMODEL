@@ -1,0 +1,1391 @@
+{
+ "bundle_id": "eb_461b42",
+ "question": "Will the union and management reach a wage agreement before the contract expires?",
+ "as_of": 1692057600.0,
+ "compiler_plan_hash": "2d437355e578",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_7e7da8f2f4",
+   "claim_or_quantity": "agreement_reached if a ratified contract is signed by both parties on or before 2023-09-30, else no_agreement",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "union_leadership",
+    "management_leadership"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_b0e50d914f",
+   "claim_or_quantity": "value/context of union_leadership.bargaining_hardness",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "union_leadership.bargaining_hardness",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8e1285e594",
+   "claim_or_quantity": "value/context of management_leadership.bargaining_hardness",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "management_leadership.bargaining_hardness",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_05876f86a1",
+   "claim_or_quantity": "value/context of union_membership.strike_willingness",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "union_membership.strike_willingness",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0073a64b37",
+   "claim_or_quantity": "evidence discriminating structural hypothesis deadline_effect",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:deadline_effect",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_e4bb9f3788",
+   "claim_or_quantity": "evidence discriminating structural hypothesis entrenchment",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:entrenchment",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_822ef51b8f",
+   "claim_or_quantity": "decision rules / process of collective_bargaining_process",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "collective_bargaining_process",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-15",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_7e7da8f2f4",
+   "terms": "union management wage agreement contract expires union leadership management leadership",
+   "after": "2023-03-18",
+   "before": "2023-08-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_b0e50d914f",
+   "terms": "union leadership bargaining hardness",
+   "after": "2023-03-18",
+   "before": "2023-08-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_8e1285e594",
+   "terms": "management leadership bargaining hardness",
+   "after": "2023-03-18",
+   "before": "2023-08-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_7e7da8f2f4",
+   "logical_query": "union management wage agreement contract expires union leadership management leadership after:2023-03-18 before:2023-08-15",
+   "wire_url": "https://news.google.com/rss/search?q=union+management+wage+agreement+contract+expires+union+leadership+management+leadership+after%3A2023-03-18+before%3A2023-08-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-18",
+   "before_date": "2023-08-15",
+   "retrieved_at": 1783906212.9834375,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:30:13 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0JBiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcS_9fuMQm0LHy430mJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC4zTlH\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "9c567ba40a6b939b6ee96528273d291a7d5b6fec91ad2ad1164ad36e8750650f",
+   "n_bytes": 31867,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.706
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_b0e50d914f",
+   "logical_query": "union leadership bargaining hardness after:2023-03-18 before:2023-08-15",
+   "wire_url": "https://news.google.com/rss/search?q=union+leadership+bargaining+hardness+after%3A2023-03-18+before%3A2023-08-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-18",
+   "before_date": "2023-08-15",
+   "retrieved_at": 1783906213.6912074,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:30:14 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0pBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcy_5fuMQm0LHgRaaSclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAH1uOMg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "da2dd22467010aea094cb6edb6e848ec15fad5494828aaa0d6ab726acec40157",
+   "n_bytes": 1237,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.455
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_8e1285e594",
+   "logical_query": "management leadership bargaining hardness after:2023-03-18 before:2023-08-15",
+   "wire_url": "https://news.google.com/rss/search?q=management+leadership+bargaining+hardness+after%3A2023-03-18+before%3A2023-08-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-18",
+   "before_date": "2023-08-15",
+   "retrieved_at": 1783906214.147796,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:30:14 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1JBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcy_5fuMQmcOHrnnVMSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgDCWDl4\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "10e86827253f83429d490cc2ef5f27b61ab38229f1809e902869b18953a504d0",
+   "n_bytes": 1247,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.411
+  }
+ ],
+ "raw_content_refs": [
+  "9c567ba40a6b939b6ee96528273d291a7d5b6fec91ad2ad1164ad36e8750650f"
+ ],
+ "documents": [
+  {
+   "id": "187f707811eb61cc",
+   "source": "NBC News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOTjVMTG8tRjdnSWhuRnZLRVc0TzdfQ1NzZ1Y0LUVFQ1RnNEgzV1hnZ0F5d2s1cXFkUVNsUkNCakhlTU0zcVlpWEcyTW1rUk93UlBQbDZITDlQWEkydUxoSGlCaVYyRlFWRDVqSmJrMnlaR3RzOFVSQ2tzUW9OaHhuNHBCYXd3YWR6N2I0Z0N5TGgxdGE2aE5GaDN5dElaU011MXdkb1dkN0FCdFE4ejZxNU5DVWFSUUVCMmdTV2xMb0dGRnhQcVE?oc=5",
+   "title": "UPS workers reach a tentative contract deal with management days ahead of strike deadline - NBC News",
+   "text": "UPS workers reach a tentative contract deal with management days ahead of strike deadline - NBC News. UPS workers reach a tentative contract deal with management days ahead of strike deadline NBC News",
+   "content_hash": "e07522e481d3c855",
+   "raw_feed_hash": "9c567ba40a6b939b6ee96528273d291a7d5b6fec91ad2ad1164ad36e8750650f",
+   "published_at": 1690268400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_7e7da8f2f4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2f5242b0b628ec32",
+   "source": "Labor Notes |",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOQURQNkhRZVd3QkN5dF9sS05KVW80TEZkbmx0RHpJQW82blUybHdQeDhmd3NDdkRLYWVlQjJsSEE3enJ2bXZCOW5ZU2xCMUF3Z3F2Y3RicExPSU9DRmlqVEVpZmpGWGtfMXM2RDd5SFlmNzlJak9PaHBHWXozVGpCVW4yWHZraUpCSnE1ZmdQUEQtR2tEUnA4?oc=5",
+   "title": "Auto Workers Convention Lurches Towards Reversing Concessions - Labor Notes |",
+   "text": "Auto Workers Convention Lurches Towards Reversing Concessions - Labor Notes |. Auto Workers Convention Lurches Towards Reversing Concessions Labor Notes |",
+   "content_hash": "39a387094f18b0c2",
+   "raw_feed_hash": "9c567ba40a6b939b6ee96528273d291a7d5b6fec91ad2ad1164ad36e8750650f",
+   "published_at": 1680159600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_7e7da8f2f4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "64efcdd17a1d092c",
+   "source": "Chalkbeat",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNX0xmWkxBQjZsdzFYem50QzZJcVVBeG5FdDZFdnYxZnAxc3RVQV9CeE5ET3lrcTM5ZFhDTFJZaGhXTnhTQVlZNTlIMldLWTJNQWF5QmJTV1FJT3c4cTNWOVI3NlYzSFRXbDVrZzYwZ0tOZXNlSnpncTVkM0N5QWdyMWI5T0VhU0JSYlpNNm5md3N5LUFRR3QzLVRkQlFSQjV5bWxrZ2dmRGJUUklHenc?oc=5",
+   "title": "NYC teachers fear UFT contract won\u2019t keep pace with inflation - Chalkbeat",
+   "text": "NYC teachers fear UFT contract won\u2019t keep pace with inflation - Chalkbeat. NYC teachers fear UFT contract won\u2019t keep pace with inflation Chalkbeat",
+   "content_hash": "1ee124b553f76182",
+   "raw_feed_hash": "9c567ba40a6b939b6ee96528273d291a7d5b6fec91ad2ad1164ad36e8750650f",
+   "published_at": 1682319600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_7e7da8f2f4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f5f824b52f7e9992",
+   "source": "Supply Chain Dive",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxObVRMU2YwRTFFVFBWNVhYZGdtbW5ZdGVsd3JWLWg4RU1YRlNjeURKazQ3cTd1TlBDYXpINXZUVDRuTW9zSUxBWTVUWGlmT09yMHNkQ25MZjE1cF84Q2lJRW5xOXphb3pYdWxmVjNhcGdBUkpvRDFvaGZWTFN0ODMzMlZOY0dmZnM5NDlCdHY1NVlIYjA?oc=5",
+   "title": "UPS, Teamsters kick off high-stakes national contract negotiations - Supply Chain Dive",
+   "text": "UPS, Teamsters kick off high-stakes national contract negotiations - Supply Chain Dive. UPS, Teamsters kick off high-stakes national contract negotiations Supply Chain Dive",
+   "content_hash": "26e40edbf69a2738",
+   "raw_feed_hash": "9c567ba40a6b939b6ee96528273d291a7d5b6fec91ad2ad1164ad36e8750650f",
+   "published_at": 1683702000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_7e7da8f2f4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5b4322effd6153f4",
+   "source": "International Brotherhood of Teamsters",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQcVRnVFlyd3RHM3JfRTB0bTQzV3FveFBPdExEQTJIQTdGa0s4ZlZ6ZFk0aG1HbWMySnZ5WVJwbHFUcDBrWXA2MVAtQ3d4b1NBSWk2TmFnZGFVT1ZqeWlOWi10N3ZaTjNYU2Q4Q2p1V200QUdvV0daY1dMSUZBa0U0TUQ4UWQ?oc=5",
+   "title": "Teamster Leaders Endorse Tentative ABF Agreement - International Brotherhood of Teamsters",
+   "text": "Teamster Leaders Endorse Tentative ABF Agreement - International Brotherhood of Teamsters. Teamster Leaders Endorse Tentative ABF Agreement International Brotherhood of Teamsters",
+   "content_hash": "8848a26192133b46",
+   "raw_feed_hash": "9c567ba40a6b939b6ee96528273d291a7d5b6fec91ad2ad1164ad36e8750650f",
+   "published_at": 1686812400.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_7e7da8f2f4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3cb7612e54e133a0",
+   "source": "Jacobin",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNcTYtemgwNTk5a3BoUmc4bjVfVU1LZjI3VkpPOTR0a3M3T0RCTjBFNExoNHlRalp1UVdYM18zcFJ3ZlhtUG5pSVlaczBkYUdEMTFpcERMMUkxVzlpb19rV0E0YWl5Z1B1b0pDQlBQbE1ibk1kUkM0bnZXdGtkQThFQ3dLRGJzQW0xVzFIRU0xTUJ3QVBmellvRXZ3?oc=5",
+   "title": "The Teamsters\u2019 UPS Contract: A Win That Leaves Some Unfinished Business - Jacobin",
+   "text": "The Teamsters\u2019 UPS Contract: A Win That Leaves Some Unfinished Business - Jacobin. The Teamsters\u2019 UPS Contract: A Win That Leaves Some Unfinished Business Jacobin",
+   "content_hash": "86ed4c58de01cce1",
+   "raw_feed_hash": "9c567ba40a6b939b6ee96528273d291a7d5b6fec91ad2ad1164ad36e8750650f",
+   "published_at": 1691737200.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_7e7da8f2f4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "cc0cc6964103b655",
+   "source": "Atlanta Journal-Constitution",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQaEpMcHZtYUdhMEd3Tzh2RmRhN0ZYNFJ6MlNmaUlHXzlxa0VFUEJCR3lCWXBjZ3pvQ2FLQTFyaEhlQzJodzlLb1FPcGI3OXU1Wk9abW1SaGhIS3lRZHMwZ25EeU5ITG5HWThyX2FZOWVkbTQzblpWQWF1LU82RXBQejN0al9ZNTNFWHBHLTlEazJOZlBRRVhPNU5PdVdNMk9KSWNaOUVCWmZldw?oc=5",
+   "title": "Opinion: Time for Teamsters to seal a deal with UPS - Atlanta Journal-Constitution",
+   "text": "Opinion: Time for Teamsters to seal a deal with UPS - Atlanta Journal-Constitution. Opinion: Time for Teamsters to seal a deal with UPS Atlanta Journal-Constitution",
+   "content_hash": "8b8608f3d887aeb1",
+   "raw_feed_hash": "9c567ba40a6b939b6ee96528273d291a7d5b6fec91ad2ad1164ad36e8750650f",
+   "published_at": 1689836400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_7e7da8f2f4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "00033154cd160e89",
+   "source": "Left Voice",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNQ1k4TXBXMUdZTjNZaVp4UWdsQjVoQ0VHVXY4YVRaRG04U3d2NlJiS3JiSnZaRTRnNkJTcmRzNWVzT2R2NVEzQzFoSmpVanppZHU1TTN1ME5pTFpTRmZVRWFRZEFZNHZBNEhraUFoRUV3OXE3OExHbUdhSnF3c0hhTkM4bDY1eGUwdDl4MUpDZUo?oc=5",
+   "title": "New York City Teachers Union Ratifies Bad Five-Year Contract - Left Voice",
+   "text": "New York City Teachers Union Ratifies Bad Five-Year Contract - Left Voice. New York City Teachers Union Ratifies Bad Five-Year Contract Left Voice",
+   "content_hash": "68fd4d2e28fa154c",
+   "raw_feed_hash": "9c567ba40a6b939b6ee96528273d291a7d5b6fec91ad2ad1164ad36e8750650f",
+   "published_at": 1689145200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_7e7da8f2f4",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "187f707811eb61cc:c0",
+   "source_id": "187f707811eb61cc",
+   "subject": "UPS workers",
+   "predicate": "reach",
+   "object": "a tentative contract deal with management",
+   "value": "",
+   "units": "",
+   "qualifiers": "days ahead of strike deadline",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "UPS workers reach a tentative contract deal with management days ahead of strike deadline",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690268400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "UPS workers",
+    "management"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ce82137a8a",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7e7da8f2f4"
+   }
+  },
+  {
+   "claim_id": "2f5242b0b628ec32:c0",
+   "source_id": "2f5242b0b628ec32",
+   "subject": "Auto Workers Convention",
+   "predicate": "lurches towards reversing",
+   "object": "concessions",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Auto Workers Convention Lurches Towards Reversing Concessions",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680159600.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Auto Workers Convention"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_046aab6b67",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7e7da8f2f4"
+   }
+  },
+  {
+   "claim_id": "64efcdd17a1d092c:c0",
+   "source_id": "64efcdd17a1d092c",
+   "subject": "NYC teachers",
+   "predicate": "fear",
+   "object": "UFT contract won\u2019t keep pace with inflation",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "NYC teachers fear UFT contract won\u2019t keep pace with inflation",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682319600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "NYC teachers",
+    "UFT contract",
+    "inflation"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_dcf6a61c48",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7e7da8f2f4"
+   }
+  },
+  {
+   "claim_id": "f5f824b52f7e9992:c0",
+   "source_id": "f5f824b52f7e9992",
+   "subject": "UPS",
+   "predicate": "kick off",
+   "object": "high-stakes national contract negotiations",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "UPS, Teamsters kick off high-stakes national contract negotiations",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683702000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "UPS",
+    "Teamsters"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c5ac5fc011",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7e7da8f2f4"
+   }
+  },
+  {
+   "claim_id": "f5f824b52f7e9992:c1",
+   "source_id": "f5f824b52f7e9992",
+   "subject": "Teamsters",
+   "predicate": "kick off",
+   "object": "high-stakes national contract negotiations",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "UPS, Teamsters kick off high-stakes national contract negotiations",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683702000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "UPS",
+    "Teamsters"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c5ac5fc011",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7e7da8f2f4"
+   }
+  },
+  {
+   "claim_id": "5b4322effd6153f4:c0",
+   "source_id": "5b4322effd6153f4",
+   "subject": "Teamster Leaders",
+   "predicate": "endorse",
+   "object": "Tentative ABF Agreement",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Teamster Leaders Endorse Tentative ABF Agreement",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686812400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Teamster Leaders",
+    "ABF Agreement"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5dcfed0f68",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7e7da8f2f4"
+   }
+  },
+  {
+   "claim_id": "3cb7612e54e133a0:c0",
+   "source_id": "3cb7612e54e133a0",
+   "subject": "Teamsters\u2019 UPS Contract",
+   "predicate": "is",
+   "object": "a win that leaves some unfinished business",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "The Teamsters\u2019 UPS Contract: A Win That Leaves Some Unfinished Business",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1691737200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Teamsters",
+    "UPS"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7335243fc3",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7e7da8f2f4"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "UPS workers",
+   "normalized": "ups workers",
+   "candidates": [
+    {
+     "entity_id": "ent_888601e86c",
+     "canonical": "ups workers",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "UPS workers"
+     ]
+    },
+    {
+     "entity_id": "ent_895da5e8ef",
+     "canonical": "ups",
+     "support": 0.3643,
+     "evidence_mentions": [
+      "UPS",
+      "UPS",
+      "UPS"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "management",
+   "normalized": "management",
+   "candidates": [
+    {
+     "entity_id": "ent_982d46d22d",
+     "canonical": "management",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "management"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Auto Workers Convention",
+   "normalized": "auto workers convention",
+   "candidates": [
+    {
+     "entity_id": "ent_252daafc5b",
+     "canonical": "auto workers convention",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Auto Workers Convention"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "NYC teachers",
+   "normalized": "nyc teachers",
+   "candidates": [
+    {
+     "entity_id": "ent_113a303d39",
+     "canonical": "nyc teachers",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "NYC teachers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "UFT contract",
+   "normalized": "uft contract",
+   "candidates": [
+    {
+     "entity_id": "ent_0157f1c4e4",
+     "canonical": "uft contract",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "UFT contract"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "inflation",
+   "normalized": "inflation",
+   "candidates": [
+    {
+     "entity_id": "ent_0e45dbfb8c",
+     "canonical": "inflation",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "inflation"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "UPS",
+   "normalized": "ups",
+   "candidates": [
+    {
+     "entity_id": "ent_895da5e8ef",
+     "canonical": "ups",
+     "support": 0.7143,
+     "evidence_mentions": [
+      "UPS",
+      "UPS",
+      "UPS"
+     ]
+    },
+    {
+     "entity_id": "ent_888601e86c",
+     "canonical": "ups workers",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "UPS workers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Teamsters",
+   "normalized": "teamsters",
+   "candidates": [
+    {
+     "entity_id": "ent_a9d7f9e825",
+     "canonical": "teamsters",
+     "support": 0.7143,
+     "evidence_mentions": [
+      "Teamsters",
+      "Teamsters",
+      "Teamsters"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "UPS",
+   "normalized": "ups",
+   "candidates": [
+    {
+     "entity_id": "ent_895da5e8ef",
+     "canonical": "ups",
+     "support": 0.7143,
+     "evidence_mentions": [
+      "UPS",
+      "UPS",
+      "UPS"
+     ]
+    },
+    {
+     "entity_id": "ent_888601e86c",
+     "canonical": "ups workers",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "UPS workers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Teamsters",
+   "normalized": "teamsters",
+   "candidates": [
+    {
+     "entity_id": "ent_a9d7f9e825",
+     "canonical": "teamsters",
+     "support": 0.7143,
+     "evidence_mentions": [
+      "Teamsters",
+      "Teamsters",
+      "Teamsters"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Teamster Leaders",
+   "normalized": "teamster leaders",
+   "candidates": [
+    {
+     "entity_id": "ent_d9bf308928",
+     "canonical": "teamster leaders",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Teamster Leaders"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "ABF Agreement",
+   "normalized": "abf agreement",
+   "candidates": [
+    {
+     "entity_id": "ent_70854d349e",
+     "canonical": "abf agreement",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "ABF Agreement"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Teamsters",
+   "normalized": "teamsters",
+   "candidates": [
+    {
+     "entity_id": "ent_a9d7f9e825",
+     "canonical": "teamsters",
+     "support": 0.7143,
+     "evidence_mentions": [
+      "Teamsters",
+      "Teamsters",
+      "Teamsters"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "UPS",
+   "normalized": "ups",
+   "candidates": [
+    {
+     "entity_id": "ent_895da5e8ef",
+     "canonical": "ups",
+     "support": 0.7143,
+     "evidence_mentions": [
+      "UPS",
+      "UPS",
+      "UPS"
+     ]
+    },
+    {
+     "entity_id": "ent_888601e86c",
+     "canonical": "ups workers",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "UPS workers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "187f707811eb61cc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1690268400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690268400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2f5242b0b628ec32": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1680159600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680159600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "64efcdd17a1d092c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1682319600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682319600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f5f824b52f7e9992": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1683702000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683702000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "5b4322effd6153f4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1686812400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686812400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3cb7612e54e133a0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1691737200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691737200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "cc0cc6964103b655": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1689836400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689836400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "00033154cd160e89": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1692057600.0,
+   "claimed_pubdate_ts": 1689145200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689145200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_ce82137a8a",
+   "member_ids": [
+    "187f707811eb61cc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NBC News",
+   "primary_source": "NBC News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_046aab6b67",
+   "member_ids": [
+    "2f5242b0b628ec32"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Labor Notes |",
+   "primary_source": "Labor Notes |",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_dcf6a61c48",
+   "member_ids": [
+    "64efcdd17a1d092c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Chalkbeat",
+   "primary_source": "Chalkbeat",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c5ac5fc011",
+   "member_ids": [
+    "f5f824b52f7e9992"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Supply Chain Dive",
+   "primary_source": "Supply Chain Dive",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5dcfed0f68",
+   "member_ids": [
+    "5b4322effd6153f4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "International Brotherhood of Teamsters",
+   "primary_source": "International Brotherhood of Teamsters",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7335243fc3",
+   "member_ids": [
+    "3cb7612e54e133a0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Jacobin",
+   "primary_source": "Jacobin",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6a397dba0c",
+   "member_ids": [
+    "cc0cc6964103b655"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Atlanta Journal-Constitution",
+   "primary_source": "Atlanta Journal-Constitution",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9d3826d250",
+   "member_ids": [
+    "00033154cd160e89"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Left Voice",
+   "primary_source": "Left Voice",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "187f707811eb61cc:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690268400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2f5242b0b628ec32:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680159600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "64efcdd17a1d092c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682319600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f5f824b52f7e9992:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683702000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f5f824b52f7e9992:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683702000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "5b4322effd6153f4:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686812400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3cb7612e54e133a0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1691737200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "187f707811eb61cc:c0",
+  "2f5242b0b628ec32:c0",
+  "64efcdd17a1d092c:c0",
+  "f5f824b52f7e9992:c0",
+  "f5f824b52f7e9992:c1",
+  "5b4322effd6153f4:c0",
+  "3cb7612e54e133a0:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_7e7da8f2f4": {
+   "status": "fulfilled",
+   "n_claims": 7,
+   "n_included": 7
+  },
+  "req_b0e50d914f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_8e1285e594": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_05876f86a1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_0073a64b37": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_e4bb9f3788": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_822ef51b8f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_b0e50d914f",
+  "req_8e1285e594",
+  "req_05876f86a1",
+  "req_0073a64b37",
+  "req_e4bb9f3788",
+  "req_822ef51b8f"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 8,
+  "n_contradictions": 0,
+  "n_documents": 8
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 12.864,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "80f1b43f4c3a19ad",
+ "bundle_hash": "80f1b43f4c3a19ad",
+ "_persisted_at": "2026-07-13T01:30:32Z"
+}

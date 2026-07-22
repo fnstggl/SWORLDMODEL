@@ -1,0 +1,177 @@
+{
+ "b13_gates": {
+  "valid_plan_rate": {
+   "value": 1.0,
+   "threshold": 0.95,
+   "op": ">=",
+   "passed": true
+  },
+  "materialize_rate": {
+   "value": 1.0,
+   "threshold": 0.9,
+   "op": ">=",
+   "passed": true
+  },
+  "complete_rollout_readout_rate": {
+   "value": 0.9231,
+   "threshold": 0.85,
+   "op": ">=",
+   "passed": true
+  },
+  "forecast_abstention_rate": {
+   "value": 0.0,
+   "threshold": 0.0,
+   "op": "==",
+   "passed": true
+  },
+  "clarification_rate": {
+   "value": 0.0,
+   "threshold": 0.05,
+   "op": "<",
+   "passed": true
+  },
+  "execution_failure_rate": {
+   "value": 0.0288,
+   "threshold": 0.1,
+   "op": "<",
+   "passed": true
+  },
+  "provenance_status_rate": {
+   "value": 1.0,
+   "threshold": 1.0,
+   "op": "==",
+   "passed": true
+  },
+  "fallback_tier_identified_rate": {
+   "value": 1.0,
+   "threshold": 1.0,
+   "op": "==",
+   "passed": true
+  },
+  "unsupported_precision_rate": {
+   "value": 0.0,
+   "threshold": 0.02,
+   "op": "<",
+   "passed": true
+  },
+  "llm_prob_injection_rate": {
+   "value": 0.0,
+   "threshold": 0.0,
+   "op": "==",
+   "passed": true
+  },
+  "no_keyword_router": {
+   "value": true,
+   "threshold": true,
+   "op": "==",
+   "passed": true,
+   "violations": []
+  }
+ },
+ "all_gates_passed": true,
+ "summary": {
+  "n_questions": 104,
+  "n_domains": 16,
+  "all_gates_passed": true,
+  "forecasts_produced": 101,
+  "forecast_rate": 0.9712,
+  "mean_support_by_grade": {
+   "highly_speculative": 100,
+   "exploratory": 4
+  },
+  "mean_latency_s": 13.06
+ },
+ "simulation_status_histogram": {
+  "completed_with_degradation": 101,
+  "execution_failed": 3
+ },
+ "support_grade_histogram": {
+  "highly_speculative": 100,
+  "exploratory": 4
+ },
+ "failure_taxonomy_histogram": {
+  "terminal_readout_unbindable": 3
+ },
+ "ablations": {
+  "full_compiler": {
+   "n": 24,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "execution_failure_rate": 0.0,
+   "mean_dispersion": 0.996,
+   "mean_struct_entropy": 1.337
+  },
+  "no_fallback_hierarchy": {
+   "n": 24,
+   "forecast_rate": 0.0,
+   "complete_rate": 0.0,
+   "execution_failure_rate": 0.042,
+   "mean_dispersion": 0.0,
+   "mean_struct_entropy": 0.0
+  },
+  "no_readout_repair": {
+   "n": 24,
+   "forecast_rate": 0.042,
+   "complete_rate": 0.042,
+   "execution_failure_rate": 0.958,
+   "mean_dispersion": 0.041,
+   "mean_struct_entropy": 0.057
+  },
+  "no_structural_hyps": {
+   "n": 24,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "execution_failure_rate": 0.0,
+   "mean_dispersion": 0.999,
+   "mean_struct_entropy": 0.0
+  },
+  "no_sensitivity_margin": {
+   "n": 24,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "execution_failure_rate": 0.0,
+   "mean_dispersion": 0.996,
+   "mean_struct_entropy": 1.337
+  }
+ },
+ "ablation_contributions": {
+  "no_fallback_hierarchy": {
+   "forecast_rate_drop": 1.0,
+   "complete_rate_drop": 1.0,
+   "execution_failure_increase": 0.042,
+   "dispersion_change": -0.996,
+   "struct_entropy_change": -1.337
+  },
+  "no_readout_repair": {
+   "forecast_rate_drop": 0.958,
+   "complete_rate_drop": 0.958,
+   "execution_failure_increase": 0.958,
+   "dispersion_change": -0.955,
+   "struct_entropy_change": -1.28
+  },
+  "no_structural_hyps": {
+   "forecast_rate_drop": 0.0,
+   "complete_rate_drop": 0.0,
+   "execution_failure_increase": 0.0,
+   "dispersion_change": 0.003,
+   "struct_entropy_change": -1.337
+  },
+  "no_sensitivity_margin": {
+   "forecast_rate_drop": 0.0,
+   "complete_rate_drop": 0.0,
+   "execution_failure_increase": 0.0,
+   "dispersion_change": 0.0,
+   "struct_entropy_change": 0.0
+  }
+ },
+ "forensic_domains": 16,
+ "meta": {
+  "llm_calls": 104,
+  "llm_tokens_est": 352003,
+  "est_cost_usd": 0.2411,
+  "model": "deepseek-chat",
+  "runtime_s": 1358.0,
+  "semantics": "no_abstention_v2",
+  "note": "production simulate() path; every coherent question forecasts; epistemic weakness lowers support_grade, never refuses. NO scripted plans."
+ }
+}

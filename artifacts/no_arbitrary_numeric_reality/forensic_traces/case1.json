@@ -1,0 +1,111 @@
+{
+  "case": "case1_negotiation_signed_proposal",
+  "question": "Will the acquisition agreement be signed by the deadline?",
+  "conversion_report": {
+    "contract": "binary_first_passage",
+    "scheduling": "provenance_gated_event_time",
+    "n_residual_processes": 0,
+    "n_absorbing_fact_events": 1,
+    "absorbing_institutions": [],
+    "residual_skipped_reason": "institutional decision or evidence-cited fact is the resolution path",
+    "posterior_calibrated": false,
+    "family_rate_rejected": {
+      "family": "meeting_or_deal_by_date",
+      "provenance": "fitted_family_prior(n=4)",
+      "value": 0.4333
+    },
+    "n_ungrounded_facts_unresolved": 0
+  },
+  "numeric_causal_inputs": {
+    "approved_and_consumed": [
+      {
+        "name": "absorbing_fact:entailed_fact:signing",
+        "value": 1.0,
+        "units": "deterministic_occurrence",
+        "causal_role": "dated outcome-entailing fact absorbs at its real date",
+        "source_class": "observed_measurement",
+        "consumer": "hazard_round.success_prob",
+        "evidence_id": "c_sign_1",
+        "fitted_on": {},
+        "architecture_compat": "",
+        "applicability": "",
+        "can_alter_terminal": true,
+        "production_eligible": true,
+        "rejection_reason": "",
+        "consumed": true,
+        "n_occurrences": 60
+      }
+    ],
+    "approved_unused": [],
+    "rejected": [
+      {
+        "name": "family_fallback_rate",
+        "value": 0.4333,
+        "units": "probability",
+        "causal_role": "keyword-selected reference-class outcome rate",
+        "source_class": "keyword_family_rate",
+        "consumer": "convert_binary_to_event_time",
+        "evidence_id": "",
+        "fitted_on": {},
+        "architecture_compat": "",
+        "applicability": "",
+        "can_alter_terminal": true,
+        "production_eligible": false,
+        "rejection_reason": "family pack (meeting_or_deal_by_date, fitted_family_prior(n=4)) is a keyword reference class without held-out validation/transport eligibility \u2014 diagnostic only",
+        "consumed": false,
+        "n_occurrences": 1
+      },
+      {
+        "name": "lean_beta_target",
+        "value": null,
+        "units": "beta_params",
+        "causal_role": "qualitative lean \u2192 broad Beta outcome mass",
+        "source_class": "lean_beta",
+        "consumer": "convert_binary_to_event_time",
+        "evidence_id": "",
+        "fitted_on": {},
+        "architecture_compat": "",
+        "applicability": "",
+        "can_alter_terminal": true,
+        "production_eligible": false,
+        "rejection_reason": "broad-prior outcome manufacturing is removed from production (\u00a7NAP)",
+        "consumed": false,
+        "n_occurrences": 1
+      }
+    ],
+    "compute_safety_only": [],
+    "analysis_display_only": [],
+    "ablation_only": [],
+    "n_inputs": 3,
+    "n_rejected": 2
+  },
+  "branch_terminals": {
+    "resolved_yes": 1.0,
+    "resolved_no": 0.0,
+    "censored_by_real_horizon": 0.0,
+    "unresolved_mechanism": 0.0
+  },
+  "unresolved_share": 0.0,
+  "bounds": {
+    "yes": {
+      "min_supported": 1.0,
+      "max_possible": 1.0
+    },
+    "no": {
+      "min_supported": 0.0,
+      "max_possible": 0.0
+    }
+  },
+  "missing_mechanisms": [],
+  "terminal_classification": "completed",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+    "yes": 1.0,
+    "no": 0.0
+  },
+  "frequency_semantics": "simulated_scenario_frequency",
+  "notes": [
+    "the ONLY load-bearing numeric input is the fact's deterministic occurrence at its real date (observed_measurement, claim c_sign_1)",
+    "the LLM extraction confidence (0.9) rides as a label, not a parameter"
+  ]
+}

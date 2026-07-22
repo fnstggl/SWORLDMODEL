@@ -9,15 +9,21 @@ from __future__ import annotations
 
 import json
 import os
+import time
+import urllib.error
 import urllib.request
 
 DEEPSEEK_URL = "https://api.deepseek.com/chat/completions"
 
 
-def deepseek_chat_fn(model: str = "deepseek-chat", *, system: str = "", max_tokens: int = 800,
-                     temperature: float = 0.0):
+def deepseek_chat_fn(model: str = "deepseek-v4-flash", *, system: str = "", max_tokens: int = 800,
+                     temperature: float = 0.0, thinking: bool = False, usage_sink=None):
     """Return a callable(prompt) -> text using the DeepSeek API. Reads DEEPSEEK_API_KEY from env only.
-    model: 'deepseek-chat' (flagship V3 chat) or 'deepseek-reasoner' (R1)."""
+    model: 'deepseek-chat' (flagship V3 chat) or 'deepseek-reasoner' (R1).
+
+    usage_sink: optional callable(dict) receiving the provider's per-call `usage` block verbatim
+    (prompt_tokens, completion_tokens, prompt_cache_hit_tokens, ...) plus {"model", "latency_s"} —
+    the cost/token manifests of the benchmark harnesses read real provider numbers, never estimates."""
     key = os.environ.get("DEEPSEEK_API_KEY", "").strip()
     # a pasted key can pick up non-ASCII junk (smart quotes, bullets, a trailing comment) → the HTTP header
     # crashes with an opaque latin-1 UnicodeEncodeError. Fail LOUDLY and clearly instead.
@@ -25,26 +31,61 @@ def deepseek_chat_fn(model: str = "deepseek-chat", *, system: str = "", max_toke
         raise ValueError("DEEPSEEK_API_KEY contains non-ASCII characters — it was likely corrupted on paste. "
                          "Re-set it by hand (no smart quotes / trailing comment): export DEEPSEEK_API_KEY=sk-…")
 
-    def fn(prompt: str) -> str:
+    def fn(prompt: str, *, max_tokens: int = None, temperature: float = None) -> str:
+        """Per-call overrides (both optional): a seam that needs a bigger completion budget than the
+        callable's default (e.g. the sentence judge returning a JSON array for every sentence) can ask
+        for it without the caller having to thread a second chat_fn through the stack. A truncated
+        judge reply used to fail OPEN — every sentence passed — so budgets are a correctness seam."""
         msgs = ([{"role": "system", "content": system}] if system else []) + \
                [{"role": "user", "content": prompt}]
-        body = json.dumps({"model": model, "messages": msgs, "max_tokens": max_tokens,
-                           "temperature": temperature}).encode()
-        req = urllib.request.Request(DEEPSEEK_URL, data=body,
-                                     headers={"Authorization": f"Bearer {key}",
-                                              "Content-Type": "application/json"})
-        with urllib.request.urlopen(req, timeout=120) as r:
-            data = json.loads(r.read())
-        return data["choices"][0]["message"]["content"]
+        payload = {"model": model, "messages": msgs,
+                   "max_tokens": int(max_tokens if max_tokens is not None else fn.default_max_tokens),
+                   "temperature": (temperature if temperature is not None else fn.default_temperature)}
+        if model.startswith("deepseek-v4") and not thinking:
+            payload["thinking"] = {"type": "disabled"}       # deterministic non-thinking mode (recorded)
+        body = json.dumps(payload).encode()
+        # bounded retry on TRANSIENT failures (connection resets, 429/5xx, timeouts) so a single network
+        # blip cannot kill a long batch. Deterministic backoff (no jitter — Math.random is unavailable
+        # in some sandboxes and determinism aids replay). Non-transient errors (4xx auth) raise at once.
+        last = None
+        for attempt in range(5):
+            try:
+                req = urllib.request.Request(DEEPSEEK_URL, data=body,
+                                             headers={"Authorization": f"Bearer {key}",
+                                                      "Content-Type": "application/json"})
+                t0 = time.time()
+                with urllib.request.urlopen(req, timeout=120) as r:
+                    data = json.loads(r.read())
+                if usage_sink is not None:
+                    try:
+                        usage_sink({**(data.get("usage") or {}), "model": model,
+                                    "latency_s": round(time.time() - t0, 3)})
+                    except Exception:  # noqa: BLE001 — metering must never break the call
+                        pass
+                return data["choices"][0]["message"]["content"]
+            except urllib.error.HTTPError as e:
+                last = e
+                if e.code not in (429, 500, 502, 503, 504) or attempt == 4:
+                    raise
+            except (urllib.error.URLError, ConnectionError, TimeoutError, OSError) as e:
+                last = e
+                if attempt == 4:
+                    raise
+            time.sleep(2 ** attempt)                       # 1, 2, 4, 8s
+        raise last                                         # unreachable (loop raises), keeps type-checkers happy
+    fn.default_max_tokens = int(max_tokens)
+    fn.default_temperature = float(temperature)
     return fn
 
 
-def default_chat_fn(*, system: str = "", max_tokens: int = 800, temperature: float = 0.0):
+def default_chat_fn(*, system: str = "", max_tokens: int = 800, temperature: float = 0.0,
+                    usage_sink=None):
     """The standard backend selector, used going forward: DeepSeek if its key is set, else the HF router
     (Qwen), else None (callers fall back to their cached/committed judgments). One place to change the
     production model."""
     if os.environ.get("DEEPSEEK_API_KEY"):
-        return deepseek_chat_fn(system=system, max_tokens=max_tokens, temperature=temperature)
+        return deepseek_chat_fn(system=system, max_tokens=max_tokens, temperature=temperature,
+                                usage_sink=usage_sink)
     if os.environ.get("HF_TOKEN"):
         from swm.api.hf_backend import hf_chat_fn
         return hf_chat_fn(system=system, max_tokens=max_tokens, temperature=temperature)

@@ -1,0 +1,71 @@
+{
+ "experiment": "exp095_thiel_reply_first",
+ "mode": "live",
+ "hypotheses_source": "thiel_v3 saved (same as exp092/094)",
+ "result": {
+  "report_type": "cold_outreach_slate",
+  "recipient": "Peter Thiel",
+  "winner_best_supported_among_tested": "reply_first_winner",
+  "within_noise_of_winner": [
+   "finalist_polished"
+  ],
+  "hypothesis_fragility": {
+   "n_llm_calls": 155
+  },
+  "ranked": [
+   {
+    "arm": "reply_first_winner",
+    "text": "Peter,\n\nI'm Beckett, 17, building Aurelius (runaurelius.com). AI infrastructure's bottleneck isn't power\u2014it's that no scheduler plans fleet trajectory over time. In simulated replay of ~1.5M public production requests, my system delivered +724% more SLA-safe goodput per dollar. That's from public traces, not a live deployment\u2014but it's real. Want the one-page technical memo? Quick question from your side: have you seen a case where a scheduler actually made the fleet's long-term economics worse by optimizing locally?",
+    "persona": null,
+    "funnel_objective": null,
+    "funnel_interval80": null,
+    "stage_trace": null,
+    "contract": null,
+    "cold_read": null,
+    "critic": null,
+    "gates": {
+     "truth": true,
+     "language": true,
+     "language_score": 0.95,
+     "problems": []
+    },
+    "origin": "S:iden>surp>evid>requ -> request_b -> pre_polish"
+   },
+   {
+    "arm": "finalist_polished",
+    "text": "Peter,\n\nI'm Beckett, 17, building Aurelius (runaurelius.com). AI infrastructure's bottleneck isn't power\u2014it's that no scheduler plans fleet trajectory over time. In simulated replay of ~1.5M public production requests, my system delivered +724% more SLA-safe goodput per dollar. That's from public traces, not a live deployment\u2014but it's real. Want the one-page technical memo? I'm curious: have you ever seen a scheduler degrade fleet economics by optimizing locally?",
+    "persona": null,
+    "funnel_objective": null,
+    "funnel_interval80": null,
+    "stage_trace": null,
+    "contract": null,
+    "cold_read": null,
+    "critic": null,
+    "gates": {
+     "truth": true,
+     "language": false,
+     "language_score": 0.95,
+     "problems": [
+      {
+       "sentence": "I'm Beckett, 17, building Aurelius (runaurelius.com).",
+       "problem": "Slightly formal self-introduction with age, but plausible for a young founder emailing a busy peer."
+      },
+      {
+       "sentence": "In simulated replay of ~1.5M public production requests, my system delivered +724% more SLA-safe goodput per dollar.",
+       "problem": "Two big numbers (~1.5M and +724%) compete for attention, but in context of a quick pitch this is borderline acceptable for a busy person."
+      },
+      {
+       "sentence": "That's from public traces, not a live deployment\u2014but it's real.",
+       "problem": "Minor hedging, but natural in a quick note."
+      }
+     ]
+    },
+    "origin": null
+   }
+  ],
+  "optimal_strategy_spec": null,
+  "honesty": "best-supported candidate under the current assumptions; no reliable distinction between finalists (uncalibrated evaluator \u2014 real outreach outcomes, not more simulation, would sharpen this)"
+ },
+ "n_raw_llm_calls": 169,
+ "wall_s": 374.0
+}

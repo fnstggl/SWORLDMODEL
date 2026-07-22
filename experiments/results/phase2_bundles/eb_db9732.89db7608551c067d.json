@@ -1,0 +1,1508 @@
+{
+ "bundle_id": "eb_db9732",
+ "question": "Will the rider be stripped from the bill in conference?",
+ "as_of": 1685577600.0,
+ "compiler_plan_hash": "1a68fc928eb2",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_a21475bc5e",
+   "claim_or_quantity": "The outcome is the final status of the rider after the conference committee concludes, as reported in official legislative records.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "rider",
+    "bill"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_02783cea89",
+   "claim_or_quantity": "value/context of rider.content",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "rider.content",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_675da91e83",
+   "claim_or_quantity": "value/context of conference_committee.house_conferees.rider_stance",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "conference_committee.house_conferees.rider_stance",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c871cc5e1d",
+   "claim_or_quantity": "value/context of conference_committee.senate_conferees.rider_stance",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "conference_committee.senate_conferees.rider_stance",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_00ca698865",
+   "claim_or_quantity": "evidence discriminating structural hypothesis party_line_control",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:party_line_control",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_1bffba8020",
+   "claim_or_quantity": "evidence discriminating structural hypothesis bargaining_chips",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:bargaining_chips",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_11245774ef",
+   "claim_or_quantity": "decision rules / process of us_congress",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "us_congress",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_a21475bc5e",
+   "terms": "rider stripped from bill conference rider bill",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_02783cea89",
+   "terms": "rider content",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_675da91e83",
+   "terms": "conference committee house conferees rider stance",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_a21475bc5e",
+   "logical_query": "rider stripped from bill conference rider bill after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=rider+stripped+from+bill+conference+rider+bill+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908871.2139683,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:14:31 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw05BiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc7VMuXmITuPDo00pmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC1UDkb\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "07e801be236d17c0aa9c74ac5111ae49c62c4c7ee2708d3bc735ceceec100c20",
+   "n_bytes": 1257,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.579
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_02783cea89",
+   "logical_query": "rider content after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=rider+content+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908871.793953,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:14:32 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmII1pBiOFR1hiG54wxDKhDXAXEjELfePMc6GYhLFp1nbQLiLiCeAcSGCpdY7YH4cvol1iKJK6wNQPyp6garQPUN1m_FvmwsJUD81p_NNCSQzRmIt2gGswnxcHRMuXiJTWDG9WnfGJWUk_IL41PyS4qLC3ISizOKU4vKUovijQyMzAzMDcz0DEziCwwA20s62g\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "ca6294d035140ac404fbf6578c309db173dfc790e39e6c52cabb77065cda24d0",
+   "n_bytes": 55318,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.667
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_675da91e83",
+   "logical_query": "conference committee house conferees rider stance after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=conference+committee+house+conferees+rider+stance+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908872.4630327,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:14:33 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiSO44w5ACxJVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcnVMuXmITmLGnhVVJOSm_MD4lv6S4uCAnsTijOLWoLLUo3sjAyMzA3MBMz8AkvsAAAE4mN6U\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a36808a6f9d1dfca69ef15d8773a5f8dc4e7e023319a78f21b51dd68cf869118",
+   "n_bytes": 1263,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.443
+  }
+ ],
+ "raw_content_refs": [
+  "ca6294d035140ac404fbf6578c309db173dfc790e39e6c52cabb77065cda24d0"
+ ],
+ "documents": [
+  {
+   "id": "a782637c2ace419b",
+   "source": "Utility Dive",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOSmdONF9STTNiaU9ZWVFLTk9vZDlVZU9VZzEzRHdKdExUVExUM0IzY05ZLWF0RnZfMEh1ajc1LU01MG5TRzU3VkpsaGpmZTM1c0pLUmMwRjZFXzNhWGt4N1E1dGlFMl9hMExiLVh4SE94R1otdnJGcTgta3kyN1lQVy0yb05FY3Aw?oc=5",
+   "title": "IRS details which renewable energy components must be made in the US to qualify for IRA tax credits - Utility Dive",
+   "text": "IRS details which renewable energy components must be made in the US to qualify for IRA tax credits - Utility Dive. IRS details which renewable energy components must be made in the US to qualify for IRA tax credits Utility Dive",
+   "content_hash": "06195d5780234a2c",
+   "raw_feed_hash": "ca6294d035140ac404fbf6578c309db173dfc790e39e6c52cabb77065cda24d0",
+   "published_at": 1684134000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_02783cea89",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f5c8f1486ed853a4",
+   "source": "Science | AAAS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOb3F0LUdFQUQzYlptX2UxdUdjWGRyNHJWdlRqcTNfZVdJTGRfdDZzaXliQl84cTRHeW1lNkN4ZEtuVzRsYTRrWXBxV2JZZjBxR0FFMDlpZnRfSFVqYUtJRDlrR0JhZ3dkTnR5OWIxNkVwZVFGZUlJZlk3OFRpeGNOMUNyOFA0bzJpQkdBcVAyNVQyNl9RREF3c3VkUjk?oc=5",
+   "title": "Earliest evidence of horseback riding found in \u2018eastern cowboys\u2019 - Science | AAAS",
+   "text": "Earliest evidence of horseback riding found in \u2018eastern cowboys\u2019 - Science | AAAS. Earliest evidence of horseback riding found in \u2018eastern cowboys\u2019 Science | AAAS",
+   "content_hash": "77fc8aa136cb18b2",
+   "raw_feed_hash": "ca6294d035140ac404fbf6578c309db173dfc790e39e6c52cabb77065cda24d0",
+   "published_at": 1677830400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_02783cea89",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "eedfc000f0454729",
+   "source": "Red Bull",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9ybGNKb014LTcwWjNVc0hfajVrZF8wWnNFMFRBMkhGUHZxUkdfdEFSb1lDdkhjbHRMMVpiUkNaRi10TkhRM3VjSllDRWR2WlVoVlBQMVo4MU5TSTBfc1g0QW96Mk8yZnFIdkUwUU93?oc=5",
+   "title": "Aaron Colton returns to downtown Minneapolis to tear up the skyway - Red Bull",
+   "text": "Aaron Colton returns to downtown Minneapolis to tear up the skyway - Red Bull. Aaron Colton returns to downtown Minneapolis to tear up the skyway Red Bull",
+   "content_hash": "3cecebc657bb08b4",
+   "raw_feed_hash": "ca6294d035140ac404fbf6578c309db173dfc790e39e6c52cabb77065cda24d0",
+   "published_at": 1679382000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_02783cea89",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "eef9743429e39830",
+   "source": "KRQE",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQVktuTHhyNjhGcHhEdlQ0amRvWnVQaXN3bGJhMGQwMUhxR2NWMmhGd0E5LTZrSnEzS2lhdzAtWkR6THZjOHR3M1QxRk1oRFZ5QzZ1UzlGX0hkc0RwR3hBVGlHSzJVUk11VWUtUUVJdWhrOWljXzdGbVhtYWQwN2NvZ2hZZ0F3ZnlOclU5Ry1ubVllZ0JRbHV2eGNndk1meDI4dUlGQmF5U0FiTWlh0gGyAUFVX3lxTE04Q29reGF1am9HajJKN0l1cnh5V01wN3JlYUd4V1pqakEwSy1jSnNqeFcyWkhJdlRhd1JqNmJ3d25NNXNwU0dvYnVJUUdNVWdpSXZnRzZVbTMxMlNiV185Q1l0aDJUS3drcWRFWW1RbFBBQzVDUl9TX0RxNURKWEtGWFFLYWZMMUlubVotSWlZcmxpS2EwNC1ZbUtGX2dLbVFiZTdQeWZ4SjhLV3NKUnR3WWc?oc=5",
+   "title": "Hispano Chamber partners to host the Lowrider Albuquerque Super Show - KRQE",
+   "text": "Hispano Chamber partners to host the Lowrider Albuquerque Super Show - KRQE. Hispano Chamber partners to host the Lowrider Albuquerque Super Show KRQE",
+   "content_hash": "038f6d0e295e1c88",
+   "raw_feed_hash": "ca6294d035140ac404fbf6578c309db173dfc790e39e6c52cabb77065cda24d0",
+   "published_at": 1685602800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_02783cea89",
+   "temporal_status": "uncertain"
+  },
+  {
+   "id": "d47a20664b3231d6",
+   "source": "Court TV",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFA0YmotNUdvaVpKazZfMjk5dWU5Z3dBay10YWNtYk9jOWRIOUUwOHlGZWFZRlhoYUVVa04zczB2RE85ZUtETG84TDk1bEhYY1hLVk5jdnJBd2ZPcTl0WU9GVjdEOFZJQmtqeDNNU2diVy1yc1BDYS1ILXM2bTFWSm8?oc=5",
+   "title": "38-WI v. Brooks: Anthony Winters &. Daniel Rider - Court TV",
+   "text": "38-WI v. Brooks: Anthony Winters &. Daniel Rider - Court TV. 38-WI v. Brooks: Anthony Winters &. Daniel Rider Court TV",
+   "content_hash": "95e94a07f9b6776c",
+   "raw_feed_hash": "ca6294d035140ac404fbf6578c309db173dfc790e39e6c52cabb77065cda24d0",
+   "published_at": 1677225600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_02783cea89",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "dc9dd1b95999eb73",
+   "source": "Bike Perfect",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPRFRRNkIwSlMyM3F2aDBpYjF5d0ZqeENJTWNuWW5FeFcwZ1NoQXlMemNCSmJTMndSRlZOR3RwTGVLbEpLaThDTjI2T2NSSmlhZnVKaDhva1dtNU9ZQmQ5bmItWG9sMXdxVDhZc1pTVkVXUE14OVJhbERrd2dlMGF0VjM0NDRnVkk4WVZZTURoX2lobTA4OEE?oc=5",
+   "title": "Legendary mountain bike rider Sam Pilgrim signs for Canyon - Bike Perfect",
+   "text": "Legendary mountain bike rider Sam Pilgrim signs for Canyon - Bike Perfect. Legendary mountain bike rider Sam Pilgrim signs for Canyon Bike Perfect",
+   "content_hash": "0839febe4b9843a9",
+   "raw_feed_hash": "ca6294d035140ac404fbf6578c309db173dfc790e39e6c52cabb77065cda24d0",
+   "published_at": 1672905600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_02783cea89",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "164af0ab637615bd",
+   "source": "Road.cc",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxONk1qamVUdUo3SGNCOWd4MnZVdjBCOFJFWXpiWVRPNWVWREt5ZUpEdURTcjZZTmVLOFh2WjNTR24yVlo3dlhyZXMtYzYzdHhiSGdneS00NFl5V1dfMkFjMUxCTkFhQnJBaDVRNUdMa2dJczRyVEpCZW12ZC1CZUJqNkRaekNIOVpR?oc=5",
+   "title": "Does a heavier cyclist descend hills quicker? We strapped weights to ourselves to find out - Road.cc",
+   "text": "Does a heavier cyclist descend hills quicker? We strapped weights to ourselves to find out - Road.cc. Does a heavier cyclist descend hills quicker? We strapped weights to ourselves to find out Road.cc",
+   "content_hash": "04350ed45627a3f7",
+   "raw_feed_hash": "ca6294d035140ac404fbf6578c309db173dfc790e39e6c52cabb77065cda24d0",
+   "published_at": 1678863600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_02783cea89",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d572604d9e2ff1e9",
+   "source": "Sports Illustrated",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQdURSZkt6LW1yQUlKb1RpMWV5NmZOUlVFWkpHTklnNzF2SUJCUnExM25BZ05KREp0cTVFQ01fLWFpa0VTTkFJc052aVNjMEtOdS1DTVZ3WWxMamFEdDZFOUlBVlk4TjN4WDhNRmdwOGw1Ui1FVzlHd1ZZV3dpMGZsWmJrT0FUVi1hcURJZDZ5MUFHRE9VWDJj?oc=5",
+   "title": "Isaiah Rider on Michael Jordan\u2019s influence and his complicated relationship with Phil Jackson - Sports Illustrated",
+   "text": "Isaiah Rider on Michael Jordan\u2019s influence and his complicated relationship with Phil Jackson - Sports Illustrated. Isaiah Rider on Michael Jordan\u2019s influence and his complicated relationship with Phil Jackson Sports Illustrated",
+   "content_hash": "7cec1d2e15a2d68c",
+   "raw_feed_hash": "ca6294d035140ac404fbf6578c309db173dfc790e39e6c52cabb77065cda24d0",
+   "published_at": 1679814000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_02783cea89",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "a782637c2ace419b:c0",
+   "source_id": "a782637c2ace419b",
+   "subject": "IRS",
+   "predicate": "details",
+   "object": "which renewable energy components must be made in the US to qualify for IRA tax credits",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "IRS details which renewable energy components must be made in the US to qualify for IRA tax credits",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684134000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "IRS",
+    "renewable energy components",
+    "US",
+    "IRA tax credits"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_525f3631c7",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_02783cea89"
+   }
+  },
+  {
+   "claim_id": "f5c8f1486ed853a4:c0",
+   "source_id": "f5c8f1486ed853a4",
+   "subject": "Earliest evidence of horseback riding",
+   "predicate": "found in",
+   "object": "\u2018eastern cowboys\u2019",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Earliest evidence of horseback riding found in \u2018eastern cowboys\u2019",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677830400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "eastern cowboys"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9ba2435787",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_02783cea89"
+   }
+  },
+  {
+   "claim_id": "eedfc000f0454729:c0",
+   "source_id": "eedfc000f0454729",
+   "subject": "Aaron Colton",
+   "predicate": "returns to",
+   "object": "downtown Minneapolis",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Aaron Colton returns to downtown Minneapolis to tear up the skyway",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679382000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Aaron Colton",
+    "downtown Minneapolis"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_1cf0f99785",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_02783cea89"
+   }
+  },
+  {
+   "claim_id": "eedfc000f0454729:c1",
+   "source_id": "eedfc000f0454729",
+   "subject": "Aaron Colton",
+   "predicate": "tears up",
+   "object": "the skyway",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "to tear up the skyway",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679382000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Aaron Colton",
+    "the skyway"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_1cf0f99785",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_02783cea89"
+   }
+  },
+  {
+   "claim_id": "d47a20664b3231d6:c0",
+   "source_id": "d47a20664b3231d6",
+   "subject": "38-WI v. Brooks",
+   "predicate": "involves",
+   "object": "Anthony Winters and Daniel Rider",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "38-WI v. Brooks: Anthony Winters &. Daniel Rider - Court TV",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677225600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "38-WI v. Brooks",
+    "Anthony Winters",
+    "Daniel Rider",
+    "Court TV"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_deb4794eba",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_02783cea89"
+   }
+  },
+  {
+   "claim_id": "d47a20664b3231d6:c1",
+   "source_id": "d47a20664b3231d6",
+   "subject": "38-WI v. Brooks",
+   "predicate": "is associated with",
+   "object": "Court TV",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "38-WI v. Brooks: Anthony Winters &. Daniel Rider - Court TV",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677225600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "38-WI v. Brooks",
+    "Court TV"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_deb4794eba",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_02783cea89"
+   }
+  },
+  {
+   "claim_id": "dc9dd1b95999eb73:c0",
+   "source_id": "dc9dd1b95999eb73",
+   "subject": "Sam Pilgrim",
+   "predicate": "signs for",
+   "object": "Canyon",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Legendary mountain bike rider Sam Pilgrim signs for Canyon",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672905600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Sam Pilgrim",
+    "Canyon"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d691514804",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_02783cea89"
+   }
+  },
+  {
+   "claim_id": "164af0ab637615bd:c0",
+   "source_id": "164af0ab637615bd",
+   "subject": "a heavier cyclist",
+   "predicate": "descend hills quicker",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "speculative",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "Does a heavier cyclist descend hills quicker?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678863600.0,
+   "extraction_confidence": 0.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "cyclist"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ed281d3fe8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_02783cea89"
+   }
+  },
+  {
+   "claim_id": "164af0ab637615bd:c1",
+   "source_id": "164af0ab637615bd",
+   "subject": "we",
+   "predicate": "strapped weights to ourselves",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "to find out",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "We strapped weights to ourselves to find out",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678863600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_ed281d3fe8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_02783cea89"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "IRS",
+   "normalized": "irs",
+   "candidates": [
+    {
+     "entity_id": "ent_4b786e7c4f",
+     "canonical": "irs",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "IRS"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "renewable energy components",
+   "normalized": "renewable energy components",
+   "candidates": [
+    {
+     "entity_id": "ent_2dfa9b3a04",
+     "canonical": "renewable energy components",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "renewable energy components"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "US",
+   "normalized": "us",
+   "candidates": [
+    {
+     "entity_id": "ent_da2b128800",
+     "canonical": "us",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "US"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "IRA tax credits",
+   "normalized": "ira tax credits",
+   "candidates": [
+    {
+     "entity_id": "ent_3eec66e95c",
+     "canonical": "ira tax credits",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "IRA tax credits"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "eastern cowboys",
+   "normalized": "eastern cowboys",
+   "candidates": [
+    {
+     "entity_id": "ent_7e09e014a6",
+     "canonical": "eastern cowboys",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "eastern cowboys"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Aaron Colton",
+   "normalized": "aaron colton",
+   "candidates": [
+    {
+     "entity_id": "ent_e886ff753c",
+     "canonical": "aaron colton",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Aaron Colton",
+      "Aaron Colton"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "downtown Minneapolis",
+   "normalized": "downtown minneapolis",
+   "candidates": [
+    {
+     "entity_id": "ent_347d0c0309",
+     "canonical": "downtown minneapolis",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "downtown Minneapolis"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Aaron Colton",
+   "normalized": "aaron colton",
+   "candidates": [
+    {
+     "entity_id": "ent_e886ff753c",
+     "canonical": "aaron colton",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Aaron Colton",
+      "Aaron Colton"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "the skyway",
+   "normalized": "skyway",
+   "candidates": [
+    {
+     "entity_id": "ent_289e83cd18",
+     "canonical": "skyway",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "the skyway"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "38-WI v. Brooks",
+   "normalized": "38-wi v brooks",
+   "candidates": [
+    {
+     "entity_id": "ent_1438c23461",
+     "canonical": "38-wi v brooks",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "38-WI v. Brooks",
+      "38-WI v. Brooks"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Anthony Winters",
+   "normalized": "anthony winters",
+   "candidates": [
+    {
+     "entity_id": "ent_58c5d2667c",
+     "canonical": "anthony winters",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Anthony Winters"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Daniel Rider",
+   "normalized": "daniel rider",
+   "candidates": [
+    {
+     "entity_id": "ent_3acbee8ad6",
+     "canonical": "daniel rider",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Daniel Rider"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Court TV",
+   "normalized": "court tv",
+   "candidates": [
+    {
+     "entity_id": "ent_211601a28c",
+     "canonical": "court tv",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Court TV",
+      "Court TV"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "38-WI v. Brooks",
+   "normalized": "38-wi v brooks",
+   "candidates": [
+    {
+     "entity_id": "ent_1438c23461",
+     "canonical": "38-wi v brooks",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "38-WI v. Brooks",
+      "38-WI v. Brooks"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Court TV",
+   "normalized": "court tv",
+   "candidates": [
+    {
+     "entity_id": "ent_211601a28c",
+     "canonical": "court tv",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Court TV",
+      "Court TV"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Sam Pilgrim",
+   "normalized": "sam pilgrim",
+   "candidates": [
+    {
+     "entity_id": "ent_33bb8937e3",
+     "canonical": "sam pilgrim",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Sam Pilgrim"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Canyon",
+   "normalized": "canyon",
+   "candidates": [
+    {
+     "entity_id": "ent_46d350ed4c",
+     "canonical": "canyon",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Canyon"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "cyclist",
+   "normalized": "cyclist",
+   "candidates": [
+    {
+     "entity_id": "ent_5515a2c7dd",
+     "canonical": "cyclist",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "cyclist"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "a782637c2ace419b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1684134000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684134000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f5c8f1486ed853a4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1677830400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677830400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "eedfc000f0454729": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1679382000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679382000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "eef9743429e39830": {
+   "status": "uncertain",
+   "confidence": 0.5,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1685602800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685602800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d47a20664b3231d6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1677225600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677225600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "dc9dd1b95999eb73": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1672905600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672905600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "164af0ab637615bd": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1678863600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678863600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d572604d9e2ff1e9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1679814000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679814000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_525f3631c7",
+   "member_ids": [
+    "a782637c2ace419b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Utility Dive",
+   "primary_source": "Utility Dive",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9ba2435787",
+   "member_ids": [
+    "f5c8f1486ed853a4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Science | AAAS",
+   "primary_source": "Science | AAAS",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1cf0f99785",
+   "member_ids": [
+    "eedfc000f0454729"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Red Bull",
+   "primary_source": "Red Bull",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1b819c8f12",
+   "member_ids": [
+    "eef9743429e39830"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "KRQE",
+   "primary_source": "KRQE",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_deb4794eba",
+   "member_ids": [
+    "d47a20664b3231d6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Court TV",
+   "primary_source": "Court TV",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d691514804",
+   "member_ids": [
+    "dc9dd1b95999eb73"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Bike Perfect",
+   "primary_source": "Bike Perfect",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ed281d3fe8",
+   "member_ids": [
+    "164af0ab637615bd"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Road.cc",
+   "primary_source": "Road.cc",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_cc5d50c6fb",
+   "member_ids": [
+    "d572604d9e2ff1e9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Sports Illustrated",
+   "primary_source": "Sports Illustrated",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "a782637c2ace419b:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684134000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f5c8f1486ed853a4:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677830400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "eedfc000f0454729:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679382000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "eedfc000f0454729:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679382000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d47a20664b3231d6:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677225600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d47a20664b3231d6:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677225600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "dc9dd1b95999eb73:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672905600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "164af0ab637615bd:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678863600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "164af0ab637615bd:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678863600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "a782637c2ace419b:c0",
+  "f5c8f1486ed853a4:c0",
+  "eedfc000f0454729:c0",
+  "eedfc000f0454729:c1",
+  "d47a20664b3231d6:c0",
+  "d47a20664b3231d6:c1",
+  "dc9dd1b95999eb73:c0",
+  "164af0ab637615bd:c0",
+  "164af0ab637615bd:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_a21475bc5e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_02783cea89": {
+   "status": "fulfilled",
+   "n_claims": 9,
+   "n_included": 9
+  },
+  "req_675da91e83": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c871cc5e1d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_00ca698865": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_1bffba8020": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_11245774ef": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_a21475bc5e",
+  "req_675da91e83",
+  "req_c871cc5e1d",
+  "req_00ca698865",
+  "req_1bffba8020",
+  "req_11245774ef"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 8,
+  "n_contradictions": 0,
+  "n_documents": 8
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.982,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "89db7608551c067d",
+ "bundle_hash": "89db7608551c067d",
+ "_persisted_at": "2026-07-13T02:14:46Z"
+}

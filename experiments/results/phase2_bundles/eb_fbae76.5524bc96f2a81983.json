@@ -1,0 +1,1828 @@
+{
+ "bundle_id": "eb_fbae76",
+ "question": "Will the environmental agency approve the drilling permit?",
+ "as_of": 1690848000.0,
+ "compiler_plan_hash": "93541b8c75ce",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_a6bc8e84b9",
+   "claim_or_quantity": "The final decision of the agency as of the horizon date.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "environmental_agency",
+    "agency_head",
+    "applicant_company",
+    "local_community"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3699bbec9b",
+   "claim_or_quantity": "value/context of agency_head.environmental_stance",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "agency_head.environmental_stance",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2110e26523",
+   "claim_or_quantity": "value/context of president.approval_rating",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "president.approval_rating",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2f676427a4",
+   "claim_or_quantity": "evidence discriminating structural hypothesis political_pressure_dominates",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:political_pressure_dominates",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_cb9fe9be2a",
+   "claim_or_quantity": "evidence discriminating structural hypothesis legal_bureaucratic_routine",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:legal_bureaucratic_routine",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_d2de70f953",
+   "claim_or_quantity": "value/context of applicant_company.compliance_record",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "applicant_company.compliance_record",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_dad8aee5d8",
+   "claim_or_quantity": "decision rules / process of environmental_agency",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "environmental_agency",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_524d8aa6ff",
+   "claim_or_quantity": "decision rules / process of congress",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "congress",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_a6bc8e84b9",
+   "terms": "environmental agency approve drilling permit environmental agency agency head applicant company",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_3699bbec9b",
+   "terms": "agency head environmental stance",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_2110e26523",
+   "terms": "president approval rating",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_a6bc8e84b9",
+   "logical_query": "environmental agency approve drilling permit environmental agency agency head applicant company after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=environmental+agency+approve+drilling+permit+environmental+agency+agency+head+applicant+company+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783907713.3381326,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:55:14 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw1pBiSO44w5ACxBVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTN0dR98RKbQMO3Wy5Kykn5hfEp-SXFxQU5icUZxalFZalF8UYGRmYG5gZmegYm8QUGAFukNm4\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "79156e12dbe3478ca8efe0c100f4694109e09957098d0d2d63b18d3ae56a6af5",
+   "n_bytes": 3801,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.719
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_3699bbec9b",
+   "logical_query": "agency head environmental stance after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=agency+head+environmental+stance+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783907714.058906,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:55:14 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII1pBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD0dR98RKbQMOyhutMSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgCJ3TZp\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "1ecf1e5ef1e6c02f576c581481fa427111a92206ec701f310175ba560ae679a9",
+   "n_bytes": 32671,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.704
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_2110e26523",
+   "logical_query": "president approval rating after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=president+approval+rating+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783907714.7647758,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:55:15 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw0ZBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD0dx98RKbwIv9_ReYlJST8gvjU_JLiosLchKLM4pTi8pSi-KNDIzMDMwNzPQMTOILDACcfDbs\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "e60588aacae3ccdce70dffc12f9b93c350f7a5530035e67cfcec4a55762e6bfe",
+   "n_bytes": 70216,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.895
+  }
+ ],
+ "raw_content_refs": [
+  "1ecf1e5ef1e6c02f576c581481fa427111a92206ec701f310175ba560ae679a9",
+  "79156e12dbe3478ca8efe0c100f4694109e09957098d0d2d63b18d3ae56a6af5",
+  "e60588aacae3ccdce70dffc12f9b93c350f7a5530035e67cfcec4a55762e6bfe"
+ ],
+ "documents": [
+  {
+   "id": "602006b4b9a23671",
+   "source": "WPR",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPUzc1bHFoVDFHR01FY2g3MHhnaU9jLTBfbUpMLWxVMFBXSzNzYkRxRTRCQ3FGVVJ2c0FnRzJ1ZlhZVFpRR2lPWjBjdnBwWGw3S0NobzlucGliMUh5TmdpSkVDUWxyMm9COU9CVEczeVVNMS1JWEVJNkxlRnhoZ1ZZNng2TFQxd0RMbWxINFRHdzEyU25TcHUtUElKOW9GajZnM2hZ?oc=5",
+   "title": "Mining company pushes back plans to drill for copper and gold - WPR",
+   "text": "Mining company pushes back plans to drill for copper and gold - WPR. Mining company pushes back plans to drill for copper and gold WPR",
+   "content_hash": "f0e5b3bfe600602e",
+   "raw_feed_hash": "79156e12dbe3478ca8efe0c100f4694109e09957098d0d2d63b18d3ae56a6af5",
+   "published_at": 1679036400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_a6bc8e84b9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6e4fac7df470cb27",
+   "source": "Stabroek News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPT3BEV3pUZ1dianRSUGRJNG5ibXVnV3hKLXVCOXNCblU1M0MzXzVLc0hvaWdLQ2p0NGVFSm94X1Vuc295MnY0OERmUWtYa0ExdkhZQWhIb2xUTm5obzlvM2JYd3g2bHN1Um55b3V3X1dmMHp2VVNLZU4xVlh5Q0V5aW5nVDRJcEl6SFY1MVpqdFpfQktFV0R0M2FqUXdWYUxPRU1SbXdKc1dyV1psTXc?oc=5",
+   "title": "ExxonMobil gets environment permit for fifth oil project - Stabroek News",
+   "text": "ExxonMobil gets environment permit for fifth oil project - Stabroek News. ExxonMobil gets environment permit for fifth oil project Stabroek News",
+   "content_hash": "bc97c0c584ecb2a9",
+   "raw_feed_hash": "79156e12dbe3478ca8efe0c100f4694109e09957098d0d2d63b18d3ae56a6af5",
+   "published_at": 1682665200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_a6bc8e84b9",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "88eca1679a9b4035",
+   "source": "WilmerHale",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxQSnJneUkyY2xsTEh2Z3pQcnNCNkhWa0E5ZVd1b00tbzRIcmo0dWdUSndxQlBROWtnSlZKRkZNa3FwSmVLOW9LYlVQV0hQZ1lnMHhGemtBRkVlMUhOUzd6UkEzWTI1NU9mVGxVM3RyWGJRSWVjTE5PN1dqbjNKNnNBOEFfUFNHMFl2OGRrOUViQWlXSE9lNXJ3eFBNMENTX1l3bVBVbllRYVRIS1lzTno4cGljZVQzU1RvM2E3aWk1ZHRURVVDb2ZZSkxhWHR0WFJ1VkQ5bGdDYmlQZw?oc=5",
+   "title": "Executive Order Amplifies Whole-of-Government Environmental Justice Agenda - WilmerHale",
+   "text": "Executive Order Amplifies Whole-of-Government Environmental Justice Agenda - WilmerHale. Executive Order Amplifies Whole-of-Government Environmental Justice Agenda WilmerHale",
+   "content_hash": "633cef3da39a8e8d",
+   "raw_feed_hash": "1ecf1e5ef1e6c02f576c581481fa427111a92206ec701f310175ba560ae679a9",
+   "published_at": 1683010800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_3699bbec9b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "12381cbc9a7cdd59",
+   "source": "National Security Archive",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNX1g2SUNkUDFlZ2RTRHBDTGFpeW1vajNtS3lZUnlUeEd6aWY4Yk9CYy1lVkgxRjl5d1VTaGZnSWl3VEltS1MwVUdYbk1jbGZ5THNrdEV5OURSU2lIY3J1SzhOYWJnUFZ2bWYxektLaGd4dGtSR2VZQWlsczVlRFBFV19yMUpOOGc5QmJKRXk3aFdBSnFJNUoxREhIQW1zcDMyZk1jRWZybGNJWURwbFdoTUpwWlpKN0xBWmJ5Y1dMWUg?oc=5",
+   "title": "50 Years of U.S. Resistance to Environmental Reparations - National Security Archive",
+   "text": "50 Years of U.S. Resistance to Environmental Reparations - National Security Archive. 50 Years of U.S. Resistance to Environmental Reparations National Security Archive",
+   "content_hash": "732ed9de9bdd5f20",
+   "raw_feed_hash": "1ecf1e5ef1e6c02f576c581481fa427111a92206ec701f310175ba560ae679a9",
+   "published_at": 1688626800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_3699bbec9b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3bfbf7175cab815b",
+   "source": "Maryland Matters",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxObmpsZVVLRS1yXzlWQm9Jc1NZdXUtQ1NVcjI4dmQwa2JHUUtXQ0U2S0g4VTNkX0JqYUJMaTcyaFpaRmc4TGpxTXlpMnRPenB0TENvMndKNG9wRWlRRUNfN3ZVM2taS0ZUN1FpdWlXekVhSEg2NHctQ2RGdF8wOGJJV1g5Q0VOZHFqc0E?oc=5",
+   "title": "The political education of Serena McIlwain - Maryland Matters",
+   "text": "The political education of Serena McIlwain - Maryland Matters. The political education of Serena McIlwain Maryland Matters",
+   "content_hash": "b8137a8d4f4819f9",
+   "raw_feed_hash": "1ecf1e5ef1e6c02f576c581481fa427111a92206ec701f310175ba560ae679a9",
+   "published_at": 1684738800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_3699bbec9b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c56f9b551c7c23f3",
+   "source": "Inside Climate News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQX3B5dWJvR1Z0d1JSQzBtUjBiMVhGbjFnZzdxZXpfSUM3TmdqcGVkZGo3cW5Eb1Q0U18xTm85clN1RjJPX1I2SENfN29BUnM3Z3dfZ3ZYVTN2OFIteC11TVZpcDljY1YzRURHajBHWjJfcERkeVQ4OFZZT2FlRkdyVw?oc=5",
+   "title": "Trump\u2019s Former Head of the EPA Has Been a Quiet Contributor to Virginia\u2019s Exit From RGGI - Inside Climate News",
+   "text": "Trump\u2019s Former Head of the EPA Has Been a Quiet Contributor to Virginia\u2019s Exit From RGGI - Inside Climate News. Trump\u2019s Former Head of the EPA Has Been a Quiet Contributor to Virginia\u2019s Exit From RGGI Inside Climate News",
+   "content_hash": "0a4f0d1876e05e60",
+   "raw_feed_hash": "1ecf1e5ef1e6c02f576c581481fa427111a92206ec701f310175ba560ae679a9",
+   "published_at": 1690354800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_3699bbec9b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e9d649b8cc6d1613",
+   "source": "City & State New York",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOYlg3a0dReEhBcVI3cEhrcmktY0FVcHlVTUpCbFo2VnM0cTNwdmx5VzNvYmlBbFRfQmIyaHFEanU1WERmV0txWnpZMHF0S3g3U3dxNHFfQ3k1VklkLW9zTEk1b1E1ckVQcDhKT1Fma2tyX1VPeGF2czFwLUZkOEJmTWl1RDQtYVV1VENKQWN3Y1J3bzZwVmxF?oc=5",
+   "title": "The 2023 Energy & Environment Power 100 - City & State New York",
+   "text": "The 2023 Energy & Environment Power 100 - City & State New York. The 2023 Energy & Environment Power 100 City & State New York",
+   "content_hash": "6cf71066425bd9c4",
+   "raw_feed_hash": "1ecf1e5ef1e6c02f576c581481fa427111a92206ec701f310175ba560ae679a9",
+   "published_at": 1681714800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_3699bbec9b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6a728baede2d2f68",
+   "source": "Legal Planet",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBUeFUzWmRSVXRvdG11dzJ4WTcwYml1MEZrN2NBM0pSdGctb2hOQ3NNNVg1RVpOa1hsSHppWl9IcFVjcUNBUWpkMlR6ZjJsa3FPMWl4a0hOSXNWeUs2eDJYTGdLQUVaVjFBcXFTczlZSFI?oc=5",
+   "title": "The New NEPA: A User\u2019s Guide - Legal Planet",
+   "text": "The New NEPA: A User\u2019s Guide - Legal Planet. The New NEPA: A User\u2019s Guide Legal Planet",
+   "content_hash": "de898d46dc1b6ecc",
+   "raw_feed_hash": "1ecf1e5ef1e6c02f576c581481fa427111a92206ec701f310175ba560ae679a9",
+   "published_at": 1685948400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_3699bbec9b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "189ec386f198c6d3",
+   "source": "Mother Jones",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQZDZrd29lMk5HdGRGSWtOQi1MdUhlaEk5OUZFYWphSXp5dkh5by12S19QZ01NaUVhbHREUEk1RE5iQVp3YXlJaTlDRk9pYXNWVmpJVFRyMDR1dC1VdlNaYlp0ZnRJYlR2NlhOcnJKQ2tHQzZRLUh1NXJjVWdhUW1sUkNpVEYzOXRZYmt6ZWt2QnA3TTd0Sk5pNW1rUDRUYjJGdkc3d0NkSk8?oc=5",
+   "title": "Inside the Republican Plot to Dismantle US Environmental Policy - Mother Jones",
+   "text": "Inside the Republican Plot to Dismantle US Environmental Policy - Mother Jones. Inside the Republican Plot to Dismantle US Environmental Policy Mother Jones",
+   "content_hash": "064130a66d91c4cd",
+   "raw_feed_hash": "1ecf1e5ef1e6c02f576c581481fa427111a92206ec701f310175ba560ae679a9",
+   "published_at": 1690786800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_3699bbec9b",
+   "temporal_status": "uncertain"
+  },
+  {
+   "id": "2c5eb98efbb060c5",
+   "source": "The Boston Globe",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPV3VfeDBsQ0JtaXFWa1NpZTVMa1hqbU5nTG9WXzJuV004Ql9TS2VuU2RUaHo3X2NLSjJRaklDUDhkaklxNlZtSHlsNENKUHhidzVnekJjQzdPc0haX1V5Y3BHXzVvTDVLUHVOSUlwVnVwSy1ROXB6SmQ1RGNuUThKSTF1a3JtM2o0SDJUNkp0VC1SRlBnM0VHdFYtczVxSGdOZnlrTFRUcFV2MGhaaVdzQmh5ZzFuTW1HTklxV01jT3lZQQ?oc=5",
+   "title": "How Massachusetts\u2019 new DEP commissioner will bring \u2018transparency and equity\u2019 to the agency - The Boston Globe",
+   "text": "How Massachusetts\u2019 new DEP commissioner will bring \u2018transparency and equity\u2019 to the agency - The Boston Globe. How Massachusetts\u2019 new DEP commissioner will bring \u2018transparency and equity\u2019 to the agency The Boston Globe",
+   "content_hash": "bce808d99259a4e1",
+   "raw_feed_hash": "1ecf1e5ef1e6c02f576c581481fa427111a92206ec701f310175ba560ae679a9",
+   "published_at": 1679814000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_3699bbec9b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fac0fe6e013c49aa",
+   "source": "Center For Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPcUtTSU9NdFI0YXNHeVdFR1BrZFlKODVWNnlyaXI4TEhZczZtZGFhTzhYRjJKeU9hdUhqSkdoT1p3a1ZhTG9zeDR2YWtpay0tblJEWHctcE01OThNbm9wTGxLYUxUamMtR1l2Wm56Y3JBUGV6MW84b3hEXzNYMHRwaXJWcGdYN0E2MDc0Wlg2NDRjNlFMdVM0?oc=5",
+   "title": "Is Biden\u2019s Approval Rating Too Weak for Him to Win? - Center For Politics",
+   "text": "Is Biden\u2019s Approval Rating Too Weak for Him to Win? - Center For Politics. Is Biden\u2019s Approval Rating Too Weak for Him to Win? Center For Politics",
+   "content_hash": "dd351665d0ef6721",
+   "raw_feed_hash": "e60588aacae3ccdce70dffc12f9b93c350f7a5530035e67cfcec4a55762e6bfe",
+   "published_at": 1682406000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_2110e26523",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "73b392a14fbb796d",
+   "source": "Gallup News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxON3VqQmpMMmhDYXRfR1NTN3prLTFnRFZCZnpMREZLZk04a1R0THk4RFpoemlCcjFKeXZhdzBySTRmVkpHYjJIbnRKajV4aDJ2NmNzajV1Snc4Wjc5SHVSQ09sWmJ1UDJieHhHY3hIU0tzMU94eUcyWVRCMGpYTzY3UlNzRVJpc2xrRV9nYTllcWxCREwxZ2pr?oc=5",
+   "title": "Biden Overall Approval at 40%, Key Issue Ratings Lackluster - Gallup News",
+   "text": "Biden Overall Approval at 40%, Key Issue Ratings Lackluster - Gallup News. Biden Overall Approval at 40%, Key Issue Ratings Lackluster Gallup News",
+   "content_hash": "a30c79c6233c8c61",
+   "raw_feed_hash": "e60588aacae3ccdce70dffc12f9b93c350f7a5530035e67cfcec4a55762e6bfe",
+   "published_at": 1679986800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_2110e26523",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ed6251526744a749",
+   "source": "The Washington Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOZEFGMGJSLWczckhRR3R2RnAtUnBmZS1vT3RpZWFwQjNuMjNvWG1qZFdaSFJ4MEplaUx2WFRNWjNFX1M0Z0Vwb21OckVuR0J4SUxmQTdCUllIVUhuWDA3cG1TZlc2Z2t4U0JYamlHUEtYeDc2TVEtOTBZY0VnX2pfN3Z5OVNZbjNq?oc=5",
+   "title": "Biden faces broad negative ratings at start of campaign, Post-ABC poll finds - The Washington Post",
+   "text": "Biden faces broad negative ratings at start of campaign, Post-ABC poll finds - The Washington Post. Biden faces broad negative ratings at start of campaign, Post-ABC poll finds The Washington Post",
+   "content_hash": "69c704a6b95c485a",
+   "raw_feed_hash": "e60588aacae3ccdce70dffc12f9b93c350f7a5530035e67cfcec4a55762e6bfe",
+   "published_at": 1683442800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_2110e26523",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4a9865b10a6f27db",
+   "source": "WNCT",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNT2I4bmtyb2lMc1Rvd1FVdnZ2TEVFTndwU21QZERTS2lZTnBCX1Y4M2c2Q1NCYllzMW9aX09SaTJER1laN3VOWmdoZWllcXBDbC1XLV9CQ1RIU0RsM29WUTk2anV0X3JCYUp1d3NRWE91ZzFteldiTzI0SmxGNkZfSmE5R01md0hCYUFjbnpORnAwWldJNFBkb1hLX05fSGI5Y2M3cTNOWHdFMzjSAbABQVVfeXFMT3hJbzZ2OXF6SDkxN0d3TUdKc2JiUFliZVhMNzJ3OXlDVnllNjNPLUg3ZUZHYTA2cnhxY3E2R0w5WXVuR0Raemp3cEs2ZXRTeHNRYmxCUThjOWN0Zmx4YXJLUVpwVENmZzhxTFlvRW9kY0RERS1QV3JjLXo3azBSeGpSMWJjSS13RGVoUnlfSWRWdXlXQUdMWWFKS0dqZFdGZ3B3Z3hHSHYwTUFDa092ZG0?oc=5",
+   "title": "Ranking presidents over the past eight decades by final approval rating - WNCT",
+   "text": "Ranking presidents over the past eight decades by final approval rating - WNCT. Ranking presidents over the past eight decades by final approval rating WNCT",
+   "content_hash": "bd7f3341ba570beb",
+   "raw_feed_hash": "e60588aacae3ccdce70dffc12f9b93c350f7a5530035e67cfcec4a55762e6bfe",
+   "published_at": 1679036400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_2110e26523",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "260d9bdae0f787f5",
+   "source": "Politico",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQT09xanpDbzBVeFByb3VTQ2d4Y2RudmZZN2MxblRaYXJ5dWkwdDdLZFQ0QV91anB4YlVKYzM5dlQwdkU2OEVBbWs4cTI5NVJMWldXUm15QjNTRFZQZ0RlVTJSU2tRVnFCb0F2WHNuR3hpbE1oSnpCTVNQNmVGcDdxekpYZzEzNzVYbUJ1RnJB?oc=5",
+   "title": "Biden's approval rating hits new low - Politico",
+   "text": "Biden's approval rating hits new low - Politico. Biden's approval rating hits new low Politico",
+   "content_hash": "0f3074b04d43246a",
+   "raw_feed_hash": "e60588aacae3ccdce70dffc12f9b93c350f7a5530035e67cfcec4a55762e6bfe",
+   "published_at": 1683442800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_2110e26523",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3633e5d1e1da0229",
+   "source": "PBS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQNUM2QnJoMnhJSlhYR05hSC1mYnM0aWlUdFAxNF9KcmJKV0pINnJFSGhZaldWcXdLWWVfT2dlN0JDVllrRHlpMUt6OGlwRWdNZTY1SkFmSWsxMXB2bXo1VFlRcFgxZGF1WmlLejNNNTRFZmFZXzcxN2lLZzlSN3JSRks4T3FUQ3BLcTRiYkZTYUkxaS14SmI4WnU5bGdYbDZmUVYwUVFfdi1Jd3B1cEJ3RjFRa3NPNFVWY0RmTnpscTNfbG42SHUtUtIBzgFBVV95cUxNT3o3Ykh0dWdrbDF4bElQTEJqMEY5Qk1IUjBnMkdQeG5lUG9YNGZISzJsT3lSd1g4RWZOam5OMEtwcUNFeV9GNjZPb2lWSVBuUXppWFdmd2dvRU9hOXlRcHJ0VVB0cG9PeUFsWUIydHFjNHJfTUxiOFhPRHJtMG9YeGtSeDRVakdXR3VVZlFvalByeU43Wml0Z25MYk5tR3pVUGhBSjdDblI4Qkc0a3JWSXRiNFhjZFhEc0pBWEtLbjFKdGtzSTFYS3hWQWtfUQ?oc=5",
+   "title": "Public approval of Biden's approach to economy and gun policy remains low, AP-NORC poll finds - PBS",
+   "text": "Public approval of Biden's approach to economy and gun policy remains low, AP-NORC poll finds - PBS. Public approval of Biden's approach to economy and gun policy remains low, AP-NORC poll finds PBS",
+   "content_hash": "2abe057d34b96d74",
+   "raw_feed_hash": "e60588aacae3ccdce70dffc12f9b93c350f7a5530035e67cfcec4a55762e6bfe",
+   "published_at": 1684738800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_2110e26523",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d4500023cb0867da",
+   "source": "AP-NORC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTFBRQVV5R1pSZDlOa21Mc1AyQ3p0ZnRxS3lYOERNaEtlUmktT0pXVWRybExIcjQwTWNZSnR5dW9MaFNyQ0Z4cFNSTVd4SkpHSUhFQXpHMzVoaWIwUmt2RWcxeWYxc24tclRSNkxyZDloOGFpOUgwSVUtakFB?oc=5",
+   "title": "Biden approval dips near lowest point: AP-NORC poll - AP-NORC",
+   "text": "Biden approval dips near lowest point: AP-NORC poll - AP-NORC. Biden approval dips near lowest point: AP-NORC poll AP-NORC",
+   "content_hash": "dc2d065c8ba11e82",
+   "raw_feed_hash": "e60588aacae3ccdce70dffc12f9b93c350f7a5530035e67cfcec4a55762e6bfe",
+   "published_at": 1689318000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_2110e26523",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4d290c63db71056b",
+   "source": "Ballotpedia News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPQnRIb0RRSHVOalBWOWpvVWN6Z2RWQ3V4d1AzdVlUQy1IcmptRnJGcUZDdHNCZ3lTSFZLWFgzYXE0VUJIcE9LM3Bya1BWb1VZMkF0cjIyWXNYS1J0Wk9GOFNZVGI1T09YN0I4ajhvcmR6R0d4M0hpcFcwX2I1ajU5amJkajRqX3VjX1ljc0FSaFQ5eGRib2twTnVMRDJTeG1WMC1tNTdXRlJUUVFlTU1Z?oc=5",
+   "title": "President Joe Biden at 43% approval at end of April, same as last month - Ballotpedia News",
+   "text": "President Joe Biden at 43% approval at end of April, same as last month - Ballotpedia News. President Joe Biden at 43% approval at end of April, same as last month Ballotpedia News",
+   "content_hash": "7ba5566c36b4fbdf",
+   "raw_feed_hash": "e60588aacae3ccdce70dffc12f9b93c350f7a5530035e67cfcec4a55762e6bfe",
+   "published_at": 1682924400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_2110e26523",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "602006b4b9a23671:c0",
+   "source_id": "602006b4b9a23671",
+   "subject": "Mining company",
+   "predicate": "pushes back plans to drill for",
+   "object": "copper and gold",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Mining company pushes back plans to drill for copper and gold",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679036400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Mining company",
+    "copper",
+    "gold"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c0b0b2f67e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a6bc8e84b9"
+   }
+  },
+  {
+   "claim_id": "88eca1679a9b4035:c0",
+   "source_id": "88eca1679a9b4035",
+   "subject": "Executive Order",
+   "predicate": "amplifies",
+   "object": "Whole-of-Government Environmental Justice Agenda",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Executive Order Amplifies Whole-of-Government Environmental Justice Agenda",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683010800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Executive Order",
+    "Whole-of-Government Environmental Justice Agenda"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_abe5aa1fc1",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3699bbec9b"
+   }
+  },
+  {
+   "claim_id": "fac0fe6e013c49aa:c0",
+   "source_id": "fac0fe6e013c49aa",
+   "subject": "Biden's approval rating",
+   "predicate": "is considered",
+   "object": "too weak for him to win",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Is Biden\u2019s Approval Rating Too Weak for Him to Win?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682406000.0,
+   "extraction_confidence": 0.8,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Biden"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ec17980ccd",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_2110e26523"
+   }
+  },
+  {
+   "claim_id": "6e4fac7df470cb27:c0",
+   "source_id": "6e4fac7df470cb27",
+   "subject": "ExxonMobil",
+   "predicate": "gets",
+   "object": "environment permit for fifth oil project",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "ExxonMobil gets environment permit for fifth oil project",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682665200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "ExxonMobil"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bdd407689b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a6bc8e84b9"
+   }
+  },
+  {
+   "claim_id": "12381cbc9a7cdd59:c0",
+   "source_id": "12381cbc9a7cdd59",
+   "subject": "U.S.",
+   "predicate": "has shown resistance to",
+   "object": "environmental reparations",
+   "value": "",
+   "units": "",
+   "qualifiers": "for 50 years",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "50 Years of U.S. Resistance to Environmental Reparations",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688626800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "U.S.",
+    "environmental reparations"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_cfa1e38b8b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3699bbec9b"
+   }
+  },
+  {
+   "claim_id": "12381cbc9a7cdd59:c1",
+   "source_id": "12381cbc9a7cdd59",
+   "subject": "National Security Archive",
+   "predicate": "is the source of",
+   "object": "the statement about U.S. resistance",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "National Security Archive",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688626800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "National Security Archive"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_cfa1e38b8b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3699bbec9b"
+   }
+  },
+  {
+   "claim_id": "73b392a14fbb796d:c0",
+   "source_id": "73b392a14fbb796d",
+   "subject": "Biden",
+   "predicate": "has overall approval rating",
+   "object": "40%",
+   "value": "40",
+   "units": "%",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Biden Overall Approval at 40%",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679986800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Joe Biden"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_39fe81fb0f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_2110e26523"
+   }
+  },
+  {
+   "claim_id": "73b392a14fbb796d:c1",
+   "source_id": "73b392a14fbb796d",
+   "subject": "Biden's key issue ratings",
+   "predicate": "are",
+   "object": "lackluster",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Key Issue Ratings Lackluster",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679986800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Joe Biden"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_39fe81fb0f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_2110e26523"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Mining company",
+   "normalized": "mining",
+   "candidates": [
+    {
+     "entity_id": "ent_c6a32efeef",
+     "canonical": "mining",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Mining company"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "copper",
+   "normalized": "copper",
+   "candidates": [
+    {
+     "entity_id": "ent_9c5c72058d",
+     "canonical": "copper",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "copper"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "gold",
+   "normalized": "gold",
+   "candidates": [
+    {
+     "entity_id": "ent_09feb137fd",
+     "canonical": "gold",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "gold"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Executive Order",
+   "normalized": "executive order",
+   "candidates": [
+    {
+     "entity_id": "ent_7435355992",
+     "canonical": "executive order",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Executive Order"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Whole-of-Government Environmental Justice Agenda",
+   "normalized": "whole-of-government environmental agenda",
+   "candidates": [
+    {
+     "entity_id": "ent_f13cc21560",
+     "canonical": "whole-of-government environmental agenda",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Whole-of-Government Environmental Justice Agenda"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Biden",
+   "normalized": "biden",
+   "candidates": [
+    {
+     "entity_id": "ent_d1a4be2894",
+     "canonical": "biden",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Biden"
+     ]
+    },
+    {
+     "entity_id": "ent_05f4e38ea5",
+     "canonical": "joe biden",
+     "support": 0.3167,
+     "evidence_mentions": [
+      "Joe Biden",
+      "Joe Biden"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "ExxonMobil",
+   "normalized": "exxonmobil",
+   "candidates": [
+    {
+     "entity_id": "ent_f6603e797c",
+     "canonical": "exxonmobil",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "ExxonMobil"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "U.S.",
+   "normalized": "u s",
+   "candidates": [
+    {
+     "entity_id": "ent_805285379a",
+     "canonical": "u s",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "U.S."
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "environmental reparations",
+   "normalized": "environmental reparations",
+   "candidates": [
+    {
+     "entity_id": "ent_47ab6a3e33",
+     "canonical": "environmental reparations",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "environmental reparations"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "National Security Archive",
+   "normalized": "national security archive",
+   "candidates": [
+    {
+     "entity_id": "ent_009805220a",
+     "canonical": "national security archive",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "National Security Archive"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Joe Biden",
+   "normalized": "joe biden",
+   "candidates": [
+    {
+     "entity_id": "ent_05f4e38ea5",
+     "canonical": "joe biden",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Joe Biden",
+      "Joe Biden"
+     ]
+    },
+    {
+     "entity_id": "ent_d1a4be2894",
+     "canonical": "biden",
+     "support": 0.2333,
+     "evidence_mentions": [
+      "Biden"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Joe Biden",
+   "normalized": "joe biden",
+   "candidates": [
+    {
+     "entity_id": "ent_05f4e38ea5",
+     "canonical": "joe biden",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Joe Biden",
+      "Joe Biden"
+     ]
+    },
+    {
+     "entity_id": "ent_d1a4be2894",
+     "canonical": "biden",
+     "support": 0.2333,
+     "evidence_mentions": [
+      "Biden"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "602006b4b9a23671": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1679036400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679036400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6e4fac7df470cb27": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1682665200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682665200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "88eca1679a9b4035": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1683010800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683010800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "12381cbc9a7cdd59": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1688626800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688626800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3bfbf7175cab815b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1684738800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684738800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c56f9b551c7c23f3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1690354800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690354800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e9d649b8cc6d1613": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1681714800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681714800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6a728baede2d2f68": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1685948400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685948400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "189ec386f198c6d3": {
+   "status": "uncertain",
+   "confidence": 0.5,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1690786800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690786800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2c5eb98efbb060c5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1679814000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679814000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fac0fe6e013c49aa": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1682406000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682406000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "73b392a14fbb796d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1679986800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679986800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ed6251526744a749": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1683442800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683442800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4a9865b10a6f27db": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1679036400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679036400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "260d9bdae0f787f5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1683442800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683442800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3633e5d1e1da0229": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1684738800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684738800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d4500023cb0867da": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1689318000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689318000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4d290c63db71056b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1682924400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682924400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_c0b0b2f67e",
+   "member_ids": [
+    "602006b4b9a23671"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WPR",
+   "primary_source": "WPR",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bdd407689b",
+   "member_ids": [
+    "6e4fac7df470cb27"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Stabroek News",
+   "primary_source": "Stabroek News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_abe5aa1fc1",
+   "member_ids": [
+    "88eca1679a9b4035"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WilmerHale",
+   "primary_source": "WilmerHale",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_cfa1e38b8b",
+   "member_ids": [
+    "12381cbc9a7cdd59"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "National Security Archive",
+   "primary_source": "National Security Archive",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_13de8f4edd",
+   "member_ids": [
+    "3bfbf7175cab815b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Maryland Matters",
+   "primary_source": "Maryland Matters",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f86e7bace2",
+   "member_ids": [
+    "c56f9b551c7c23f3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Inside Climate News",
+   "primary_source": "Inside Climate News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7c720503d9",
+   "member_ids": [
+    "e9d649b8cc6d1613"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "City & State New York",
+   "primary_source": "City & State New York",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a8102c1473",
+   "member_ids": [
+    "6a728baede2d2f68"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Legal Planet",
+   "primary_source": "Legal Planet",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a0a0224c5e",
+   "member_ids": [
+    "189ec386f198c6d3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Mother Jones",
+   "primary_source": "Mother Jones",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f9f6713a4f",
+   "member_ids": [
+    "2c5eb98efbb060c5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Boston Globe",
+   "primary_source": "The Boston Globe",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ec17980ccd",
+   "member_ids": [
+    "fac0fe6e013c49aa"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Center For Politics",
+   "primary_source": "Center For Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_39fe81fb0f",
+   "member_ids": [
+    "73b392a14fbb796d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Gallup News",
+   "primary_source": "Gallup News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0c89e6f86b",
+   "member_ids": [
+    "ed6251526744a749"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Washington Post",
+   "primary_source": "The Washington Post",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_046965f471",
+   "member_ids": [
+    "4a9865b10a6f27db"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WNCT",
+   "primary_source": "WNCT",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_83f037ba36",
+   "member_ids": [
+    "260d9bdae0f787f5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Politico",
+   "primary_source": "Politico",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0cb926c5a2",
+   "member_ids": [
+    "3633e5d1e1da0229"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "PBS",
+   "primary_source": "PBS",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0c178131bf",
+   "member_ids": [
+    "d4500023cb0867da"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "AP-NORC",
+   "primary_source": "AP-NORC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_897b0776fc",
+   "member_ids": [
+    "4d290c63db71056b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Ballotpedia News",
+   "primary_source": "Ballotpedia News",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "602006b4b9a23671:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679036400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "88eca1679a9b4035:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683010800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "fac0fe6e013c49aa:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682406000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6e4fac7df470cb27:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682665200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "12381cbc9a7cdd59:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688626800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "12381cbc9a7cdd59:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688626800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "73b392a14fbb796d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679986800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "73b392a14fbb796d:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679986800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "602006b4b9a23671:c0",
+  "88eca1679a9b4035:c0",
+  "fac0fe6e013c49aa:c0",
+  "6e4fac7df470cb27:c0",
+  "12381cbc9a7cdd59:c0",
+  "12381cbc9a7cdd59:c1",
+  "73b392a14fbb796d:c0",
+  "73b392a14fbb796d:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_a6bc8e84b9": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_3699bbec9b": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_2110e26523": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_2f676427a4": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_cb9fe9be2a": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_d2de70f953": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_dad8aee5d8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_524d8aa6ff": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_2f676427a4",
+  "req_cb9fe9be2a",
+  "req_d2de70f953",
+  "req_dad8aee5d8",
+  "req_524d8aa6ff"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 18,
+  "n_contradictions": 0,
+  "n_documents": 18
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.994,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "5524bc96f2a81983",
+ "bundle_hash": "5524bc96f2a81983",
+ "_persisted_at": "2026-07-13T01:55:33Z"
+}

@@ -1,0 +1,148 @@
+{
+  "schema_version": "frozen.trajectory.cases.v1",
+  "description": "Hand-curated multi-step REAL decision sequences for the closed-loop trajectory benchmark. Per case: several actors, several ordered decision steps; each step freezes the world at its own as_of, adds only evidence public BEFORE that as_of, and labels the actor's real next action. Branch worlds persist across steps (state, memories, executed actions), so this measures sequences, reaction anticipation, and error compounding — not isolated decisions. Same contamination caveat as the single-decision corpus: famous sequences; architecture deltas (persistent vs stateless) are the contamination-controlled signal.",
+  "leakage_rule": "every evidence date <= the consuming step's as_of; a step's situation text never reveals that step's or later steps' outcomes; labels never enter prompts.",
+  "cases": [
+    {
+      "case_id": "cuban_crisis_sequence_1962",
+      "actors": {
+        "Nikita_Khrushchev": {"role": "soviet_premier",
+                              "goals": ["preserve Soviet security and prestige", "avoid nuclear war", "protect Cuba"],
+                              "commitments": [{"statement": "Publicly committed to defending Cuba", "binding": false}]},
+        "John_Kennedy": {"role": "us_president",
+                         "goals": ["remove the missiles from Cuba", "avoid nuclear war", "hold the alliance together"],
+                         "commitments": [{"statement": "Publicly demanded removal of the missiles", "binding": false}]}
+      },
+      "relations": [{"src": "John_Kennedy", "rel": "communicates_with", "dst": "Nikita_Khrushchev"}],
+      "base_evidence": [
+        {"date": "1962-10-16", "text": "US reconnaissance discovered Soviet missile sites under construction in Cuba (known to the US leadership; public from Oct 22)."},
+        {"date": "1962-10-22", "text": "Kennedy announced a naval quarantine of Cuba and demanded removal of Soviet missiles."}
+      ],
+      "steps": [
+        {"step": 1, "as_of": "1962-10-24", "actor": "Nikita_Khrushchev",
+         "situation": "The quarantine line is now active; your ships approach it and the world watches whether you submit to inspection or defy the blockade.",
+         "evidence_additions": [
+           {"date": "1962-10-23", "text": "Khrushchev publicly denounced the quarantine as piracy and an act of aggression."},
+           {"date": "1962-10-24", "text": "Several Soviet ships slowed or altered course near the quarantine line; tankers continued."}],
+         "candidate_actions": ["hold_position", "accept", "escalate", "delay", "counteroffer"],
+         "actual_action": "hold_position",
+         "source_note": "Khrushchev publicly defied the quarantine while quietly keeping missile-carrying ships back (Oct 24-25)."},
+        {"step": 2, "as_of": "1962-10-26", "actor": "Nikita_Khrushchev",
+         "situation": "The blockade holds, US invasion preparations are visible, and no diplomatic exit exists yet. You must decide whether to open one.",
+         "evidence_additions": [
+           {"date": "1962-10-25", "text": "At the UN, Stevenson confronted the Soviet ambassador with photographic evidence of the missile sites."},
+           {"date": "1962-10-26", "text": "US low-level reconnaissance intensified; invasion staging in Florida was widely reported."}],
+         "candidate_actions": ["counteroffer", "hold_position", "escalate", "delay", "seek_mediator"],
+         "actual_action": "counteroffer",
+         "source_note": "Khrushchev's private first letter of Oct 26 offered withdrawal in exchange for a US non-invasion pledge."},
+        {"step": 3, "as_of": "1962-10-27", "actor": "John_Kennedy",
+         "situation": "You hold two Soviet letters: a private conciliatory one offering withdrawal for a non-invasion pledge, and a harder public one demanding Turkey missiles too. A U-2 has just been shot down over Cuba; your generals urge striking.",
+         "evidence_additions": [
+           {"date": "1962-10-26", "text": "Khrushchev's private letter offered withdrawal in exchange for a US non-invasion pledge."},
+           {"date": "1962-10-27", "text": "A second, public Khrushchev letter demanded US Jupiter missiles leave Turkey as part of any deal."},
+           {"date": "1962-10-27", "text": "A U-2 was shot down over Cuba; the pilot was killed; the military pressed for retaliation."}],
+         "candidate_actions": ["accept", "escalate", "reject", "counteroffer", "delay"],
+         "actual_action": "accept",
+         "source_note": "Kennedy accepted the FIRST letter's terms publicly (Trollope ploy) while privately conceding Turkey via RFK, Oct 27 night."},
+        {"step": 4, "as_of": "1962-10-28", "actor": "Nikita_Khrushchev",
+         "situation": "Kennedy has publicly accepted your first letter's framework — non-invasion pledge for withdrawal — and his brother privately conveyed that the Turkey missiles will quietly leave later. Time to answer, with the military machinery on both sides still in motion.",
+         "evidence_additions": [
+           {"date": "1962-10-27", "text": "Robert Kennedy privately conveyed to the Soviet ambassador that Jupiter missiles would be removed later but never as a public trade, and that time was nearly out."}],
+         "candidate_actions": ["accept", "hold_position", "counteroffer", "delay", "escalate"],
+         "actual_action": "accept",
+         "source_note": "Radio Moscow announced the withdrawal on Oct 28."}
+      ]
+    },
+    {
+      "case_id": "twitter_acquisition_sequence_2022",
+      "actors": {
+        "Elon_Musk": {"role": "acquirer_ceo",
+                      "goals": ["control the platform", "avoid overpaying", "avoid a humiliating trial loss"],
+                      "commitments": [{"statement": "Signed merger agreement at $54.20 with specific performance clause", "binding": true, "prohibits": []}]},
+        "Twitter_Board": {"role": "corporate_board",
+                          "goals": ["maximize shareholder value", "close the signed deal", "protect the company through litigation if needed"],
+                          "commitments": [{"statement": "Fiduciary duty to shareholders", "binding": true, "prohibits": []}]}
+      },
+      "relations": [{"src": "Elon_Musk", "rel": "communicates_with", "dst": "Twitter_Board"}],
+      "base_evidence": [
+        {"date": "2022-04-14", "text": "Musk offered to buy Twitter at $54.20 per share, calling it his best and final offer."},
+        {"date": "2022-04-21", "text": "Musk disclosed committed financing of about $46.5 billion for the bid."}
+      ],
+      "steps": [
+        {"step": 1, "as_of": "2022-04-24", "actor": "Twitter_Board",
+         "situation": "The financed $54.20 offer stands at a large premium; the poison pill is in place but institutional shareholders press for engagement. You must respond to the offer.",
+         "evidence_additions": [
+           {"date": "2022-04-15", "text": "The board adopted a poison pill in response to the unsolicited offer."},
+           {"date": "2022-04-24", "text": "Reports indicated the board re-engaged seriously with Musk after his financing was committed."}],
+         "candidate_actions": ["accept", "reject", "delay", "counteroffer", "seek_mediator"],
+         "actual_action": "accept",
+         "source_note": "The board unanimously accepted the $44B agreement on 2022-04-25."},
+        {"step": 2, "as_of": "2022-07-07", "actor": "Elon_Musk",
+         "situation": "Markets have fallen since April; tech valuations are down sharply; your team claims Twitter's spam-account disclosures are inadequate and the data you demanded is incomplete. The agreement binds you at $54.20 with specific performance.",
+         "evidence_additions": [
+           {"date": "2022-05-13", "text": "Musk tweeted the deal was 'temporarily on hold' pending spam-account details."},
+           {"date": "2022-06-06", "text": "Musk's lawyers accused Twitter of breaching the agreement by withholding bot data."}],
+         "candidate_actions": ["withdraw_offer", "acquire", "delay", "counteroffer", "hold_position"],
+         "actual_action": "withdraw_offer",
+         "source_note": "Musk filed to terminate the merger agreement on 2022-07-08."},
+        {"step": 3, "as_of": "2022-07-11", "actor": "Twitter_Board",
+         "situation": "The buyer has filed to terminate the signed agreement. Your stock is far below the deal price. Delaware specific-performance precedent appears favorable. You must respond.",
+         "evidence_additions": [
+           {"date": "2022-07-08", "text": "Musk's lawyers filed notice terminating the $44B agreement over bot-count disputes."},
+           {"date": "2022-07-10", "text": "The board chair publicly stated the board intended to close the transaction on the agreed terms."}],
+         "candidate_actions": ["escalate", "accept", "counteroffer", "delay", "concede"],
+         "actual_action": "escalate",
+         "source_note": "Twitter sued Musk in Delaware Chancery on 2022-07-12 seeking specific performance."},
+        {"step": 4, "as_of": "2022-10-03", "actor": "Elon_Musk",
+         "situation": "Trial begins October 17. Discovery has gone badly for you — your own texts are public, the judge has signaled skepticism of the bot defense, and your deposition is imminent. Financing remains committed at $54.20.",
+         "evidence_additions": [
+           {"date": "2022-09-27", "text": "Chancellor McCormick largely sided with Twitter in discovery rulings; trial set for October 17."},
+           {"date": "2022-09-29", "text": "Embarrassing private texts about the deal were released in court filings."}],
+         "candidate_actions": ["acquire", "hold_position", "counteroffer", "delay", "exit"],
+         "actual_action": "acquire",
+         "source_note": "On 2022-10-04 Musk proposed closing at the original $54.20; the deal closed Oct 27."}
+      ]
+    },
+    {
+      "case_id": "johnson_collapse_sequence_2022",
+      "actors": {
+        "Boris_Johnson": {"role": "uk_prime_minister",
+                          "goals": ["survive as prime minister", "control succession timing", "protect his record"],
+                          "commitments": [{"statement": "Told colleagues he had a mandate of 14 million votes and would not resign", "binding": false}]},
+        "Conservative_Cabinet": {"role": "cabinet_delegation",
+                                 "goals": ["end an unsustainable premiership", "limit party damage", "preserve their own standing"],
+                                 "commitments": []}
+      },
+      "relations": [{"src": "Conservative_Cabinet", "rel": "communicates_with", "dst": "Boris_Johnson"}],
+      "base_evidence": [
+        {"date": "2022-07-04", "text": "Downing Street's account of what the PM knew about the Pincher allegations shifted repeatedly."},
+        {"date": "2022-07-05", "text": "Chancellor Sunak and Health Secretary Javid resigned within minutes of each other."}
+      ],
+      "steps": [
+        {"step": 1, "as_of": "2022-07-06", "actor": "Boris_Johnson",
+         "situation": "Your chancellor and health secretary resigned last night; junior resignations are accelerating through the day. You must decide whether to fight on or stand down.",
+         "evidence_additions": [
+           {"date": "2022-07-05", "text": "Johnson appointed Zahawi chancellor within hours and vowed to carry on."},
+           {"date": "2022-07-06", "text": "Dozens of ministers and aides resigned through the day; replacements grew hard to find."}],
+         "candidate_actions": ["hold_position", "exit", "delay", "concede"],
+         "actual_action": "hold_position",
+         "source_note": "Johnson publicly vowed to fight on through July 6, telling the Commons he would keep going."},
+        {"step": 2, "as_of": "2022-07-06", "actor": "Conservative_Cabinet",
+         "situation": "The premiership is visibly collapsing but the PM refuses to go. Senior ministers must decide whether to confront him collectively tonight.",
+         "evidence_additions": [
+           {"date": "2022-07-06", "text": "A delegation of cabinet ministers gathered in Downing Street awaiting the PM."}],
+         "candidate_actions": ["oppose", "support", "abstain", "delay"],
+         "actual_action": "oppose",
+         "source_note": "The cabinet delegation told Johnson on the evening of July 6 that his position was unrecoverable."},
+        {"step": 3, "as_of": "2022-07-07", "actor": "Boris_Johnson",
+         "situation": "Your cabinet told you to your face the position is unrecoverable; you sacked Gove overnight; the 1922 Committee is moving to change no-confidence rules; over fifty ministers have gone. Morning has come.",
+         "evidence_additions": [
+           {"date": "2022-07-06", "text": "Johnson dismissed Michael Gove, who had told him to resign."},
+           {"date": "2022-07-07", "text": "Resignations passed fifty; the 1922 executive prepared rule changes enabling a fresh confidence vote."}],
+         "candidate_actions": ["exit", "hold_position", "escalate", "delay"],
+         "actual_action": "exit",
+         "source_note": "Johnson announced his resignation as party leader outside No. 10 on the morning of July 7."}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+ "leakage_ablation": {
+  "per_question": [
+   {
+    "terms": "writers guild strike studios deal",
+    "as_of": "2023-08-01",
+    "before_only": {
+     "n_dated": 12,
+     "post_asof_share": 0.0,
+     "query": "writers guild strike studios deal before:2023-08-01"
+    },
+    "paired": {
+     "n_dated": 12,
+     "post_asof_share": 0.0
+    },
+    "paired_plus_temporal_filter": {
+     "n_admitted": 12,
+     "post_asof_share": 0.0
+    }
+   },
+   {
+    "terms": "UAW union auto strike agreement",
+    "as_of": "2023-09-15",
+    "before_only": {
+     "n_dated": 12,
+     "post_asof_share": 0.0,
+     "query": "UAW union auto strike agreement before:2023-09-15"
+    },
+    "paired": {
+     "n_dated": 12,
+     "post_asof_share": 0.0
+    },
+    "paired_plus_temporal_filter": {
+     "n_admitted": 7,
+     "post_asof_share": 0.0
+    }
+   },
+   {
+    "terms": "US debt ceiling deal congress",
+    "as_of": "2023-05-01",
+    "before_only": {
+     "n_dated": 12,
+     "post_asof_share": 0.0,
+     "query": "US debt ceiling deal congress before:2023-05-01"
+    },
+    "paired": {
+     "n_dated": 12,
+     "post_asof_share": 0.0
+    },
+    "paired_plus_temporal_filter": {
+     "n_admitted": 10,
+     "post_asof_share": 0.0
+    }
+   },
+   {
+    "terms": "Silicon Valley Bank collapse",
+    "as_of": "2023-03-01",
+    "before_only": {
+     "n_dated": 5,
+     "post_asof_share": 0.4,
+     "query": "Silicon Valley Bank collapse before:2023-03-01"
+    },
+    "paired": {
+     "n_dated": 0,
+     "post_asof_share": 0.0
+    },
+    "paired_plus_temporal_filter": {
+     "n_admitted": 0,
+     "post_asof_share": 0.0
+    }
+   },
+   {
+    "terms": "Twitter rebrand X Musk",
+    "as_of": "2023-07-01",
+    "before_only": {
+     "n_dated": 12,
+     "post_asof_share": 0.0,
+     "query": "Twitter rebrand X Musk before:2023-07-01"
+    },
+    "paired": {
+     "n_dated": 12,
+     "post_asof_share": 0.0
+    },
+    "paired_plus_temporal_filter": {
+     "n_admitted": 12,
+     "post_asof_share": 0.0
+    }
+   },
+   {
+    "terms": "OpenAI Sam Altman board",
+    "as_of": "2023-11-01",
+    "before_only": {
+     "n_dated": 12,
+     "post_asof_share": 0.0,
+     "query": "OpenAI Sam Altman board before:2023-11-01"
+    },
+    "paired": {
+     "n_dated": 12,
+     "post_asof_share": 0.0
+    },
+    "paired_plus_temporal_filter": {
+     "n_admitted": 12,
+     "post_asof_share": 0.0
+    }
+   },
+   {
+    "terms": "UK prime minister Sunak election",
+    "as_of": "2024-06-01",
+    "before_only": {
+     "n_dated": 12,
+     "post_asof_share": 0.0,
+     "query": "UK prime minister Sunak election before:2024-06-01"
+    },
+    "paired": {
+     "n_dated": 12,
+     "post_asof_share": 0.0
+    },
+    "paired_plus_temporal_filter": {
+     "n_admitted": 12,
+     "post_asof_share": 0.0
+    }
+   },
+   {
+    "terms": "Baltimore bridge collapse",
+    "as_of": "2024-03-01",
+    "before_only": {
+     "n_dated": 12,
+     "post_asof_share": 0.0833,
+     "query": "Baltimore bridge collapse before:2024-03-01"
+    },
+    "paired": {
+     "n_dated": 12,
+     "post_asof_share": 0.0
+    },
+    "paired_plus_temporal_filter": {
+     "n_admitted": 12,
+     "post_asof_share": 0.0
+    }
+   }
+  ],
+  "aggregate": {
+   "mean_post_asof_share_before_only": 0.0604,
+   "mean_post_asof_share_paired": 0.0,
+   "mean_post_asof_share_paired_plus_filter": 0.0,
+   "n_questions": 8,
+   "paired_reduces_leakage_vs_before_only": true,
+   "temporal_filter_zeroes_residual_leak": true
+  }
+ },
+ "pipeline_ablations": {
+  "n_bundles": 40,
+  "no_dependence_collapse_would_overcount_share": 0.15,
+  "no_temporal_verification_would_leak_share": 0.0,
+  "no_actor_visibility_would_leak_share": 0.0,
+  "interpretation": "each share is the fraction of bundles where removing the safeguard would cause overcounting / post-as-of leakage / actor-information leakage"
+ },
+ "_meta": {
+  "runtime_s": 13.8,
+  "note": "before:-only is an evaluation arm only; production always uses paired after:/before:"
+ }
+}

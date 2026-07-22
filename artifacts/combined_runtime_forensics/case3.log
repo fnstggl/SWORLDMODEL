@@ -1,0 +1,90 @@
+[case3 world ran in 4735s]
+
+==============================================================================
+CASE 3 (world for best action) — STRUCTURAL MODELS
+==============================================================================
+  - m0_actor_relationship: [promoted] The decisive causal factor is whether Priya can neutralize the larger competitor's existing relationship with 
+  - m1_institutional_procedural: [promoted] The outcome is determined by whether Priya can secure a formal procedural exception or expedited review from t
+  - m2_resource_constraint: [promoted] Priya's company will win the contract if and only if she can secure the STEM coordinator's active endorsement 
+  - m3_information_distribution: [promoted] The outcome is determined by whether Priya can disrupt the procurement office's existing information channel w
+  - m4_adversarial_alternative: [promoted] Priya wins if and only if the larger competitor fails to submit a compliant bid by the August deadline, becaus
+    budget m0_actor_relationship: pilot=14 final=83 required=66 status=completed
+    budget m1_institutional_procedural: pilot=10 final=63 required=50 status=completed
+    budget m2_resource_constraint: pilot=10 final=63 required=50 status=completed
+    budget m3_information_distribution: pilot=9 final=57 required=45 status=completed
+    budget m4_adversarial_alternative: pilot=9 final=57 required=45 status=completed
+
+==============================================================================
+CASE 3 (world for best action) — PER-MODEL TEMPORAL MODELS (compiled inside each structural model)
+==============================================================================
+  - m0_actor_relationship: hash=787d2e70ea15 channels=['priya_demo_meeting', 'priya_to_procurement_email', 'procurement_to_board_report'] institutional_processes=['meridian_procurement_shortlisting', 'school_board_ratification'] deadlines=3
+      decision-trigger sources: ['Priya: strategic_choice', 'Procurement_office_staff: shortlisting_deadline', 'Meridian District School Board: ratification_meeting']
+  - m1_institutional_procedural: hash=dac5323dd8e6 channels=['competitor_to_officer', 'coordinator_to_officer', 'priya_to_coordinator', 'priya_to_officer'] institutional_processes=['meridian_procurement'] deadlines=3
+      decision-trigger sources: ['Priya: strategic_choice', 'DistrictProcurementOfficer: shortlist_creation', 'SchoolBoardChair: ratification_vote']
+  - m2_resource_constraint: hash=23b0e01c754d channels=['board_meeting_public', 'email_priya_james', 'email_sarah_james', 'phone_priya_maria'] institutional_processes=['meridian_procurement_shortlist'] deadlines=2
+      decision-trigger sources: ['priya_sharma: strategic_choice', 'james_carter: shortlist_decision', 'maria_gonzalez: endorsement_request']
+  - m3_information_distribution: hash=e3f82392c4f9 channels=['competitor_to_procurement_relationship', 'priya_to_procurement_email', 'priya_to_stem_coordinator_direct', 'procurement_to_board_report'] institutional_processes=['meridian_procurement_shortlist'] deadlines=2
+      decision-trigger sources: ['priya_sharma: strategic_choice', 'procurement_lead: shortlist_deadline', 'school_board_chair: board_meeting_vote']
+  - m4_adversarial_alternative: hash=4c1b6e5772f3 channels=['board_meeting_public', 'email_procurement', 'phone_call_priya_procurement'] institutional_processes=['meridian_procurement_cycle'] deadlines=3
+      decision-trigger sources: ['Priya: strategic_choice_before_deadline', 'Procurement_office_lead: shortlist_decision', 'Meridian_District_School_Board: ratification_vote']
+
+==============================================================================
+CASE 3 (world for best action) — ATTEMPTS / MECHANISMS / OBSERVATIONS / ACTOR DECISIONS (per model)
+==============================================================================
+  - m0_actor_relationship:
+      attempts=83 intended_deliveries=0 ACTUAL_deliveries=0 mech invoked=0 ok=0 fail=0 unresolved=0
+      observations_delivered=0 attention_events=0 actors_reconsidered=0 direct_human_writes=0 numeric_fallbacks=0
+      temporal runtime: {"event_counts": {"decision_opportunity": 83, "observe_evidence": 249, "network_diffusion": 83, "structural_process_prior": 166, "actor_action_aggregation": 83, "institutional_decision": 83, "deadline": 83}, "actor_invoc
+      decisions[Priya]: {"raw_qualitative_simulation_distribution": {"informal_pre_bid_conversation[multi_part]@STEM_coordinator": 0.012, "reach_out_to_stem_coordinator[multi_part]@STE
+  - m1_institutional_procedural:
+      attempts=63 intended_deliveries=36 ACTUAL_deliveries=0 mech invoked=0 ok=0 fail=0 unresolved=0
+      observations_delivered=0 attention_events=0 actors_reconsidered=0 direct_human_writes=0 numeric_fallbacks=0
+      temporal runtime: {"event_counts": {"observe_evidence": 189, "decision_opportunity": 63, "deadline": 189, "structural_process_prior": 126, "actor_action_aggregation": 63, "institutional_decision": 63}, "actor_invocations": {}, "n_decision
+      decisions[Priya]: {"raw_qualitative_simulation_distribution": {"assess_removal_bid_geopolitical_links[private]": 0.0159, "contact_district_procurement_officer[multi_part]@Distric
+  - m2_resource_constraint:
+      attempts=63 intended_deliveries=0 ACTUAL_deliveries=0 mech invoked=0 ok=0 fail=0 unresolved=0
+      observations_delivered=0 attention_events=0 actors_reconsidered=0 direct_human_writes=0 numeric_fallbacks=0
+      temporal runtime: {"event_counts": {"observe_evidence": 189, "decision_opportunity": 63, "structural_process_prior": 126, "actor_action_aggregation": 63, "deadline": 63, "institutional_decision": 63}, "actor_invocations": {}, "n_decision_
+      decisions[priya_sharma]: {"raw_qualitative_simulation_distribution": {"assess_james_carter_loyalty[multi_part]@james_carter": 0.2857, "internal_review_of_james_carter[multi_part]@james_
+  - m3_information_distribution:
+      attempts=57 intended_deliveries=0 ACTUAL_deliveries=0 mech invoked=0 ok=0 fail=0 unresolved=0
+      observations_delivered=0 attention_events=0 actors_reconsidered=0 direct_human_writes=0 numeric_fallbacks=0
+      temporal runtime: {"event_counts": {"observe_evidence": 171, "decision_opportunity": 57, "network_diffusion": 57, "structural_process_prior": 114, "actor_action_aggregation": 57, "institutional_decision": 57, "deadline": 57}, "actor_invoc
+      decisions[priya_sharma]: {"raw_qualitative_simulation_distribution": {"contact_stem_coordinator[multi_part]@stem_coordinator": 0.5088, "private_call_to_stem_coordinator[multi_part]@stem
+  - m4_adversarial_alternative:
+      attempts=114 intended_deliveries=0 ACTUAL_deliveries=0 mech invoked=0 ok=0 fail=0 unresolved=0
+      observations_delivered=0 attention_events=0 actors_reconsidered=0 direct_human_writes=0 numeric_fallbacks=0
+      temporal runtime: {"event_counts": {"observe_evidence": 171, "decision_opportunity": 114, "deadline": 114, "structural_process_prior": 114, "actor_action_aggregation": 57, "institutional_decision": 57}, "actor_invocations": {}, "n_decisio
+      decisions[Larger_competitor_compliance_officer]: {"raw_qualitative_simulation_distribution": {"assess_previ_backing[multi_part]": 0.2105, "contact_vale_contact[private]": 0.0175, "request_private_briefing_from
+      decisions[Priya]: {"raw_qualitative_simulation_distribution": {"call_emergency_board_meeting[multi_part]": 0.2982, "offer_covert_board_seat_to_previ_ally[multi_part]": 0.2105, "p
+
+==============================================================================
+CASE 3 (world for best action) — TERMINAL
+==============================================================================
+  status=completed_with_degradation  distribution={'Priya_loses': 0.1053, 'Priya_wins': 0.0947, 'lose': 0.5158, 'win': 0.2842}
+[case3 decision ran in 621s]
+
+==============================================================================
+CASE 3 — CROSS-MODEL ACTION VERDICT
+==============================================================================
+recommended: gather_information  kind: gather_information
+winner_by_model: {"m1_institutional_procedural": "do_nothing", "m2_resource_constraint": null, "m4_adversarial_alternative": null}
+stability: "mildly_structurally_sensitive"
+robust_action: null
+minimax_regret: {}
+
+==============================================================================
+CASE 3 — PER-MODEL GENERATED CANDIDATES + CAUSAL BOUNDARY
+==============================================================================
+  - m1_institutional_procedural: generated candidates=['plan_01', 'plan_02', 'plan_03', 'plan_04', 'plan_05', 'plan_06', 'plan_07', 'plan_08']
+      steps_fired=0.0 mech invoked=0.0 ok=0.0 unresolved=0.0 actual_deliveries=0.0
+      recommended in-model: do_nothing
+  - m2_resource_constraint: generated candidates=[]
+      steps_fired=None mech invoked=None ok=None unresolved=None actual_deliveries=None
+      recommended in-model: None
+  - m4_adversarial_alternative: generated candidates=[]
+      steps_fired=None mech invoked=None ok=None unresolved=None actual_deliveries=None
+      recommended in-model: None
+[saved artifacts/combined_runtime_forensics/case3_best_action.json]
+
+DONE

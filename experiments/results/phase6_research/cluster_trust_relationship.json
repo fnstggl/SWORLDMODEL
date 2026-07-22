@@ -1,0 +1,718 @@
+[
+  {
+    "family": "Reciprocity",
+    "registry_id": "reciprocity",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (swm.world_model_v2.registry.families.social:reciprocity_update resolves; test_ref present)",
+    "primary_sources": [
+      {
+        "title": "Trust, Reciprocity, and Social History",
+        "authors": "Berg, J.; Dickhaut, J.; McCabe, K.",
+        "year": 1995,
+        "venue": "Games and Economic Behavior 10(1):122-142",
+        "doi_or_url": "https://www.sciencedirect.com/science/article/abs/pii/S0899825685710275",
+        "verified": true,
+        "what_it_provides": "Canonical investment/trust-game paradigm; controls for reputation, precommitment, punishment via anonymity/one-shot -> isolates reciprocity as a behavioral primitive. Provides the operational reciprocity measure (return r increasing in amount sent s)."
+      },
+      {
+        "title": "Fairness and Retaliation: The Economics of Reciprocity",
+        "authors": "Fehr, E.; Gaechter, S.",
+        "year": 2000,
+        "venue": "Journal of Economic Perspectives 14(3):159-181",
+        "doi_or_url": "10.1257/jep.14.3.159",
+        "verified": true,
+        "what_it_provides": "Review establishing positive AND negative reciprocity as robust economic forces (people repay kindness with kindness, hostility with costly retaliation beyond self-interest)."
+      },
+      {
+        "title": "Cooperation and Punishment in Public Goods Experiments",
+        "authors": "Fehr, E.; Gaechter, S.",
+        "year": 2000,
+        "venue": "American Economic Review 90(4):980-994",
+        "doi_or_url": "10.1257/aer.90.4.980",
+        "verified": true,
+        "what_it_provides": "Experimental causal evidence for negative reciprocity / altruistic punishment: cooperators pay to punish free-riders; punishment increases with the size of the deviation and sustains cooperation. (This is the AER paper the registry references.)"
+      }
+    ],
+    "formal_model": "Direct dyadic reciprocity. Continuous edge update: e_{t+1}=clip(e_t + rate*(v_other - baseline), 0, 1), where v_other is the signed kindness of the counterpart's last action relative to a fairness/expectation baseline (positive reciprocity for kind acts, negative reciprocity/retaliation for hostile acts). Trust-game operationalization (Berg): investor sends s in [0,E]; experimenter triples it (3s); trustee returns r in [0,3s]; reciprocity = dr/ds > 0. Registry callable: reciprocity_update(edge_strength, other_action_value, rate=0.15, baseline=0.0).",
+    "causal_assumptions": [
+      "Counterpart's action is observed and attributed to intention (not chance).",
+      "A fairness/expectation baseline is well-defined for 'kind' vs 'unkind'.",
+      "Strategic/reputation motives are excluded (Berg uses anonymity + one-shot); otherwise repeated-game equilibrium confounds reciprocity.",
+      "Returned amount reflects reciprocal preference, not pure altruism or risk hedging."
+    ],
+    "required_variables": [
+      "counterpart last-action value",
+      "fairness/expectation baseline",
+      "current edge strength",
+      "amount sent s",
+      "multiplier",
+      "amount returned r"
+    ],
+    "temporal_scale": "event (per-interaction edge update)",
+    "evidence_type": "causal_estimate",
+    "reported_coefficients": [
+      {
+        "name": "avg_amount_sent_no_history",
+        "value_or_null": 5.16,
+        "uncertainty_or_null": null,
+        "source_ref": "Berg et al. 1995",
+        "context": "USD, $10 endowment, no-social-history treatment; investor mean transfer (~51.6% of endowment).",
+        "verified": true
+      },
+      {
+        "name": "avg_amount_returned_no_history",
+        "value_or_null": 4.66,
+        "uncertainty_or_null": null,
+        "source_ref": "Berg et al. 1995",
+        "context": "USD returned by trustee, no-history; note < amount sent -> reciprocity present but investor not profitable on average. Canonical value confirmed across multiple secondary quotes of the primary paper.",
+        "verified": true
+      },
+      {
+        "name": "return_slope_dr_ds",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Berg et al. 1995",
+        "context": "Sign is positive (reciprocity); exact regression slope not extracted this session.",
+        "verified": false
+      },
+      {
+        "name": "altruistic_punishment_rate",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Fehr & Gaechter 2000 AER",
+        "context": "Punishment increases with deviation from group cooperation; no single portable coefficient extracted.",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "Berg trust-game lab data (Minnesota)",
+      "Fehr-Gaechter public-goods-with-punishment experiments",
+      "MobLab/BehaviorBench trust game investor/banker (in-repo)"
+    ],
+    "replication_evidence": "Among the most replicated paradigms in experimental economics; Johnson & Mislin 2011 meta-analyzes 162 trust-game replications (n>23,000). Reciprocity direction robust; magnitude varies cross-culturally.",
+    "critiques_or_nulls": [
+      "Trust-game 'reciprocity' can be confounded with altruism, inequity aversion, and risk preference.",
+      "Average return < average sent: individually the investor loses, so 'reciprocity' is partial.",
+      "Strong cross-cultural heterogeneity; WEIRD/student oversampling."
+    ],
+    "applicability_limits": [
+      "Dyadic exchange with observable counterpart actions and a shared fairness reference.",
+      "Not valid where actions are unobserved or intentions unattributable."
+    ],
+    "transport_risks": [
+      "Lab money-metric -> real social exchange",
+      "Student/WEIRD -> general population",
+      "One-shot -> repeated/strategic settings"
+    ],
+    "local_refit_feasible": true,
+    "best_validation_route": "Held-out prediction of trustee return r as a function of investor send s on in-repo BehaviorBench/MobLab trust-game data.",
+    "expected_applicability": "high (cooperation/exchange scenarios)",
+    "expected_transport_risk": "medium",
+    "priority": "medium",
+    "planned_implementation": "Retain reciprocity_update; add a fitted BehaviorBench pack for the return-as-function-of-sent relationship; record held-out validation to move toward locally_validated.",
+    "planned_parameter_packs": [
+      {
+        "pack_id": "behaviorbench_trustgame_reciprocity",
+        "source": "inferred_from_data (BehaviorBench banker returns)",
+        "content": "return slope / adaptation rate",
+        "status": "planned"
+      }
+    ],
+    "promotion_blocker": "No parameter pack and no held-out/posterior-predictive validation record yet (local refit on BehaviorBench feasible but not done).",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Trust formation",
+    "registry_id": "trust_formation",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (shares swm...social:trust_update, 'cooperated' branch; test_ref present)",
+    "primary_sources": [
+      {
+        "title": "Trust games: A meta-analysis",
+        "authors": "Johnson, N. D.; Mislin, A. A.",
+        "year": 2011,
+        "venue": "Journal of Economic Psychology 32(5):865-889",
+        "doi_or_url": "10.1016/j.joep.2011.05.007",
+        "verified": true,
+        "what_it_provides": "Meta-analysis of 162 trust-game replications (n>23,000). Central tendencies for trust (amount sent) and trustworthiness (amount returned) and the protocol/geography moderators that shift them."
+      },
+      {
+        "title": "Trust, Reciprocity, and Social History",
+        "authors": "Berg, J.; Dickhaut, J.; McCabe, K.",
+        "year": 1995,
+        "venue": "Games and Economic Behavior 10(1):122-142",
+        "doi_or_url": "https://www.sciencedirect.com/science/article/abs/pii/S0899825685710275",
+        "verified": true,
+        "what_it_provides": "The underlying paradigm that operationalizes initial trust as the first-mover transfer."
+      }
+    ],
+    "formal_model": "Trust operationalized as the first-mover transfer s = beta * E in the Berg game; meta-analytic mean beta ~= 0.50. As a belief, trust is an expectation of counterpart trustworthiness updated by outcomes. Registry trust_update() 'cooperated' branch: T_{t+1} = T_t + gain*(1 - T_t) (bounded, concave approach to 1) -> trust builds slowly.",
+    "causal_assumptions": [
+      "First-mover transfer reflects trust (expectation of return), not solely altruism/risk.",
+      "Counterpart trustworthiness is the object of the belief being formed.",
+      "Protocol constants (multiplier, real vs simulated partner, payment scheme) held fixed within a context."
+    ],
+    "required_variables": [
+      "endowment E",
+      "amount sent s",
+      "multiplier",
+      "amount returned r",
+      "prior trust belief",
+      "population/geography"
+    ],
+    "temporal_scale": "event to session (accumulates across interactions)",
+    "evidence_type": "meta_analysis",
+    "reported_coefficients": [
+      {
+        "name": "mean_amount_sent_frac_of_endowment",
+        "value_or_null": 0.5,
+        "uncertainty_or_null": null,
+        "source_ref": "Johnson & Mislin 2011",
+        "context": "Average amount sent as a proportion of the first-mover's endowment across 162 replications. As-reported meta-analytic mean (abstract omits it; confirmed via secondary summaries of the paper).",
+        "verified": true
+      },
+      {
+        "name": "mean_amount_returned_frac_of_received",
+        "value_or_null": 0.37,
+        "uncertainty_or_null": null,
+        "source_ref": "Johnson & Mislin 2011",
+        "context": "Average amount returned by the trustee as a proportion of the amount received (trustworthiness). As-reported meta-analytic mean.",
+        "verified": true
+      },
+      {
+        "name": "africa_vs_north_america_transfer",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Johnson & Mislin 2011",
+        "context": "Robust finding that subjects send LESS in Africa than North America (sign negative); point estimate not extracted.",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "162 trust-game replications corpus (Johnson-Mislin)",
+      "BehaviorBench/MobLab investor transfers (in-repo)"
+    ],
+    "replication_evidence": "Meta-analytic (162 studies); central transfer level robust but highly protocol-sensitive (random payment, simulated counterpart, strategy method, whether subjects play both roles).",
+    "critiques_or_nulls": [
+      "Trust-game 'trust' conflates trust, betrayal aversion, risk preference, and altruism (Ashraf, Bohnet & Zeckhauser 2006).",
+      "Large protocol effects limit a single universal transfer number.",
+      "External validity from a stylized money game to real trust relationships is uncertain."
+    ],
+    "applicability_limits": [
+      "One-shot or first-encounter trust extension with a payoff-relevant transfer.",
+      "Not a model of thick relational trust or institutional trust."
+    ],
+    "transport_risks": [
+      "Game -> real relationships",
+      "Culture/geography (documented Africa < N.America)",
+      "Incentive scale and simulated-partner protocols"
+    ],
+    "local_refit_feasible": true,
+    "best_validation_route": "Posterior-predictive check of the investor-transfer distribution against the Johnson-Mislin prior on in-repo BehaviorBench, then held-out.",
+    "expected_applicability": "high (exchange/first-encounter trust)",
+    "expected_transport_risk": "medium-high",
+    "priority": "medium",
+    "planned_implementation": "Add a Johnson-Mislin prior pack (mean transfer 0.50, mean return 0.37) as reference_class_prior with wide uncertainty; refit investor transfer on BehaviorBench and record validation.",
+    "planned_parameter_packs": [
+      {
+        "pack_id": "johnson_mislin_trustgame_prior",
+        "source": "published_research",
+        "content": "mean_sent_frac=0.50, mean_return_frac=0.37 (wide priors)",
+        "status": "planned"
+      },
+      {
+        "pack_id": "behaviorbench_investor_transfer",
+        "source": "inferred_from_data",
+        "content": "fitted transfer distribution",
+        "status": "planned"
+      }
+    ],
+    "promotion_blocker": "No pack + no held-out/PPC validation record; published priors exist but are not yet locally fitted/validated.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Trust violation",
+    "registry_id": "trust_violation",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (shares swm...social:trust_update, 'defected' branch, loss>>gain; test_ref present)",
+    "primary_sources": [
+      {
+        "title": "Perceived Risk, Trust, and Democracy",
+        "authors": "Slovic, P.",
+        "year": 1993,
+        "venue": "Risk Analysis 13(6):675-682",
+        "doi_or_url": "10.1111/j.1539-6924.1993.tb01329.x",
+        "verified": true,
+        "what_it_provides": "The 'asymmetry principle': trust is created slowly but destroyed in an instant; trust-destroying (negative) events carry greater impact than trust-building (positive) events. Survey/conceptual evidence in the risk domain."
+      },
+      {
+        "title": "On the Confirmability and Disconfirmability of Trait Concepts",
+        "authors": "Rothbart, M.; Park, B.",
+        "year": 1986,
+        "venue": "Journal of Personality and Social Psychology 50(1):131-142",
+        "doi_or_url": "https://www.semanticscholar.org/paper/On-the-confirmability-and-disconfirmability-of-Rothbart-Park/c776be07a924d6d0208c854628f27a7bde92277e",
+        "verified": true,
+        "what_it_provides": "Mechanism for the asymmetry: favorable traits (like trustworthiness) require many confirming instances but few disconfirming ones to destroy; negative traits are the reverse. Grounds trust as a favorable trait that is slow to build, fast to lose."
+      }
+    ],
+    "formal_model": "Asymmetric trust dynamics: loss steeper than gain. Registry trust_update() 'defected': T_{t+1}=max(0, T_t - loss*T_t - loss*0.5) with loss (0.20) >> gain (0.05). Conceptually: a single violation applies a large multiplicative + additive decrement; recovery (via 'cooperated'/'repaired') is slow and concave. Rothbart-Park: trust as a favorable trait -> disconfirming (violating) behaviors are highly diagnostic and heavily weighted (negativity bias).",
+    "causal_assumptions": [
+      "The violation is attributed to the trustee's disposition (not situation/chance).",
+      "Negative information is weighted more than equivalent positive information (negativity bias).",
+      "Trust is a favorable-trait belief, so violations are diagnostic and hard to 'un-see'."
+    ],
+    "required_variables": [
+      "current trust level",
+      "violation occurrence/severity",
+      "attribution (dispositional vs situational)",
+      "violation type (competence vs integrity \u2014 see trust_repair)"
+    ],
+    "temporal_scale": "event (single violation, persistent effect)",
+    "evidence_type": "descriptive",
+    "reported_coefficients": [
+      {
+        "name": "loss_to_gain_ratio",
+        "value_or_null": 4.0,
+        "uncertainty_or_null": null,
+        "source_ref": "registry reference-class prior (trust_update loss=0.20 / gain=0.05)",
+        "context": "ENCODES the Slovic asymmetry direction but is a reference_class_prior, NOT an empirically fitted rate. No study licenses this exact ratio.",
+        "verified": false
+      },
+      {
+        "name": "trust_destroying_vs_building_impact",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Slovic 1993",
+        "context": "Survey rates trust-destroying events as higher-impact than trust-building; direction verified, per-event magnitudes not extracted this session.",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "Slovic risk-perception survey (hypothetical news events)",
+      "Rothbart-Park trait confirm/disconfirm rating experiments",
+      "iterated trust / prisoner's dilemma defection sequences"
+    ],
+    "replication_evidence": "The negativity-bias / trust-asymmetry pattern is broadly replicated conceptually across social psychology and risk perception; a single universal loss/gain ratio is NOT established.",
+    "critiques_or_nulls": [
+      "No portable numeric loss rate; asymmetry magnitude is context-dependent.",
+      "Slovic evidence is primarily hazard/risk-management, not interpersonal.",
+      "Recovery dynamics interact with violation TYPE (see trust_repair) \u2014 a single scalar decrement is a simplification."
+    ],
+    "applicability_limits": [
+      "Settings with an identifiable violation event and dispositional attribution.",
+      "Not a fitted decrement \u2014 only an asymmetry-shaped prior."
+    ],
+    "transport_risks": [
+      "Risk/hazard domain -> interpersonal/organizational trust",
+      "Loss rate is not portable across relationships or cultures"
+    ],
+    "local_refit_feasible": false,
+    "best_validation_route": "Requires repeated-interaction data with per-event trust ratings and observed defections (external); in-repo single-shot games do not identify a decrement rate.",
+    "expected_applicability": "medium",
+    "expected_transport_risk": "high",
+    "priority": "medium-low",
+    "planned_implementation": "Keep the asymmetry-shaped update but expose loss/gain as wide reference_class priors (no unsupported precision); flag that the rate is unfitted; add violation-type coupling to trust_repair.",
+    "planned_parameter_packs": [
+      {
+        "pack_id": "slovic_asymmetry_prior",
+        "source": "reference_class_prior",
+        "content": "loss/gain ratio ~4 with wide interval",
+        "status": "planned"
+      }
+    ],
+    "promotion_blocker": "Loss/gain rate is an unfitted reference-class prior; no local repeated-interaction data to estimate or validate a decrement.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Trust repair",
+    "registry_id": "trust_repair",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (shares swm...social:trust_update, 'repaired' branch = single-scalar partial recovery; test_ref present)",
+    "primary_sources": [
+      {
+        "title": "Removing the Shadow of Suspicion: The Effects of Apology Versus Denial for Repairing Competence- Versus Integrity-Based Trust Violations",
+        "authors": "Kim, P. H.; Ferrin, D. L.; Cooper, C. D.; Dirks, K. T.",
+        "year": 2004,
+        "venue": "Journal of Applied Psychology 89(1):104-118",
+        "doi_or_url": "10.1037/0021-9010.89.1.104",
+        "verified": true,
+        "what_it_provides": "The core violation-type x response-strategy interaction for trust repair, from two controlled experiments; the finding that competence- and integrity-based trust are DISTINCT (no single trust scalar)."
+      },
+      {
+        "title": "Promises and Lies: Restoring Violated Trust",
+        "authors": "Schweitzer, M. E.; Hershey, J. C.; Bradlow, E. T.",
+        "year": 2006,
+        "venue": "Organizational Behavior and Human Decision Processes 101(1):1-19",
+        "doi_or_url": "https://www.sciencedirect.com/science/article/abs/pii/S0749597806000665",
+        "verified": true,
+        "what_it_provides": "Repeated-trust-game evidence that trust harmed by DECEPTION never fully recovers even after apology + promise + a consistent series of trustworthy actions -> repair is bounded/partial and path-dependent on whether deception occurred."
+      }
+    ],
+    "formal_model": "Kim et al. 2004 (PRECISE STRUCTURE): trust repair is NOT a single scalar recovery; it depends on the INTERACTION of violation type x response. (a) COMPETENCE-based violation -> APOLOGY (accepts blame + signals corrigibility) repairs trust better than DENIAL. (b) INTEGRITY-based violation -> DENIAL repairs trust better than APOLOGY, because admitting an integrity lapse is highly diagnostic of enduring bad character (an integrity apology can be worse than the violation). (c) With subsequent evidence of GUILT, apology > denial; with evidence of INNOCENCE, denial > apology. The violation-type x response effect on trusting intentions is mediated by trusting BELIEFS. Schweitzer: deception-based harm is largely irreversible. The registry trust_update() 'repaired' branch (T_{t+1}=T_t + repair*(1-T_t), single scalar) does NOT represent this 2x2 interaction and is a placeholder.",
+    "causal_assumptions": [
+      "Trust is at least two-dimensional (competence vs integrity), each with its own diagnosticity.",
+      "Response (apology/denial) is a signal whose meaning depends on the violation dimension.",
+      "Perceivers update trusting BELIEFS which mediate trusting intentions/behaviors.",
+      "Presence of deception changes the reparability regime (Schweitzer)."
+    ],
+    "required_variables": [
+      "violation type (competence vs integrity)",
+      "response strategy (apology vs denial)",
+      "subsequent guilt/innocence evidence",
+      "deception present?",
+      "trusting beliefs",
+      "trusting intentions"
+    ],
+    "temporal_scale": "event to weeks (repair over subsequent interactions)",
+    "evidence_type": "causal_estimate",
+    "reported_coefficients": [
+      {
+        "name": "apology_gt_denial_given_competence_violation",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Kim et al. 2004 (Study 1/2)",
+        "context": "DIRECTION verified (apology repairs competence violations better than denial). No numeric effect size / cell means extracted this session (abstract reports direction only).",
+        "verified": true
+      },
+      {
+        "name": "denial_gt_apology_given_integrity_violation",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Kim et al. 2004",
+        "context": "DIRECTION verified (denial repairs integrity violations better than apology). Magnitude null.",
+        "verified": true
+      },
+      {
+        "name": "deception_repair_ceiling",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Schweitzer et al. 2006",
+        "context": "Deception-harmed trust does not fully recover even with apology+promise+consistent trustworthy actions; qualitative (bounded recovery). No point estimate.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Kim et al. controlled scenario experiments (student/MBA samples, hypothetical employment context)",
+      "Schweitzer et al. repeated trust-game with deception"
+    ],
+    "replication_evidence": "Kim et al. interaction replicated/extended (e.g., Kim et al. 2006; Ferrin et al.; Lewicki & Brinsfield reviews); the competence/integrity x apology/denial pattern is a well-supported directional result. Effect magnitudes vary by context.",
+    "critiques_or_nulls": [
+      "CRITICAL: there is NO single universal trust scalar \u2014 competence-based and integrity-based trust dissociate; the shipped trust_update scalar cannot represent the core finding.",
+      "Numeric effect sizes not extracted; evidence is directional.",
+      "Hypothetical-scenario / lab external validity to real organizations is limited.",
+      "Deception installs a repair ceiling (Schweitzer) not modeled by a partial-recovery scalar."
+    ],
+    "applicability_limits": [
+      "Requires the violation to be classifiable as competence vs integrity and a discrete response act.",
+      "Not applicable as a generic 'add repair to trust' scalar."
+    ],
+    "transport_risks": [
+      "Hypothetical scenarios -> real organizational relationships",
+      "Culture (apology/denial norms vary)",
+      "Single-scalar implementation is mis-specified across trust dimensions"
+    ],
+    "local_refit_feasible": false,
+    "best_validation_route": "Replicate an apology/denial x competence/integrity experimental design (external lab) \u2014 NOT locally feasible; no in-repo dataset manipulates violation type x response.",
+    "expected_applicability": "medium (interpersonal/organizational disputes)",
+    "expected_transport_risk": "high",
+    "priority": "medium-high",
+    "planned_implementation": "RE-SPECIFY the family: replace the single-scalar 'repaired' branch with a violation-type x response-strategy interaction (competence->apology, integrity->denial) plus a deception-irreversibility flag. Keep the scalar only as a degenerate fallback. Structural until experimental parameters are licensed.",
+    "planned_parameter_packs": [
+      {
+        "pack_id": "kim2004_violationtype_response",
+        "source": "published_research",
+        "content": "interaction DIRECTIONS only (no point estimates -> cannot ship a point pack; qualitative/structural)",
+        "status": "planned"
+      }
+    ],
+    "promotion_blocker": "Executable model is mis-specified relative to the evidence (single scalar vs required 2x2 interaction); no parameter pack, no validation, and effect magnitudes unverified. The faithful interaction mechanism is only a structural candidate.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Reputation updating",
+    "registry_id": "reputation_updating",
+    "current_registry_status": "absent (NOT in registry.json)",
+    "current_executable_status": "not_implemented (no code_ref, no test_ref)",
+    "primary_sources": [
+      {
+        "title": "Evolution of indirect reciprocity by image scoring",
+        "authors": "Nowak, M. A.; Sigmund, K.",
+        "year": 1998,
+        "venue": "Nature 393(6685):573-577",
+        "doi_or_url": "10.1038/31225",
+        "verified": true,
+        "what_it_provides": "The structural image-scoring model of indirect reciprocity: agents carry an image score updated by observed helping/refusing; discriminators help those with sufficient score. Analytic/simulation condition for cooperation (probability of knowing a partner's score must exceed cost/benefit ratio)."
+      },
+      {
+        "title": "The value of reputation on eBay: A controlled experiment",
+        "authors": "Resnick, P.; Zeckhauser, R.; Swanson, J.; Lockwood, K.",
+        "year": 2006,
+        "venue": "Experimental Economics 9(2):79-101",
+        "doi_or_url": "https://link.springer.com/article/10.1007/s10683-006-4309-2",
+        "verified": true,
+        "what_it_provides": "Randomized controlled FIELD experiment quantifying the causal value of online reputation: an established high-reputation identity commanded a willingness-to-pay premium over new identities. Anchors reputation as a behavior-relevant, priced signal."
+      }
+    ],
+    "formal_model": "Indirect reciprocity via image scoring (Nowak-Sigmund): each agent has an image score k (e.g., integer in [-5,+5]); helping raises the donor's score by 1, refusing lowers it (bounded). Discriminator strategy: help recipient iff k_recipient >= own threshold. Cooperation via indirect reciprocity is favored when the probability q of knowing a recipient's score exceeds the cost/benefit ratio: q > c/b. Online systems (Resnick) aggregate feedback into a reputation score that shifts counterparties' willingness to transact/pay.",
+    "causal_assumptions": [
+      "Reputation is observable to third parties who did not directly experience the act.",
+      "Observers update a scalar/aggregate image from observed prosocial vs antisocial acts.",
+      "Reputation causally shifts others' behavior toward the target (here: price/WTP).",
+      "For cooperation to evolve, q (chance of knowing a score) > c/b."
+    ],
+    "required_variables": [
+      "image/reputation score",
+      "observed helping/defection acts",
+      "observer strategy threshold",
+      "probability of score being known (q)",
+      "cost c and benefit b of helping"
+    ],
+    "temporal_scale": "event to long-run (reputation accumulates over many observations)",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "cooperation_condition_q_gt_c_over_b",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Nowak & Sigmund 1998",
+        "context": "Analytic threshold: indirect reciprocity sustains cooperation when probability of knowing a partner's image score exceeds cost/benefit ratio. Structural, not an empirical estimate.",
+        "verified": true
+      },
+      {
+        "name": "ebay_reputation_price_premium",
+        "value_or_null": 0.081,
+        "uncertainty_or_null": null,
+        "source_ref": "Resnick et al. 2006",
+        "context": "Difference in buyers' willingness-to-pay = 8.1% of selling price for the established high-reputation identity vs new identities (matched-pairs randomized field experiment, vintage postcards).",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Nowak-Sigmund agent-based simulations",
+      "eBay controlled field experiment (Resnick)",
+      "online marketplace/StackExchange reputation scores (in-repo, weak proxy: platform reputation, NOT indirect-reciprocity)"
+    ],
+    "replication_evidence": "Image-scoring theory extended and partly superseded by 'standing'/discriminating strategies and the 'leading eight' (Leimar & Hammerstein 2001; Ohtsuki & Iwasa 2004); Milinski et al. human experiments partially support image scoring. eBay-style reputation premia replicated with heterogeneous (often small) magnitudes across platforms.",
+    "critiques_or_nulls": [
+      "Pure image scoring is evolutionarily unstable vs 'standing' strategies (Leimar & Hammerstein 2001).",
+      "Online reputation suffers grade inflation, reciprocal/retaliatory feedback, and selection into rating.",
+      "Resnick subsidiary result: one or two negatives for NEW sellers did not measurably reduce WTP -> reputation effects are nonlinear/threshold-like."
+    ],
+    "applicability_limits": [
+      "Requires third-party observability of past behavior and a shared reputation channel.",
+      "Marketplace estimate (8.1%) is eBay/postcard specific."
+    ],
+    "transport_risks": [
+      "Evolutionary simulation -> human organizations",
+      "eBay-specific premium -> other platforms/domains",
+      "Assumes accurate, non-manipulated reputation signals"
+    ],
+    "local_refit_feasible": true,
+    "best_validation_route": "Weak local proxy: test whether StackExchange user reputation predicts answer acceptance/engagement (reputation-effect), and/or an indirect-reciprocity simulation validation; strong route is a reputation-premium field replication (external).",
+    "expected_applicability": "high (platforms, marketplaces, repeated multi-observer social settings)",
+    "expected_transport_risk": "medium",
+    "priority": "high",
+    "planned_implementation": "NEW family reputation_updating: executable image-score update (bounded) + discriminator threshold, plus an online-reputation aggregate variant; add a Resnick premium pack (published_research) and a Nowak-Sigmund structural condition. Needs code_ref + tests to even reach 'implemented'.",
+    "planned_parameter_packs": [
+      {
+        "pack_id": "nowak_sigmund_imagescore",
+        "source": "published_research",
+        "content": "image score range, update +/-1, threshold; q>c/b condition (structural)",
+        "status": "planned"
+      },
+      {
+        "pack_id": "resnick_ebay_reputation_premium",
+        "source": "published_research",
+        "content": "reputation WTP premium = 0.081 of price",
+        "status": "planned"
+      }
+    ],
+    "promotion_blocker": "Family is not implemented at all (no executable transition, no tests); cannot reach 'implemented' until a code_ref + test_ref exist. Strong theory + one clean causal estimate make it a high-priority build.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Relationship strengthening",
+    "registry_id": "relationship_strength_inference / relationship_update_bounded",
+    "current_registry_status": "implemented (two records)",
+    "current_executable_status": "executable (swm.world_model_v2.actor_cognition:relationship_strength and swm.world_model_v2.transitions:RelationshipUpdateOperator both resolve; test_refs present)",
+    "primary_sources": [
+      {
+        "title": "The Strength of Weak Ties",
+        "authors": "Granovetter, M. S.",
+        "year": 1973,
+        "venue": "American Journal of Sociology 78(6):1360-1380",
+        "doi_or_url": "10.1086/225469",
+        "verified": true,
+        "what_it_provides": "The foundational definition of tie strength as a combination of (i) amount of time, (ii) emotional intensity, (iii) intimacy/mutual confiding, and (iv) reciprocal services; and the structural corollary that stronger ties have higher network overlap (triadic closure). Descriptive/theoretical."
+      }
+    ],
+    "formal_model": "Granovetter tie strength S = additive/weighted combination of four components: amount of time, emotional intensity, intimacy (mutual confiding), and reciprocal services. Strength rises with interaction frequency and reciprocal exchange; strong ties predict high neighborhood overlap (the forbidden-triad / triadic-closure implication). Registry: relationship_update_bounded moves an edge strength toward observed interaction intensity, bounded to [0,1]; relationship_strength_inference infers latent strength from interaction signals.",
+    "causal_assumptions": [
+      "Interaction frequency/reciprocal exchange are causes (not just correlates) of tie strength.",
+      "The four components co-move enough to be summarized by a scalar strength.",
+      "Observed communication signals are valid indicators of latent tie strength."
+    ],
+    "required_variables": [
+      "interaction frequency/time",
+      "emotional intensity",
+      "intimacy/self-disclosure",
+      "reciprocal services/exchange",
+      "current edge strength"
+    ],
+    "temporal_scale": "weeks to months (ties strengthen gradually)",
+    "evidence_type": "descriptive",
+    "reported_coefficients": [
+      {
+        "name": "tie_strength_component_weights",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Granovetter 1973",
+        "context": "Granovetter defines the four components but assigns NO parametric weights (theoretical). Later predictive work (e.g., Gilbert & Karahalios 2009) fits weights but is platform-specific and not extracted here.",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "Granovetter job-search survey (282 men)",
+      "communication-log tie-strength studies",
+      "Enron reply timing/frequency (in-repo: a COMMUNICATION-intensity signal, NOT a labeled tie-strength ground truth)"
+    ],
+    "replication_evidence": "The weak-ties thesis is among the most cited/replicated in sociology; recent large-scale causal support for weak ties in job mobility (Rajkumar et al. 2022, Science, LinkedIn experiments). The tie-strength CONSTRUCT is durable; a single fitted weighting is not canonical.",
+    "critiques_or_nulls": [
+      "Frequency != strength; operationalizations of tie strength are contested.",
+      "Granovetter is descriptive/theoretical, not a predictive parameterization.",
+      "In-repo Enron frequency is a proxy signal, not a tie-strength label (per repo audit)."
+    ],
+    "applicability_limits": [
+      "Applies where interaction signals index a persistent dyadic relationship.",
+      "Not valid to equate a single communication burst with strength."
+    ],
+    "transport_risks": [
+      "Sociological description -> computational parameters",
+      "Communication logs -> latent tie strength",
+      "Platform-specific weightings do not transport"
+    ],
+    "local_refit_feasible": false,
+    "best_validation_route": "Needs externally tie-strength-labeled communication data; Enron can only validate a communication-intensity proxy, not labeled strength. Best route is survey-labeled interaction data (external).",
+    "expected_applicability": "medium",
+    "expected_transport_risk": "medium",
+    "priority": "low-medium",
+    "planned_implementation": "Keep relationship_update_bounded; document the Granovetter four-component spec and explicitly label Enron as a proxy, not a label; add a pack only when tie-strength-labeled data is available.",
+    "planned_parameter_packs": [
+      {
+        "pack_id": "granovetter_tie_strength",
+        "source": "assumed",
+        "content": "4-component structure with WIDE priors (no fitted weights)",
+        "status": "planned"
+      }
+    ],
+    "promotion_blocker": "No parameter pack and no validation; the only in-repo data (Enron) is a communication-intensity proxy, not a tie-strength label, so local validation cannot ground the construct.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Relationship decay",
+    "registry_id": "relationship_decay",
+    "current_registry_status": "absent (NOT in registry.json; no explicit decay family)",
+    "current_executable_status": "not_implemented (no code_ref, no test_ref)",
+    "primary_sources": [
+      {
+        "title": "Decay functions",
+        "authors": "Burt, R. S.",
+        "year": 2000,
+        "venue": "Social Networks 22(1):1-28",
+        "doi_or_url": "https://www.sciencedirect.com/science/article/abs/pii/S0378873399000155",
+        "verified": true,
+        "what_it_provides": "Longitudinal (4-year) banker-network study of relationship decay: relationships weaken/disappear over time; decay is SLOWER for embedded ties (many shared third parties), same-division (homophily), high-status, and strong-prior (inertia) ties, and FASTER for bridges spanning structural holes (liability of newness \u2014 young bridges decay fastest)."
+      },
+      {
+        "title": "The costs of family and friends: an 18-month longitudinal study of relationship maintenance and decay",
+        "authors": "Roberts, S. G. B.; Dunbar, R. I. M.",
+        "year": 2011,
+        "venue": "Evolution and Human Behavior 32(3):186-197",
+        "doi_or_url": "https://www.sciencedirect.com/science/article/abs/pii/S1090513810000966",
+        "verified": true,
+        "what_it_provides": "18-month panel (N=25 students, school->university transition): emotional closeness declines when contact frequency and shared activities drop; FRIENDSHIPS decay faster than KIN ties; decline is buffered by continued investment, with a gender split (frequency of contact protects most for women, shared activities for men)."
+      }
+    ],
+    "formal_model": "Tie decay: relationship strength / contact probability declines over time absent investment, typically modeled as a hazard/exponential survival of the tie in time-since-last-contact. Burt: decay rate depends on structure \u2014 embedded/homophilous/high-status/strong-prior ties decay slowly; bridges decay fast early (liability of newness) but, conditional on surviving early years, then persist. Roberts-Dunbar: emotional closeness E(t) decays toward a floor when contact frequency f and shared activities a fall; kin ties have a lower maintenance cost (shallower decay) than friendships. No canonical closed-form/parametric rate is extracted here.",
+    "causal_assumptions": [
+      "Absence of interaction/investment causes tie weakening (not merely correlated).",
+      "Decline in emotional closeness is driven by drops in contact frequency and shared activities.",
+      "Structural embedding and kinship lower the maintenance cost / decay hazard.",
+      "Communication-frequency drop is a valid indicator of relationship decay (contestable \u2014 see critiques)."
+    ],
+    "required_variables": [
+      "time since last contact",
+      "contact frequency",
+      "shared activities",
+      "tie type (bridge vs embedded; kin vs friend)",
+      "prior strength / status / homophily",
+      "current tie strength"
+    ],
+    "temporal_scale": "months to years (Burt 4 yr; Roberts-Dunbar 18 mo)",
+    "evidence_type": "associational",
+    "reported_coefficients": [
+      {
+        "name": "embedded_vs_bridge_composition",
+        "value_or_null": 0.92,
+        "uncertainty_or_null": null,
+        "source_ref": "Burt 2000",
+        "context": "92% of banker-colleague relations at risk of decay are embedded in >=1 positive third-party tie; remaining 8% are bridges. Verified structural composition; embedded ties decay more slowly.",
+        "verified": true
+      },
+      {
+        "name": "decay_hazard_rate_or_halflife",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Burt 2000 / Roberts & Dunbar 2011",
+        "context": "Parametric decay rate / half-life / closeness-decline slope not extracted this session (Burt PDF unavailable; abstracts give direction/structure, not the fitted rate).",
+        "verified": false
+      },
+      {
+        "name": "friendship_vs_kin_decay",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Roberts & Dunbar 2011",
+        "context": "Friendship emotional closeness more sensitive to reduced contact than kin (kin ~ stable through gaps). Direction verified (N=25, 18 mo); slope not extracted.",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "Burt banker-colleague 4-year panel",
+      "Roberts-Dunbar 18-month student panel",
+      "Enron temporal communication (in-repo: communication-frequency decline proxy, NOT a relationship-decay label)",
+      "telco churn (in-repo: attrition/dropout, explicitly NOT relationship decay per repo audit)"
+    ],
+    "replication_evidence": "Burt's bridge-decay pattern replicated in follow-ups (Burt 2002, 'Bridge decay', Social Networks); Roberts & Dunbar longitudinal results consistent with the ego-network 'social effort' literature. Qualitative pattern (investment slows decay; kin/embedded persist) is robust; a universal decay-rate constant is not established.",
+    "critiques_or_nulls": [
+      "Decay is confounded with measurement/attrition; a drop in communication frequency is NOT the same as tie dissolution.",
+      "telco churn (in-repo) is customer attrition, not interpersonal relationship decay \u2014 must not be used as a decay label without justification.",
+      "Small samples (Roberts-Dunbar N=25) and specific populations (bankers, students) limit generality.",
+      "No fitted parametric decay function extracted."
+    ],
+    "applicability_limits": [
+      "Needs a persistent labeled dyad observed over time with an investment/contact signal.",
+      "Not identifiable from cross-sectional or attrition-only data."
+    ],
+    "transport_risks": [
+      "Banker/student panels -> general population",
+      "Communication-frequency proxy -> true relationship state",
+      "Organizational vs personal ties differ in maintenance cost"
+    ],
+    "local_refit_feasible": false,
+    "best_validation_route": "Longitudinal communication data with a relationship outcome (external, Roberts-Dunbar style). In-repo Enron can only support a DESCRIPTIVE communication-decay proxy; telco churn is invalid as a relationship-decay label.",
+    "expected_applicability": "medium",
+    "expected_transport_risk": "high",
+    "priority": "medium-high",
+    "planned_implementation": "NEW family relationship_decay: executable exponential/hazard decay of tie strength vs time-since-contact, with slower decay for embedded/kin/high-status ties; seed priors from Burt/Roberts-Dunbar QUALITATIVE structure (no fitted rate yet). Needs code_ref + tests to reach 'implemented'.",
+    "planned_parameter_packs": [
+      {
+        "pack_id": "burt_roberts_dunbar_decay_prior",
+        "source": "reference_class_prior",
+        "content": "decay slower for embedded/kin than bridge/friend; wide priors, NO fitted rate",
+        "status": "planned"
+      }
+    ],
+    "promotion_blocker": "Family is not implemented (no executable transition, no tests) AND there is no valid in-repo relationship-decay label (Enron = communication proxy; telco churn = attrition). Cannot reach 'implemented' or be locally validated without an executable + a labeled longitudinal dataset.",
+    "disposition": "structural_candidate_only"
+  }
+]

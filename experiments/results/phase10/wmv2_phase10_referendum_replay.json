@@ -1,0 +1,77 @@
+{
+ "_meta": {
+  "harness": "experiments/wmv2_phase10_referendum_replay.py",
+  "category": "direct_democracy",
+  "source": "Swissvotes/BFS-derived (cached exp074/referenda.json)",
+  "leakage": "legal form + date known before the vote; no post-vote inputs",
+  "note": "3rd real institution category (beyond Congress + court); includes a NON-VOTING timing/cadence dimension and an out-of-sample predictive dimension"
+ },
+ "replay": {
+  "n_referenda": 704,
+  "source": "Swissvotes/BFS-derived (cached exp074/referenda.json)",
+  "year_range": [
+   1848,
+   2026
+  ],
+  "form_regularity_reconstruction": {
+   "mandatory_referendum": {
+    "form_code": "1",
+    "majority_rule": "double_majority",
+    "constitutional_basis": "Art. 140 \u2014 constitutional amendments/treaties: People + Cantons",
+    "n": 201,
+    "accept_rate": 0.7512
+   },
+   "optional_referendum": {
+    "form_code": "2",
+    "majority_rule": "single_majority",
+    "constitutional_basis": "Art. 141 \u2014 federal laws challenged by petition: People",
+    "n": 218,
+    "accept_rate": 0.5826
+   },
+   "popular_initiative": {
+    "form_code": "3",
+    "majority_rule": "double_majority",
+    "constitutional_basis": "Art. 139 \u2014 citizen constitutional initiative: People + Cantons",
+    "n": 242,
+    "accept_rate": 0.1074
+   },
+   "counter_proposal": {
+    "form_code": "4",
+    "majority_rule": "double_majority",
+    "constitutional_basis": "direct counter-proposal to an initiative: People + Cantons",
+    "n": 43,
+    "accept_rate": 0.6279
+   }
+  },
+  "institutional_signal": {
+   "initiative_accept_rate": 0.1074,
+   "mandatory_accept_rate": 0.7512,
+   "double_majority_regularity_holds": true,
+   "fact": "popular initiatives (double majority + establishment opposition) pass ~10%; mandatory referenda ~75% \u2014 the legal FORM is strongly outcome-structuring"
+  },
+  "out_of_sample_prediction": {
+   "train_n": 381,
+   "test_n": 323,
+   "train_max_year": 1990,
+   "accuracy": 0.644,
+   "brier": 0.1828,
+   "always_pass_baseline_accuracy": 0.5325,
+   "predict_base_rate_brier": 0.249,
+   "brier_beats_base_rate": true,
+   "fitted_form_propensity_train": {
+    "mandatory_referendum": 0.727,
+    "optional_referendum": 0.438,
+    "popular_initiative": 0.104,
+    "counter_proposal": 0.643
+   }
+  },
+  "timing_dimension_non_voting": {
+   "modern_years": 37,
+   "median_distinct_voting_dates_per_year": 3,
+   "max_distinct_dates_in_a_year": 4,
+   "fraction_modern_years_within_4_official_dates": 1.0,
+   "note": "the fixed quarterly voting-Sunday cadence \u2014 a non-voting institutional scheduling rule"
+  },
+  "limitation": "cached file lacks per-canton vote shares \u2192 the double majority is reconstructed as an outcome REGULARITY by legal form, NOT executed on canton counts (full execution replay needs canton-level Swissvotes data; preserved as remaining work)."
+ }
+}

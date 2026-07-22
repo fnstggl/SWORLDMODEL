@@ -1,0 +1,1343 @@
+{
+ "bundle_id": "eb_b1f734b94c5e",
+ "question": "Will the US Federal Reserve raise interest rates at its September 2023 meeting?",
+ "as_of": 1693526400.0,
+ "compiler_plan_hash": "16cc9987287c",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_4621a7415e",
+   "claim_or_quantity": "If the FOMC announces an increase in the target range for the federal funds rate at the September 20-21, 2023 meeting, outcome is 'raise'; otherwise 'no_raise'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "fomc",
+    "jerome_powell"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_958d9c4f37",
+   "claim_or_quantity": "value/context of fomc.members_preferred_rate_path",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "fomc.members_preferred_rate_path",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_cd22f057ed",
+   "claim_or_quantity": "value/context of fomc.internal_consensus",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "fomc.internal_consensus",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5b8663beae",
+   "claim_or_quantity": "evidence discriminating structural hypothesis data_dependent",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:data_dependent",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_92d1bdcdec",
+   "claim_or_quantity": "evidence discriminating structural hypothesis forward_guidance",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:forward_guidance",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_9d9946a577",
+   "claim_or_quantity": "value/context of jerome_powell.private_preference",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "jerome_powell.private_preference",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_cd184c3f5e",
+   "claim_or_quantity": "decision rules / process of fomc",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "fomc",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_4621a7415e",
+   "terms": "Federal Reserve raise interest rates September 2023 meeting fomc jerome powell",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_958d9c4f37",
+   "terms": "fomc members preferred rate path",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_cd22f057ed",
+   "terms": "fomc internal consensus",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_4621a7415e",
+   "logical_query": "Federal Reserve raise interest rates September 2023 meeting fomc jerome powell after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=Federal+Reserve+raise+interest+rates+September+2023+meeting+fomc+jerome+powell+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783906428.5017967,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:33:49 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0pBiSO44w5ACxJVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcfxsuXmITmDGnxU9JOSm_MD4lv6S4uCAnsTijOLWoLLUo3sjAyMzA3MBMz8AkvsAAAF5GOCE\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "290ff104c0bf46ffa3f57b18db132df939fceb2f8d3a82ce245fc5ccefe61011",
+   "n_bytes": 46850,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.631
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_958d9c4f37",
+   "logical_query": "fomc members preferred rate path after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=fomc+members+preferred+rate+path+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783906429.1351514,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:33:49 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1pBiSO44w5ACxJVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcfxsuXmITuPFr2XEmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC7-Tld\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "bf1d8ecb052638dd8a71e8faa97335ebad7594c9ea1b088d407f4d5e134761c0",
+   "n_bytes": 1229,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.474
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_cd22f057ed",
+   "logical_query": "fomc internal consensus after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=fomc+internal+consensus+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783906429.610123,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:33:50 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0ZBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwc_xouXmIT2HC63VJJOSm_MD4lv6S4uCAnsTijOLWoLLUo3sjAyMzA3MBMz8AkvsAAAGtIOF8\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "9a899eb505c5f7c0165f227dff9a24b0fd1bc213c06eb6c7454885dfe6e6095e",
+   "n_bytes": 1211,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.431
+  }
+ ],
+ "raw_content_refs": [
+  "290ff104c0bf46ffa3f57b18db132df939fceb2f8d3a82ce245fc5ccefe61011"
+ ],
+ "documents": [
+  {
+   "id": "945ab83af37bdb31",
+   "source": "Bankrate",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPUGFuNTVzbHpnaXdjcThvcjhwbGdBcEtQQjJzbktxZ3FEX19QOGZxWlViSDdGSmtYZzJJdzRKVmFfOVlFcURDbkJkbnVoNkhUTWFCeDZHQ0xTM2pjLVU0cWY0WVpzamxkZm9XVXVPN3p0SHpQZHk5SlRieC11bE5kXzhldDBmN1ZncmF3RGt4UQ?oc=5",
+   "title": "When will the Fed stop raising rates? The time could be coming soon - Bankrate",
+   "text": "When will the Fed stop raising rates? The time could be coming soon - Bankrate. When will the Fed stop raising rates? The time could be coming soon Bankrate",
+   "content_hash": "f44752efecac322f",
+   "raw_feed_hash": "290ff104c0bf46ffa3f57b18db132df939fceb2f8d3a82ce245fc5ccefe61011",
+   "published_at": 1683702000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_4621a7415e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "bf12cf642ef835a3",
+   "source": "J.P. Morgan",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQUnAyNmVmbllRN0x6VHlOYmxjWVBaeC1sYkQ0SUFiV3ZUbkNHdlluTmNEZHFkbnNsSHpDQmNpazZGSDQ5d1hraXVCX1Y3WHF0NGtkRE9JOGdiVGVaSDcxcFMxRmV2OVlZZU93SDR4TkVDRzg5TEROczhreDRVUF93ZTJXTlFyT2JoYjlZRkRWeTJ2clU2cHlEUzV5N09vLTZtRUFoV1BiN1ViVjA?oc=5",
+   "title": "July 2023 Fed Meeting: Interest Rate Hikes Resume - J.P. Morgan",
+   "text": "July 2023 Fed Meeting: Interest Rate Hikes Resume - J.P. Morgan. July 2023 Fed Meeting: Interest Rate Hikes Resume J.P. Morgan",
+   "content_hash": "2de6d68d38d06d80",
+   "raw_feed_hash": "290ff104c0bf46ffa3f57b18db132df939fceb2f8d3a82ce245fc5ccefe61011",
+   "published_at": 1690566916.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_4621a7415e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "840a9bed953ed20a",
+   "source": "CNBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1FNm53Y1c3aEtST1J4aDAzQkhzMVhkeU0yZS1teUpiSzJwNWp2S2htOFNaQXVjcFVvVmxrYjdkN2dsUkF2bUtWOVVNdnVMXzYxa0hrQnZTb2UyTk5uN0ZEejcwTzRsR2VPZUtj0gFwQVVfeXFMTmZRLXVrYXZ4NlFQWXBUTU5lN25sZnNVMGVqQ1MyNGFvTTRRbXdyREFGS253X1hiT0xPRTBOaHR3bEJzdFlJQTJEZnN1MlFZeUFIcm1hd3hEMFgxVGFEOE91MFVNR3dTTzczWFlIRmlyZQ?oc=5",
+   "title": "Fed approves hike that takes interest rates to highest level in more than 22 years - CNBC",
+   "text": "Fed approves hike that takes interest rates to highest level in more than 22 years - CNBC. Fed approves hike that takes interest rates to highest level in more than 22 years CNBC",
+   "content_hash": "f460edef3e19049a",
+   "raw_feed_hash": "290ff104c0bf46ffa3f57b18db132df939fceb2f8d3a82ce245fc5ccefe61011",
+   "published_at": 1690354800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_4621a7415e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c7a133ed60b2c451",
+   "source": "CBS News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQWHdWM0N5aExDdEM5eDU1OTZmMG5XY1k4RVNZQmF6dTNudHN0bGtFRGVHWmNtM0d2X084VnRObll0d0dRakNFV1dURTdxN3FXUU4zcUhfdVVGaS1tRlZuUkI0Zl94Vmxia0F4UmtzU0o0RDg4LTBBdTFIRk0ydUszcDROWHN3YnlJa3NKNUdUN0RFanJTRFHSAZsBQVVfeXFMTlZLb1JQRWwxTlRTbGFfYW1RemtKWEdsaVNFTmFwcjh3TG9GZzFueGRSdC1NbTVLdkNxUW9MTXpNRHBvd2hYRDB2SGtPNFBRbTlEd3BkVF9pQTJzd2xDZzN5b0dTS2d2d1lUVklsTTNJLXJ0cHlxRlJ2b3JEQlpUZFJlV3lvWHZUcVhDMExNcUVuN2RTakExMnVtZUU?oc=5",
+   "title": "Fed Reserve officials continue to see \"significant\" inflation risk that may require more rate hikes - CBS News",
+   "text": "Fed Reserve officials continue to see \"significant\" inflation risk that may require more rate hikes - CBS News. Fed Reserve officials continue to see \"significant\" inflation risk that may require more rate hikes CBS News",
+   "content_hash": "57b4d04cb3e24cbb",
+   "raw_feed_hash": "290ff104c0bf46ffa3f57b18db132df939fceb2f8d3a82ce245fc5ccefe61011",
+   "published_at": 1692169200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_4621a7415e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d0e2954e68d1dd29",
+   "source": "The New York Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE43Nm81SFRaZ01ET3ZXMTE2TUt2c3FRaFNtbEtaWk55TGZ3bi1oMXFQNnpfOVZRWS1jRGREcDF1LWJEemx2SUNTNDRyTWRlSFlFRTF3NGxETmJYelBnaFE0TG81VnBFcjE3eXM1YnhQY0RkLVNuSEE?oc=5",
+   "title": "Federal Reserve Meeting: Fed Raises Rates Again (Published 2023) - The New York Times",
+   "text": "Federal Reserve Meeting: Fed Raises Rates Again (Published 2023) - The New York Times. Federal Reserve Meeting: Fed Raises Rates Again (Published 2023) The New York Times",
+   "content_hash": "284d7aa88a74471a",
+   "raw_feed_hash": "290ff104c0bf46ffa3f57b18db132df939fceb2f8d3a82ce245fc5ccefe61011",
+   "published_at": 1690354800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_4621a7415e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b260c3d238c41df8",
+   "source": "NPR",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQa0ZWb0lWTmZ6NzV0dE1jVmR3MzkwYVl1UThBTEVjYkJuQUxmMXQzQjRKd3NLWGVsQjR4d1hKbEhaNmNlc2dGOUJfeDFRdWFlaXA0YXNTV0RmcldzSkhfU0xIamVQRHBidTVKTUtjd1BMYkpweVFaTE9kNmxYemZHMkc1eWNMNnNadlVMTkNuT2VlemotOUM1ak45VWlCWEV3NnF4TFJUNA?oc=5",
+   "title": "Fed Chair Jerome Powell warns the fight against inflation is far from over - NPR",
+   "text": "Fed Chair Jerome Powell warns the fight against inflation is far from over - NPR. Fed Chair Jerome Powell warns the fight against inflation is far from over NPR",
+   "content_hash": "d58212e3c1a94bb1",
+   "raw_feed_hash": "290ff104c0bf46ffa3f57b18db132df939fceb2f8d3a82ce245fc5ccefe61011",
+   "published_at": 1692946800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_4621a7415e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ce1b6837b0e3a741",
+   "source": "BBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1nMmxMaU9XcDh6VU1yLXYzejRCRnlwN1dpRDc1ODVIZnpKWGt2S2NCWWxjaFZjTWc1cDZnT1ZqRzVSdndRbmhQWHhCR01TNUExZVhkaA?oc=5",
+   "title": "Fed raises interest rates to highest in 22 years - BBC",
+   "text": "Fed raises interest rates to highest in 22 years - BBC. Fed raises interest rates to highest in 22 years BBC",
+   "content_hash": "dbb81d79b291281e",
+   "raw_feed_hash": "290ff104c0bf46ffa3f57b18db132df939fceb2f8d3a82ce245fc5ccefe61011",
+   "published_at": 1690354800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_4621a7415e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ccf2279ad42849ac",
+   "source": "Bloomberg.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQWnJoTHMxX2dyeWhQR01Bd0JGc2FWQlpfaEdmbEUzc2VYcWhCMzZLZ1g0bkkxdEFQc3B6WEYyVEZZUFNHRjVIQndsdVdTd1hHM1laTmVIb3pQaEliX3VoMExkSXFkcUFXdWdRenN0MlB1T3BucjNYS1NrY2o3RGhRd2J2NWNIWXJDTGY2TEpqc0tJT1p6WHY0UVg4SWRMNDlQa2JwUFFCbzhpY2h2b2xQWWI3MzVHV1FiM3h2Zk9USGZQdWM?oc=5",
+   "title": "Wall Street Economists Are Looking at a September Rate Pause - Bloomberg.com",
+   "text": "Wall Street Economists Are Looking at a September Rate Pause - Bloomberg.com. Wall Street Economists Are Looking at a September Rate Pause Bloomberg.com",
+   "content_hash": "907556392966a7fe",
+   "raw_feed_hash": "290ff104c0bf46ffa3f57b18db132df939fceb2f8d3a82ce245fc5ccefe61011",
+   "published_at": 1690873200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_4621a7415e",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "945ab83af37bdb31:c0",
+   "source_id": "945ab83af37bdb31",
+   "subject": "the Fed",
+   "predicate": "stop raising rates",
+   "object": "soon",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "The time could be coming soon",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683702000.0,
+   "extraction_confidence": 0.7,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Fed"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e61d568e9e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4621a7415e"
+   }
+  },
+  {
+   "claim_id": "bf12cf642ef835a3:c0",
+   "source_id": "bf12cf642ef835a3",
+   "subject": "Federal Reserve",
+   "predicate": "resumed",
+   "object": "interest rate hikes",
+   "value": "",
+   "units": "",
+   "qualifiers": "in July 2023",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "July 2023 Fed Meeting: Interest Rate Hikes Resume",
+   "span_verified": true,
+   "event_time": "July 2023",
+   "publication_time": 1690566916.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Federal Reserve",
+    "J.P. Morgan"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c6f67af19f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4621a7415e"
+   }
+  },
+  {
+   "claim_id": "840a9bed953ed20a:c0",
+   "source_id": "840a9bed953ed20a",
+   "subject": "Fed",
+   "predicate": "approves",
+   "object": "hike",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Fed approves hike",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690354800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Fed"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5a6fc75ab8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4621a7415e"
+   }
+  },
+  {
+   "claim_id": "840a9bed953ed20a:c1",
+   "source_id": "840a9bed953ed20a",
+   "subject": "hike",
+   "predicate": "takes",
+   "object": "interest rates to highest level in more than 22 years",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "takes interest rates to highest level in more than 22 years",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690354800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_5a6fc75ab8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4621a7415e"
+   }
+  },
+  {
+   "claim_id": "c7a133ed60b2c451:c0",
+   "source_id": "c7a133ed60b2c451",
+   "subject": "Fed Reserve officials",
+   "predicate": "continue to see",
+   "object": "significant inflation risk",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Fed Reserve officials continue to see \"significant\" inflation risk",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1692169200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Fed Reserve officials"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_090188ef75",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4621a7415e"
+   }
+  },
+  {
+   "claim_id": "c7a133ed60b2c451:c1",
+   "source_id": "c7a133ed60b2c451",
+   "subject": "significant inflation risk",
+   "predicate": "may require",
+   "object": "more rate hikes",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "may require more rate hikes",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1692169200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_090188ef75",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4621a7415e"
+   }
+  },
+  {
+   "claim_id": "d0e2954e68d1dd29:c0",
+   "source_id": "d0e2954e68d1dd29",
+   "subject": "Federal Reserve",
+   "predicate": "raised",
+   "object": "rates",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Fed Raises Rates Again",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1690354800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Federal Reserve"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_df2dc81253",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4621a7415e"
+   }
+  },
+  {
+   "claim_id": "b260c3d238c41df8:c0",
+   "source_id": "b260c3d238c41df8",
+   "subject": "Fed Chair Jerome Powell",
+   "predicate": "warns",
+   "object": "the fight against inflation is far from over",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Fed Chair Jerome Powell warns the fight against inflation is far from over",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1692946800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Jerome Powell",
+    "inflation"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_fe69427d10",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4621a7415e"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Fed",
+   "normalized": "fed",
+   "candidates": [
+    {
+     "entity_id": "ent_8d0ea520e2",
+     "canonical": "fed",
+     "support": 0.75,
+     "evidence_mentions": [
+      "Fed",
+      "Fed"
+     ]
+    },
+    {
+     "entity_id": "ent_10d6b1e0d6",
+     "canonical": "federal reserve",
+     "support": 0.4,
+     "evidence_mentions": [
+      "Federal Reserve",
+      "Federal Reserve"
+     ]
+    },
+    {
+     "entity_id": "ent_2f64ae65c0",
+     "canonical": "fed reserve officials",
+     "support": 0.275,
+     "evidence_mentions": [
+      "Fed Reserve officials"
+     ]
+    }
+   ],
+   "resolved": false,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Federal Reserve",
+   "normalized": "federal reserve",
+   "candidates": [
+    {
+     "entity_id": "ent_10d6b1e0d6",
+     "canonical": "federal reserve",
+     "support": 0.75,
+     "evidence_mentions": [
+      "Federal Reserve",
+      "Federal Reserve"
+     ]
+    },
+    {
+     "entity_id": "ent_8d0ea520e2",
+     "canonical": "fed",
+     "support": 0.4,
+     "evidence_mentions": [
+      "Fed",
+      "Fed"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "J.P. Morgan",
+   "normalized": "j p morgan",
+   "candidates": [
+    {
+     "entity_id": "ent_1a0ec0a9c4",
+     "canonical": "j p morgan",
+     "support": 0.625,
+     "evidence_mentions": [
+      "J.P. Morgan"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Fed",
+   "normalized": "fed",
+   "candidates": [
+    {
+     "entity_id": "ent_8d0ea520e2",
+     "canonical": "fed",
+     "support": 0.75,
+     "evidence_mentions": [
+      "Fed",
+      "Fed"
+     ]
+    },
+    {
+     "entity_id": "ent_10d6b1e0d6",
+     "canonical": "federal reserve",
+     "support": 0.4,
+     "evidence_mentions": [
+      "Federal Reserve",
+      "Federal Reserve"
+     ]
+    },
+    {
+     "entity_id": "ent_2f64ae65c0",
+     "canonical": "fed reserve officials",
+     "support": 0.275,
+     "evidence_mentions": [
+      "Fed Reserve officials"
+     ]
+    }
+   ],
+   "resolved": false,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Fed Reserve officials",
+   "normalized": "fed reserve officials",
+   "candidates": [
+    {
+     "entity_id": "ent_2f64ae65c0",
+     "canonical": "fed reserve officials",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Fed Reserve officials"
+     ]
+    },
+    {
+     "entity_id": "ent_8d0ea520e2",
+     "canonical": "fed",
+     "support": 0.4,
+     "evidence_mentions": [
+      "Fed",
+      "Fed"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Federal Reserve",
+   "normalized": "federal reserve",
+   "candidates": [
+    {
+     "entity_id": "ent_10d6b1e0d6",
+     "canonical": "federal reserve",
+     "support": 0.75,
+     "evidence_mentions": [
+      "Federal Reserve",
+      "Federal Reserve"
+     ]
+    },
+    {
+     "entity_id": "ent_8d0ea520e2",
+     "canonical": "fed",
+     "support": 0.4,
+     "evidence_mentions": [
+      "Fed",
+      "Fed"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Jerome Powell",
+   "normalized": "jerome powell",
+   "candidates": [
+    {
+     "entity_id": "ent_3cc740b731",
+     "canonical": "jerome powell",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Jerome Powell"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "inflation",
+   "normalized": "inflation",
+   "candidates": [
+    {
+     "entity_id": "ent_0e45dbfb8c",
+     "canonical": "inflation",
+     "support": 0.625,
+     "evidence_mentions": [
+      "inflation"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "945ab83af37bdb31": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683702000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683702000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "bf12cf642ef835a3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690566916.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690566916.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "840a9bed953ed20a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690354800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690354800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c7a133ed60b2c451": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1692169200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692169200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d0e2954e68d1dd29": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690354800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690354800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b260c3d238c41df8": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1692946800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692946800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ce1b6837b0e3a741": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690354800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690354800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ccf2279ad42849ac": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690873200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690873200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_e61d568e9e",
+   "member_ids": [
+    "945ab83af37bdb31"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Bankrate",
+   "primary_source": "Bankrate",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c6f67af19f",
+   "member_ids": [
+    "bf12cf642ef835a3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "J.P. Morgan",
+   "primary_source": "J.P. Morgan",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5a6fc75ab8",
+   "member_ids": [
+    "840a9bed953ed20a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CNBC",
+   "primary_source": "CNBC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_090188ef75",
+   "member_ids": [
+    "c7a133ed60b2c451"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CBS News",
+   "primary_source": "CBS News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_df2dc81253",
+   "member_ids": [
+    "d0e2954e68d1dd29"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The New York Times",
+   "primary_source": "The New York Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fe69427d10",
+   "member_ids": [
+    "b260c3d238c41df8"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NPR",
+   "primary_source": "NPR",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_46930ffb56",
+   "member_ids": [
+    "ce1b6837b0e3a741"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "BBC",
+   "primary_source": "BBC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7c6a14f000",
+   "member_ids": [
+    "ccf2279ad42849ac"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Bloomberg.com",
+   "primary_source": "Bloomberg.com",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "945ab83af37bdb31:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683702000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "bf12cf642ef835a3:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690566916.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "840a9bed953ed20a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690354800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "840a9bed953ed20a:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690354800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c7a133ed60b2c451:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1692169200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c7a133ed60b2c451:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1692169200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d0e2954e68d1dd29:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690354800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b260c3d238c41df8:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1692946800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "945ab83af37bdb31:c0",
+  "bf12cf642ef835a3:c0",
+  "840a9bed953ed20a:c0",
+  "840a9bed953ed20a:c1",
+  "c7a133ed60b2c451:c0",
+  "c7a133ed60b2c451:c1",
+  "d0e2954e68d1dd29:c0",
+  "b260c3d238c41df8:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_4621a7415e": {
+   "status": "fulfilled",
+   "n_claims": 8,
+   "n_included": 8
+  },
+  "req_958d9c4f37": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_cd22f057ed": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_5b8663beae": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_92d1bdcdec": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_9d9946a577": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_cd184c3f5e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_958d9c4f37",
+  "req_cd22f057ed",
+  "req_5b8663beae",
+  "req_92d1bdcdec",
+  "req_9d9946a577",
+  "req_cd184c3f5e"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 8,
+  "n_contradictions": 0,
+  "n_documents": 8
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.132,
+ "seed": 0,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "8696614ac549baa5",
+ "bundle_hash": "8696614ac549baa5",
+ "_persisted_at": "2026-07-13T01:34:06Z"
+}

@@ -1,0 +1,789 @@
+{
+  "traces": [
+    {
+      "question": "Will the Federal Reserve cut interest rates at its next meeting?",
+      "as_of": "2024-09-01",
+      "horizon": "2024-09-20",
+      "planes": {
+        "evidence": {
+          "bundle_hash": "ab7fbfa2fb4fde1b",
+          "n_included_claims": 13,
+          "n_documents": 17
+        },
+        "posterior": {
+          "posterior_hash": "63db74a158a5",
+          "prior_mean": 0.5,
+          "posterior_mean": 0.34401,
+          "posterior_sd": 0.24999,
+          "n_effective_observations": 8,
+          "n_claims_collapsed": 13,
+          "rate_ess": 305.23,
+          "structural_prior": {
+            "data_dependent": 0.6,
+            "forward_guidance": 0.3,
+            "political_pressure": 0.1
+          },
+          "structural_posterior": {
+            "data_dependent": 0.6801,
+            "forward_guidance": 0.3196,
+            "political_pressure": 0.0003
+          },
+          "warnings": []
+        },
+        "world_state": {
+          "posterior_rate_particles_on_plan": 400,
+          "structural_posterior_on_plan": true
+        },
+        "execution": {
+          "rate_source": "posterior",
+          "structural_source": "phase3_evidence_posterior",
+          "n_deltas": 331
+        }
+      },
+      "prior_provenance": {
+        "outcome_rate": {
+          "family": "beta",
+          "alpha": 1.0,
+          "beta": 1.0,
+          "source_class": "generic_weakly_informative",
+          "reference_class": "",
+          "transport_risk": "high",
+          "retained_effective_n": 0.0,
+          "raw_effective_n": 0.0,
+          "provenance": {
+            "source": "qualitative lean 'neutral' \u2192 fixed broad Beta(1.0,1.0)",
+            "reason": "reference class proposed but no base-rate data available",
+            "class": "generic_weakly_informative",
+            "transport_risk": "high (no held-out-validated reference class)",
+            "llm_role": "proposed qualitative lean ONLY; numbers fixed",
+            "proposed_reference_class": "Federal Reserve interest rate decisions in similar economic cycles",
+            "proposed_transport_risk": "moderate",
+            "proposed_why": "Current economic conditions (inflation, employment) differ from past cycles, and Fed communication has shifted."
+          },
+          "mean": 0.5
+        },
+        "structural": {
+          "source": "compiler structural prior",
+          "class": "compiler"
+        }
+      },
+      "claims_to_tags": [
+        {
+          "claim_id": "f890f60d0e658773:c0",
+          "class": "forecast",
+          "span": "What a Fed Rate Cut Could Mean for Your Wallet",
+          "dependence_group": "dep_44f321892e",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "5b62a918b2a45405:c0",
+          "class": "forecast",
+          "span": "Here's everything to expect from Fed Chair Powell's speech Friday in Jackson Hole",
+          "dependence_group": "dep_15ce6994af",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "822cc5aa4175fc86:c0",
+          "class": "observed_fact",
+          "span": "July 2024 Fed Meeting: Rates Remain Steady For Another Month",
+          "dependence_group": "dep_298050c8c9",
+          "tag_direction": "supports_no",
+          "tag_strength": "strong",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "822cc5aa4175fc86:c1",
+          "class": "official_record",
+          "span": "July 2024 Fed Meeting: Rates Remain Steady For Another Month - J.P. Morgan",
+          "dependence_group": "dep_298050c8c9",
+          "tag_direction": "supports_no",
+          "tag_strength": "strong",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "069a62929500c6da:c0",
+          "class": "observed_fact",
+          "span": "US Fed pushes back on interest rate cuts",
+          "dependence_group": "dep_4326ffe92c",
+          "tag_direction": "supports_no",
+          "tag_strength": "moderate",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "e2bd48d68ae0abab:c0",
+          "class": "actor_statement",
+          "span": "Fed Chair Powell says 'time has come' for interest rate cut",
+          "dependence_group": "dep_aa7968e313",
+          "tag_direction": "supports_yes",
+          "tag_strength": "strong",
+          "is_strategic": true,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "5696fdc9a8e880f1:c0",
+          "class": "observed_fact",
+          "span": "dollar pauses for breath",
+          "dependence_group": "dep_7f202a51cb",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "5696fdc9a8e880f1:c1",
+          "class": "observed_fact",
+          "span": "Fed meeting and US inflation data in focus",
+          "dependence_group": "dep_7f202a51cb",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "5696fdc9a8e880f1:c2",
+          "class": "observed_fact",
+          "span": "Fed meeting and US inflation data in focus",
+          "dependence_group": "dep_7f202a51cb",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "b87d9207c9f2e06a:c0",
+          "class": "observed_fact",
+          "span": "Fed leaves rates unchanged",
+          "dependence_group": "dep_7d41f5fdb2",
+          "tag_direction": "supports_no",
+          "tag_strength": "strong",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "b87d9207c9f2e06a:c1",
+          "class": "forecast",
+          "span": "sees only one 2024 cut",
+          "dependence_group": "dep_7d41f5fdb2",
+          "tag_direction": "supports_no",
+          "tag_strength": "moderate",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "b87d9207c9f2e06a:c2",
+          "class": "observed_fact",
+          "span": "despite inflation progress",
+          "dependence_group": "dep_7d41f5fdb2",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75
+        }
+      ],
+      "assimilation_ledger": [
+        {
+          "obs": "depgroup:dep_44f321892e",
+          "direction": "neutral",
+          "strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75,
+          "n_collapsed": 1,
+          "ess_before": 400.0,
+          "ess_after": 400.0,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_15ce6994af",
+          "direction": "neutral",
+          "strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75,
+          "n_collapsed": 1,
+          "ess_before": 400.0,
+          "ess_after": 400.0,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_298050c8c9",
+          "direction": "supports_no",
+          "strength": "strong",
+          "is_strategic": false,
+          "reliability": 0.75,
+          "n_collapsed": 2,
+          "ess_before": 400.0,
+          "ess_after": 365.6,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_4326ffe92c",
+          "direction": "supports_no",
+          "strength": "moderate",
+          "is_strategic": false,
+          "reliability": 0.75,
+          "n_collapsed": 1,
+          "ess_before": 365.6,
+          "ess_after": 326.4,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_aa7968e313",
+          "direction": "supports_yes",
+          "strength": "strong",
+          "is_strategic": true,
+          "reliability": 0.75,
+          "n_collapsed": 1,
+          "ess_before": 326.4,
+          "ess_after": 365.2,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_7f202a51cb",
+          "direction": "neutral",
+          "strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75,
+          "n_collapsed": 3,
+          "ess_before": 365.2,
+          "ess_after": 365.2,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_7d41f5fdb2",
+          "direction": "supports_no",
+          "strength": "strong",
+          "is_strategic": false,
+          "reliability": 0.75,
+          "n_collapsed": 3,
+          "ess_before": 365.2,
+          "ess_after": 305.2,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_524f34a8dc",
+          "direction": "neutral",
+          "strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75,
+          "n_collapsed": 1,
+          "ess_before": 305.2,
+          "ess_after": 305.2,
+          "resampled": false
+        }
+      ],
+      "outcome_rate": {
+        "prior_mean": 0.5,
+        "posterior_mean": 0.34401,
+        "posterior_sd": 0.24999,
+        "shift": -0.15599,
+        "representation": "continuous_probabilistic (bounded [0,1] particle set)",
+        "rate_ess": 305.23,
+        "n_particles": 400
+      },
+      "structural_prior": {
+        "data_dependent": 0.6,
+        "forward_guidance": 0.3,
+        "political_pressure": 0.1
+      },
+      "structural_posterior": {
+        "data_dependent": 0.6801,
+        "forward_guidance": 0.3196,
+        "political_pressure": 0.0003
+      },
+      "terminal_distribution": {
+        "no_cut": 0.7727,
+        "cut": 0.2273
+      },
+      "raw_probability": 0.2273,
+      "rate_source_in_terminal_delta": "posterior",
+      "posterior_consumed": true,
+      "posterior_hash": "63db74a158a5",
+      "support_grade": "highly_speculative",
+      "simulation_status": "completed_with_degradation",
+      "latent_specs": [
+        {
+          "variable_id": "outcome_rate",
+          "definition": "P(affirmative answer) latent base rate for: Will the Federal Reserve cut interest rates at its next meeting?",
+          "measurable_interpretation": "the long-run fraction of comparable situations resolving affirmative",
+          "support_type": "bounded_continuous",
+          "units": "probability",
+          "lo": 0.0,
+          "hi": 1.0,
+          "categories": [],
+          "scope": "world",
+          "causal_parents": [],
+          "causal_children": [],
+          "evidence_claim_ids": [
+            "f890f60d0e658773:c0",
+            "5b62a918b2a45405:c0",
+            "822cc5aa4175fc86:c0",
+            "822cc5aa4175fc86:c1",
+            "069a62929500c6da:c0",
+            "e2bd48d68ae0abab:c0",
+            "5696fdc9a8e880f1:c0",
+            "5696fdc9a8e880f1:c1",
+            "5696fdc9a8e880f1:c2",
+            "b87d9207c9f2e06a:c0",
+            "b87d9207c9f2e06a:c1",
+            "b87d9207c9f2e06a:c2",
+            "eb660e313b6f58e7:c0"
+          ],
+          "observation_models": [
+            "directional_rate"
+          ],
+          "prior_source": "reference_class_or_generic",
+          "prior_version": "phase3-prior-1.0",
+          "inference_method": "beta_binomial_assimilation",
+          "posterior_representation": "beta",
+          "sensitivity": 1.0,
+          "identifiability": "unknown",
+          "provenance_status": "inferred",
+          "consumed_by": [
+            "generic_outcome_prior:rate",
+            "resolve_outcome:lean"
+          ],
+          "actor_visibility": "public",
+          "transport_risk": "none",
+          "unsupported_assumptions": []
+        },
+        {
+          "variable_id": "structural_hypothesis",
+          "definition": "which competing causal structure holds",
+          "measurable_interpretation": "the world structure most consistent with the admitted evidence",
+          "support_type": "discrete_structural",
+          "units": "",
+          "lo": 0.0,
+          "hi": 1.0,
+          "categories": [
+            "data_dependent",
+            "forward_guidance",
+            "political_pressure"
+          ],
+          "scope": "world",
+          "causal_parents": [],
+          "causal_children": [],
+          "evidence_claim_ids": [],
+          "observation_models": [
+            "structural_detection"
+          ],
+          "prior_source": "compiler_structural_prior",
+          "prior_version": "phase3-prior-1.0",
+          "inference_method": "particle_assimilation",
+          "posterior_representation": "dirichlet",
+          "sensitivity": 0.9,
+          "identifiability": "unknown",
+          "provenance_status": "inferred",
+          "consumed_by": [
+            "materialize:_run_with_hypotheses:stratum_weight"
+          ],
+          "actor_visibility": "public",
+          "transport_risk": "none",
+          "unsupported_assumptions": []
+        }
+      ]
+    },
+    {
+      "question": "Will there be a US federal government shutdown?",
+      "as_of": "2024-09-15",
+      "horizon": "2024-10-15",
+      "planes": {
+        "evidence": {
+          "bundle_hash": "56e4c45d49a0b757",
+          "n_included_claims": 17,
+          "n_documents": 14
+        },
+        "posterior": {
+          "posterior_hash": "e3a1a2571d53",
+          "prior_mean": 0.5,
+          "posterior_mean": 0.53497,
+          "posterior_sd": 0.27563,
+          "n_effective_observations": 8,
+          "n_claims_collapsed": 17,
+          "rate_ess": 391.87,
+          "structural_prior": {
+            "hardline_block": 0.4,
+            "bipartisan_compromise": 0.4,
+            "short_term_patch": 0.2
+          },
+          "structural_posterior": {
+            "hardline_block": 0.9823,
+            "bipartisan_compromise": 0.0153,
+            "short_term_patch": 0.0024
+          },
+          "warnings": []
+        },
+        "world_state": {
+          "posterior_rate_particles_on_plan": 400,
+          "structural_posterior_on_plan": true
+        },
+        "execution": {
+          "rate_source": "posterior",
+          "structural_source": "phase3_evidence_posterior",
+          "n_deltas": 76
+        }
+      },
+      "prior_provenance": {
+        "outcome_rate": {
+          "family": "beta",
+          "alpha": 1.0,
+          "beta": 1.0,
+          "source_class": "generic_weakly_informative",
+          "reference_class": "",
+          "transport_risk": "high",
+          "retained_effective_n": 0.0,
+          "raw_effective_n": 0.0,
+          "provenance": {
+            "source": "qualitative lean 'neutral' \u2192 fixed broad Beta(1.0,1.0)",
+            "reason": "reference class proposed but no base-rate data available",
+            "class": "generic_weakly_informative",
+            "transport_risk": "high (no held-out-validated reference class)",
+            "llm_role": "proposed qualitative lean ONLY; numbers fixed",
+            "proposed_reference_class": "US federal government shutdowns under divided government",
+            "proposed_transport_risk": "low",
+            "proposed_why": "The scenario is directly about the same type of event in the same country and political system, with frequent historical precedents."
+          },
+          "mean": 0.5
+        },
+        "structural": {
+          "source": "compiler structural prior",
+          "class": "compiler"
+        }
+      },
+      "claims_to_tags": [
+        {
+          "claim_id": "17af730c42ef5bc0:c0",
+          "class": "observed_fact",
+          "span": "Speaker Mike Johnson's government funding strategy is on life support as defections mount",
+          "dependence_group": "dep_592a562321",
+          "tag_direction": "supports_yes",
+          "tag_strength": "strong",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "17af730c42ef5bc0:c1",
+          "class": "observed_fact",
+          "span": "as defections mount",
+          "dependence_group": "dep_592a562321",
+          "tag_direction": "supports_yes",
+          "tag_strength": "moderate",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "930afb5d6e01dce2:c0",
+          "class": "observed_fact",
+          "span": "The federal government of the United States (U.S. federal government or U.S. government) is the national gover",
+          "dependence_group": "dep_5e3b0a4040",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.8
+        },
+        {
+          "claim_id": "930afb5d6e01dce2:c1",
+          "class": "observed_fact",
+          "span": "The United States federal government is composed of three distinct branches: legislative, executive, and judic",
+          "dependence_group": "dep_5e3b0a4040",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.8
+        },
+        {
+          "claim_id": "930afb5d6e01dce2:c2",
+          "class": "observed_fact",
+          "span": "The powers of these three branches are defined and vested by the Constitution of the United States, which has ",
+          "dependence_group": "dep_5e3b0a4040",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.8
+        },
+        {
+          "claim_id": "930afb5d6e01dce2:c3",
+          "class": "observed_fact",
+          "span": "The powers of these three branches are defined and vested by the Constitution of the United States, which has ",
+          "dependence_group": "dep_5e3b0a4040",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.8
+        },
+        {
+          "claim_id": "930afb5d6e01dce2:c4",
+          "class": "observed_fact",
+          "span": "The powers and duties of these branches are further defined by acts of Congress, including the creation of exe",
+          "dependence_group": "dep_5e3b0a4040",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.8
+        },
+        {
+          "claim_id": "930afb5d6e01dce2:c5",
+          "class": "observed_fact",
+          "span": "The powers and duties of these branches are further defined by acts of Congress, including the creation of exe",
+          "dependence_group": "dep_5e3b0a4040",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.8
+        },
+        {
+          "claim_id": "930afb5d6e01dce2:c6",
+          "class": "observed_fact",
+          "span": "In the federal division of power, the federal government shares sovereignty with each of the 50 states in thei",
+          "dependence_group": "dep_5e3b0a4040",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.8
+        },
+        {
+          "claim_id": "930afb5d6e01dce2:c7",
+          "class": "observed_fact",
+          "span": "United States law recognizes Indigenous tribes as possessing sovereign powers, while being subject to federal ",
+          "dependence_group": "dep_5e3b0a4040",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.8
+        },
+        {
+          "claim_id": "18f2ce048f0d9b81:c0",
+          "class": "observed_fact",
+          "span": "SC Statehouse Freedom Caucus has a new chairman.",
+          "dependence_group": "dep_12e28146bf",
+          "tag_direction": "neutral",
+          "tag_strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75
+        },
+        {
+          "claim_id": "841d3ad26a0ff944:c0",
+          "class": "forecast",
+          "span": "Trump set to huddle with GOP senators in D.C. this week",
+          "dependence_group": "dep_5a8db883f6",
+          "tag_direction": "supports_no",
+          "tag_strength": "moderate",
+          "is_strategic": true,
+          "reliability": 0.75
+        }
+      ],
+      "assimilation_ledger": [
+        {
+          "obs": "depgroup:dep_592a562321",
+          "direction": "supports_yes",
+          "strength": "strong",
+          "is_strategic": false,
+          "reliability": 0.75,
+          "n_collapsed": 2,
+          "ess_before": 400.0,
+          "ess_after": 366.3,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_5e3b0a4040",
+          "direction": "neutral",
+          "strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.8,
+          "n_collapsed": 8,
+          "ess_before": 366.3,
+          "ess_after": 366.3,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_12e28146bf",
+          "direction": "neutral",
+          "strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75,
+          "n_collapsed": 1,
+          "ess_before": 366.3,
+          "ess_after": 366.3,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_5a8db883f6",
+          "direction": "supports_no",
+          "strength": "moderate",
+          "is_strategic": true,
+          "reliability": 0.75,
+          "n_collapsed": 1,
+          "ess_before": 366.3,
+          "ess_after": 384.9,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_c1da874dfe",
+          "direction": "supports_yes",
+          "strength": "moderate",
+          "is_strategic": true,
+          "reliability": 0.75,
+          "n_collapsed": 1,
+          "ess_before": 384.9,
+          "ess_after": 366.9,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_015d0e0f7a",
+          "direction": "neutral",
+          "strength": "weak",
+          "is_strategic": false,
+          "reliability": 0.75,
+          "n_collapsed": 1,
+          "ess_before": 366.9,
+          "ess_after": 366.9,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_241c0aee88",
+          "direction": "supports_no",
+          "strength": "strong",
+          "is_strategic": false,
+          "reliability": 0.75,
+          "n_collapsed": 2,
+          "ess_before": 366.9,
+          "ess_after": 395.9,
+          "resampled": false
+        },
+        {
+          "obs": "depgroup:dep_532e4d4dd1",
+          "direction": "supports_yes",
+          "strength": "moderate",
+          "is_strategic": true,
+          "reliability": 0.75,
+          "n_collapsed": 1,
+          "ess_before": 395.9,
+          "ess_after": 391.9,
+          "resampled": false
+        }
+      ],
+      "outcome_rate": {
+        "prior_mean": 0.5,
+        "posterior_mean": 0.53497,
+        "posterior_sd": 0.27563,
+        "shift": 0.03497,
+        "representation": "continuous_probabilistic (bounded [0,1] particle set)",
+        "rate_ess": 391.87,
+        "n_particles": 400
+      },
+      "structural_prior": {
+        "hardline_block": 0.4,
+        "bipartisan_compromise": 0.4,
+        "short_term_patch": 0.2
+      },
+      "structural_posterior": {
+        "hardline_block": 0.9823,
+        "bipartisan_compromise": 0.0153,
+        "short_term_patch": 0.0024
+      },
+      "terminal_distribution": {
+        "shutdown": 0.6447,
+        "no_shutdown": 0.3553
+      },
+      "raw_probability": 0.6447,
+      "rate_source_in_terminal_delta": "posterior",
+      "posterior_consumed": true,
+      "posterior_hash": "e3a1a2571d53",
+      "support_grade": "highly_speculative",
+      "simulation_status": "completed_with_degradation",
+      "latent_specs": [
+        {
+          "variable_id": "outcome_rate",
+          "definition": "P(affirmative answer) latent base rate for: Will there be a US federal government shutdown?",
+          "measurable_interpretation": "the long-run fraction of comparable situations resolving affirmative",
+          "support_type": "bounded_continuous",
+          "units": "probability",
+          "lo": 0.0,
+          "hi": 1.0,
+          "categories": [],
+          "scope": "world",
+          "causal_parents": [],
+          "causal_children": [],
+          "evidence_claim_ids": [
+            "17af730c42ef5bc0:c0",
+            "17af730c42ef5bc0:c1",
+            "930afb5d6e01dce2:c0",
+            "930afb5d6e01dce2:c1",
+            "930afb5d6e01dce2:c2",
+            "930afb5d6e01dce2:c3",
+            "930afb5d6e01dce2:c4",
+            "930afb5d6e01dce2:c5",
+            "930afb5d6e01dce2:c6",
+            "930afb5d6e01dce2:c7",
+            "18f2ce048f0d9b81:c0",
+            "841d3ad26a0ff944:c0",
+            "92a563b0d5d6a264:c0",
+            "73fcd601084e5d76:c0",
+            "9230edbe35a8c12b:c0",
+            "9230edbe35a8c12b:c1",
+            "f4c8a01f47d9ea19:c0"
+          ],
+          "observation_models": [
+            "directional_rate"
+          ],
+          "prior_source": "reference_class_or_generic",
+          "prior_version": "phase3-prior-1.0",
+          "inference_method": "beta_binomial_assimilation",
+          "posterior_representation": "beta",
+          "sensitivity": 1.0,
+          "identifiability": "unknown",
+          "provenance_status": "inferred",
+          "consumed_by": [
+            "generic_outcome_prior:rate",
+            "resolve_outcome:lean"
+          ],
+          "actor_visibility": "public",
+          "transport_risk": "none",
+          "unsupported_assumptions": []
+        },
+        {
+          "variable_id": "structural_hypothesis",
+          "definition": "which competing causal structure holds",
+          "measurable_interpretation": "the world structure most consistent with the admitted evidence",
+          "support_type": "discrete_structural",
+          "units": "",
+          "lo": 0.0,
+          "hi": 1.0,
+          "categories": [
+            "hardline_block",
+            "bipartisan_compromise",
+            "short_term_patch"
+          ],
+          "scope": "world",
+          "causal_parents": [],
+          "causal_children": [],
+          "evidence_claim_ids": [],
+          "observation_models": [
+            "structural_detection"
+          ],
+          "prior_source": "compiler_structural_prior",
+          "prior_version": "phase3-prior-1.0",
+          "inference_method": "particle_assimilation",
+          "posterior_representation": "dirichlet",
+          "sensitivity": 0.9,
+          "identifiability": "unknown",
+          "provenance_status": "inferred",
+          "consumed_by": [
+            "materialize:_run_with_hypotheses:stratum_weight"
+          ],
+          "actor_visibility": "public",
+          "transport_risk": "none",
+          "unsupported_assumptions": []
+        }
+      ]
+    }
+  ],
+  "retrieval_date_utc": "2026-07-13T03:47:43Z"
+}

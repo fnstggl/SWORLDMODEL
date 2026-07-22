@@ -1,0 +1,1499 @@
+{
+ "bundle_id": "eb_26b014",
+ "question": "Will the stock rise more than 5% the day after the earnings call?",
+ "as_of": 1690243200.0,
+ "compiler_plan_hash": "bee1e69fec94",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_a0a1fe04f0",
+   "claim_or_quantity": "If the closing price on 2023-07-27 is more than 5% above the closing price on 2023-07-25, then 'rise_more_than_5%' else 'rise_5%_or_less_or_fall'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-25",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "company_issuing_stock",
+    "stock_exchange",
+    "lead_analyst_covering_stock"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f0547f5b07",
+   "claim_or_quantity": "value/context of company_issuing_stock.fundamental_value",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "company_issuing_stock.fundamental_value",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-25",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4d4bc3b493",
+   "claim_or_quantity": "evidence discriminating structural hypothesis efficient_market",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:efficient_market",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-25",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ceafebbdd4",
+   "claim_or_quantity": "evidence discriminating structural hypothesis behavioral_overreaction",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:behavioral_overreaction",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-25",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_9b3c770832",
+   "claim_or_quantity": "value/context of investors.aggregate_sentiment",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "investors.aggregate_sentiment",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-25",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_d43f69de87",
+   "claim_or_quantity": "decision rules / process of company_issuing_stock",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "company_issuing_stock",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-25",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_201641fa9c",
+   "claim_or_quantity": "decision rules / process of stock_exchange",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "stock_exchange",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-25",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2399869c34",
+   "claim_or_quantity": "value/context of institutional_investors.algorithmic_trading_strategy",
+   "why_relevant": "high-sensitivity latent (0.60) driving the outcome distribution",
+   "affected_component": "institutional_investors.algorithmic_trading_strategy",
+   "expected_sensitivity": 0.6,
+   "expected_voi": 0.6,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-25",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_a0a1fe04f0",
+   "terms": "stock rise earnings call company issuing stock stock exchange lead analyst covering stock",
+   "after": "2023-02-25",
+   "before": "2023-07-25",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_f0547f5b07",
+   "terms": "company issuing stock fundamental value",
+   "after": "2023-02-25",
+   "before": "2023-07-25",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_4d4bc3b493",
+   "terms": "structural hypothesis efficient market evidence discriminating",
+   "after": "2023-02-25",
+   "before": "2023-07-25",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_a0a1fe04f0",
+   "logical_query": "stock rise earnings call company issuing stock stock exchange lead analyst covering stock after:2023-02-25 before:2023-07-25",
+   "wire_url": "https://news.google.com/rss/search?q=stock+rise+earnings+call+company+issuing+stock+stock+exchange+lead+analyst+covering+stock+after%3A2023-02-25+before%3A2023-07-25&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-25",
+   "before_date": "2023-07-25",
+   "retrieved_at": 1783907947.224352,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:59:08 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1JBiSO44w5AKxJVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcb3ouXmIT-HHl4HxGJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC8oTlM\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "2a70ad9b5afa31ccd51204dc4f7ab69c126c743c049fc043f8290174af4b1a20",
+   "n_bytes": 3698,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 1.018
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_f0547f5b07",
+   "logical_query": "company issuing stock fundamental value after:2023-02-25 before:2023-07-25",
+   "wire_url": "https://news.google.com/rss/search?q=company+issuing+stock+fundamental+value+after%3A2023-02-25+before%3A2023-07-25&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-25",
+   "before_date": "2023-07-25",
+   "retrieved_at": 1783907948.2443514,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:59:08 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw0pBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8abn4iU2gRe3n55kVlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAwD43wA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "5f9ec24ad0a58c6487c9cdd088b5568a18756e388110cb288d676bb0b39c3416",
+   "n_bytes": 20081,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.659
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_4d4bc3b493",
+   "logical_query": "structural hypothesis efficient market evidence discriminating after:2023-02-25 before:2023-07-25",
+   "wire_url": "https://news.google.com/rss/search?q=structural+hypothesis+efficient+market+evidence+discriminating+after%3A2023-02-25+before%3A2023-07-25&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-25",
+   "before_date": "2023-07-25",
+   "retrieved_at": 1783907948.9049275,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:59:09 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmII0JBiSO44w5ACxHVA3ADEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YR4ON72XLzEJvBi355LjErKSfmF8Sn5JcXFBTmJxRnFqUVlqUXxRgZGZgbmBmZ6BibxBQYAoNI60g\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "c584d23c601cefeed1b8c5aaa3ca336586ef3a212c3bbb836af216d314e55a8e",
+   "n_bytes": 1289,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.445
+  }
+ ],
+ "raw_content_refs": [
+  "2a70ad9b5afa31ccd51204dc4f7ab69c126c743c049fc043f8290174af4b1a20",
+  "5f9ec24ad0a58c6487c9cdd088b5568a18756e388110cb288d676bb0b39c3416"
+ ],
+ "documents": [
+  {
+   "id": "7937b1cc35336a8a",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBGZ2kwaDlhU2NvTFdXc2txcm1aam51dWNNSDh3VlBGN0ZCb2ZLWWpvS0xEejg4MDRNNGQ4OHpqbjdoZDhvLURIRWpVRkdZWkZiVndzSklEM3Qxclc1Z2ZlU0UycVdjZlJkenlLZ3RCblpQU0kzWXNF?oc=5",
+   "title": "Meet Insider's 2023 Rising Stars of Equity Research - Business Insider",
+   "text": "Meet Insider's 2023 Rising Stars of Equity Research - Business Insider. Meet Insider's 2023 Rising Stars of Equity Research Business Insider",
+   "content_hash": "b25930ccb0cf2cd9",
+   "raw_feed_hash": "2a70ad9b5afa31ccd51204dc4f7ab69c126c743c049fc043f8290174af4b1a20",
+   "published_at": 1684738800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_a0a1fe04f0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "bb169fb8f1767701",
+   "source": "Genetic Engineering and Biotechnology News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNUjZkbHk2dkE1MTg4QmZwNUZXMVh2RU5lYmNIMVhRaF9vRFFuYVRFV05fWTNXWTF0d0dHbDcyVWNIdGx3clFOcHZCWGF1dFRiczhieWhtUU51YlpXcFdXWWdNZl9JdkZGZzlqUWxoci1qN2VHc2Y2Wm1pTy16NlNXeFlFLTJkdEZlS0VKRDhMRWc1U2NKVnJEbldWaGp2ZUI2RzhV?oc=5",
+   "title": "StockWatch: Illumina Shares Steady as Icahn Escalates Proxy Fight - Genetic Engineering and Biotechnology News",
+   "text": "StockWatch: Illumina Shares Steady as Icahn Escalates Proxy Fight - Genetic Engineering and Biotechnology News. StockWatch: Illumina Shares Steady as Icahn Escalates Proxy Fight Genetic Engineering and Biotechnology News",
+   "content_hash": "76c69d93141d00e8",
+   "raw_feed_hash": "2a70ad9b5afa31ccd51204dc4f7ab69c126c743c049fc043f8290174af4b1a20",
+   "published_at": 1680850800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_a0a1fe04f0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "48d80d7675034a5d",
+   "source": "The Acquirer's Multiple",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNQTl2dkZCeTBsT0oyQUtBZERDa01fNTZPTlNZWHlJR29PTTllSW1EN0xXS19DNGVCbmhBbjZBdjQwX09oUTJlRlluMlRfUjBqV0VFWmZDcndWY0J1LWUybURpc05KdkdYS1R6Y1VqT3NNdUlHVXR4V3c0X1BkVlo2ZjRuQWFOSkx0M0lPTzg5TXFfWFNsMnFUS2lwZVA3RFd3QmtzODRWOEFyU3FiV0hFam5kbUtycXFI?oc=5",
+   "title": "Mark Leonard: The Importance Of Keeping Your Share Price Within A Certain Range - The Acquirer's Multiple",
+   "text": "Mark Leonard: The Importance Of Keeping Your Share Price Within A Certain Range - The Acquirer's Multiple. Mark Leonard: The Importance Of Keeping Your Share Price Within A Certain Range The Acquirer's Multiple",
+   "content_hash": "8b2db8957520166b",
+   "raw_feed_hash": "5f9ec24ad0a58c6487c9cdd088b5568a18756e388110cb288d676bb0b39c3416",
+   "published_at": 1682319600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_f0547f5b07",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1a2bacffb638d236",
+   "source": "Baker Institute",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPWnliaGpIMmFUc0pLbFI2dkZCWVUyNnBfOXhRdUowcGZ1WG1BeWw5ZW45YlIwdFlPT0V6M1F3bUxEcjlwbWhCNFpCcG9PVVZvUGEwMlV2MGp1R2hwem1uY3BSdlU3MERXdnV1dWV5dm5veTZtNk5seV9zcGp2Sks1eG5ud3ZMMkpBV29xbEl4SE0?oc=5",
+   "title": "Understanding Stock Buybacks \u2014 Should We Tax Them? - Baker Institute",
+   "text": "Understanding Stock Buybacks \u2014 Should We Tax Them? - Baker Institute. Understanding Stock Buybacks \u2014 Should We Tax Them? Baker Institute",
+   "content_hash": "a38aadd697e03bda",
+   "raw_feed_hash": "5f9ec24ad0a58c6487c9cdd088b5568a18756e388110cb288d676bb0b39c3416",
+   "published_at": 1684825200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_f0547f5b07",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5f0276e338377cef",
+   "source": "Investopedia",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQRU5ockNhSGpTaHZ5RGVRYmNqRDBNS1pLTXNIMlBVWE9TNFU3NDBfZ1RaRHBnZHVZQlIwb2ZKY2tiYW12Z255UFF4dDFEVUtCcnRXSnR2TWU2aUJsSGNRUDFDRWREbjJpaE5nSDFhbzRMcUxjV0ZsTVVGTk9IVXpBOU5n?oc=5",
+   "title": "The Road to Creating an IPO - Investopedia",
+   "text": "The Road to Creating an IPO - Investopedia. The Road to Creating an IPO Investopedia",
+   "content_hash": "0c15ab0dccb4b790",
+   "raw_feed_hash": "5f9ec24ad0a58c6487c9cdd088b5568a18756e388110cb288d676bb0b39c3416",
+   "published_at": 1682665200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_f0547f5b07",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "93d42158e9ab1d94",
+   "source": "Fortune",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1vUWZrRWNZQmJIdEl6d1Qwa1ZIZktJYm5EY0hEZmZMTkFFeDZRYlh0TTlrdTdZNVBWQU9LaWEtam1wVDFwN0RGUVNxdk11WmxKN205eV9jRmxKSTNWdUNycVZJdHBjQ05yVklYMjQ5V3d6Q1BQaTNOcEZZamROV0E?oc=5",
+   "title": "After Disney flubbed the most basic equation in finance, Bob Iger has to dig out of a deep hole to move the stock price - Fortune",
+   "text": "After Disney flubbed the most basic equation in finance, Bob Iger has to dig out of a deep hole to move the stock price - Fortune. After Disney flubbed the most basic equation in finance, Bob Iger has to dig out of a deep hole to move the stock price Fortune",
+   "content_hash": "5ceadad9593860c8",
+   "raw_feed_hash": "5f9ec24ad0a58c6487c9cdd088b5568a18756e388110cb288d676bb0b39c3416",
+   "published_at": 1681974000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_f0547f5b07",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "288bac1d6408422f",
+   "source": "CNBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOQ2NOUjBnX3ltT0hrSHQ3eGtJazl3Ylh4bG1lV3pYTlBhWGg1U0hnaFVCcGFpV0FpUUlIMHo1aWlCTXJJT1hPUWtyeUNQOEFoRnZoQjFNdDdJN1VmbVpDSVFmZjEyOGt0cVl1UlZPYWxKZURPNXozaDk1dVJtRmdjWVhodUZxRFJvTnVlT0U1eS1LNDjSAZgBQVVfeXFMTzlscHhScmdZSEpWUjJpdGx6Z1h2NC0yYnBKVjh1VnRzWFRsOElwMU9LampOTEFUUGQtMlp0aU1JZlVBSTJ2NGxlTGE3dVh4d3ZQUHRGWUo5a1VNZmRFWC1XeW9ST2dEcmtLNl90alRydVAxWnBxNHhMVTNkUmVjcU4xMUZKbUIwTV9xVEdzekpsNEM0VUR6Nzg?oc=5",
+   "title": "Lululemon shares jump as holiday-quarter sales surge - CNBC",
+   "text": "Lululemon shares jump as holiday-quarter sales surge - CNBC. Lululemon shares jump as holiday-quarter sales surge CNBC",
+   "content_hash": "0b91a9bb533ee653",
+   "raw_feed_hash": "5f9ec24ad0a58c6487c9cdd088b5568a18756e388110cb288d676bb0b39c3416",
+   "published_at": 1679986800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_f0547f5b07",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "143cecea3e975078",
+   "source": "marcellus.in",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPaXA1RUFBOG9ZT1NjWTcwZXphYzBQZmJDX3VHY1pVTEhDNmpfbkhON2hpeDdRWjIzd0lVNnctRUY2d3VvSUNZcERHVmNSVU82NThzOEJWakFMVVpxX3NKbDJwc3UwOTlKVHZpOEhIQ2FwY29hWjY5NHQ2NzFvUHEyVUJsbjhxMUt2cVM4ZF93QndQN09wS2tzYjM5TDIwRzg2YmszOXV0TFR1Yzg?oc=5",
+   "title": "A Simple Approach to Valuing Financial Services Companies - marcellus.in",
+   "text": "A Simple Approach to Valuing Financial Services Companies - marcellus.in. A Simple Approach to Valuing Financial Services Companies marcellus.in",
+   "content_hash": "6315200e69518acf",
+   "raw_feed_hash": "5f9ec24ad0a58c6487c9cdd088b5568a18756e388110cb288d676bb0b39c3416",
+   "published_at": 1682751600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_f0547f5b07",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8fd7af979715bcb0",
+   "source": "PR Newswire",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNYjh5a2R4MXJDZXZBQXUyY2szMTlscTQxeWpFblE3RWVBTEFOa3dEbFg1OWNHNkxxQVFlRVJWUHlxU1VlR1ZVSUhBNW0wUkVoUUcyVWRIMEw4d2xLVUh5Z2N4QUhxSFRRb0U4N1ptZzNwdy04LWc3aThWQk1EWUlBdW1tdm1GOE80dC1GalpmdHBFSHdIVURyaXZuRDBkQndyYzNvcG1RTQ?oc=5",
+   "title": "RAMACO RESOURCES, INC. DUAL-CLASS STRUCTURE UPDATE - PR Newswire",
+   "text": "RAMACO RESOURCES, INC. DUAL-CLASS STRUCTURE UPDATE - PR Newswire. RAMACO RESOURCES, INC. DUAL-CLASS STRUCTURE UPDATE PR Newswire",
+   "content_hash": "47e071c275e4f0c5",
+   "raw_feed_hash": "5f9ec24ad0a58c6487c9cdd088b5568a18756e388110cb288d676bb0b39c3416",
+   "published_at": 1687503600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_f0547f5b07",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ad471efe43d85f8b",
+   "source": "vietnamnews.vn",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPRXNwcTNjbEp0S3dSVlhYSkJORlVINEM2R3VVaTY1Wm9OWDNEZGhqaC14LVRydjlaa0ZCakY1OWJnNFFhdVloaEFkNm8xcGR5QmhqaERiVUkycUFDOWlYdkZxQ1RWa3hHUkk2RUliUmhicjRRS3N1NUp4YnJPRS1mTVlqekY3eGRMRXNHUDdXaU5TbUhhc2hXdg?oc=5",
+   "title": "Back to capital raising race for securities firms - vietnamnews.vn",
+   "text": "Back to capital raising race for securities firms - vietnamnews.vn. Back to capital raising race for securities firms vietnamnews.vn",
+   "content_hash": "3ec3efe6d095ba36",
+   "raw_feed_hash": "5f9ec24ad0a58c6487c9cdd088b5568a18756e388110cb288d676bb0b39c3416",
+   "published_at": 1684220400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_f0547f5b07",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "7937b1cc35336a8a:c0",
+   "source_id": "7937b1cc35336a8a",
+   "subject": "Insider",
+   "predicate": "has",
+   "object": "2023 Rising Stars of Equity Research",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Meet Insider's 2023 Rising Stars of Equity Research - Business Insider",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1684738800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Insider",
+    "2023 Rising Stars of Equity Research"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_749dea3462",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a0a1fe04f0"
+   }
+  },
+  {
+   "claim_id": "48d80d7675034a5d:c0",
+   "source_id": "48d80d7675034a5d",
+   "subject": "Mark Leonard",
+   "predicate": "discusses",
+   "object": "the importance of keeping your share price within a certain range",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Mark Leonard: The Importance Of Keeping Your Share Price Within A Certain Range",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682319600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Mark Leonard"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_48367367d9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f0547f5b07"
+   }
+  },
+  {
+   "claim_id": "bb169fb8f1767701:c0",
+   "source_id": "bb169fb8f1767701",
+   "subject": "Illumina shares",
+   "predicate": "are steady",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Illumina Shares Steady",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680850800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Illumina"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_753250ae0f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a0a1fe04f0"
+   }
+  },
+  {
+   "claim_id": "bb169fb8f1767701:c1",
+   "source_id": "bb169fb8f1767701",
+   "subject": "Icahn",
+   "predicate": "escalates",
+   "object": "proxy fight",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Icahn Escalates Proxy Fight",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680850800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Icahn"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_753250ae0f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a0a1fe04f0"
+   }
+  },
+  {
+   "claim_id": "1a2bacffb638d236:c0",
+   "source_id": "1a2bacffb638d236",
+   "subject": "Stock buybacks",
+   "predicate": "are discussed in relation to",
+   "object": "taxation",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Understanding Stock Buybacks \u2014 Should We Tax Them?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684825200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Stock buybacks",
+    "Baker Institute"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e023038d22",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f0547f5b07"
+   }
+  },
+  {
+   "claim_id": "1a2bacffb638d236:c1",
+   "source_id": "1a2bacffb638d236",
+   "subject": "Baker Institute",
+   "predicate": "published",
+   "object": "article about stock buybacks and taxation",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Understanding Stock Buybacks \u2014 Should We Tax Them? - Baker Institute",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684825200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Baker Institute"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e023038d22",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f0547f5b07"
+   }
+  },
+  {
+   "claim_id": "5f0276e338377cef:c0",
+   "source_id": "5f0276e338377cef",
+   "subject": "The Road to Creating an IPO",
+   "predicate": "is a resource from",
+   "object": "Investopedia",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Road to Creating an IPO - Investopedia",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682665200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Investopedia"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f73ab13c70",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f0547f5b07"
+   }
+  },
+  {
+   "claim_id": "93d42158e9ab1d94:c0",
+   "source_id": "93d42158e9ab1d94",
+   "subject": "Disney",
+   "predicate": "flubbed",
+   "object": "the most basic equation in finance",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Disney flubbed the most basic equation in finance",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681974000.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Disney"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7a755e7d30",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f0547f5b07"
+   }
+  },
+  {
+   "claim_id": "93d42158e9ab1d94:c1",
+   "source_id": "93d42158e9ab1d94",
+   "subject": "Bob Iger",
+   "predicate": "has to dig out of a deep hole to move the stock price",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Bob Iger has to dig out of a deep hole to move the stock price",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681974000.0,
+   "extraction_confidence": 0.8,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Bob Iger"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7a755e7d30",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f0547f5b07"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Insider",
+   "normalized": "insider",
+   "candidates": [
+    {
+     "entity_id": "ent_b3272311c0",
+     "canonical": "insider",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Insider"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "2023 Rising Stars of Equity Research",
+   "normalized": "2023 rising stars of equity research",
+   "candidates": [
+    {
+     "entity_id": "ent_8f484c094f",
+     "canonical": "2023 rising stars of equity research",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "2023 Rising Stars of Equity Research"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Mark Leonard",
+   "normalized": "mark leonard",
+   "candidates": [
+    {
+     "entity_id": "ent_65a54ff629",
+     "canonical": "mark leonard",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Mark Leonard"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Illumina",
+   "normalized": "illumina",
+   "candidates": [
+    {
+     "entity_id": "ent_c728bc938e",
+     "canonical": "illumina",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Illumina"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Icahn",
+   "normalized": "icahn",
+   "candidates": [
+    {
+     "entity_id": "ent_958be0c132",
+     "canonical": "icahn",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Icahn"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Stock buybacks",
+   "normalized": "stock buybacks",
+   "candidates": [
+    {
+     "entity_id": "ent_31c440ec29",
+     "canonical": "stock buybacks",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Stock buybacks"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Baker Institute",
+   "normalized": "baker institute",
+   "candidates": [
+    {
+     "entity_id": "ent_4008c5c1e2",
+     "canonical": "baker institute",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "Baker Institute",
+      "Baker Institute"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Baker Institute",
+   "normalized": "baker institute",
+   "candidates": [
+    {
+     "entity_id": "ent_4008c5c1e2",
+     "canonical": "baker institute",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "Baker Institute",
+      "Baker Institute"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Investopedia",
+   "normalized": "investopedia",
+   "candidates": [
+    {
+     "entity_id": "ent_59b07b4aa8",
+     "canonical": "investopedia",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Investopedia"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Disney",
+   "normalized": "disney",
+   "candidates": [
+    {
+     "entity_id": "ent_ecdb6dfd69",
+     "canonical": "disney",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Disney"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Bob Iger",
+   "normalized": "bob iger",
+   "candidates": [
+    {
+     "entity_id": "ent_46132fd9df",
+     "canonical": "bob iger",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Bob Iger"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "7937b1cc35336a8a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690243200.0,
+   "claimed_pubdate_ts": 1684738800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684738800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "bb169fb8f1767701": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690243200.0,
+   "claimed_pubdate_ts": 1680850800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680850800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "48d80d7675034a5d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690243200.0,
+   "claimed_pubdate_ts": 1682319600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682319600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1a2bacffb638d236": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690243200.0,
+   "claimed_pubdate_ts": 1684825200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684825200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "5f0276e338377cef": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690243200.0,
+   "claimed_pubdate_ts": 1682665200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682665200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "93d42158e9ab1d94": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690243200.0,
+   "claimed_pubdate_ts": 1681974000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681974000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "288bac1d6408422f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690243200.0,
+   "claimed_pubdate_ts": 1679986800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679986800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "143cecea3e975078": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690243200.0,
+   "claimed_pubdate_ts": 1682751600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682751600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8fd7af979715bcb0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690243200.0,
+   "claimed_pubdate_ts": 1687503600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687503600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ad471efe43d85f8b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690243200.0,
+   "claimed_pubdate_ts": 1684220400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684220400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_749dea3462",
+   "member_ids": [
+    "7937b1cc35336a8a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_753250ae0f",
+   "member_ids": [
+    "bb169fb8f1767701"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Genetic Engineering and Biotechnology News",
+   "primary_source": "Genetic Engineering and Biotechnology News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_48367367d9",
+   "member_ids": [
+    "48d80d7675034a5d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Acquirer's Multiple",
+   "primary_source": "The Acquirer's Multiple",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e023038d22",
+   "member_ids": [
+    "1a2bacffb638d236"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Baker Institute",
+   "primary_source": "Baker Institute",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f73ab13c70",
+   "member_ids": [
+    "5f0276e338377cef"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Investopedia",
+   "primary_source": "Investopedia",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7a755e7d30",
+   "member_ids": [
+    "93d42158e9ab1d94"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Fortune",
+   "primary_source": "Fortune",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f0eabf8945",
+   "member_ids": [
+    "288bac1d6408422f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CNBC",
+   "primary_source": "CNBC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_98bc99b11d",
+   "member_ids": [
+    "143cecea3e975078"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "marcellus.in",
+   "primary_source": "marcellus.in",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_86a388d2bc",
+   "member_ids": [
+    "8fd7af979715bcb0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "PR Newswire",
+   "primary_source": "PR Newswire",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b7ce106c20",
+   "member_ids": [
+    "ad471efe43d85f8b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "vietnamnews.vn",
+   "primary_source": "vietnamnews.vn",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "7937b1cc35336a8a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684738800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "48d80d7675034a5d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682319600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "bb169fb8f1767701:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680850800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "bb169fb8f1767701:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680850800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1a2bacffb638d236:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684825200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1a2bacffb638d236:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684825200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "5f0276e338377cef:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682665200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "93d42158e9ab1d94:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681974000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "93d42158e9ab1d94:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681974000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "7937b1cc35336a8a:c0",
+  "48d80d7675034a5d:c0",
+  "bb169fb8f1767701:c0",
+  "bb169fb8f1767701:c1",
+  "1a2bacffb638d236:c0",
+  "1a2bacffb638d236:c1",
+  "5f0276e338377cef:c0",
+  "93d42158e9ab1d94:c0",
+  "93d42158e9ab1d94:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_a0a1fe04f0": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_f0547f5b07": {
+   "status": "fulfilled",
+   "n_claims": 6,
+   "n_included": 6
+  },
+  "req_4d4bc3b493": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ceafebbdd4": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_9b3c770832": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_d43f69de87": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_201641fa9c": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_2399869c34": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_4d4bc3b493",
+  "req_ceafebbdd4",
+  "req_9b3c770832",
+  "req_d43f69de87",
+  "req_201641fa9c",
+  "req_2399869c34"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 10,
+  "n_contradictions": 0,
+  "n_documents": 10
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.18,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "19b20224ff9584ed",
+ "bundle_hash": "19b20224ff9584ed",
+ "_persisted_at": "2026-07-13T01:59:29Z"
+}

@@ -1,0 +1,1214 @@
+{
+ "bundle_id": "eb_7d8b0b",
+ "question": "Will the challenger clear $1M in small-dollar donations this quarter?",
+ "as_of": 1688169600.0,
+ "compiler_plan_hash": "fc383da21fba",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_35920628a2",
+   "claim_or_quantity": "yes if cumulative small-dollar donations (under $200 per FEC definition) to the challenger's campaign from 2023-07-01 through 2023-09-30 reach or exceed $1,000,000; otherwise no.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "challenger_campaign",
+    "fec"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_637f4b25ee",
+   "claim_or_quantity": "value/context of challenger_campaign.digital_ad_spend",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "challenger_campaign.digital_ad_spend",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_806c203c8c",
+   "claim_or_quantity": "value/context of potential_donors.awareness_level",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "potential_donors.awareness_level",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_cb680104e1",
+   "claim_or_quantity": "value/context of potential_donors.donation_propensity",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "potential_donors.donation_propensity",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_b5e5a3d5f7",
+   "claim_or_quantity": "evidence discriminating structural hypothesis strong_grassroots_momentum",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:strong_grassroots_momentum",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_89e128e890",
+   "claim_or_quantity": "evidence discriminating structural hypothesis weak_visibility",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:weak_visibility",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_553f4a0b48",
+   "claim_or_quantity": "decision rules / process of challenger_campaign",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "challenger_campaign",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c47807f8d0",
+   "claim_or_quantity": "decision rules / process of fec",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "fec",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_35920628a2",
+   "terms": "challenger clear small dollar donations challenger campaign fec",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_637f4b25ee",
+   "terms": "challenger campaign digital spend",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_806c203c8c",
+   "terms": "potential donors awareness level",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_35920628a2",
+   "logical_query": "challenger clear small dollar donations challenger campaign fec after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=challenger+clear+small+dollar+donations+challenger+campaign+fec+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783909070.179296,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:17:50 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0ZBiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc56ZevMQmcOHu6gdMSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgC9dDlK\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "483a915968badff1feeb48781fdf37b02537a426f14133e7bc4d8a23677f27f9",
+   "n_bytes": 1291,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.452
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_637f4b25ee",
+   "logical_query": "challenger campaign digital spend after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=challenger+campaign+digital+spend+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783909070.633604,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:17:51 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmJw0pBiSO44w5ACxBVA3ADEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YS4Oc5PvXiJTeDGzxslSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgBflzqQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "abb078d06be8eb479056a3915e115140d8237bb03a32d8df8b3cfd41de7294ac",
+   "n_bytes": 4035,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.503
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_806c203c8c",
+   "logical_query": "potential donors awareness level after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=potential+donors+awareness+level+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783909071.1383278,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:17:51 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw0pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDcX7qxUtsAivOtj9jUlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAoE03Ew\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "850267301f82692e8075cf19815558dbead37402a8f1a4a7c6b6f51910176fe3",
+   "n_bytes": 5196,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 3,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.504
+  }
+ ],
+ "raw_content_refs": [
+  "850267301f82692e8075cf19815558dbead37402a8f1a4a7c6b6f51910176fe3",
+  "abb078d06be8eb479056a3915e115140d8237bb03a32d8df8b3cfd41de7294ac"
+ ],
+ "documents": [
+  {
+   "id": "8c6e792bbb66b6ec",
+   "source": "The Drum",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOTElXenBoZ1lLZ0ZhbjJ6WmNvYjVIZk5mOWxkX3FrWW1rUDJtdV9iOHZ1WVI4QkROSjN3d0U2TDhIeXdYdmdDX2VlWFpWTk1yVlZIZTI0RU45RmtRYm1vM1pFNGtKMmlmZ3JTMHlqMmtDemtwbmlXWkw4NDNJRVowSnVNaWhlcmZDRFBkRHU3ek5vaEVGcy1mT3BTb1k4bmNCcTZyazJvMlFYSldnWmF4dWJmWVdtSVB3ZGhVSFh5UVUzenFOLW0ycXQ4MGhBdkl5TDlIYm9n?oc=5",
+   "title": "Banking\u2019s digital marketing problem: How to combat ad fraud and boost high-street accounts - The Drum",
+   "text": "Banking\u2019s digital marketing problem: How to combat ad fraud and boost high-street accounts - The Drum. Banking\u2019s digital marketing problem: How to combat ad fraud and boost high-street accounts The Drum",
+   "content_hash": "adfb74580215a490",
+   "raw_feed_hash": "abb078d06be8eb479056a3915e115140d8237bb03a32d8df8b3cfd41de7294ac",
+   "published_at": 1681714800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_637f4b25ee",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "85ac70ce4b27dfba",
+   "source": "Chicago Tribune",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNZkRRQllYZ3RlY2NjbV9PMEdHTTBOZnRGV01DOXUtNnBqZ0tzWHp3amQ2THFLNlUzWTNYVXczMXB4VnpDUkUzdlZvbVhkVncyQ2VPMDAyWTZORHBwMS1zVmZJeEpLU0FqX1F1MEFkX1RJclQ1VzZ6YmJHcl83YUFaSDRRMXVBWklSNkdOeDZ3Mi1PdVNuMnZ2WkYtM0wtUURfYkl6SDU5OURrZ2NFZjB6R3VrNm5VQQ?oc=5",
+   "title": "Paul Vallas outspent Brandon Johnson nearly 2-to-1 in losing mayoral bid - Chicago Tribune",
+   "text": "Paul Vallas outspent Brandon Johnson nearly 2-to-1 in losing mayoral bid - Chicago Tribune. Paul Vallas outspent Brandon Johnson nearly 2-to-1 in losing mayoral bid Chicago Tribune",
+   "content_hash": "7c56e07b5e19c70e",
+   "raw_feed_hash": "abb078d06be8eb479056a3915e115140d8237bb03a32d8df8b3cfd41de7294ac",
+   "published_at": 1681887600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_637f4b25ee",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "634aa17d4f70561b",
+   "source": "New Jersey Business Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNdjJpejdvZm1XRkkwNXFOYlZUand3Q19XSzJpLXF5UU55eXlNbmVPeGlPelN3NWFTSnBJelFzMW9MVno3Y25lUzdXdE1fb0xOdmlKTFlGcXcyZFRFRUowRk1WYzZmMVhjcWhhRk5nRkdGZU5zOU5hWkhiQjlwanNZM0NDQS1VRU9HZnlIdkFLdURxUmw0U1lScTk3S2w2NEU1M2phelJVS2ozbkRXQ0dCaVF6Ti0?oc=5",
+   "title": "RWJ University Hospital Recognized for Record-Breaking Organ Donation Effort - New Jersey Business Magazine",
+   "text": "RWJ University Hospital Recognized for Record-Breaking Organ Donation Effort - New Jersey Business Magazine. RWJ University Hospital Recognized for Record-Breaking Organ Donation Effort New Jersey Business Magazine",
+   "content_hash": "83b295937df34c08",
+   "raw_feed_hash": "850267301f82692e8075cf19815558dbead37402a8f1a4a7c6b6f51910176fe3",
+   "published_at": 1677744000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_806c203c8c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4c70eb261f3f1463",
+   "source": "news.uct.ac.za",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxORTQ4LWZ0bGoyS1JGb21HUkZfcHE0VnZhYmRrUWRQUmdpX3hTX29QZW4zTXROcllJQmRnMXpDdkZ4UXlOREE3cXRuYlFDT1FuX29pOE5HTVd1ci0wajJoUFFoUUpFbHdScGx1Y1VvR3I5blpmSW95RTBOS3hHN19wZjNBZFNfUFpRMmRRUEtDa0RLckh6YXZCb2UwazVIX3gyNUQ3eFpHMDl6dw?oc=5",
+   "title": "Siphosethu Vumisa on giving a stranger hope \u2018to live, to love\u2019 - news.uct.ac.za",
+   "text": "Siphosethu Vumisa on giving a stranger hope \u2018to live, to love\u2019 - news.uct.ac.za. Siphosethu Vumisa on giving a stranger hope \u2018to live, to love\u2019 news.uct.ac.za",
+   "content_hash": "be4d5fdc4c0c91e8",
+   "raw_feed_hash": "850267301f82692e8075cf19815558dbead37402a8f1a4a7c6b6f51910176fe3",
+   "published_at": 1687849200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_806c203c8c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "42a5d34834137724",
+   "source": "The Peninsula Qatar",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxONy1rVDQ4M2NNU3k2Y3dkemgxSlIzQW9lV0lSXzZOS2hyOFNwUVJuMHNLYmh4LXVFLU1ReWNuTXAtS3hIZmtaQkc0YXZVaWJfdEdmZ3J6N0JTR2RZcW43SE1Wd0lpZTF5RUpvYjFQZVhFbGFBNFg4TE44X1lYQ0hlNy1CWEYtR1I0QWVQdW5uWXFiaEd3QmRfcVZBRnA5TnJZQkdObmRpNTByZ3dKUjFGcHBISFlZWGc?oc=5",
+   "title": "Half a million people registered as potential organ donors in Qatar - The Peninsula Qatar",
+   "text": "Half a million people registered as potential organ donors in Qatar - The Peninsula Qatar. Half a million people registered as potential organ donors in Qatar The Peninsula Qatar",
+   "content_hash": "e6c49abc25b3ba1f",
+   "raw_feed_hash": "850267301f82692e8075cf19815558dbead37402a8f1a4a7c6b6f51910176fe3",
+   "published_at": 1679814000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_806c203c8c",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "8c6e792bbb66b6ec:c0",
+   "source_id": "8c6e792bbb66b6ec",
+   "subject": "Banking",
+   "predicate": "has",
+   "object": "digital marketing problem",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Banking\u2019s digital marketing problem",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681714800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Banking"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6ad8385c41",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_637f4b25ee"
+   }
+  },
+  {
+   "claim_id": "8c6e792bbb66b6ec:c1",
+   "source_id": "8c6e792bbb66b6ec",
+   "subject": "The Drum",
+   "predicate": "published",
+   "object": "article about banking's digital marketing problem",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Banking\u2019s digital marketing problem: How to combat ad fraud and boost high-street accounts - The Drum",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681714800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Drum"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6ad8385c41",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_637f4b25ee"
+   }
+  },
+  {
+   "claim_id": "634aa17d4f70561b:c0",
+   "source_id": "634aa17d4f70561b",
+   "subject": "RWJ University Hospital",
+   "predicate": "was recognized for",
+   "object": "record-breaking organ donation effort",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "RWJ University Hospital Recognized for Record-Breaking Organ Donation Effort",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677744000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "RWJ University Hospital"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a73c2fcd46",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_806c203c8c"
+   }
+  },
+  {
+   "claim_id": "634aa17d4f70561b:c1",
+   "source_id": "634aa17d4f70561b",
+   "subject": "New Jersey Business Magazine",
+   "predicate": "published article about",
+   "object": "RWJ University Hospital's recognition",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "New Jersey Business Magazine",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677744000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "New Jersey Business Magazine"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a73c2fcd46",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_806c203c8c"
+   }
+  },
+  {
+   "claim_id": "85ac70ce4b27dfba:c0",
+   "source_id": "85ac70ce4b27dfba",
+   "subject": "Paul Vallas",
+   "predicate": "outspent",
+   "object": "Brandon Johnson",
+   "value": "nearly 2-to-1",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Paul Vallas outspent Brandon Johnson nearly 2-to-1 in losing mayoral bid",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681887600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Paul Vallas",
+    "Brandon Johnson"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3a8a2b2884",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_637f4b25ee"
+   }
+  },
+  {
+   "claim_id": "85ac70ce4b27dfba:c1",
+   "source_id": "85ac70ce4b27dfba",
+   "subject": "Paul Vallas",
+   "predicate": "lost",
+   "object": "mayoral bid",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Paul Vallas outspent Brandon Johnson nearly 2-to-1 in losing mayoral bid",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681887600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Paul Vallas"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3a8a2b2884",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_637f4b25ee"
+   }
+  },
+  {
+   "claim_id": "4c70eb261f3f1463:c0",
+   "source_id": "4c70eb261f3f1463",
+   "subject": "Siphosethu Vumisa",
+   "predicate": "is on giving a stranger hope",
+   "object": "to live, to love",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Siphosethu Vumisa on giving a stranger hope \u2018to live, to love\u2019",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687849200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Siphosethu Vumisa"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e5d7632fa0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_806c203c8c"
+   }
+  },
+  {
+   "claim_id": "42a5d34834137724:c0",
+   "source_id": "42a5d34834137724",
+   "subject": "Half a million people",
+   "predicate": "registered as",
+   "object": "potential organ donors in Qatar",
+   "value": "500000",
+   "units": "people",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Half a million people registered as potential organ donors in Qatar",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679814000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Qatar"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a0a06fca16",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_806c203c8c"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Banking",
+   "normalized": "banking",
+   "candidates": [
+    {
+     "entity_id": "ent_2ccea9f2a6",
+     "canonical": "banking",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Banking"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Drum",
+   "normalized": "drum",
+   "candidates": [
+    {
+     "entity_id": "ent_1804bfc99d",
+     "canonical": "drum",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "The Drum"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "RWJ University Hospital",
+   "normalized": "rwj university hospital",
+   "candidates": [
+    {
+     "entity_id": "ent_5c66fa0dcc",
+     "canonical": "rwj university hospital",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "RWJ University Hospital"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "New Jersey Business Magazine",
+   "normalized": "new jersey business magazine",
+   "candidates": [
+    {
+     "entity_id": "ent_80679e56a8",
+     "canonical": "new jersey business magazine",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "New Jersey Business Magazine"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Paul Vallas",
+   "normalized": "paul vallas",
+   "candidates": [
+    {
+     "entity_id": "ent_eb95624bc8",
+     "canonical": "paul vallas",
+     "support": 0.7222,
+     "evidence_mentions": [
+      "Paul Vallas",
+      "Paul Vallas"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Brandon Johnson",
+   "normalized": "brandon johnson",
+   "candidates": [
+    {
+     "entity_id": "ent_6cf6560baa",
+     "canonical": "brandon johnson",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Brandon Johnson"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Paul Vallas",
+   "normalized": "paul vallas",
+   "candidates": [
+    {
+     "entity_id": "ent_eb95624bc8",
+     "canonical": "paul vallas",
+     "support": 0.7222,
+     "evidence_mentions": [
+      "Paul Vallas",
+      "Paul Vallas"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Siphosethu Vumisa",
+   "normalized": "siphosethu vumisa",
+   "candidates": [
+    {
+     "entity_id": "ent_5d3ab03c9e",
+     "canonical": "siphosethu vumisa",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Siphosethu Vumisa"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Qatar",
+   "normalized": "qatar",
+   "candidates": [
+    {
+     "entity_id": "ent_133f5f5675",
+     "canonical": "qatar",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Qatar"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "8c6e792bbb66b6ec": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1681714800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681714800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "85ac70ce4b27dfba": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1681887600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681887600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "634aa17d4f70561b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677744000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677744000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4c70eb261f3f1463": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687849200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687849200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "42a5d34834137724": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1679814000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679814000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_6ad8385c41",
+   "member_ids": [
+    "8c6e792bbb66b6ec"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Drum",
+   "primary_source": "The Drum",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3a8a2b2884",
+   "member_ids": [
+    "85ac70ce4b27dfba"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Chicago Tribune",
+   "primary_source": "Chicago Tribune",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a73c2fcd46",
+   "member_ids": [
+    "634aa17d4f70561b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "New Jersey Business Magazine",
+   "primary_source": "New Jersey Business Magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e5d7632fa0",
+   "member_ids": [
+    "4c70eb261f3f1463"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "news.uct.ac.za",
+   "primary_source": "news.uct.ac.za",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a0a06fca16",
+   "member_ids": [
+    "42a5d34834137724"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Peninsula Qatar",
+   "primary_source": "The Peninsula Qatar",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "8c6e792bbb66b6ec:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681714800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8c6e792bbb66b6ec:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681714800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "634aa17d4f70561b:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677744000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "634aa17d4f70561b:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677744000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "85ac70ce4b27dfba:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681887600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "85ac70ce4b27dfba:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681887600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4c70eb261f3f1463:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687849200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "42a5d34834137724:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679814000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "8c6e792bbb66b6ec:c0",
+  "8c6e792bbb66b6ec:c1",
+  "634aa17d4f70561b:c0",
+  "634aa17d4f70561b:c1",
+  "85ac70ce4b27dfba:c0",
+  "85ac70ce4b27dfba:c1",
+  "4c70eb261f3f1463:c0",
+  "42a5d34834137724:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_35920628a2": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_637f4b25ee": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_806c203c8c": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_cb680104e1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_b5e5a3d5f7": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_89e128e890": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_553f4a0b48": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c47807f8d0": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_35920628a2",
+  "req_cb680104e1",
+  "req_b5e5a3d5f7",
+  "req_89e128e890",
+  "req_553f4a0b48",
+  "req_c47807f8d0"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 5,
+  "n_contradictions": 0,
+  "n_documents": 5
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 12.491,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "6b66d17acc272288",
+ "bundle_hash": "6b66d17acc272288",
+ "_persisted_at": "2026-07-13T02:18:04Z"
+}

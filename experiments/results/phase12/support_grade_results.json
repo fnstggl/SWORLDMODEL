@@ -1,0 +1,94 @@
+{
+  "manifest_hash": "1b0e1aa1740d0fdc",
+  "model": {
+    "weights": [
+      0.258355,
+      -0.103242,
+      0.082194,
+      -0.107484,
+      0.004354
+    ],
+    "thresholds": [
+      0.1863,
+      0.2216,
+      0.2665
+    ],
+    "provenance": {
+      "version": "phase12-1.0",
+      "n_fit": 107,
+      "ridge": 0.01,
+      "fit_manifest_hash": "1b0e1aa1740d0fdc",
+      "features": [
+        "bias",
+        "n_eff/12",
+        "struct_entropy",
+        "horizon/365",
+        "ev_quality"
+      ]
+    }
+  },
+  "reference_class_error_by_grade_fit": {
+    "transfer_supported": {
+      "n": 26,
+      "mean_sq_error": 0.2013
+    },
+    "exploratory": {
+      "n": 28,
+      "mean_sq_error": 0.2702
+    },
+    "highly_speculative": {
+      "n": 26,
+      "mean_sq_error": 0.2532
+    },
+    "empirically_supported": {
+      "n": 27,
+      "mean_sq_error": 0.159
+    }
+  },
+  "grade_distribution_all": {
+    "empirically_supported": 39,
+    "transfer_supported": 37,
+    "exploratory": 35,
+    "highly_speculative": 37
+  },
+  "test_metrics_by_grade": {
+    "empirically_supported": {
+      "n": 12,
+      "brier": 0.197,
+      "log_loss": 0.5788,
+      "ece": 0.119
+    },
+    "transfer_supported": {
+      "n": 11,
+      "brier": 0.234,
+      "log_loss": 0.6557,
+      "ece": 0.1932
+    },
+    "exploratory": {
+      "n": 7,
+      "brier": 0.1855,
+      "log_loss": 0.5498,
+      "ece": 0.3106
+    },
+    "highly_speculative": {
+      "n": 11,
+      "brier": 0.3305,
+      "log_loss": 0.8624,
+      "ece": 0.5656
+    }
+  },
+  "grades_with_enough_test_n": [
+    "empirically_supported",
+    "transfer_supported",
+    "exploratory",
+    "highly_speculative"
+  ],
+  "reliability_ordering_monotonic_on_test": false,
+  "gate_support_grade": {
+    "grades_generated_without_outcome": true,
+    "reference_class_available": true,
+    "ordering_monotonic_or_preserved_failure": false,
+    "speculative_still_scored": true
+  },
+  "honest_note": "Ordering NOT confirmed monotonic on test (small per-grade n or genuine non-separation) \u2014 failure preserved; support grading is NOT claimed empirically validated."
+}

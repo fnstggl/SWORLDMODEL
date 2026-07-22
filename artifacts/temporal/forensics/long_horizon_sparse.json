@@ -1,0 +1,498 @@
+{
+ "case_id": "long_horizon_sparse",
+ "input": {
+  "question": "Will the two research consortia merge their annual conferences by next May?",
+  "as_of": "2026-07-06",
+  "horizon": "2027-05-01",
+  "intervention": null,
+  "user_context": {
+   "note": "nothing is scheduled between the initial exploratory email and the autumn steering meetings; most months should contain no decisions at all"
+  }
+ },
+ "simulation_status": "completed_with_degradation",
+ "support_grade": "exploratory",
+ "distribution": {
+  "merged": 0.0,
+  "not_merged": 1.0
+ },
+ "generated_causal_world": {
+  "plan_hash": "aadc2583dcc8",
+  "manifest": {
+   "phase1_compiler": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "always required",
+    "version": "compiler",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase2_evidence": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "as_of supplied",
+    "version": "phase2-1.0",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase3_posterior": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "evidence bundle present",
+    "version": "phase3",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase4_actor_policy": {
+    "available": true,
+    "selected": true,
+    "executed": false,
+    "omitted": true,
+    "reason": "mechanism selected but produced no StateDelta (event never consumed)",
+    "version": "phase4",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": true,
+     "why": "causal signal ['causal_dependencies.strategic_actor_decisions'] + declared strategic actors"
+    },
+    "status": "blocked_no_mechanism"
+   },
+   "phase6_registry": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "social causal mechanism required (dependency signal)",
+    "version": "",
+    "n_events": 0,
+    "n_state_deltas": 4,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": true,
+     "why": "social causal mechanism required (dependency signal)"
+    },
+    "status": "causally_active"
+   },
+   "phase7_nonlinear": {
+    "available": true,
+    "selected": false,
+    "executed": false,
+    "omitted": true,
+    "reason": "no nonlinear causal structure named",
+    "version": "phase7",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": true,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": false,
+     "why": "no nonlinear causal structure named"
+    },
+    "status": "no_op_causally_irrelevant"
+   },
+   "phase8_persistence": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "default-on persistence-aware rollout",
+    "version": "phase8-1.0",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase9_populations": {
+    "available": true,
+    "selected": false,
+    "executed": false,
+    "omitted": true,
+    "reason": "populations (constructible) declared but no causal process of this kind \u2014 context only",
+    "version": "phase9-pop",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": true,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": false,
+     "why": "populations (constructible) declared but no causal process of this kind \u2014 context only"
+    },
+    "status": "no_op_causally_irrelevant"
+   },
+   "phase9_networks": {
+    "available": true,
+    "selected": false,
+    "executed": false,
+    "omitted": true,
+    "reason": "relations (or inferable entity/population substrate) declared but no causal process of this kind \u2014 context only",
+    "version": "",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": true,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": false,
+     "why": "relations (or inferable entity/population substrate) declared but no causal process of this kind \u2014 context only"
+    },
+    "status": "no_op_causally_irrelevant"
+   },
+   "phase10_institutions": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "causal signal ['causal_dependencies.institutional_decision_process'] + declared institutions",
+    "version": "phase10",
+    "n_events": 0,
+    "n_state_deltas": 2,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "normalization": {
+     "executable_rules_before": 1,
+     "executable_rules_after": 1,
+     "institutions": 1,
+     "rules_total": 1,
+     "already_executable": 1,
+     "normalized": 0,
+     "unmapped_to_procedure": 0
+    },
+    "relevance": {
+     "required": true,
+     "why": "causal signal ['causal_dependencies.institutional_decision_process'] + declared institutions"
+    },
+    "status": "causally_active"
+   },
+   "phase11_recompilation": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "observations available",
+    "version": "phase11",
+    "n_events": 12,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   }
+  },
+  "fidelity": {
+   "entities_added": 0,
+   "relations_added": 0,
+   "institutions_grounded": 0
+  },
+  "scheduled_reality": {
+   "n_facts_extracted": 0,
+   "n_scheduled_in_window": 0,
+   "n_outcome_entailing": 0,
+   "facts": []
+  },
+  "event_time": {
+   "contract": "binary_first_passage",
+   "options": [
+    "merged",
+    "not_merged"
+   ],
+   "event_polarity": "occurrence_resolves_yes",
+   "polarity_source": "criterion_parser",
+   "deadline_ts": 1809129600.0,
+   "n_absorbing_fact_events": 0,
+   "fact_floor": 0.0,
+   "n_opposite_direction_facts": 0,
+   "absorbing_institutions": [
+    "helios_consortium_offer_rule"
+   ],
+   "n_residual_processes": 0,
+   "scheduling": "continuous_first_passage",
+   "residual_skipped_reason": "institutional decision is the resolution path",
+   "consumed_state": [
+    {
+     "var": "mechanism_outcome:fallback:strategic_actor_decisions",
+     "weight": 0.1
+    },
+    {
+     "var": "mechanism_outcome:fallback:institutional_decision_process",
+     "weight": 0.1
+    },
+    {
+     "var": "actor_action_share",
+     "weight": 0.15
+    }
+   ],
+   "endogenous_channels": [],
+   "family": "generic",
+   "hazard_curve_source": "fitted_family_survival(n=319)",
+   "fallback_rate_provenance": "fitted_family_prior(n=4)",
+   "posterior_calibrated": true,
+   "n_resolver_events_removed": 1
+  }
+ },
+ "temporal_model_report": {
+  "temporal_model_hash": "545f57cda0515318",
+  "n_channels": 2,
+  "n_actor_profiles": 0,
+  "n_institutional_processes": 1,
+  "n_continuous_processes": 0,
+  "n_deadline_events": 3,
+  "n_recurrence_events": 0,
+  "n_recurrences_accepted": 0,
+  "n_critic_findings": 6,
+  "n_llm_calls": 4,
+  "degraded": null,
+  "unresolved": [
+   "consortium_B's board decision process",
+   "conference planning committee involvement timeline",
+   "funder approval requirements",
+   "deadlines[0].timing: demoted by temporal_critic_B \u2014 The deadline 'already_known_scheduled_fact' is given as an exact timestamp (1809129598.0) with no evidence for that precision."
+  ]
+ },
+ "temporal_runtime": {
+  "event_counts": {
+   "external_shock": 2,
+   "decision_opportunity": 2,
+   "observe_evidence": 16,
+   "structural_process_prior": 4,
+   "actor_action_aggregation": 2,
+   "institutional_decision": 2,
+   "deadline": 6
+  },
+  "actor_invocations": {},
+  "n_decision_triggers": 0,
+  "decision_triggers": [],
+  "delivery_to_attention_delays_s": null,
+  "attention_to_decision_delays_s": null,
+  "decision_to_action_delays_s": null,
+  "action_to_completion_delays_s": null,
+  "same_time_batches": 14,
+  "max_batch_size": 8,
+  "max_microsteps": 1,
+  "simultaneity_conflicts": [],
+  "n_simultaneity_conflicts": 0,
+  "events_canceled": 0,
+  "events_rescheduled": 0,
+  "pending_at_horizon": [],
+  "temporally_truncated": false,
+  "truncation": null,
+  "safety_limits": {
+   "safety_max_events": 2000
+  },
+  "unresolved_timing": [],
+  "interval_advances": 8,
+  "attention_batch_sizes": [],
+  "n_branches": 2,
+  "n_branches_truncated": 0,
+  "truncated_branch_share": 0.0,
+  "temporal_model_hashes": [
+   "545f57cda0515318"
+  ],
+  "temporal_model_id": "b65a43ebb687",
+  "temporal_model_hash": "545f57cda0515318",
+  "as_of": 1783296000.0,
+  "horizon_ts": 1809129600.0,
+  "timezone_assumptions": {
+   "consortium_A_leadership": "America/New_York",
+   "consortium_B_leadership": "America/New_York",
+   "consortium_A_board": "America/New_York",
+   "consortium_B_board": "America/New_York",
+   "consortium_A_membership": "America/New_York",
+   "consortium_B_membership": "America/New_York",
+   "conference_planning_committee_A": "America/New_York",
+   "conference_planning_committee_B": "America/New_York",
+   "major_funder_A": "America/New_York",
+   "major_funder_B": "America/New_York"
+  },
+  "calendar_assumptions": {
+   "us_business": {
+    "tz": "America/New_York",
+    "business_days": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "open_hour": 9.0,
+    "close_hour": 17.0,
+    "holidays": [
+     "2026-11-26",
+     "2026-12-25",
+     "2027-01-01",
+     "2027-01-18",
+     "2027-02-15",
+     "2027-05-31"
+    ],
+    "provenance": "model_knowledge"
+   }
+  },
+  "known_scheduled_facts": [],
+  "generated_channels": [
+   "board_meeting_formal",
+   "email_leadership"
+  ],
+  "generated_actor_profiles": [],
+  "institutional_stage_processes": [
+   "conference_merger_decision"
+  ],
+  "continuous_processes": [],
+  "temporal_latent_hypotheses": [],
+  "temporal_uncertainties": [
+   {
+    "about": "exact timing of exploratory email",
+    "why_unknown": "no evidence of date; user context says nothing scheduled until autumn steering meetings",
+    "impact": "cannot determine if decision chain can complete by May 2027"
+   },
+   {
+    "about": "dates of autumn steering meetings",
+    "why_unknown": "not provided in evidence or user context",
+    "impact": "critical path unknown"
+   },
+   {
+    "about": "consortium_B's internal process timing",
+    "why_unknown": "no evidence or user context for consortium_B's decision stages",
+    "impact": "cannot assess parallel track"
+   }
+  ],
+  "unresolved_timing_mechanisms": [
+   "consortium_B's board decision process",
+   "conference planning committee involvement timeline",
+   "funder approval requirements",
+   "deadlines[0].timing: demoted by temporal_critic_B \u2014 The deadline 'already_known_scheduled_fact' is given as an exact timestamp (1809129598.0) with no evidence for that precision."
+  ],
+  "timing_support_classification": "scenario_generated_unvalidated",
+  "temporal_compilation_llm_calls": 4,
+  "critic_findings": [
+   {
+    "critic": "temporal_critic_B",
+    "class": "invented_precision",
+    "where": "deadlines[0].timing.kind",
+    "problem": "The deadline 'already_known_scheduled_fact' is given as an exact timestamp (1809129598.0) with no evidence for that precision.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_deadline",
+    "where": "institutional_processes[0].stages[0].deadline",
+    "problem": "The exploratory discussion stage has no deadline, but the scenario requires a decision by May 2027, so a binding deadline is missing.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_deadline",
+    "where": "institutional_processes[0].stages[2].deadline",
+    "problem": "The formal vote stage has no deadline, but the overall decision must be made before the horizon.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_calendar_effect",
+    "where": "institutional_processes[0].stages[0].duration",
+    "problem": "The exploratory discussion duration is unresolved, but it should account for business-day effects since it uses the us_business calendar.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_calendar_effect",
+    "where": "institutional_processes[0].stages[2].duration",
+    "problem": "The formal vote duration is unresolved but should reflect that votes occur only on business days per the us_business calendar.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_calendar_effect",
+    "where": "channels.email_leadership.modifiers",
+    "problem": "The email channel has a weekend delay modifier but does not account for US business holidays listed in the calendar.",
+    "applied": false
+   }
+  ],
+  "degraded": null
+ },
+ "individual_temporal": null,
+ "actor_policy_report": {
+  "requested_actor_policy_mode": "numeric_policy",
+  "actual_actor_policy_mode": "numeric_policy",
+  "reason": "no production_actor_policy operator bound",
+  "actors_routed_qualitatively": [],
+  "actors_routed_numerically": [],
+  "fallbacks": 0,
+  "fallback_reasons": []
+ },
+ "consequence_report": {
+  "requested_mode": "generated_actor_mediated_world",
+  "actual_mode": "generated_actor_mediated_world",
+  "actions_compiled": 0,
+  "direct_operations_applied": 0,
+  "events_scheduled": 0,
+  "processes_started": 0,
+  "objects_created": 0,
+  "facts_changed": 0,
+  "institutional_submissions": 0,
+  "actor_decisions_opened": 0,
+  "population_responses_opened": 0,
+  "information_deliveries": 0,
+  "unsupported_semantics": 0,
+  "fallbacks": 0,
+  "fallback_reasons": [],
+  "legacy_scalar_writes": 0,
+  "scenario_schema_id": "",
+  "scenario_schema_version": "",
+  "scenario_types_generated": 0,
+  "scenario_events_emitted": 0,
+  "schema_extensions": 0,
+  "observations_delivered": 0,
+  "actors_reconsidered": 0,
+  "actors_invoked": 0,
+  "actor_actions_executed": 0,
+  "actors_declined_to_act": 0,
+  "recursive_cascade_depth": 0,
+  "human_reactions_written_directly": 0,
+  "fixed_ontology_uses": 0,
+  "mechanistic_fallbacks": 0,
+  "numeric_fallbacks": 0,
+  "attention_events": 0,
+  "observation_bundles_delivered": 0,
+  "temporal_truncations": [],
+  "note": "no production_actor_policy runtime executed"
+ },
+ "limitations": [
+  "degraded: support grade exploratory; 3 fallback mechanism(s) used",
+  "integration failure: phase4_actor_policy blocked_no_mechanism (mechanism selected but produced no StateDelta (event never c)"
+ ],
+ "llm": {
+  "n_calls": 28,
+  "chars_in": 70976,
+  "chars_out": 55458,
+  "cost_usd": "not_reported_by_backend (deepseek-v4-flash; call/char proxy recorded)"
+ },
+ "runtime_s": 117.07,
+ "verification": {
+  "no_periodic_strategic_review": true,
+  "no_six_actor_truncation": true,
+  "no_fixed_30min_reconsideration": true,
+  "no_fixed_one_hour_broadcast": true,
+  "no_numeric_actor_fallback_on_truncation": true,
+  "same_time_batches_live": true,
+  "canonical_runtime_used": true,
+  "temporal_model_compiled": true,
+  "decision_triggers_recorded": true,
+  "all_passed": true
+ }
+}

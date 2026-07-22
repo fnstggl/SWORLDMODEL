@@ -1,0 +1,210 @@
+{
+ "_meta": {
+  "source": "committed institution registry"
+ },
+ "counts": {
+  "families": 9,
+  "families_executable": 9,
+  "templates": 5,
+  "templates_evidence_backed": 5,
+  "templates_temporally_versioned": 5,
+  "templates_execute": 5,
+  "templates_historically_replayed": 3,
+  "templates_production_eligible": 1
+ },
+ "families_by_status": {
+  "executable": 9
+ },
+ "templates_by_status": {
+  "production_eligible": 1,
+  "executable": 2,
+  "cross_institution_tested": 2
+ },
+ "families": [
+  {
+   "family_id": "legislative_process",
+   "category": "bicameral_legislature",
+   "status": "executable",
+   "executable": true,
+   "answers_processes": [
+    "place_matter_on_agenda",
+    "evaluate_quorum_and_threshold",
+    "issue_formal_decision",
+    "escalate_to_next_authority"
+   ]
+  },
+  {
+   "family_id": "hierarchical_approval",
+   "category": "hierarchical_approval",
+   "status": "executable",
+   "executable": true,
+   "answers_processes": [
+    "determine_authorized_decision_maker",
+    "process_required_approval_chain",
+    "issue_formal_decision"
+   ]
+  },
+  {
+   "family_id": "collective_vote_body",
+   "category": "collective_vote_body",
+   "status": "executable",
+   "executable": true,
+   "answers_processes": [
+    "evaluate_quorum_and_threshold",
+    "issue_formal_decision"
+   ]
+  },
+  {
+   "family_id": "adjudicative_court",
+   "category": "adjudicative_court",
+   "status": "executable",
+   "executable": true,
+   "answers_processes": [
+    "evaluate_matter_eligibility",
+    "issue_formal_decision",
+    "process_appeal"
+   ]
+  },
+  {
+   "family_id": "administrative_agency",
+   "category": "administrative_agency",
+   "status": "executable",
+   "executable": true,
+   "answers_processes": [
+    "evaluate_matter_eligibility",
+    "allocate_review_capacity",
+    "issue_formal_decision",
+    "process_appeal"
+   ]
+  },
+  {
+   "family_id": "queue_capacity_service",
+   "category": "queue_capacity_service",
+   "status": "executable",
+   "executable": true,
+   "answers_processes": [
+    "allocate_review_capacity",
+    "enforce_deadline"
+   ]
+  },
+  {
+   "family_id": "corporate_board",
+   "category": "corporate_board",
+   "status": "executable",
+   "executable": true,
+   "answers_processes": [
+    "determine_authorized_decision_maker",
+    "evaluate_quorum_and_threshold",
+    "issue_formal_decision"
+   ]
+  },
+  {
+   "family_id": "moderation_appeals",
+   "category": "moderation_appeals",
+   "status": "executable",
+   "executable": true,
+   "answers_processes": [
+    "evaluate_matter_eligibility",
+    "issue_formal_decision",
+    "process_appeal"
+   ]
+  },
+  {
+   "family_id": "direct_democracy",
+   "category": "direct_democracy",
+   "status": "executable",
+   "executable": true,
+   "answers_processes": [
+    "evaluate_quorum_and_threshold",
+    "issue_formal_decision"
+   ]
+  }
+ ],
+ "templates": [
+  {
+   "template_id": "us_congress_legislative",
+   "family": "legislative_process",
+   "jurisdiction": "US-federal",
+   "valid_from": "1789-03-04",
+   "status": "production_eligible",
+   "planes": {
+    "evidence_backed": true,
+    "temporally_versioned": true,
+    "software_implemented": true,
+    "executes": true,
+    "historically_replayed": true,
+    "production_eligible": true
+   },
+   "n_evidence": 2,
+   "n_rules": 4
+  },
+  {
+   "template_id": "delaware_board_default",
+   "family": "corporate_board",
+   "jurisdiction": "US-DE",
+   "valid_from": "1969-07-03",
+   "status": "executable",
+   "planes": {
+    "evidence_backed": true,
+    "temporally_versioned": true,
+    "software_implemented": true,
+    "executes": true,
+    "historically_replayed": false,
+    "production_eligible": false
+   },
+   "n_evidence": 1,
+   "n_rules": 2
+  },
+  {
+   "template_id": "scotus_certiorari",
+   "family": "collective_vote_body",
+   "jurisdiction": "US-federal",
+   "valid_from": "1925-01-01",
+   "status": "executable",
+   "planes": {
+    "evidence_backed": true,
+    "temporally_versioned": true,
+    "software_implemented": true,
+    "executes": true,
+    "historically_replayed": false,
+    "production_eligible": false
+   },
+   "n_evidence": 1,
+   "n_rules": 1
+  },
+  {
+   "template_id": "scotus_merits",
+   "family": "adjudicative_court",
+   "jurisdiction": "US-federal",
+   "valid_from": "1789-03-04",
+   "status": "cross_institution_tested",
+   "planes": {
+    "evidence_backed": true,
+    "temporally_versioned": true,
+    "software_implemented": true,
+    "executes": true,
+    "historically_replayed": true,
+    "production_eligible": false
+   },
+   "n_evidence": 1,
+   "n_rules": 3
+  },
+  {
+   "template_id": "swiss_federal_referendum",
+   "family": "direct_democracy",
+   "jurisdiction": "CH-federal",
+   "valid_from": "1848-09-12",
+   "status": "cross_institution_tested",
+   "planes": {
+    "evidence_backed": true,
+    "temporally_versioned": true,
+    "software_implemented": true,
+    "executes": true,
+    "historically_replayed": true,
+    "production_eligible": false
+   },
+   "n_evidence": 1,
+   "n_rules": 2
+  }
+ ]
+}

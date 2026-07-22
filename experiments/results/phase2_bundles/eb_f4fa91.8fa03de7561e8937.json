@@ -1,0 +1,1406 @@
+{
+ "bundle_id": "eb_f4fa91",
+ "question": "Will the bond yield invert relative to the shorter maturity this week?",
+ "as_of": 1690848000.0,
+ "compiler_plan_hash": "1ce48cdc6f3b",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_a3b5d68600",
+   "claim_or_quantity": "Observe the daily closing yields for the specified bond pair (e.g., 10-year vs 2-year Treasury) from 2023-08-01 to 2023-08-08; if the longer-term yield is strictly less than the shorter-term yield on any trading day, outcome is 'invert'; otherwise 'not_invert'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "us_treasury",
+    "federal_reserve",
+    "primary_dealers"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ff776f4c36",
+   "claim_or_quantity": "value/context of federal_reserve.future_policy_expectations",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "federal_reserve.future_policy_expectations",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_cba1572192",
+   "claim_or_quantity": "evidence discriminating structural hypothesis flight_to_safety",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:flight_to_safety",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ee4a900c46",
+   "claim_or_quantity": "evidence discriminating structural hypothesis tight_monetary_policy_impact",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:tight_monetary_policy_impact",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_31a56751dc",
+   "claim_or_quantity": "value/context of bond_market_participants.segments.institutional_investors.duration_preference",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "bond_market_participants.segments.institutional_investors.duration_preference",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_d42e5a1a3f",
+   "claim_or_quantity": "decision rules / process of federal_reserve",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "federal_reserve",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_bf5daf4c82",
+   "claim_or_quantity": "decision rules / process of us_treasury",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "us_treasury",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_56effe3256",
+   "claim_or_quantity": "value/context of bond_market_participants.segments.foreign_official_institutions.reserve_management_goals",
+   "why_relevant": "high-sensitivity latent (0.60) driving the outcome distribution",
+   "affected_component": "bond_market_participants.segments.foreign_official_institutions.reserve_management_goals",
+   "expected_sensitivity": 0.6,
+   "expected_voi": 0.6,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_a3b5d68600",
+   "terms": "bond yield invert relative shorter maturity us treasury federal reserve primary dealers",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_ff776f4c36",
+   "terms": "federal reserve future policy expectations",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_cba1572192",
+   "terms": "structural hypothesis flight safety evidence discriminating",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_a3b5d68600",
+   "logical_query": "bond yield invert relative shorter maturity us treasury federal reserve primary dealers after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=bond+yield+invert+relative+shorter+maturity+us+treasury+federal+reserve+primary+dealers+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783909115.1723108,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:18:35 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0ZBiSO44w5AKxJVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcv6devMQmsOHYxtdMSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgC44jlF\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "410840b030aad4d510ea525b0389f3fd646cb73a69a1d9f2752eadf1478697ee",
+   "n_bytes": 1339,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.485
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ff776f4c36",
+   "logical_query": "federal reserve future policy expectations after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=federal+reserve+future+policy+expectations+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783909115.6584759,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:18:36 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmLw0pBiSO44w5ACxBVA3AjEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YR4OP5MvXiJTeDAyuVzGJWUk_IL41PyS4qLC3ISizOKU4vKUovijQyMzAzMDcz0DEziCwwAiZU6Vw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "2eb6db3635e30e218d7b43045c92c9a11eea9c4283bc06cb512c25b0c3d1bf0f",
+   "n_bytes": 52020,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.611
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_cba1572192",
+   "logical_query": "structural hypothesis flight safety evidence discriminating after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=structural+hypothesis+flight+safety+evidence+discriminating+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783909116.2720373,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:18:36 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII1JBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcf6ZevMQmsODR0v9MSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgDGtzlt\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "5d72cd84992245aa3d5dfafa146c50350d8d1517399efff838a4471c2c06e1ba",
+   "n_bytes": 1283,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.426
+  }
+ ],
+ "raw_content_refs": [
+  "2eb6db3635e30e218d7b43045c92c9a11eea9c4283bc06cb512c25b0c3d1bf0f"
+ ],
+ "documents": [
+  {
+   "id": "c011cf72656d1204",
+   "source": "Federal Reserve Bank of St. Louis",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPUk1mRVQ5TGkyOF9oZUZJUXlFMEkySzN5R29taVdZMkoxZVRJYXNfTXZsWVlwNzdaZ3lDYWh2enQxWVBqVFBNWnRua0c5LWFlaUxrbVJib09JSGZ4MGtDbm5uTlZmVURYSDB0N3BiUjU1ZjlkelZHS2tmX3FyaE9KWXdQZw?oc=5",
+   "title": "Where Might Inflation Head? - Federal Reserve Bank of St. Louis",
+   "text": "Where Might Inflation Head? - Federal Reserve Bank of St. Louis. Where Might Inflation Head? Federal Reserve Bank of St. Louis",
+   "content_hash": "b05e78834a3fdf45",
+   "raw_feed_hash": "2eb6db3635e30e218d7b43045c92c9a11eea9c4283bc06cb512c25b0c3d1bf0f",
+   "published_at": 1683615600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ff776f4c36",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3591de26b51ddbc9",
+   "source": "Council on Foreign Relations",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOTE9TWmV3cHYtYUpxb3dQZGgyZ3hnN2l5NU5EVTFydVhzdm5JRjJCUnFFb2hpeUhYd0g3UVN1SXk0LWRxTlVCRGlXdDg4ckN1YjJvcUFLWnlUblZNVEdaZGM3YTNYU1BoOUlibUtnWV9hSXdLbDNtRVpjc0wzUEhiSDhMZW54VHp1SUVlMjdSX1NBUkFBSnVVM2RQUjBEdlk?oc=5",
+   "title": "The History and Future of the Federal Reserve\u2019s 2 Percent Target Rate of Inflation - Council on Foreign Relations",
+   "text": "The History and Future of the Federal Reserve\u2019s 2 Percent Target Rate of Inflation - Council on Foreign Relations. The History and Future of the Federal Reserve\u2019s 2 Percent Target Rate of Inflation Council on Foreign Relations",
+   "content_hash": "d5a802d592b2dd7d",
+   "raw_feed_hash": "2eb6db3635e30e218d7b43045c92c9a11eea9c4283bc06cb512c25b0c3d1bf0f",
+   "published_at": 1686812400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ff776f4c36",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4a8bf616b93b10a7",
+   "source": "Federal Reserve Bank of Kansas City",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxQVlJhZ2QwU1gtVGlILTdUTGtweXIyaFVodHBxTzNUNjhWS1J2bWI1T3ByZjdLSmRlMU5wRm9lbHVHeUZFTDVac1k0UlRWcVZ3Q1ZSVDBLUVlBUjRfMXFHQ0J2Q3A0eGhFcndjSVdjS0x4cTZhdjV5ZlFVNWk3Nl92cEhkbzhraVF3VzU3WEVtSDdGenFEcXBIU0R1WFdYV0UtbnN0b0dRRk9vSGgzLVdfaWc1Z1lkeXA0cE1UMVlvckgybHIzT1JWWEs0MzVzQ2FMVGJGVGZ0Y29IbE96Qmx0SWQwVkR0dXM?oc=5",
+   "title": "To Reach the Fed\u2019s Inflation Target, Interest Rates May Have to Remain Restrictive for Some Time - Federal Reserve Bank of Kansas City",
+   "text": "To Reach the Fed\u2019s Inflation Target, Interest Rates May Have to Remain Restrictive for Some Time - Federal Reserve Bank of Kansas City. To Reach the Fed\u2019s Inflation Target, Interest Rates May Have to Remain Restrictive for Some Time Federal Reserve Bank of Kansas City",
+   "content_hash": "670cefcc6431f7ab",
+   "raw_feed_hash": "2eb6db3635e30e218d7b43045c92c9a11eea9c4283bc06cb512c25b0c3d1bf0f",
+   "published_at": 1688022000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ff776f4c36",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "02d2bbdf7a868556",
+   "source": "TD Economics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9FWHpXMVpDNjlnSU1JNFNyMGV4R2RGVkRFVmRfWU0zV1ZsOHIxcVhSUVVCcDlEa1BLa0htT2J1bVhFa29aV0F4ZHF4QkZaSXFULS1xdEI0MA?oc=5",
+   "title": "A History of Fed \u2018Puts\u2019 - TD Economics",
+   "text": "A History of Fed \u2018Puts\u2019 - TD Economics. A History of Fed \u2018Puts\u2019 TD Economics",
+   "content_hash": "ede84404f7b5c1fb",
+   "raw_feed_hash": "2eb6db3635e30e218d7b43045c92c9a11eea9c4283bc06cb512c25b0c3d1bf0f",
+   "published_at": 1679382000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_ff776f4c36",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "edf9a63cf5857976",
+   "source": "CNBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNYmdOZVhYM1VTbUNuTHE2VDNVOE16X2diNEw0WlA4LUhhZVNQR1hxRWFkWkY4N09tbzl4WGh4M2UwZlJaWFJVY0tLVzhObVJzWnMzOFdvZFdnVDljQkN4dVBLY2xud2NqdlpIQnVpendpLTI0X0tWYTBobkJWTjMtdWNyTFNVUzMxTkswNFNjNUVLTVBVWld2WVVWdlJGZUgxNGln0gGoAUFVX3lxTE5aLWpoQlNSV05rMkM0TFJ6em1mdUE0MFM1ZGZHZzA5MlllXzNjemdMTXlZOEszYnMtZWxBNHpoTm42cS1JRjU3Mnd6eE14T3BoWWprNDhzYzB4aHNTdjlzUEVtcVNsX1NwWk4tdXF0czNkRk1QN3NnN2tLZi1zVmd2U0hsVFZ4VmhjOTlpT1o3YVJhZk52VlU5MTRyQjdVR2NtbkszWkNjeA?oc=5",
+   "title": "Here's everything the Federal Reserve is expected to do Wednesday - CNBC",
+   "text": "Here's everything the Federal Reserve is expected to do Wednesday - CNBC. Here's everything the Federal Reserve is expected to do Wednesday CNBC",
+   "content_hash": "62bcba60a09a1eb9",
+   "raw_feed_hash": "2eb6db3635e30e218d7b43045c92c9a11eea9c4283bc06cb512c25b0c3d1bf0f",
+   "published_at": 1686726000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_ff776f4c36",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0fe9fe010e2a8b2e",
+   "source": "Econofact",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPOUtGYWNqTVY5d2JtSE1GSVdVZ1hhUXdTZVVFenJPeFlYT1BEN0JXSC1SOS15NC1oNndUaHpHU205UzBaMnphQ2xnQXota0d2ZzNHUGF4R19abkFkWmJ1TlV5T1NFT0k3bGttVkp1YzUwQ2VRbTFzVTBjdFliLVM1NGdn?oc=5",
+   "title": "Rising U.S. Interest Rates and Emerging Market Distress - Econofact",
+   "text": "Rising U.S. Interest Rates and Emerging Market Distress - Econofact. Rising U.S. Interest Rates and Emerging Market Distress Econofact",
+   "content_hash": "851cb18d3d0eb8f8",
+   "raw_feed_hash": "2eb6db3635e30e218d7b43045c92c9a11eea9c4283bc06cb512c25b0c3d1bf0f",
+   "published_at": 1689663600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_ff776f4c36",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f138ef8e01acd475",
+   "source": "The New York Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE0yYV9JSW9iNnFNU1NRaXBGcXFCbVBCSXRIcUw4dFJUczJnUi04V0RITzVlRk9GTW91cllpOGM2UkZKUTc4WC1PQVU2eVYteGVRN1dTbFI2NWhDc1FxUTZ5LV9kbVc2cmR2TmVKOUtBWjZZS1BWRmc?oc=5",
+   "title": "Federal Reserve Meeting: Fed Leaves Rates Unchanged, for Now (Published 2023) - The New York Times",
+   "text": "Federal Reserve Meeting: Fed Leaves Rates Unchanged, for Now (Published 2023) - The New York Times. Federal Reserve Meeting: Fed Leaves Rates Unchanged, for Now (Published 2023) The New York Times",
+   "content_hash": "95c6c7633fe22f24",
+   "raw_feed_hash": "2eb6db3635e30e218d7b43045c92c9a11eea9c4283bc06cb512c25b0c3d1bf0f",
+   "published_at": 1686726000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_ff776f4c36",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6b07ac5a4758b267",
+   "source": "Federal Reserve Bank of Minneapolis",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPdUR0M0hmWG04VEV4SkxmX2Vyc2U3OTh3SnNucDVUWWtFNm5Na2pLRVg1enl0SnZkMXFTdFpkV241aXhocm5UcHFHd1g0QU5yenBzS2xUY1owYXlSTE5aVTB4cGFFQlFzM1BHUjNOTXQ4aUJlZzc1Z2cybXNiUE5IckNSMmx1TTZ6QVpsVGdtbm1iLURGLTdEa2hfQ1VUSjJxZ1kwNFRRd3hlaF9i?oc=5",
+   "title": "Remembering Robert E. Lucas Jr.: Architect of modern macroeconomics - Federal Reserve Bank of Minneapolis",
+   "text": "Remembering Robert E. Lucas Jr.: Architect of modern macroeconomics - Federal Reserve Bank of Minneapolis. Remembering Robert E. Lucas Jr.: Architect of modern macroeconomics Federal Reserve Bank of Minneapolis",
+   "content_hash": "3c1049698d7e773c",
+   "raw_feed_hash": "2eb6db3635e30e218d7b43045c92c9a11eea9c4283bc06cb512c25b0c3d1bf0f",
+   "published_at": 1684652400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_ff776f4c36",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "c011cf72656d1204:c0",
+   "source_id": "c011cf72656d1204",
+   "subject": "Inflation",
+   "predicate": "is the topic of",
+   "object": "a question",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Where Might Inflation Head?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683615600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Inflation"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9338328416",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff776f4c36"
+   }
+  },
+  {
+   "claim_id": "c011cf72656d1204:c1",
+   "source_id": "c011cf72656d1204",
+   "subject": "Federal Reserve Bank of St. Louis",
+   "predicate": "is the publisher of",
+   "object": "the question",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Federal Reserve Bank of St. Louis",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683615600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Federal Reserve Bank of St. Louis"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9338328416",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff776f4c36"
+   }
+  },
+  {
+   "claim_id": "3591de26b51ddbc9:c0",
+   "source_id": "3591de26b51ddbc9",
+   "subject": "Federal Reserve",
+   "predicate": "has",
+   "object": "2 percent target rate of inflation",
+   "value": "2",
+   "units": "percent",
+   "qualifiers": "target rate of inflation",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The History and Future of the Federal Reserve\u2019s 2 Percent Target Rate of Inflation",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686812400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Federal Reserve"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_29828760e1",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff776f4c36"
+   }
+  },
+  {
+   "claim_id": "4a8bf616b93b10a7:c0",
+   "source_id": "4a8bf616b93b10a7",
+   "subject": "Interest rates",
+   "predicate": "may have to remain",
+   "object": "restrictive for some time",
+   "value": "",
+   "units": "",
+   "qualifiers": "to reach the Fed's inflation target",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "To Reach the Fed\u2019s Inflation Target, Interest Rates May Have to Remain Restrictive for Some Time",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688022000.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Federal Reserve Bank of Kansas City"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_eca8a46b73",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff776f4c36"
+   }
+  },
+  {
+   "claim_id": "02d2bbdf7a868556:c0",
+   "source_id": "02d2bbdf7a868556",
+   "subject": "TD Economics",
+   "predicate": "published",
+   "object": "a report titled 'A History of Fed \u2018Puts\u2019'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "A History of Fed \u2018Puts\u2019 - TD Economics",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679382000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "TD Economics"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ee8b8abbf6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff776f4c36"
+   }
+  },
+  {
+   "claim_id": "edf9a63cf5857976:c0",
+   "source_id": "edf9a63cf5857976",
+   "subject": "Federal Reserve",
+   "predicate": "is expected to do",
+   "object": "everything",
+   "value": "",
+   "units": "",
+   "qualifiers": "Wednesday",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "Here's everything the Federal Reserve is expected to do Wednesday",
+   "span_verified": true,
+   "event_time": "Wednesday",
+   "publication_time": 1686726000.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Federal Reserve"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_efc4f2c826",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff776f4c36"
+   }
+  },
+  {
+   "claim_id": "0fe9fe010e2a8b2e:c0",
+   "source_id": "0fe9fe010e2a8b2e",
+   "subject": "U.S. Interest Rates",
+   "predicate": "are rising",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Rising U.S. Interest Rates",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689663600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "U.S. Interest Rates"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ff690cabf6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff776f4c36"
+   }
+  },
+  {
+   "claim_id": "0fe9fe010e2a8b2e:c1",
+   "source_id": "0fe9fe010e2a8b2e",
+   "subject": "Emerging Market Distress",
+   "predicate": "is associated with",
+   "object": "Rising U.S. Interest Rates",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "Rising U.S. Interest Rates and Emerging Market Distress",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689663600.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Emerging Market Distress",
+    "U.S. Interest Rates"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ff690cabf6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff776f4c36"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Inflation",
+   "normalized": "inflation",
+   "candidates": [
+    {
+     "entity_id": "ent_0e45dbfb8c",
+     "canonical": "inflation",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Inflation"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Federal Reserve Bank of St. Louis",
+   "normalized": "federal reserve bank of st louis",
+   "candidates": [
+    {
+     "entity_id": "ent_b1ed1d1c31",
+     "canonical": "federal reserve bank of st louis",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Federal Reserve Bank of St. Louis"
+     ]
+    },
+    {
+     "entity_id": "ent_10d6b1e0d6",
+     "canonical": "federal reserve",
+     "support": 0.3722,
+     "evidence_mentions": [
+      "Federal Reserve",
+      "Federal Reserve"
+     ]
+    },
+    {
+     "entity_id": "ent_66abecafd8",
+     "canonical": "federal reserve bank of kansas city",
+     "support": 0.1611,
+     "evidence_mentions": [
+      "Federal Reserve Bank of Kansas City"
+     ]
+    }
+   ],
+   "resolved": false,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Federal Reserve",
+   "normalized": "federal reserve",
+   "candidates": [
+    {
+     "entity_id": "ent_10d6b1e0d6",
+     "canonical": "federal reserve",
+     "support": 0.7222,
+     "evidence_mentions": [
+      "Federal Reserve",
+      "Federal Reserve"
+     ]
+    },
+    {
+     "entity_id": "ent_b1ed1d1c31",
+     "canonical": "federal reserve bank of st louis",
+     "support": 0.2611,
+     "evidence_mentions": [
+      "Federal Reserve Bank of St. Louis"
+     ]
+    },
+    {
+     "entity_id": "ent_66abecafd8",
+     "canonical": "federal reserve bank of kansas city",
+     "support": 0.2611,
+     "evidence_mentions": [
+      "Federal Reserve Bank of Kansas City"
+     ]
+    }
+   ],
+   "resolved": false,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Federal Reserve Bank of Kansas City",
+   "normalized": "federal reserve bank of kansas city",
+   "candidates": [
+    {
+     "entity_id": "ent_66abecafd8",
+     "canonical": "federal reserve bank of kansas city",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Federal Reserve Bank of Kansas City"
+     ]
+    },
+    {
+     "entity_id": "ent_10d6b1e0d6",
+     "canonical": "federal reserve",
+     "support": 0.3722,
+     "evidence_mentions": [
+      "Federal Reserve",
+      "Federal Reserve"
+     ]
+    },
+    {
+     "entity_id": "ent_b1ed1d1c31",
+     "canonical": "federal reserve bank of st louis",
+     "support": 0.1611,
+     "evidence_mentions": [
+      "Federal Reserve Bank of St. Louis"
+     ]
+    }
+   ],
+   "resolved": false,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "TD Economics",
+   "normalized": "td economics",
+   "candidates": [
+    {
+     "entity_id": "ent_fa846113bc",
+     "canonical": "td economics",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "TD Economics"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Federal Reserve",
+   "normalized": "federal reserve",
+   "candidates": [
+    {
+     "entity_id": "ent_10d6b1e0d6",
+     "canonical": "federal reserve",
+     "support": 0.7222,
+     "evidence_mentions": [
+      "Federal Reserve",
+      "Federal Reserve"
+     ]
+    },
+    {
+     "entity_id": "ent_b1ed1d1c31",
+     "canonical": "federal reserve bank of st louis",
+     "support": 0.2611,
+     "evidence_mentions": [
+      "Federal Reserve Bank of St. Louis"
+     ]
+    },
+    {
+     "entity_id": "ent_66abecafd8",
+     "canonical": "federal reserve bank of kansas city",
+     "support": 0.2611,
+     "evidence_mentions": [
+      "Federal Reserve Bank of Kansas City"
+     ]
+    }
+   ],
+   "resolved": false,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "U.S. Interest Rates",
+   "normalized": "u s interest rates",
+   "candidates": [
+    {
+     "entity_id": "ent_f16336e559",
+     "canonical": "u s interest rates",
+     "support": 0.7222,
+     "evidence_mentions": [
+      "U.S. Interest Rates",
+      "U.S. Interest Rates"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Emerging Market Distress",
+   "normalized": "emerging market distress",
+   "candidates": [
+    {
+     "entity_id": "ent_7dcb7e0885",
+     "canonical": "emerging market distress",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Emerging Market Distress"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "U.S. Interest Rates",
+   "normalized": "u s interest rates",
+   "candidates": [
+    {
+     "entity_id": "ent_f16336e559",
+     "canonical": "u s interest rates",
+     "support": 0.7222,
+     "evidence_mentions": [
+      "U.S. Interest Rates",
+      "U.S. Interest Rates"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "c011cf72656d1204": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1683615600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683615600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3591de26b51ddbc9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1686812400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686812400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4a8bf616b93b10a7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1688022000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688022000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "02d2bbdf7a868556": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1679382000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679382000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "edf9a63cf5857976": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1686726000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686726000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0fe9fe010e2a8b2e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1689663600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689663600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f138ef8e01acd475": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1686726000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686726000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6b07ac5a4758b267": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1684652400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684652400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_9338328416",
+   "member_ids": [
+    "c011cf72656d1204"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Federal Reserve Bank of St. Louis",
+   "primary_source": "Federal Reserve Bank of St. Louis",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_29828760e1",
+   "member_ids": [
+    "3591de26b51ddbc9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Council on Foreign Relations",
+   "primary_source": "Council on Foreign Relations",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_eca8a46b73",
+   "member_ids": [
+    "4a8bf616b93b10a7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Federal Reserve Bank of Kansas City",
+   "primary_source": "Federal Reserve Bank of Kansas City",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ee8b8abbf6",
+   "member_ids": [
+    "02d2bbdf7a868556"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "TD Economics",
+   "primary_source": "TD Economics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_efc4f2c826",
+   "member_ids": [
+    "edf9a63cf5857976"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CNBC",
+   "primary_source": "CNBC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ff690cabf6",
+   "member_ids": [
+    "0fe9fe010e2a8b2e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Econofact",
+   "primary_source": "Econofact",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bbb1f1b14e",
+   "member_ids": [
+    "f138ef8e01acd475"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The New York Times",
+   "primary_source": "The New York Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_252a241f81",
+   "member_ids": [
+    "6b07ac5a4758b267"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Federal Reserve Bank of Minneapolis",
+   "primary_source": "Federal Reserve Bank of Minneapolis",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "c011cf72656d1204:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683615600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c011cf72656d1204:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683615600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3591de26b51ddbc9:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686812400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4a8bf616b93b10a7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688022000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "02d2bbdf7a868556:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679382000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "edf9a63cf5857976:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686726000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0fe9fe010e2a8b2e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689663600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0fe9fe010e2a8b2e:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689663600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "c011cf72656d1204:c0",
+  "c011cf72656d1204:c1",
+  "3591de26b51ddbc9:c0",
+  "4a8bf616b93b10a7:c0",
+  "02d2bbdf7a868556:c0",
+  "edf9a63cf5857976:c0",
+  "0fe9fe010e2a8b2e:c0",
+  "0fe9fe010e2a8b2e:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_a3b5d68600": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ff776f4c36": {
+   "status": "fulfilled",
+   "n_claims": 8,
+   "n_included": 8
+  },
+  "req_cba1572192": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ee4a900c46": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_31a56751dc": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_d42e5a1a3f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_bf5daf4c82": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_56effe3256": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_a3b5d68600",
+  "req_cba1572192",
+  "req_ee4a900c46",
+  "req_31a56751dc",
+  "req_d42e5a1a3f",
+  "req_bf5daf4c82",
+  "req_56effe3256"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 8,
+  "n_contradictions": 0,
+  "n_documents": 8
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.433,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "8fa03de7561e8937",
+ "bundle_hash": "8fa03de7561e8937",
+ "_persisted_at": "2026-07-13T02:18:51Z"
+}

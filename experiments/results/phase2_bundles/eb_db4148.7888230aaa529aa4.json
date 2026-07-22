@@ -1,0 +1,1752 @@
+{
+ "bundle_id": "eb_db4148",
+ "question": "Will the ballot referendum on the transit levy pass?",
+ "as_of": 1688169600.0,
+ "compiler_plan_hash": "cbc19e3a9b96",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_e18351f68f",
+   "claim_or_quantity": "majority_threshold",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "voter_1"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_d69c6169b5",
+   "claim_or_quantity": "value/context of electorate.undecided.preference",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "electorate.undecided.preference",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_9e33dcbcb4",
+   "claim_or_quantity": "value/context of electorate.turnout_rate",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "electorate.turnout_rate",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_1817d26c28",
+   "claim_or_quantity": "evidence discriminating structural hypothesis baseline_majority",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:baseline_majority",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a6609fbbed",
+   "claim_or_quantity": "evidence discriminating structural hypothesis turnout_drop",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:turnout_drop",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5b7e8832ad",
+   "claim_or_quantity": "value/context of campaign_spending_effect",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "campaign_spending_effect",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f38b648df4",
+   "claim_or_quantity": "decision rules / process of election_authority",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "election_authority",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_e18351f68f",
+   "terms": "ballot referendum transit levy pass voter 1",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_d69c6169b5",
+   "terms": "electorate undecided preference",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_9e33dcbcb4",
+   "terms": "electorate turnout rate",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_e18351f68f",
+   "logical_query": "ballot referendum transit levy pass voter 1 after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=ballot+referendum+transit+levy+pass+voter+1+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783906644.733881,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:37:25 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmLw1JBiOFR1hiG54wxDKhDXAXEjELfePMc6GYhLFp1nbQLiLiCeAcSGCpdY7YH4cvol1iKJK6wNQPyp6garQPUN1m_FvmwsJUD81p_NNCSQzRmIt2gGswnxcFxtuniJTeDEwpMdjErKSfmF8Sn5JcXFBTmJxRnFqUVlqUXxRgZGZgbmBmZ6BibxBQYA1vc6yg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "2a93b8ee1d43a77710843d9667e755a6cd746dbe5a6e5333fc44d4a5d47b2fd5",
+   "n_bytes": 1251,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.474
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_d69c6169b5",
+   "logical_query": "electorate undecided preference after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=electorate+undecided+preference+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783906645.209572,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:37:25 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1JBiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcV5suXmIT2PD7wz0mJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwDDljl8\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "3c9cb0070aabf879afd7b4cc3ddcf85ea835d45bc1da7762561097e1c4a92aa7",
+   "n_bytes": 8892,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 5,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.446
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_9e33dcbcb4",
+   "logical_query": "electorate turnout rate after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=electorate+turnout+rate+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783906645.6573281,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:37:26 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1ZBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc15ouXmITWNHyYiujknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCl-TjJ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a01ca9940e91fe9a7af82ae2fcdc948a19f503e0e6cb1ca89b9bbc9c06bf96a9",
+   "n_bytes": 61508,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.693
+  }
+ ],
+ "raw_content_refs": [
+  "3c9cb0070aabf879afd7b4cc3ddcf85ea835d45bc1da7762561097e1c4a92aa7",
+  "a01ca9940e91fe9a7af82ae2fcdc948a19f503e0e6cb1ca89b9bbc9c06bf96a9"
+ ],
+ "documents": [
+  {
+   "id": "5f8ab8854a2b6cd1",
+   "source": "Center For Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOejlISHEtVTVPcXlJT1pnQzlzOGNXYXdqeDVBNTNGX3VjTG9hRHMtTE9PZUZRcTlJbGpCZ2tqU0VKZjhDaGNrdVRPNkwzX2k0ZkRQc045cTFBaXQySmp6UGlYTm5yc2lBa3dROS0wREZlYnhCWFM1RjU3NkY4UTYxV19oODhLSFAxd1oxckprdEFwaDJjd0pZV3poWjZGeFVkMVFFczBXWHd4NUlhUTRkR0Z5dU1uYnlFcFNEUTJha1NIdkE?oc=5",
+   "title": "Not Biden vs. Trump Again! The Disgruntled Voters Who Could Decide the 2024 Election - Center For Politics",
+   "text": "Not Biden vs. Trump Again! The Disgruntled Voters Who Could Decide the 2024 Election - Center For Politics. Not Biden vs. Trump Again! The Disgruntled Voters Who Could Decide the 2024 Election Center For Politics",
+   "content_hash": "867fe79a7e0fad0f",
+   "raw_feed_hash": "3c9cb0070aabf879afd7b4cc3ddcf85ea835d45bc1da7762561097e1c4a92aa7",
+   "published_at": 1683702000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_d69c6169b5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3a10bf95bedf394e",
+   "source": "Statistikmyndigheten SCB",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisgJBVV95cUxNZEdWRkhwRmFNVnFXSm1nWkVOUmdwQUpLeVVBZnUxNG5PSkRTLVJ4TElYWU9uckgxc1NJcU9La000S2JlWkNncDFZTEVobnFYd0V1ZU51eC1tS1ZuQUVPUU1KVHNueUF0WFVGTkdKZUtralRfd1hHUDRCNTFCYW9WMGRPY3lLTmpTRnB2b0dOd0ZyYjIyN2JtUm5STDBPVnJjNjc3Mk5MMlRGUThpd1lWOFFCeXRpdXZNS1lFMzhCTy11SVVoZ0ZRTXFMcVZaWHNKYU9ucXRPZjdodlZ5Qk5LRmxSZVhySWFGMEZ6czJrT2puWmMxLVhNZ0JqZ3BqY0NLRC15akxTcmZ0VFRQdnU0V1NyQVVjRm1hODZNeUw0SE83cXRTQ29jSFpHRUdTZzZyQlE?oc=5",
+   "title": "Political Party Preference Survey, May 2023 - Statistikmyndigheten SCB",
+   "text": "Political Party Preference Survey, May 2023 - Statistikmyndigheten SCB. Political Party Preference Survey, May 2023 Statistikmyndigheten SCB",
+   "content_hash": "88c8b55ecb6e782c",
+   "raw_feed_hash": "3c9cb0070aabf879afd7b4cc3ddcf85ea835d45bc1da7762561097e1c4a92aa7",
+   "published_at": 1684998000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_d69c6169b5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fb51c29581635932",
+   "source": "The Sierra Leone Telegraph",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxPb3ZiaW9zbjhmMDQ0QzQ1eXRmSGxuWG9EVVBKV2dzeWhvaVMyMTBpZkdPS1ZvMUlxaTViSkU1WGhQQkVTcWdvWGQzQ1NEZjJiQkpTOFEwZjB5UmtyZ2ozNkU4V1J2NDhFTmxfRXF4US10U2NoVGdvd2t2eE43U3V2ZHhUTlJuOUN4QjVXOGEwa1M2T245ZVBybzZzRDlGN2ZZUFZnOVg2Wl9Pc1k4NEJOSnRhVzRvcXB5ODI4UmFscm01NkJOTXpuc2p4Z1F5bF9yajRIbTlwNHE0cVlJSWJPTXYzbzIzZC1STkdtaXd0OHBDbTZNR29WNWhXTXVEd21oLW5GRFd6TWI?oc=5",
+   "title": "Sierra Leone\u2019s largest independent opinion poll predicts record turnout with over 30% of voters still undecided \u2013 and a run-off on the cards - The Sierra Leone Telegraph",
+   "text": "Sierra Leone\u2019s largest independent opinion poll predicts record turnout with over 30% of voters still undecided \u2013 and a run-off on the cards - The Sierra Leone Telegraph. Sierra Leone\u2019s largest independent opinion poll predicts record turnout with over 30% of voters still undecided \u2013 and a run-off on the cards The Sierra Leone Telegraph",
+   "content_hash": "a656c9e0141c24d9",
+   "raw_feed_hash": "3c9cb0070aabf879afd7b4cc3ddcf85ea835d45bc1da7762561097e1c4a92aa7",
+   "published_at": 1687503600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_d69c6169b5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9b949818d775a988",
+   "source": "The Guardian Nigeria News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQc0xDV21ab1ZJVm5YZEJVcWlSYlA2ZHkzSW5acG01b1gzSmZ6RDg1Qjk2T21jYUdfTTZ1R1V4OGZkUWMtenpwT0xOSmVobjhtLTd4UEtycFlVZkFNWXExWFJicnluY3ZGUXp6dkZMY3JYWlVRNE9vM0Zlc0NNTDhPck5pQmxONHZ2Tjk2TzBLbE8tTFI4Nm9kWEpvRVlYSmZaQ3I2VmhIdWZvVG95dUVxUUEtVm15VXRLZlh0RC0xRWxvbzlV?oc=5",
+   "title": "Stears, first predictive poll, shows low voter turnout favours Tinubu, high turnout favours Obi - The Guardian Nigeria News",
+   "text": "Stears, first predictive poll, shows low voter turnout favours Tinubu, high turnout favours Obi - The Guardian Nigeria News. Stears, first predictive poll, shows low voter turnout favours Tinubu, high turnout favours Obi The Guardian Nigeria News",
+   "content_hash": "56595eea608024bf",
+   "raw_feed_hash": "3c9cb0070aabf879afd7b4cc3ddcf85ea835d45bc1da7762561097e1c4a92aa7",
+   "published_at": 1675756800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_d69c6169b5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a949bcb16c101692",
+   "source": "The Point.gm",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNQU0ybGY0S1p0THVrcjJGaEpTeXRpNXZfRmt1alhMNXFtYmdUckJhWTBPbE9SNjhFRzlLbEZsRm1aeWZiV25ISGlMcWFqTHNxTG5PMHVsTC1CSlZ5Qjc5MGt0WnJmNS02V1MxT2hVX1UySUdoZ05kMnhycTVIa1pXOURSeGxxLU9yTWhDYldjYnBuRE12RWdFT2lTWQ?oc=5",
+   "title": "CepRass Survey predicts landslide victory for Talib - The Point.gm",
+   "text": "CepRass Survey predicts landslide victory for Talib - The Point.gm. CepRass Survey predicts landslide victory for Talib The Point.gm",
+   "content_hash": "57c39a4c12bd1ab9",
+   "raw_feed_hash": "3c9cb0070aabf879afd7b4cc3ddcf85ea835d45bc1da7762561097e1c4a92aa7",
+   "published_at": 1684134000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_d69c6169b5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "86a4262772f22c55",
+   "source": "Brookings",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxPcm1TTlYwWHlROUNrWWNyQ0FMOEI4bktUT1pIOEw2SkZnOVFEM2oxbUhXdngyM1ZWOGZzQUNVazRCVDdVRmkxNFZ6dzFjOXowSEJEcWx6RkNVX3J0Vnp4M2FIVVBZS1ZHUC1QVHNsTWJCUWFNRDJua2tVVmNYLWlOcGRYNWVtUTlwLXpic1duYzJRZG5RWFl4Wl8zRmFDcFIydTN6cllxaEdYeFpldFJ5c2FId2lmS1hoNG5JNy1FLTJsOTh1bGhfNVlsWWhkclhjSTJ6U2RQTW5sdVV4QnU4Q0NIMElHVXlfbUV5M0ZsaVdUUXVUbXVJ?oc=5",
+   "title": "New voter turnout data from 2022 shows some surprises, including lower turnout for youth, women, and Black Americans in some states - Brookings",
+   "text": "New voter turnout data from 2022 shows some surprises, including lower turnout for youth, women, and Black Americans in some states - Brookings. New voter turnout data from 2022 shows some surprises, including lower turnout for youth, women, and Black Americans in some states Brookings",
+   "content_hash": "516534ad2d6bd5a3",
+   "raw_feed_hash": "a01ca9940e91fe9a7af82ae2fcdc948a19f503e0e6cb1ca89b9bbc9c06bf96a9",
+   "published_at": 1684393200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_9e33dcbcb4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "44f62489dba4386f",
+   "source": "Tufts CIRCLE",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQT0ZSUlQ4dUlIOFZaQnRYdUk1RHlUVG1CVmZDaHBka2tOeUFkRVZfOHFqNFYtb3RWb1Yzcy1LVG9taTJIR0EweXVVa0pGTjRiQXA1aTVOWHdiSlh4ZHdlOWRjN0M4WlU1WWswU3J1T2dFazNMck1xb05YRzV5RURDYXdDTEt3WXQ1MUtDTXBvajFkUlk1QVZHNXQ4M0ZmSHJpZU9LcnR3TVY4blU?oc=5",
+   "title": "State-by-State Youth Voter Turnout Data and the Impact of Election Laws in 2022 - Tufts CIRCLE",
+   "text": "State-by-State Youth Voter Turnout Data and the Impact of Election Laws in 2022 - Tufts CIRCLE. State-by-State Youth Voter Turnout Data and the Impact of Election Laws in 2022 Tufts CIRCLE",
+   "content_hash": "7425572baa2af31a",
+   "raw_feed_hash": "a01ca9940e91fe9a7af82ae2fcdc948a19f503e0e6cb1ca89b9bbc9c06bf96a9",
+   "published_at": 1680764400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_9e33dcbcb4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ddf808ea8d3360fe",
+   "source": "Census.gov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOc05PYmVwTVdvenhXV1R4bGxGMXlBWm1OWUJBUU9fNDV0MUZOdmY5Q3d4Z2FNa2hYSV9yWXMwVE9LcXFEQmY3eTVUcTk5cXpLOVVNTnFMZkhTcVpDVnZrWFdzU3V6ZE1Sd0JKdXlkcnB4aHl3MEpBVU5HeWJpd21ZY3Ytc19EQWxpSkNvdUNITlpTeXM4X3B3bnRGcWpnNWVWbFdGWm1hTnRDc1Q3bVRyYVpn?oc=5",
+   "title": "Voter Registration in 2022 Highest in 20 Years for Congressional Elections - Census.gov",
+   "text": "Voter Registration in 2022 Highest in 20 Years for Congressional Elections - Census.gov. Voter Registration in 2022 Highest in 20 Years for Congressional Elections Census.gov",
+   "content_hash": "456090cd3e9fb96d",
+   "raw_feed_hash": "a01ca9940e91fe9a7af82ae2fcdc948a19f503e0e6cb1ca89b9bbc9c06bf96a9",
+   "published_at": 1683010800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_9e33dcbcb4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a9d41f6f6ec24443",
+   "source": "Bipartisan Policy Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxNSnBnSHRySFRIdTJnclBQZ1hNMzI0elF0QzU3aHF0bEFDS2tjUmhhQUJDQlFUM2MwUVVXRjM0bl9CVU5ZRHlFLTFiRWtJWlkwdnBsbVRkRUlURVdId1lHWFFYYWx5QzJRc2lla0VFVTZRQ19HaUVhRlpHVU9lWElGMkg3NA?oc=5",
+   "title": "Nearly 80% of Eligible Voters Don\u2019t Participate in Primaries - Bipartisan Policy Center",
+   "text": "Nearly 80% of Eligible Voters Don\u2019t Participate in Primaries - Bipartisan Policy Center. Nearly 80% of Eligible Voters Don\u2019t Participate in Primaries Bipartisan Policy Center",
+   "content_hash": "126b07d51c3b2015",
+   "raw_feed_hash": "a01ca9940e91fe9a7af82ae2fcdc948a19f503e0e6cb1ca89b9bbc9c06bf96a9",
+   "published_at": 1678176000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_9e33dcbcb4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "78688e9b9f9e1609",
+   "source": "Public Policy Institute of California",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxObGoya0NhQmR3Z1B3WW5kX1Izcy1vTVpCNFNfQzZwRTM0c0lhWnZyTUtKZElyNTZaU1k2cTBPa3JnUUxWX1RHY19FZDU3d0UzTWE4c2VNME51OGxyWElJOU80Y2lrSm5yRGpobDRBZmxTUEsxdWJGekhKLThtZmU3aEM0XzUzTWlpLW1DVWFjeXZaZw?oc=5",
+   "title": "Who Voted in the 2022 Election and What Does It Mean for 2024? - Public Policy Institute of California",
+   "text": "Who Voted in the 2022 Election and What Does It Mean for 2024? - Public Policy Institute of California. Who Voted in the 2022 Election and What Does It Mean for 2024? Public Policy Institute of California",
+   "content_hash": "95945d5c66acd242",
+   "raw_feed_hash": "a01ca9940e91fe9a7af82ae2fcdc948a19f503e0e6cb1ca89b9bbc9c06bf96a9",
+   "published_at": 1684911600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_9e33dcbcb4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "494e8fcd203c0cba",
+   "source": "Maine Beacon",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOZzdLejE5dGpPNnlqMHN4TjNFOTAxaXVtdWVncG5rM21xSnl0OWk3eHdGNlFZenkwaktnb243c0Vib1hkbnhhRDFMbXNtRkYyNG9sZ1QwZnpPU3BOVXFMdmttRnBnVWRMUnFoVmppNDFhT0tuTFgzSFFrd3NEUXMwb1lDdkJjRUFrTDNveWZCWFkzUjBJbHhpYnlIdHhLdGRLZkJqbVJRM3RFcDhn?oc=5",
+   "title": "Report: Maine has strong voting laws, but turnout among low-income people remains low - Maine Beacon",
+   "text": "Report: Maine has strong voting laws, but turnout among low-income people remains low - Maine Beacon. Report: Maine has strong voting laws, but turnout among low-income people remains low Maine Beacon",
+   "content_hash": "d3b98fe5327839b9",
+   "raw_feed_hash": "a01ca9940e91fe9a7af82ae2fcdc948a19f503e0e6cb1ca89b9bbc9c06bf96a9",
+   "published_at": 1681455600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_9e33dcbcb4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "647a50f84a96c377",
+   "source": "Pew Research Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNeVY1cm9mQnFzemEyUC0tV29ERTgwWFFkUEFDVnI5bE1yYVBzMjl2MUMzUlNjRGN6NFBfWkNJTG1peWRsNDRfMktVWElXQ2VaSkxleDFSejRBTEpucEJENDVSaXNZdEEyZy0xQmVKdjQyRU1WaG8xeFdkOURBd3dTV2VRVnl4MWotSVpSUG1UVzdfeXo3cXdYNmR2dTFwZVBnTHRsN1hud3dpVlRkbGlXY1lEcDZCNkQtcUZlRzE1SFowR0U3bS1vUTQ5eEdWVXM?oc=5",
+   "title": "Turnout in 2022 House midterms declined from 2018 high, final official returns show - Pew Research Center",
+   "text": "Turnout in 2022 House midterms declined from 2018 high, final official returns show - Pew Research Center. Turnout in 2022 House midterms declined from 2018 high, final official returns show Pew Research Center",
+   "content_hash": "2eb0952a65892d6e",
+   "raw_feed_hash": "a01ca9940e91fe9a7af82ae2fcdc948a19f503e0e6cb1ca89b9bbc9c06bf96a9",
+   "published_at": 1678435200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_9e33dcbcb4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4bffe956ded6f4a3",
+   "source": "Oklahoma Policy Institute",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxORDZPY1pDWmdZNjhKT2IyN1BPOTFxSHcwU29QSjZiaUQzOURvQTRjTWtYUlVlb3pFbENSVjRIU3VRa0lDWjhDRzZiYnluMXlzOXczbEpQUUdyOUd2RjMzWjB5VGlaTW85VEx5OUpPazVlMDJFbktxRnd2RXN3WlZOVmJvV2ZnYUhmNjBweHlRLUQ5Q3lreDNOY0dSWjFRdlozdVJyeE5QRWEwUQ?oc=5",
+   "title": "The 2022 Midterms reveal our democracy is still inaccessible to many Oklahoma voters - Oklahoma Policy Institute",
+   "text": "The 2022 Midterms reveal our democracy is still inaccessible to many Oklahoma voters - Oklahoma Policy Institute. The 2022 Midterms reveal our democracy is still inaccessible to many Oklahoma voters Oklahoma Policy Institute",
+   "content_hash": "2c34bdbb7b1df163",
+   "raw_feed_hash": "a01ca9940e91fe9a7af82ae2fcdc948a19f503e0e6cb1ca89b9bbc9c06bf96a9",
+   "published_at": 1677916800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_9e33dcbcb4",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "5f8ab8854a2b6cd1:c0",
+   "source_id": "5f8ab8854a2b6cd1",
+   "subject": "The 2024 Election",
+   "predicate": "could be decided by",
+   "object": "disgruntled voters",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "speculative",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "The Disgruntled Voters Who Could Decide the 2024 Election",
+   "span_verified": true,
+   "event_time": "2024",
+   "publication_time": 1683702000.0,
+   "extraction_confidence": 0.7,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "2024 Election",
+    "disgruntled voters"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_518d8ba219",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d69c6169b5"
+   }
+  },
+  {
+   "claim_id": "5f8ab8854a2b6cd1:c1",
+   "source_id": "5f8ab8854a2b6cd1",
+   "subject": "The article",
+   "predicate": "is titled",
+   "object": "Not Biden vs. Trump Again! The Disgruntled Voters Who Could Decide the 2024 Election - Center For Politics",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Not Biden vs. Trump Again! The Disgruntled Voters Who Could Decide the 2024 Election - Center For Politics",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683702000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Center For Politics"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_518d8ba219",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d69c6169b5"
+   }
+  },
+  {
+   "claim_id": "86a4262772f22c55:c0",
+   "source_id": "86a4262772f22c55",
+   "subject": "New voter turnout data from 2022",
+   "predicate": "shows",
+   "object": "some surprises",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "New voter turnout data from 2022 shows some surprises",
+   "span_verified": true,
+   "event_time": "2022",
+   "publication_time": 1684393200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "2022"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_57b01b0b39",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9e33dcbcb4"
+   }
+  },
+  {
+   "claim_id": "86a4262772f22c55:c1",
+   "source_id": "86a4262772f22c55",
+   "subject": "New voter turnout data from 2022",
+   "predicate": "includes",
+   "object": "lower turnout for youth, women, and Black Americans in some states",
+   "value": "",
+   "units": "",
+   "qualifiers": "in some states",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "including lower turnout for youth, women, and Black Americans in some states",
+   "span_verified": true,
+   "event_time": "2022",
+   "publication_time": 1684393200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "youth",
+    "women",
+    "Black Americans"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_57b01b0b39",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9e33dcbcb4"
+   }
+  },
+  {
+   "claim_id": "3a10bf95bedf394e:c0",
+   "source_id": "3a10bf95bedf394e",
+   "subject": "Political Party Preference Survey, May 2023",
+   "predicate": "is from",
+   "object": "Statistikmyndigheten SCB",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Political Party Preference Survey, May 2023 - Statistikmyndigheten SCB",
+   "span_verified": true,
+   "event_time": "May 2023",
+   "publication_time": 1684998000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Statistikmyndigheten SCB"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f84801a251",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d69c6169b5"
+   }
+  },
+  {
+   "claim_id": "44f62489dba4386f:c0",
+   "source_id": "44f62489dba4386f",
+   "subject": "State-by-State Youth Voter Turnout Data and the Impact of Election Laws in 2022",
+   "predicate": "is a publication by",
+   "object": "Tufts CIRCLE",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "State-by-State Youth Voter Turnout Data and the Impact of Election Laws in 2022 - Tufts CIRCLE",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680764400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Tufts CIRCLE"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9b6449fce9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9e33dcbcb4"
+   }
+  },
+  {
+   "claim_id": "fb51c29581635932:c0",
+   "source_id": "fb51c29581635932",
+   "subject": "Sierra Leone\u2019s largest independent opinion poll",
+   "predicate": "predicts",
+   "object": "record turnout",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "Sierra Leone\u2019s largest independent opinion poll predicts record turnout",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687503600.0,
+   "extraction_confidence": 0.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Sierra Leone",
+    "largest independent opinion poll"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bf2fdf945c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d69c6169b5"
+   }
+  },
+  {
+   "claim_id": "fb51c29581635932:c1",
+   "source_id": "fb51c29581635932",
+   "subject": "voters",
+   "predicate": "are",
+   "object": "still undecided",
+   "value": "30",
+   "units": "percent",
+   "qualifiers": "over 30%",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "over 30% of voters still undecided",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687503600.0,
+   "extraction_confidence": 0.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "voters"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bf2fdf945c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d69c6169b5"
+   }
+  },
+  {
+   "claim_id": "fb51c29581635932:c2",
+   "source_id": "fb51c29581635932",
+   "subject": "Sierra Leone\u2019s largest independent opinion poll",
+   "predicate": "predicts",
+   "object": "a run-off on the cards",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "predicts record turnout with over 30% of voters still undecided \u2013 and a run-off on the cards",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687503600.0,
+   "extraction_confidence": 0.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Sierra Leone",
+    "largest independent opinion poll"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bf2fdf945c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d69c6169b5"
+   }
+  },
+  {
+   "claim_id": "ddf808ea8d3360fe:c0",
+   "source_id": "ddf808ea8d3360fe",
+   "subject": "Voter Registration in 2022",
+   "predicate": "was highest in 20 years for Congressional Elections",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Voter Registration in 2022 Highest in 20 Years for Congressional Elections - Census.gov",
+   "span_verified": true,
+   "event_time": "2022",
+   "publication_time": 1683010800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Voter Registration",
+    "Congressional Elections",
+    "Census.gov"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_674705d503",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9e33dcbcb4"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "2024 Election",
+   "normalized": "2024 election",
+   "candidates": [
+    {
+     "entity_id": "ent_0b09c25870",
+     "canonical": "2024 election",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "2024 Election"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "disgruntled voters",
+   "normalized": "disgruntled voters",
+   "candidates": [
+    {
+     "entity_id": "ent_0265b67230",
+     "canonical": "disgruntled voters",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "disgruntled voters"
+     ]
+    },
+    {
+     "entity_id": "ent_b6088edd95",
+     "canonical": "voters",
+     "support": 0.2088,
+     "evidence_mentions": [
+      "voters"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Center For Politics",
+   "normalized": "center for politics",
+   "candidates": [
+    {
+     "entity_id": "ent_a5fef0518b",
+     "canonical": "center for politics",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Center For Politics"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "2022",
+   "normalized": "2022",
+   "candidates": [
+    {
+     "entity_id": "ent_e575dccc71",
+     "canonical": "2022",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "2022"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "youth",
+   "normalized": "youth",
+   "candidates": [
+    {
+     "entity_id": "ent_f9925d1162",
+     "canonical": "youth",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "youth"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "women",
+   "normalized": "women",
+   "candidates": [
+    {
+     "entity_id": "ent_b3ae4f722a",
+     "canonical": "women",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "women"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Black Americans",
+   "normalized": "black americans",
+   "candidates": [
+    {
+     "entity_id": "ent_622b41bd88",
+     "canonical": "black americans",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Black Americans"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Statistikmyndigheten SCB",
+   "normalized": "statistikmyndigheten scb",
+   "candidates": [
+    {
+     "entity_id": "ent_8136160ac1",
+     "canonical": "statistikmyndigheten scb",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Statistikmyndigheten SCB"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Tufts CIRCLE",
+   "normalized": "tufts circle",
+   "candidates": [
+    {
+     "entity_id": "ent_e0e13379cc",
+     "canonical": "tufts circle",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Tufts CIRCLE"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Sierra Leone",
+   "normalized": "sierra leone",
+   "candidates": [
+    {
+     "entity_id": "ent_cb1fbb1f73",
+     "canonical": "sierra leone",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "Sierra Leone",
+      "Sierra Leone"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "largest independent opinion poll",
+   "normalized": "largest independent opinion poll",
+   "candidates": [
+    {
+     "entity_id": "ent_2da830ef1e",
+     "canonical": "largest independent opinion poll",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "largest independent opinion poll",
+      "largest independent opinion poll"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "voters",
+   "normalized": "voters",
+   "candidates": [
+    {
+     "entity_id": "ent_b6088edd95",
+     "canonical": "voters",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "voters"
+     ]
+    },
+    {
+     "entity_id": "ent_0265b67230",
+     "canonical": "disgruntled voters",
+     "support": 0.2088,
+     "evidence_mentions": [
+      "disgruntled voters"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Sierra Leone",
+   "normalized": "sierra leone",
+   "candidates": [
+    {
+     "entity_id": "ent_cb1fbb1f73",
+     "canonical": "sierra leone",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "Sierra Leone",
+      "Sierra Leone"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "largest independent opinion poll",
+   "normalized": "largest independent opinion poll",
+   "candidates": [
+    {
+     "entity_id": "ent_2da830ef1e",
+     "canonical": "largest independent opinion poll",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "largest independent opinion poll",
+      "largest independent opinion poll"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Voter Registration",
+   "normalized": "voter registration",
+   "candidates": [
+    {
+     "entity_id": "ent_dc8f518a4d",
+     "canonical": "voter registration",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Voter Registration"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Congressional Elections",
+   "normalized": "congressional elections",
+   "candidates": [
+    {
+     "entity_id": "ent_c46587ce76",
+     "canonical": "congressional elections",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Congressional Elections"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Census.gov",
+   "normalized": "census",
+   "candidates": [
+    {
+     "entity_id": "ent_4589092e97",
+     "canonical": "census",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Census.gov"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "5f8ab8854a2b6cd1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1683702000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683702000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3a10bf95bedf394e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684998000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684998000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fb51c29581635932": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687503600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687503600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9b949818d775a988": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1675756800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675756800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a949bcb16c101692": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684134000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684134000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "86a4262772f22c55": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684393200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684393200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "44f62489dba4386f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680764400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680764400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ddf808ea8d3360fe": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1683010800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683010800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a9d41f6f6ec24443": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1678176000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678176000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "78688e9b9f9e1609": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684911600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684911600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "494e8fcd203c0cba": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1681455600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681455600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "647a50f84a96c377": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1678435200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678435200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4bffe956ded6f4a3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677916800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677916800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_518d8ba219",
+   "member_ids": [
+    "5f8ab8854a2b6cd1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Center For Politics",
+   "primary_source": "Center For Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f84801a251",
+   "member_ids": [
+    "3a10bf95bedf394e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Statistikmyndigheten SCB",
+   "primary_source": "Statistikmyndigheten SCB",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bf2fdf945c",
+   "member_ids": [
+    "fb51c29581635932"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Sierra Leone Telegraph",
+   "primary_source": "The Sierra Leone Telegraph",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8a805689fe",
+   "member_ids": [
+    "9b949818d775a988"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Guardian Nigeria News",
+   "primary_source": "The Guardian Nigeria News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a0c5c6e08d",
+   "member_ids": [
+    "a949bcb16c101692"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Point.gm",
+   "primary_source": "The Point.gm",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_57b01b0b39",
+   "member_ids": [
+    "86a4262772f22c55"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Brookings",
+   "primary_source": "Brookings",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9b6449fce9",
+   "member_ids": [
+    "44f62489dba4386f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Tufts CIRCLE",
+   "primary_source": "Tufts CIRCLE",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_674705d503",
+   "member_ids": [
+    "ddf808ea8d3360fe"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Census.gov",
+   "primary_source": "Census.gov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c976502f45",
+   "member_ids": [
+    "a9d41f6f6ec24443"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Bipartisan Policy Center",
+   "primary_source": "Bipartisan Policy Center",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2513e3cbf5",
+   "member_ids": [
+    "78688e9b9f9e1609"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Public Policy Institute of California",
+   "primary_source": "Public Policy Institute of California",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e06136e005",
+   "member_ids": [
+    "494e8fcd203c0cba"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Maine Beacon",
+   "primary_source": "Maine Beacon",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_94a2b4714c",
+   "member_ids": [
+    "647a50f84a96c377"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Pew Research Center",
+   "primary_source": "Pew Research Center",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c5543e74e8",
+   "member_ids": [
+    "4bffe956ded6f4a3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Oklahoma Policy Institute",
+   "primary_source": "Oklahoma Policy Institute",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "5f8ab8854a2b6cd1:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683702000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "5f8ab8854a2b6cd1:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683702000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "86a4262772f22c55:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684393200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "86a4262772f22c55:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684393200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3a10bf95bedf394e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684998000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "44f62489dba4386f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680764400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "fb51c29581635932:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687503600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "fb51c29581635932:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687503600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "fb51c29581635932:c2",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687503600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ddf808ea8d3360fe:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683010800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "5f8ab8854a2b6cd1:c0",
+  "5f8ab8854a2b6cd1:c1",
+  "86a4262772f22c55:c0",
+  "86a4262772f22c55:c1",
+  "3a10bf95bedf394e:c0",
+  "44f62489dba4386f:c0",
+  "fb51c29581635932:c0",
+  "fb51c29581635932:c1",
+  "fb51c29581635932:c2",
+  "ddf808ea8d3360fe:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_e18351f68f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_d69c6169b5": {
+   "status": "fulfilled",
+   "n_claims": 6,
+   "n_included": 6
+  },
+  "req_9e33dcbcb4": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_1817d26c28": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a6609fbbed": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_5b7e8832ad": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f38b648df4": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_e18351f68f",
+  "req_1817d26c28",
+  "req_a6609fbbed",
+  "req_5b7e8832ad",
+  "req_f38b648df4"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 13,
+  "n_contradictions": 0,
+  "n_documents": 13
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 16.4,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "7888230aaa529aa4",
+ "bundle_hash": "7888230aaa529aa4",
+ "_persisted_at": "2026-07-13T01:37:47Z"
+}

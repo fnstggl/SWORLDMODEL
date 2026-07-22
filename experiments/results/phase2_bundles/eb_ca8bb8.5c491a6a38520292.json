@@ -1,0 +1,1600 @@
+{
+ "bundle_id": "eb_ca8bb8",
+ "question": "Will the incumbent governor survive the recall vote?",
+ "as_of": 1690848000.0,
+ "compiler_plan_hash": "4c102d932875",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_45fd101e52",
+   "claim_or_quantity": "If the share of votes to remove the governor exceeds the legal recall threshold (typically 50%+1 of valid votes cast, or as specified by state law), the governor is removed; otherwise survives.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "incumbent_governor",
+    "state_election_authority",
+    "major_opponent"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_301f6feece",
+   "claim_or_quantity": "value/context of incumbent_governor.approval_rating",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "incumbent_governor.approval_rating",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_bdfa7366e1",
+   "claim_or_quantity": "value/context of state_electorate.turnout_rate",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "state_electorate.turnout_rate",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6dc654ff13",
+   "claim_or_quantity": "value/context of state_electorate.undecided_lean",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "state_electorate.undecided_lean",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_b1f12ef9c9",
+   "claim_or_quantity": "evidence discriminating structural hypothesis incumbent_weakness",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:incumbent_weakness",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4abcac03a2",
+   "claim_or_quantity": "evidence discriminating structural hypothesis incumbent_resilience",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:incumbent_resilience",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_fcbbb1106d",
+   "claim_or_quantity": "decision rules / process of state_election_authority",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "state_election_authority",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_45fd101e52",
+   "terms": "incumbent governor survive recall incumbent governor state election authority major opponent",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_301f6feece",
+   "terms": "incumbent governor approval rating",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_bdfa7366e1",
+   "terms": "state electorate turnout rate",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_45fd101e52",
+   "logical_query": "incumbent governor survive recall incumbent governor state election authority major opponent after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=incumbent+governor+survive+recall+incumbent+governor+state+election+authority+major+opponent+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783908396.9313014,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:06:37 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw05BiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcaydcvMQm8GLH-W-MSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgC-VjlS\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "cb5eaf2074f2ff3c81033567b9119aa0c431cf52b9b8a2e088dda3ec274b2974",
+   "n_bytes": 1349,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.491
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_301f6feece",
+   "logical_query": "incumbent governor approval rating after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=incumbent+governor+approval+rating+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783908397.4240398,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:06:38 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw15BiSO44w5AKxJVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTNsW7CxUtsAjsmPVZVUk7KL4xPyS8pLi7ISSzOKE4tKkstijcyMDIzMDcw0zMwiS8wAABd-zZj\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "cdf0a3c959e3e6568897954f8b2347d1c344eb3aba18b1226b4d6431e24975a8",
+   "n_bytes": 37478,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.584
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_bdfa7366e1",
+   "logical_query": "state electorate turnout rate after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=state+electorate+turnout+rate+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783908398.0100574,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:06:39 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwc6ydcvMQm8OBOM6-SclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAGifODs\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "b363fd4cdc8ad21c466888e3c9bef7c9309490dbadf9712f986645902afbcc4d",
+   "n_bytes": 56035,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.964
+  }
+ ],
+ "raw_content_refs": [
+  "b363fd4cdc8ad21c466888e3c9bef7c9309490dbadf9712f986645902afbcc4d",
+  "cdf0a3c959e3e6568897954f8b2347d1c344eb3aba18b1226b4d6431e24975a8"
+ ],
+ "documents": [
+  {
+   "id": "72aee3999118bdda",
+   "source": "Spectrum News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQQ3U0dmtjNVpHbDAweEhteE1BZlNhYlQ1OENrZExBb2V6eFhzdEN2TmlHVUw4Z2plSlIwRlVsMjRIdmphNzVZQlc2Wnc2aHFhaU5vaURkT1A5YTBxcnVSdmswN2pGek9hR0hFSTJ2dGRhb2xmR09RaV96a1lqdVVPOG5wMGZJSGFWTEN0MDh6cWF1MkpwbnZIeUV3azlCU3BJbEJRUmU0NUlvQy1lY2YxQkVjNUxvYzVFWVIxcDlwM21Idw?oc=5",
+   "title": "Poll: Beshear fifth most popular U.S. governor ahead of reelection bid - Spectrum News",
+   "text": "Poll: Beshear fifth most popular U.S. governor ahead of reelection bid - Spectrum News. Poll: Beshear fifth most popular U.S. governor ahead of reelection bid Spectrum News",
+   "content_hash": "cfd883410ea94281",
+   "raw_feed_hash": "cdf0a3c959e3e6568897954f8b2347d1c344eb3aba18b1226b4d6431e24975a8",
+   "published_at": 1681887600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_301f6feece",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ce780aef372d3529",
+   "source": "Mississippi Today",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOTkp1SUJVUXVMYUpVd2pnTWxuSzFFWXNQNHpkZi1HVURjSXJsX1ZXcUdLcWZpcWVjSkhwQ256Z01kRE9JajRhZWtGLTUwQ3hxRzBWUVNaaU1HbFFEdzRqOHNrU21idXJhNUkyNlNVYUZTWU81RVJ5bWhneHlnWTloQXFsd3k4dUFwNnpKZDFmeXI0QQ?oc=5",
+   "title": "Governor\u2019s race poll: Brandon Presley slips, Gov. Tate Reeves remains unpopular - Mississippi Today",
+   "text": "Governor\u2019s race poll: Brandon Presley slips, Gov. Tate Reeves remains unpopular - Mississippi Today. Governor\u2019s race poll: Brandon Presley slips, Gov. Tate Reeves remains unpopular Mississippi Today",
+   "content_hash": "046d07ecd94b1129",
+   "raw_feed_hash": "cdf0a3c959e3e6568897954f8b2347d1c344eb3aba18b1226b4d6431e24975a8",
+   "published_at": 1682665200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_301f6feece",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "12d91d16565f6ea2",
+   "source": "NBC News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOUDNlOHVBRWRnMGRJU2ZSem5DR0pEWC0tc2FyTkxocUg5dHJYWGtZYjcyenpmNmFoMXRLMHhnQWkzbDU0NHFJUXNXYkp6bkFUNVBlZXVkRENHSC14SjdFbmdDQWtpUDMwSGQxcWtxZ0dRV2JBNVJHc3E4c2dhcmZlZUxuNnYyNHFWWDZ2Nl9mS2tjSGM0TWcwUEprOThJbEN1SjI4SmJzV2ZKZThkalhmMjRYLVpYWnk0dlJhRGZ2RUN1dw?oc=5",
+   "title": "Poll: Kentucky Gov. Beshear leads re-election race by 10 points - NBC News",
+   "text": "Poll: Kentucky Gov. Beshear leads re-election race by 10 points - NBC News. Poll: Kentucky Gov. Beshear leads re-election race by 10 points NBC News",
+   "content_hash": "013775b75797d257",
+   "raw_feed_hash": "cdf0a3c959e3e6568897954f8b2347d1c344eb3aba18b1226b4d6431e24975a8",
+   "published_at": 1689922800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_301f6feece",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fac0fe6e013c49aa",
+   "source": "Center For Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPcUtTSU9NdFI0YXNHeVdFR1BrZFlKODVWNnlyaXI4TEhZczZtZGFhTzhYRjJKeU9hdUhqSkdoT1p3a1ZhTG9zeDR2YWtpay0tblJEWHctcE01OThNbm9wTGxLYUxUamMtR1l2Wm56Y3JBUGV6MW84b3hEXzNYMHRwaXJWcGdYN0E2MDc0Wlg2NDRjNlFMdVM0?oc=5",
+   "title": "Is Biden\u2019s Approval Rating Too Weak for Him to Win? - Center For Politics",
+   "text": "Is Biden\u2019s Approval Rating Too Weak for Him to Win? - Center For Politics. Is Biden\u2019s Approval Rating Too Weak for Him to Win? Center For Politics",
+   "content_hash": "dd351665d0ef6721",
+   "raw_feed_hash": "cdf0a3c959e3e6568897954f8b2347d1c344eb3aba18b1226b4d6431e24975a8",
+   "published_at": 1682406000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_301f6feece",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "afcf96001a3e64b4",
+   "source": "PBS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOQ0lPcU13WWdfZWhGRENGb3N2NXBDdlBMbWhxYnRDdEo4a00ydFNmZXNwVHFhMzFneVVURWprN0FFbUVYWFh4RGpLN1RtXzFJRGxfZEtIREpGZ1I5SWZlc1lIMzQ1RmgyNXdXa0FidE15X0JITUs3clBMQ3VNUWdHa3JocDFYdm95VjBVbEVVelR6VFhT0gGaAUFVX3lxTE1IMjNJcC15N19XX1lPWTladGIwQ1BoRzRFVEZtWTdnbm96OERSS0RwdndTV3RBU2w5dzZSaS1oQXlVaklWUF9UR1FSREJfUTlBdjdGUFQ2T28yWVlnRHZPeW8xMmZNbXlTZDNvV0tqeUhQaldFeVpUVVBfTm8zV3F5Z09hVlVkQkhONHlBUjEzUFlXckNSY3RhNHc?oc=5",
+   "title": "What to watch in Kentucky and Pennsylvania primaries - PBS",
+   "text": "What to watch in Kentucky and Pennsylvania primaries - PBS. What to watch in Kentucky and Pennsylvania primaries PBS",
+   "content_hash": "d12ed032adc43b61",
+   "raw_feed_hash": "cdf0a3c959e3e6568897954f8b2347d1c344eb3aba18b1226b4d6431e24975a8",
+   "published_at": 1684134000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_301f6feece",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "eff8e1a8c6a1ed13",
+   "source": "split-ticket.org",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9kWkZFUHdSVmZMNF9GcE9PZWlNWUY5RWcyWDJhYmFHWm9DWE5UdkRjbWZZODVwTlNYWXVBQklRZmRLOEtBUmUybGh1dHpQOEpQZWhiZnJJWl9EVS11cTJ0eVdjdzBRQUcxZExBOUVmeGVpNXp4MkdV?oc=5",
+   "title": "Our Initial 2024 Senate Ratings - split-ticket.org",
+   "text": "Our Initial 2024 Senate Ratings - split-ticket.org. Our Initial 2024 Senate Ratings split-ticket.org",
+   "content_hash": "8490de124b6a2d1b",
+   "raw_feed_hash": "cdf0a3c959e3e6568897954f8b2347d1c344eb3aba18b1226b4d6431e24975a8",
+   "published_at": 1684220400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_301f6feece",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "11bd415bfda29a9a",
+   "source": "WKU Public Radio",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxPb0tTbUZ3bEhLNlpHYnFEQ2VOMFJDSWNrdmRpeTdjUXZnT1VMd0pkekJyUzBsM2kxS21iVXgySU5Sa0hDVGsyOFh1ZmEtcXUwdFhJMFRaalBPX3pOZEljaDFBbm82aXhhQnBsUkFnd3BWRzFmSW9FbldBMDU3TFZDZG1QejVwZGd2RXhCMGpJUF8yZkFOai1BZDJKNzBKQkV1eW5WTzZveE5DSmoxNXNfWjhjR1hNVW1IM0FyaWVBRXdDOThSTThhT0pXOWp1QmdHb2NfWUFtZ3h2c0ZSRGNrbWpvY1dUTVgyTnpQZGczZi1BQkNTX3dlaXVn?oc=5",
+   "title": "Poll: Beshear is America\u2019s 5th most popular governor, bolstered by highest approval among GOP voters than any other Democratic governor - WKU Public Radio",
+   "text": "Poll: Beshear is America\u2019s 5th most popular governor, bolstered by highest approval among GOP voters than any other Democratic governor - WKU Public Radio. Poll: Beshear is America\u2019s 5th most popular governor, bolstered by highest approval among GOP voters than any other Democratic governor WKU Public Radio",
+   "content_hash": "836e54d7f72e6dfe",
+   "raw_feed_hash": "cdf0a3c959e3e6568897954f8b2347d1c344eb3aba18b1226b4d6431e24975a8",
+   "published_at": 1690182000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_301f6feece",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5833f16bf2ad0bfb",
+   "source": "The Des Moines Register",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijAJBVV95cUxPanBiUk5qVThuTDh3b0pZRFljYkp3SDRYZXRkOWppV0lYUk1GSHBzdWt2cVBHSzROcVZNSV9oWlgxeENJNmUzc1dKNU9OSFNQaVdBRTFwN1JBV2hkWGpNMUlpNzZNVDh6TWRGMTMzOWJ1VHFNUVMxdEJxQVJjQWNRTzdGNW5YczBFdTRHZUZKTXRYQXVZRUpDOFk0QlR5ZW85OEZQZmprY1BvMDVUVURPY0swejhFejNzMklEejhyLV9VdS1UNks2YlVXMHg3YVhCWFZ4dTJadFppTjlvajlvQWtmQVZGMGdqUE9oZnJlY2xzdS1IMGgzalo4aEpVUUdXaUhlX0prWUR4bVhk?oc=5",
+   "title": "Iowa Poll: Kim Reynolds' approval rating slips as she pursues ambitious, polarizing agenda - The Des Moines Register",
+   "text": "Iowa Poll: Kim Reynolds' approval rating slips as she pursues ambitious, polarizing agenda - The Des Moines Register. Iowa Poll: Kim Reynolds' approval rating slips as she pursues ambitious, polarizing agenda The Des Moines Register",
+   "content_hash": "f1c79116d9eacfe2",
+   "raw_feed_hash": "cdf0a3c959e3e6568897954f8b2347d1c344eb3aba18b1226b4d6431e24975a8",
+   "published_at": 1679814000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_301f6feece",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "86a4262772f22c55",
+   "source": "Brookings",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxPcm1TTlYwWHlROUNrWWNyQ0FMOEI4bktUT1pIOEw2SkZnOVFEM2oxbUhXdngyM1ZWOGZzQUNVazRCVDdVRmkxNFZ6dzFjOXowSEJEcWx6RkNVX3J0Vnp4M2FIVVBZS1ZHUC1QVHNsTWJCUWFNRDJua2tVVmNYLWlOcGRYNWVtUTlwLXpic1duYzJRZG5RWFl4Wl8zRmFDcFIydTN6cllxaEdYeFpldFJ5c2FId2lmS1hoNG5JNy1FLTJsOTh1bGhfNVlsWWhkclhjSTJ6U2RQTW5sdVV4QnU4Q0NIMElHVXlfbUV5M0ZsaVdUUXVUbXVJ?oc=5",
+   "title": "New voter turnout data from 2022 shows some surprises, including lower turnout for youth, women, and Black Americans in some states - Brookings",
+   "text": "New voter turnout data from 2022 shows some surprises, including lower turnout for youth, women, and Black Americans in some states - Brookings. New voter turnout data from 2022 shows some surprises, including lower turnout for youth, women, and Black Americans in some states Brookings",
+   "content_hash": "516534ad2d6bd5a3",
+   "raw_feed_hash": "b363fd4cdc8ad21c466888e3c9bef7c9309490dbadf9712f986645902afbcc4d",
+   "published_at": 1684393200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_bdfa7366e1",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "44f62489dba4386f",
+   "source": "Tufts CIRCLE",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQT0ZSUlQ4dUlIOFZaQnRYdUk1RHlUVG1CVmZDaHBka2tOeUFkRVZfOHFqNFYtb3RWb1Yzcy1LVG9taTJIR0EweXVVa0pGTjRiQXA1aTVOWHdiSlh4ZHdlOWRjN0M4WlU1WWswU3J1T2dFazNMck1xb05YRzV5RURDYXdDTEt3WXQ1MUtDTXBvajFkUlk1QVZHNXQ4M0ZmSHJpZU9LcnR3TVY4blU?oc=5",
+   "title": "State-by-State Youth Voter Turnout Data and the Impact of Election Laws in 2022 - Tufts CIRCLE",
+   "text": "State-by-State Youth Voter Turnout Data and the Impact of Election Laws in 2022 - Tufts CIRCLE. State-by-State Youth Voter Turnout Data and the Impact of Election Laws in 2022 Tufts CIRCLE",
+   "content_hash": "7425572baa2af31a",
+   "raw_feed_hash": "b363fd4cdc8ad21c466888e3c9bef7c9309490dbadf9712f986645902afbcc4d",
+   "published_at": 1680764400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_bdfa7366e1",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f1f790db31c533fb",
+   "source": "Pew Research Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTFBKWlZGWEVwWS1FNTlIbl9DMzJlSG5sRTZtTjdvT3NCOUVpazRTMHlqU0NBMkhQZ0M3eDhIVXVDeEtHV2lMWTJCVzNnR0tUVmdfYzBGRGtKeGs5UGhnRTBIWC1NT3dlTl92d2xCTV9oSmxkQmtrZkREVWZoUjM?oc=5",
+   "title": "1. Voter turnout, 2018-2022 - Pew Research Center",
+   "text": "1. Voter turnout, 2018-2022 - Pew Research Center. 1. Voter turnout, 2018-2022 Pew Research Center",
+   "content_hash": "28e4cc09f2476db4",
+   "raw_feed_hash": "b363fd4cdc8ad21c466888e3c9bef7c9309490dbadf9712f986645902afbcc4d",
+   "published_at": 1689145200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_bdfa7366e1",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ddf808ea8d3360fe",
+   "source": "Census.gov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOc05PYmVwTVdvenhXV1R4bGxGMXlBWm1OWUJBUU9fNDV0MUZOdmY5Q3d4Z2FNa2hYSV9yWXMwVE9LcXFEQmY3eTVUcTk5cXpLOVVNTnFMZkhTcVpDVnZrWFdzU3V6ZE1Sd0JKdXlkcnB4aHl3MEpBVU5HeWJpd21ZY3Ytc19EQWxpSkNvdUNITlpTeXM4X3B3bnRGcWpnNWVWbFdGWm1hTnRDc1Q3bVRyYVpn?oc=5",
+   "title": "Voter Registration in 2022 Highest in 20 Years for Congressional Elections - Census.gov",
+   "text": "Voter Registration in 2022 Highest in 20 Years for Congressional Elections - Census.gov. Voter Registration in 2022 Highest in 20 Years for Congressional Elections Census.gov",
+   "content_hash": "456090cd3e9fb96d",
+   "raw_feed_hash": "b363fd4cdc8ad21c466888e3c9bef7c9309490dbadf9712f986645902afbcc4d",
+   "published_at": 1683010800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_bdfa7366e1",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "78688e9b9f9e1609",
+   "source": "Public Policy Institute of California",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxObGoya0NhQmR3Z1B3WW5kX1Izcy1vTVpCNFNfQzZwRTM0c0lhWnZyTUtKZElyNTZaU1k2cTBPa3JnUUxWX1RHY19FZDU3d0UzTWE4c2VNME51OGxyWElJOU80Y2lrSm5yRGpobDRBZmxTUEsxdWJGekhKLThtZmU3aEM0XzUzTWlpLW1DVWFjeXZaZw?oc=5",
+   "title": "Who Voted in the 2022 Election and What Does It Mean for 2024? - Public Policy Institute of California",
+   "text": "Who Voted in the 2022 Election and What Does It Mean for 2024? - Public Policy Institute of California. Who Voted in the 2022 Election and What Does It Mean for 2024? Public Policy Institute of California",
+   "content_hash": "95945d5c66acd242",
+   "raw_feed_hash": "b363fd4cdc8ad21c466888e3c9bef7c9309490dbadf9712f986645902afbcc4d",
+   "published_at": 1684911600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_bdfa7366e1",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "494e8fcd203c0cba",
+   "source": "Maine Beacon",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOZzdLejE5dGpPNnlqMHN4TjNFOTAxaXVtdWVncG5rM21xSnl0OWk3eHdGNlFZenkwaktnb243c0Vib1hkbnhhRDFMbXNtRkYyNG9sZ1QwZnpPU3BOVXFMdmttRnBnVWRMUnFoVmppNDFhT0tuTFgzSFFrd3NEUXMwb1lDdkJjRUFrTDNveWZCWFkzUjBJbHhpYnlIdHhLdGRLZkJqbVJRM3RFcDhn?oc=5",
+   "title": "Report: Maine has strong voting laws, but turnout among low-income people remains low - Maine Beacon",
+   "text": "Report: Maine has strong voting laws, but turnout among low-income people remains low - Maine Beacon. Report: Maine has strong voting laws, but turnout among low-income people remains low Maine Beacon",
+   "content_hash": "d3b98fe5327839b9",
+   "raw_feed_hash": "b363fd4cdc8ad21c466888e3c9bef7c9309490dbadf9712f986645902afbcc4d",
+   "published_at": 1681455600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_bdfa7366e1",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a9d41f6f6ec24443",
+   "source": "Bipartisan Policy Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxNSnBnSHRySFRIdTJnclBQZ1hNMzI0elF0QzU3aHF0bEFDS2tjUmhhQUJDQlFUM2MwUVVXRjM0bl9CVU5ZRHlFLTFiRWtJWlkwdnBsbVRkRUlURVdId1lHWFFYYWx5QzJRc2lla0VFVTZRQ19HaUVhRlpHVU9lWElGMkg3NA?oc=5",
+   "title": "Nearly 80% of Eligible Voters Don\u2019t Participate in Primaries - Bipartisan Policy Center",
+   "text": "Nearly 80% of Eligible Voters Don\u2019t Participate in Primaries - Bipartisan Policy Center. Nearly 80% of Eligible Voters Don\u2019t Participate in Primaries Bipartisan Policy Center",
+   "content_hash": "126b07d51c3b2015",
+   "raw_feed_hash": "b363fd4cdc8ad21c466888e3c9bef7c9309490dbadf9712f986645902afbcc4d",
+   "published_at": 1678176000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_bdfa7366e1",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "08a59b21d84612d3",
+   "source": "Brennan Center for Justice",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPZmV1cDNiZUZ3cjZiZEY3OWlQN0V0MjFDSFlibWstS2VndjkyRzc3bG1IZk94M2RGYndya1cwT3c3WGlpVkl3cFltSmk1bzJua1hGYzdwNkFqUy10MlV2TGs3RmVKYkFqQURGTWdnTUZveWNOazZMamp5aUN2NkJFdVUwV2d3R2hHR1ZWZzNwem5HWU9mdHVodWlFc0xoLWFhcXJZYjRKMkhzSnJIZHVvdHRfWWhSQXFkQ0RSVGlVc01scU1zLWh1WA?oc=5",
+   "title": "States Have Added Nearly 100 Restrictive Laws Since SCOTUS Gutted the Voting Rights Act 10 Years Ago - Brennan Center for Justice",
+   "text": "States Have Added Nearly 100 Restrictive Laws Since SCOTUS Gutted the Voting Rights Act 10 Years Ago - Brennan Center for Justice. States Have Added Nearly 100 Restrictive Laws Since SCOTUS Gutted the Voting Rights Act 10 Years Ago Brennan Center for Justice",
+   "content_hash": "14bfa94dd1bba807",
+   "raw_feed_hash": "b363fd4cdc8ad21c466888e3c9bef7c9309490dbadf9712f986645902afbcc4d",
+   "published_at": 1687503600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_bdfa7366e1",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "72aee3999118bdda:c0",
+   "source_id": "72aee3999118bdda",
+   "subject": "Beshear",
+   "predicate": "is",
+   "object": "fifth most popular U.S. governor",
+   "value": "",
+   "units": "",
+   "qualifiers": "ahead of reelection bid",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Poll: Beshear fifth most popular U.S. governor ahead of reelection bid",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681887600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Beshear"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c6a8308dad",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_301f6feece"
+   }
+  },
+  {
+   "claim_id": "86a4262772f22c55:c0",
+   "source_id": "86a4262772f22c55",
+   "subject": "New voter turnout data from 2022",
+   "predicate": "shows",
+   "object": "some surprises, including lower turnout for youth, women, and Black Americans in some states",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "New voter turnout data from 2022 shows some surprises, including lower turnout for youth, women, and Black Americans in some states",
+   "span_verified": true,
+   "event_time": "2022",
+   "publication_time": 1684393200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "youth",
+    "women",
+    "Black Americans"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_57b01b0b39",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_bdfa7366e1"
+   }
+  },
+  {
+   "claim_id": "ce780aef372d3529:c0",
+   "source_id": "ce780aef372d3529",
+   "subject": "Brandon Presley",
+   "predicate": "slips",
+   "object": "in governor's race poll",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Brandon Presley slips",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682665200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Brandon Presley"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_952a603733",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_301f6feece"
+   }
+  },
+  {
+   "claim_id": "ce780aef372d3529:c1",
+   "source_id": "ce780aef372d3529",
+   "subject": "Gov. Tate Reeves",
+   "predicate": "remains unpopular",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Gov. Tate Reeves remains unpopular",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682665200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Tate Reeves"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_952a603733",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_301f6feece"
+   }
+  },
+  {
+   "claim_id": "44f62489dba4386f:c0",
+   "source_id": "44f62489dba4386f",
+   "subject": "Tufts CIRCLE",
+   "predicate": "published",
+   "object": "State-by-State Youth Voter Turnout Data and the Impact of Election Laws in 2022",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "State-by-State Youth Voter Turnout Data and the Impact of Election Laws in 2022 - Tufts CIRCLE",
+   "span_verified": true,
+   "event_time": "2022",
+   "publication_time": 1680764400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Tufts CIRCLE"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9b6449fce9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_bdfa7366e1"
+   }
+  },
+  {
+   "claim_id": "12d91d16565f6ea2:c0",
+   "source_id": "12d91d16565f6ea2",
+   "subject": "Kentucky Gov. Beshear",
+   "predicate": "leads re-election race by",
+   "object": "10 points",
+   "value": "10",
+   "units": "points",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Poll: Kentucky Gov. Beshear leads re-election race by 10 points",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689922800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Kentucky Gov. Beshear"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_18714a2724",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_301f6feece"
+   }
+  },
+  {
+   "claim_id": "f1f790db31c533fb:c0",
+   "source_id": "f1f790db31c533fb",
+   "subject": "Voter turnout, 2018-2022",
+   "predicate": "is from",
+   "object": "Pew Research Center",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Voter turnout, 2018-2022 - Pew Research Center",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689145200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Pew Research Center"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_70eb87f8a6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_bdfa7366e1"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Beshear",
+   "normalized": "beshear",
+   "candidates": [
+    {
+     "entity_id": "ent_2bbef1a553",
+     "canonical": "beshear",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Beshear"
+     ]
+    },
+    {
+     "entity_id": "ent_7630d9bff6",
+     "canonical": "kentucky beshear",
+     "support": 0.2611,
+     "evidence_mentions": [
+      "Kentucky Gov. Beshear"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "youth",
+   "normalized": "youth",
+   "candidates": [
+    {
+     "entity_id": "ent_f9925d1162",
+     "canonical": "youth",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "youth"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "women",
+   "normalized": "women",
+   "candidates": [
+    {
+     "entity_id": "ent_b3ae4f722a",
+     "canonical": "women",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "women"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Black Americans",
+   "normalized": "black americans",
+   "candidates": [
+    {
+     "entity_id": "ent_622b41bd88",
+     "canonical": "black americans",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Black Americans"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Brandon Presley",
+   "normalized": "brandon presley",
+   "candidates": [
+    {
+     "entity_id": "ent_c5aa41fa19",
+     "canonical": "brandon presley",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Brandon Presley"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Tate Reeves",
+   "normalized": "tate reeves",
+   "candidates": [
+    {
+     "entity_id": "ent_3688371709",
+     "canonical": "tate reeves",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Tate Reeves"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Tufts CIRCLE",
+   "normalized": "tufts circle",
+   "candidates": [
+    {
+     "entity_id": "ent_e0e13379cc",
+     "canonical": "tufts circle",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Tufts CIRCLE"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Kentucky Gov. Beshear",
+   "normalized": "kentucky beshear",
+   "candidates": [
+    {
+     "entity_id": "ent_7630d9bff6",
+     "canonical": "kentucky beshear",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Kentucky Gov. Beshear"
+     ]
+    },
+    {
+     "entity_id": "ent_2bbef1a553",
+     "canonical": "beshear",
+     "support": 0.2611,
+     "evidence_mentions": [
+      "Beshear"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Pew Research Center",
+   "normalized": "pew research center",
+   "candidates": [
+    {
+     "entity_id": "ent_155dc0b74b",
+     "canonical": "pew research center",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Pew Research Center"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "72aee3999118bdda": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1681887600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681887600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ce780aef372d3529": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1682665200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682665200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "12d91d16565f6ea2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1689922800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689922800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fac0fe6e013c49aa": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1682406000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682406000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "afcf96001a3e64b4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1684134000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684134000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "eff8e1a8c6a1ed13": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1684220400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684220400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "11bd415bfda29a9a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1690182000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690182000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "5833f16bf2ad0bfb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1679814000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679814000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "86a4262772f22c55": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1684393200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684393200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "44f62489dba4386f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1680764400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680764400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f1f790db31c533fb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1689145200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689145200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ddf808ea8d3360fe": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1683010800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683010800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "78688e9b9f9e1609": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1684911600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684911600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "494e8fcd203c0cba": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1681455600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681455600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a9d41f6f6ec24443": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1678176000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678176000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "08a59b21d84612d3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1687503600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687503600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_c6a8308dad",
+   "member_ids": [
+    "72aee3999118bdda"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Spectrum News",
+   "primary_source": "Spectrum News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_952a603733",
+   "member_ids": [
+    "ce780aef372d3529"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Mississippi Today",
+   "primary_source": "Mississippi Today",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_18714a2724",
+   "member_ids": [
+    "12d91d16565f6ea2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NBC News",
+   "primary_source": "NBC News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ec17980ccd",
+   "member_ids": [
+    "fac0fe6e013c49aa"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Center For Politics",
+   "primary_source": "Center For Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7ee14f7dbf",
+   "member_ids": [
+    "afcf96001a3e64b4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "PBS",
+   "primary_source": "PBS",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_758b65a9e2",
+   "member_ids": [
+    "eff8e1a8c6a1ed13"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "split-ticket.org",
+   "primary_source": "split-ticket.org",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_11019e07de",
+   "member_ids": [
+    "11bd415bfda29a9a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WKU Public Radio",
+   "primary_source": "WKU Public Radio",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7db41ad9cb",
+   "member_ids": [
+    "5833f16bf2ad0bfb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Des Moines Register",
+   "primary_source": "The Des Moines Register",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_57b01b0b39",
+   "member_ids": [
+    "86a4262772f22c55"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Brookings",
+   "primary_source": "Brookings",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9b6449fce9",
+   "member_ids": [
+    "44f62489dba4386f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Tufts CIRCLE",
+   "primary_source": "Tufts CIRCLE",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_70eb87f8a6",
+   "member_ids": [
+    "f1f790db31c533fb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Pew Research Center",
+   "primary_source": "Pew Research Center",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_674705d503",
+   "member_ids": [
+    "ddf808ea8d3360fe"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Census.gov",
+   "primary_source": "Census.gov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2513e3cbf5",
+   "member_ids": [
+    "78688e9b9f9e1609"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Public Policy Institute of California",
+   "primary_source": "Public Policy Institute of California",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e06136e005",
+   "member_ids": [
+    "494e8fcd203c0cba"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Maine Beacon",
+   "primary_source": "Maine Beacon",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c976502f45",
+   "member_ids": [
+    "a9d41f6f6ec24443"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Bipartisan Policy Center",
+   "primary_source": "Bipartisan Policy Center",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_43481a9ea4",
+   "member_ids": [
+    "08a59b21d84612d3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Brennan Center for Justice",
+   "primary_source": "Brennan Center for Justice",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "72aee3999118bdda:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681887600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "86a4262772f22c55:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684393200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ce780aef372d3529:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682665200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ce780aef372d3529:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682665200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "44f62489dba4386f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680764400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "12d91d16565f6ea2:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689922800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f1f790db31c533fb:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689145200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "72aee3999118bdda:c0",
+  "86a4262772f22c55:c0",
+  "ce780aef372d3529:c0",
+  "ce780aef372d3529:c1",
+  "44f62489dba4386f:c0",
+  "12d91d16565f6ea2:c0",
+  "f1f790db31c533fb:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_45fd101e52": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_301f6feece": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_bdfa7366e1": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_6dc654ff13": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_b1f12ef9c9": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_4abcac03a2": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_fcbbb1106d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_45fd101e52",
+  "req_6dc654ff13",
+  "req_b1f12ef9c9",
+  "req_4abcac03a2",
+  "req_fcbbb1106d"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.78,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "5c491a6a38520292",
+ "bundle_hash": "5c491a6a38520292",
+ "_persisted_at": "2026-07-13T02:07:00Z"
+}

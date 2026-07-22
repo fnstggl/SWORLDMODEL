@@ -1,0 +1,367 @@
+{
+  "schema_version": "frozen.decision.cases.v1",
+  "description": "Hand-curated companion benchmark of real historical decision points across civic domains (nonprofit, university, entertainment, sports, diplomatic/IGO, monetary/fiscal, and individual public-figure decisions). Each case freezes the world at as_of: every evidence line is public knowledge BEFORE the decision; the actual next action (with its date) is the label and never enters any prompt. Curated from the well-documented public record; extends experiments/frozen_decision_cases.json with the same schema plus per-case domain and posture tags.",
+  "leakage_rule": "evidence[].date <= as_of < actual_action_date for every case; the harness asserts this and never renders actual_action into any actor input.",
+  "cases": [
+    {
+      "case_id": "gay_2024_harvard_resign",
+      "actor_id": "Claudine_Gay", "role": "university_president",
+      "as_of": "2023-12-29", "actual_action_date": "2024-01-02",
+      "situation": "You are Harvard's president. Since your December 5 congressional testimony on campus antisemitism, criticism has not subsided, and a widening set of plagiarism allegations against your academic work has drawn national attention. The Harvard Corporation publicly affirmed its confidence in you in mid-December, but donors, alumni, and some faculty remain in open revolt, and new complaints keep surfacing as the spring term approaches.",
+      "domain": "university", "posture": "contradicted_public_posture",
+      "goals": ["preserve her leadership and reputation", "protect Harvard's standing", "avoid a precedent of donor-driven ousters"],
+      "commitments": [{"statement": "The Harvard Corporation had publicly affirmed its confidence in Gay in mid-December", "binding": false}],
+      "evidence": [
+        {"date": "2023-12-05", "text": "Gay testified before a House committee on antisemitism; her answer about context drew bipartisan condemnation."},
+        {"date": "2023-12-12", "text": "The Harvard Corporation announced its unanimous support for Gay to remain president."},
+        {"date": "2023-12-20", "text": "Harvard said Gay would request corrections to two papers amid mounting plagiarism allegations."},
+        {"date": "2023-12-28", "text": "Additional plagiarism allegations were reported, intensifying public calls for her to step down."}
+      ],
+      "candidate_actions": ["hold_position", "delay", "exit", "concede"],
+      "actual_action": "exit",
+      "source_note": "Gay resigned the Harvard presidency on 2024-01-02, the shortest tenure in the university's history."
+    },
+    {
+      "case_id": "ryan_2025_uva_resign",
+      "actor_id": "James_Ryan", "role": "university_president",
+      "as_of": "2025-06-24", "actual_action_date": "2025-06-27",
+      "situation": "You are the president of the University of Virginia. The federal Justice Department has pressed the university over its diversity programs and, according to reports, has signaled that your departure would help resolve a civil-rights inquiry that threatens federal funding. Your governing board, reshaped by gubernatorial appointees, has already dismantled diversity offices this year. Faculty and Virginia's US senators are urging you to stay; federal officials are pressing the other way.",
+      "domain": "university", "posture": "no_clear_posture",
+      "goals": ["protect the university's federal funding", "defend institutional independence", "preserve his ability to lead"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2025-03-07", "text": "UVA's board voted to dissolve the university's central diversity, equity, and inclusion office under state pressure."},
+        {"date": "2025-06-17", "text": "Reports emerged that the Justice Department was pressuring UVA over diversity programs and Ryan's leadership."},
+        {"date": "2025-06-23", "text": "The Justice Department reportedly signaled that Ryan's departure was sought to settle the civil-rights inquiry."},
+        {"date": "2025-06-24", "text": "Senators Warner and Kaine publicly warned against forcing Ryan out of the presidency."}
+      ],
+      "candidate_actions": ["hold_position", "exit", "seek_mediator", "delay"],
+      "actual_action": "exit",
+      "source_note": "Ryan announced his resignation as UVA president on 2025-06-27 amid federal pressure over diversity programs."
+    },
+    {
+      "case_id": "harvard_2025_reject_demands",
+      "actor_id": "Harvard_University", "role": "university_administration",
+      "as_of": "2025-04-11", "actual_action_date": "2025-04-14",
+      "situation": "You lead Harvard University. The federal administration, having announced a review of billions of dollars in funding, has now sent a sweeping list of demands touching governance, admissions, hiring, and oversight of 'viewpoint diversity.' A peer institution recently agreed to several federal demands. Complying could preserve funding but cede institutional control; resisting risks an immediate freeze of research money.",
+      "domain": "university", "posture": "no_clear_posture",
+      "goals": ["preserve academic and governance independence", "protect federal research funding", "avoid an authoritarian precedent"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2025-03-21", "text": "Columbia agreed to a set of federal demands to restore funding, setting a precedent for peer schools."},
+        {"date": "2025-03-31", "text": "The administration announced a review of about $9B in federal support to Harvard."},
+        {"date": "2025-04-11", "text": "The administration sent Harvard an expanded list of demands on governance, admissions, and audits of 'viewpoint diversity.'"},
+        {"date": "2025-04-11", "text": "Faculty groups and the AAUP filed suit and urged the university to resist the demands."}
+      ],
+      "candidate_actions": ["accept", "reject", "delay", "counteroffer"],
+      "actual_action": "reject",
+      "source_note": "Harvard rejected the administration's demands on 2025-04-14 and sued after the government froze about $2.2B in funding."
+    },
+    {
+      "case_id": "lapierre_2024_nra_resign",
+      "actor_id": "Wayne_LaPierre", "role": "nonprofit_chief_executive",
+      "as_of": "2024-01-02", "actual_action_date": "2024-01-05",
+      "situation": "You have led the National Rifle Association as its chief executive for three decades. A New York civil trial over alleged financial misconduct at the organization is about to begin, with you named as a central defendant. You have weathered internal revolts and legal threats before and have continued to run the NRA. Your health and the coming trial now weigh on the question of your role.",
+      "domain": "nonprofit", "posture": "no_clear_posture",
+      "goals": ["protect himself legally", "preserve the NRA", "manage his legacy"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2019-04-27", "text": "LaPierre survived an internal attempt to oust him at the NRA's annual meeting."},
+        {"date": "2020-08-06", "text": "New York's attorney general sued to dissolve the NRA, alleging LaPierre diverted millions."},
+        {"date": "2023-11-27", "text": "A New York court set the civil trial over NRA financial misconduct to begin January 8, 2024."},
+        {"date": "2024-01-02", "text": "LaPierre remained the NRA's executive vice president as the trial date neared."}
+      ],
+      "candidate_actions": ["hold_position", "delay", "exit", "escalate"],
+      "actual_action": "exit",
+      "source_note": "LaPierre announced his resignation as NRA chief on 2024-01-05, effective January 31, days before his civil trial opened."
+    },
+    {
+      "case_id": "komen_2012_planned_parenthood",
+      "actor_id": "Komen_Foundation", "role": "nonprofit_foundation",
+      "as_of": "2012-02-02", "actual_action_date": "2012-02-03",
+      "situation": "You lead the Susan G. Komen breast-cancer foundation. Two days ago your organization confirmed it was ending grants to Planned Parenthood, and the reaction has been ferocious: a torrent of criticism, a surge of donations to Planned Parenthood, a letter from more than two dozen senators, and public dissent from several of your own local affiliates. The foundation's leadership is under intense pressure over the decision.",
+      "domain": "nonprofit", "posture": "contradicted_public_posture",
+      "goals": ["protect the foundation's mission and brand", "stop the donor and volunteer exodus", "stay out of partisan politics"],
+      "commitments": [{"statement": "Komen had publicly defended the funding decision as apolitical", "binding": false}],
+      "evidence": [
+        {"date": "2012-01-31", "text": "Komen confirmed it was cutting grants to Planned Parenthood for breast-cancer screenings."},
+        {"date": "2012-02-01", "text": "A public backlash erupted and Planned Parenthood reported a large surge of replacement donations."},
+        {"date": "2012-02-02", "text": "More than two dozen US senators sent a letter urging Komen to reverse the decision."},
+        {"date": "2012-02-02", "text": "Several Komen affiliates publicly broke with the national decision."}
+      ],
+      "candidate_actions": ["hold_position", "concede", "delay", "clarify"],
+      "actual_action": "concede",
+      "source_note": "Komen reversed course on 2012-02-03, restoring Planned Parenthood's eligibility for grants after three days of backlash."
+    },
+    {
+      "case_id": "disney_2025_kimmel_return",
+      "actor_id": "Walt_Disney_Company", "role": "media_conglomerate",
+      "as_of": "2025-09-20", "actual_action_date": "2025-09-23",
+      "situation": "You are the Walt Disney Company. Five days ago your ABC network pulled a late-night program off the air indefinitely after the host's monologue about a political killing, amid pressure from a federal regulator and threats by major affiliate groups to drop the show. The suspension has triggered a fierce backlash of open letters, boycott threats, and subscriber cancellations, even as some station owners still refuse to carry the program.",
+      "domain": "entertainment", "posture": "contradicted_public_posture",
+      "goals": ["limit reputational and financial damage", "protect relationships with regulators and affiliates", "avoid appearing to either cave or to censor"],
+      "commitments": [{"statement": "Disney had pulled the show indefinitely, citing the host's monologue", "binding": false}],
+      "evidence": [
+        {"date": "2025-09-17", "text": "ABC pulled 'Jimmy Kimmel Live!' indefinitely after the host's remarks about a high-profile political killing."},
+        {"date": "2025-09-17", "text": "A federal regulator suggested consequences and two large affiliate groups said they would preempt the show."},
+        {"date": "2025-09-19", "text": "Hundreds of performers and writers signed an open letter defending the host as boycott threats spread."},
+        {"date": "2025-09-20", "text": "Free-speech groups, unions, and some shareholders pressed the company to reverse course."}
+      ],
+      "candidate_actions": ["hold_position", "delay", "concede", "escalate"],
+      "actual_action": "concede",
+      "source_note": "Disney returned 'Jimmy Kimmel Live!' to the air on 2025-09-23, reversing the indefinite suspension."
+    },
+    {
+      "case_id": "cbs_2025_late_show_end",
+      "actor_id": "CBS", "role": "broadcast_network",
+      "as_of": "2025-07-16", "actual_action_date": "2025-07-17",
+      "situation": "You run CBS and its parent, which is awaiting federal approval of a merger. Your flagship late-night program leads its time slot but late-night television is bleeding advertising revenue, and the show is reportedly unprofitable. Its host has just publicly attacked the company's recent legal settlement with the president. You must decide the program's future.",
+      "domain": "entertainment", "posture": "no_clear_posture",
+      "goals": ["stem late-night financial losses", "secure the pending merger approval", "avoid accusations of political retaliation"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2025-05-01", "text": "The parent company's merger with a studio awaited federal regulatory approval."},
+        {"date": "2025-07-02", "text": "The company settled the president's lawsuit against '60 Minutes' for $16 million."},
+        {"date": "2025-07-14", "text": "The late-night host called the settlement 'a big fat bribe' on air."},
+        {"date": "2025-07-16", "text": "Late-night television faced steep advertising declines, and the program was reported to be unprofitable."}
+      ],
+      "candidate_actions": ["hold_position", "exit", "fire", "delay"],
+      "actual_action": "exit",
+      "source_note": "CBS announced on 2025-07-17 that it would end 'The Late Show' in May 2026, calling it a financial decision."
+    },
+    {
+      "case_id": "wbd_2022_batgirl_shelve",
+      "actor_id": "Warner_Bros_Discovery", "role": "media_studio",
+      "as_of": "2022-08-01", "actual_action_date": "2022-08-02",
+      "situation": "You run the newly merged Warner Bros. Discovery, under a mandate to cut roughly three billion dollars in costs and to pivot away from streaming-only films toward theatrical releases. 'Batgirl,' a completed film made for about ninety million dollars for a streaming service, is in post-production, and test screenings reportedly disappointed. Earnings are days away, and you must decide what to do with the finished picture.",
+      "domain": "entertainment", "posture": "no_clear_posture",
+      "goals": ["hit aggressive cost-savings targets", "reposition the film strategy toward theatrical", "protect the superhero brand"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2022-04-08", "text": "The Warner Bros.-Discovery merger closed; the new CEO pledged deep cost cuts."},
+        {"date": "2022-05-31", "text": "'Batgirl,' an ~$90M film made for streaming, was in post-production."},
+        {"date": "2022-07-20", "text": "Reported test screenings of 'Batgirl' underwhelmed executives."},
+        {"date": "2022-08-01", "text": "Targeting ~$3B in savings, the studio was shifting from streaming-only films toward theatrical ahead of Aug 4 earnings."}
+      ],
+      "candidate_actions": ["launch", "delay_launch", "withdraw", "sell"],
+      "actual_action": "withdraw",
+      "source_note": "Warner Bros. Discovery shelved the finished 'Batgirl' film on 2022-08-02, opting never to release it."
+    },
+    {
+      "case_id": "mavericks_2025_doncic_trade",
+      "actor_id": "Dallas_Mavericks", "role": "team_front_office",
+      "as_of": "2025-01-30", "actual_action_date": "2025-02-02",
+      "situation": "You run basketball operations for the Dallas Mavericks. Your 25-year-old superstar led the team to the NBA Finals last spring and is eligible this summer for a five-year supermax extension the franchise is widely expected to offer. He has been sidelined by a calf injury, and there has been quiet friction over conditioning. You must decide how to handle his future with the team.",
+      "domain": "sports", "posture": "contradicted_public_posture",
+      "goals": ["maximize the franchise's competitive window", "manage long-term salary and roster risk", "protect the team's public standing"],
+      "commitments": [{"statement": "The star was eligible for a supermax extension the Mavericks were widely expected to offer", "binding": false}],
+      "evidence": [
+        {"date": "2024-06-17", "text": "Dončić led the Mavericks to the NBA Finals as the team's franchise centerpiece."},
+        {"date": "2024-12-25", "text": "Dončić suffered a calf strain and was sidelined for several weeks."},
+        {"date": "2025-01-15", "text": "Dončić was eligible that summer for a five-year supermax extension projected near $345 million."},
+        {"date": "2025-01-28", "text": "The general manager had publicly described Dončić as the face of the franchise, and an extension was widely expected."}
+      ],
+      "candidate_actions": ["hold_position", "sell", "counteroffer", "delay"],
+      "actual_action": "sell",
+      "source_note": "Dallas traded Dončić to the Lakers in a shock deal reported on 2025-02-02."
+    },
+    {
+      "case_id": "pennstate_2025_franklin_fire",
+      "actor_id": "Penn_State", "role": "university_athletics",
+      "as_of": "2025-10-11", "actual_action_date": "2025-10-12",
+      "situation": "You are Penn State's athletic leadership. Your football team began the season ranked in the top three but has just lost its third straight game, falling to .500 after upsets by an unranked opponent and, today, by Northwestern. Your head coach is signed to a long-term contract with a buyout reported near fifty million dollars. You must decide his status.",
+      "domain": "sports", "posture": "no_clear_posture",
+      "goals": ["restore a championship-caliber program", "manage a massive financial buyout", "retain recruits and donors"],
+      "commitments": [{"statement": "The coach was signed to a long-term contract with a buyout reported near $50 million", "binding": true, "prohibits": []}],
+      "evidence": [
+        {"date": "2025-09-27", "text": "Third-ranked Penn State lost in double overtime to Oregon, its first loss of the season."},
+        {"date": "2025-10-04", "text": "Penn State was upset by a then-winless UCLA team."},
+        {"date": "2025-10-11", "text": "Penn State lost to Northwestern, its third straight defeat, falling to 3-3."},
+        {"date": "2025-10-11", "text": "The head coach's contract buyout was reported at roughly $50 million."}
+      ],
+      "candidate_actions": ["hold_position", "delay", "fire", "amend"],
+      "actual_action": "fire",
+      "source_note": "Penn State fired head coach James Franklin on 2025-10-12 after a third straight loss."
+    },
+    {
+      "case_id": "pgatour_2023_pif_framework",
+      "actor_id": "PGA_Tour", "role": "sports_league_commissioner",
+      "as_of": "2023-06-01", "actual_action_date": "2023-06-06",
+      "situation": "You are the commissioner of the PGA Tour. For a year you have waged open war against a Saudi-backed rival golf circuit, suspending players who defected, fighting dueling antitrust lawsuits, and framing the conflict in stark moral terms. The litigation is entrenched and costly, and the Saudi sovereign wealth fund has effectively unlimited resources. You must decide the Tour's next move in the conflict.",
+      "domain": "sports", "posture": "contradicted_public_posture",
+      "goals": ["preserve the Tour's control of elite golf", "end a costly legal and financial war", "protect players and sponsors"],
+      "commitments": [{"statement": "The commissioner had publicly vowed the Tour would never do business with the Saudi fund or the rival circuit", "binding": false}],
+      "evidence": [
+        {"date": "2022-06-09", "text": "The Saudi-backed LIV Golf circuit launched; the PGA Tour suspended participating players."},
+        {"date": "2022-08-03", "text": "LIV players and the PGA Tour became locked in dueling antitrust litigation."},
+        {"date": "2023-02-15", "text": "The commissioner had repeatedly cast the rivalry in moral terms, invoking families of 9/11 victims."},
+        {"date": "2023-05-15", "text": "The legal fight appeared entrenched with no resolution in sight."}
+      ],
+      "candidate_actions": ["hold_position", "escalate", "seek_mediator", "coordinate", "concede"],
+      "actual_action": "coordinate",
+      "source_note": "The PGA Tour announced a shock framework agreement to partner with Saudi Arabia's PIF and LIV Golf on 2023-06-06."
+    },
+    {
+      "case_id": "israel_2025_gaza_ceasefire",
+      "actor_id": "Israeli_Cabinet", "role": "national_cabinet",
+      "as_of": "2025-01-16", "actual_action_date": "2025-01-17",
+      "situation": "You lead Israel's government. After fifteen months of war in Gaza, mediators announced yesterday that Israel and Hamas have reached a phased ceasefire-and-hostage-release agreement. Bringing hostages home is a national priority, but hard-right coalition partners threaten to bring down the government if the deal passes, and the leadership has long vowed to continue until 'total victory.' The cabinet must ratify or block the agreement.",
+      "domain": "diplomatic", "posture": "contradicted_public_posture",
+      "goals": ["bring hostages home", "preserve the governing coalition", "sustain pressure on Hamas"],
+      "commitments": [{"statement": "The prime minister had repeatedly vowed to fight until 'total victory' over Hamas", "binding": false}],
+      "evidence": [
+        {"date": "2024-11-01", "text": "Earlier US-, Qatar-, and Egypt-brokered ceasefire rounds had repeatedly collapsed over terms."},
+        {"date": "2025-01-15", "text": "Mediators announced Israel and Hamas had reached a phased ceasefire-and-hostage-release agreement."},
+        {"date": "2025-01-15", "text": "A far-right minister threatened to quit the coalition if the deal was approved."},
+        {"date": "2025-01-16", "text": "The prime minister said a last-minute dispute with Hamas had delayed the cabinet's ratification vote."}
+      ],
+      "candidate_actions": ["reject", "accept", "delay", "amend"],
+      "actual_action": "accept",
+      "source_note": "Israel's cabinet approved the Gaza ceasefire-and-hostage-release deal on 2025-01-17."
+    },
+    {
+      "case_id": "us_2024_palestine_unsc_veto",
+      "actor_id": "United_States", "role": "un_security_council_member",
+      "as_of": "2024-04-15", "actual_action_date": "2024-04-18",
+      "situation": "You are the United States at the UN Security Council. Algeria has advanced a resolution recommending full UN membership for the State of Palestine, and a vote is scheduled this week. Your longstanding position is that Palestinian statehood should be achieved through direct negotiations rather than a Security Council vote, but most other members support the measure and blocking it will draw regional and diplomatic criticism.",
+      "domain": "diplomatic", "posture": "followed_public_posture",
+      "goals": ["uphold its negotiation-first policy", "protect its ally", "limit diplomatic isolation"],
+      "commitments": [{"statement": "The US had long held that Palestinian statehood must come through direct negotiations", "binding": false}],
+      "evidence": [
+        {"date": "2024-04-02", "text": "Algeria circulated a draft resolution recommending full UN membership for the State of Palestine."},
+        {"date": "2024-04-11", "text": "The Security Council's admissions committee failed to reach a consensus recommendation."},
+        {"date": "2024-04-12", "text": "US officials reiterated that Palestinian statehood should come through direct negotiations."},
+        {"date": "2024-04-15", "text": "A Security Council vote on the membership resolution was scheduled for later that week."}
+      ],
+      "candidate_actions": ["support", "abstain", "veto", "delay"],
+      "actual_action": "veto",
+      "source_note": "The United States vetoed the Palestinian UN membership resolution on 2024-04-18."
+    },
+    {
+      "case_id": "us_2025_tariff_pause",
+      "actor_id": "US_Administration", "role": "national_executive",
+      "as_of": "2025-04-07", "actual_action_date": "2025-04-09",
+      "situation": "You are the US administration. A week ago you imposed sweeping 'reciprocal' tariffs on nearly every trading partner; markets have plunged, wiping trillions from global equities, and higher country-specific rates are set to take effect within days. Business leaders, foreign governments, and some allies are pressing for relief, while you have publicly insisted the tariffs will stay. You must decide the next step.",
+      "domain": "diplomatic", "posture": "contradicted_public_posture",
+      "goals": ["reset trade terms in its favor", "avoid a market and economic crisis", "preserve credibility and leverage"],
+      "commitments": [{"statement": "The president had publicly insisted the tariffs would remain and would not be paused", "binding": false}],
+      "evidence": [
+        {"date": "2025-04-02", "text": "The administration announced sweeping 'reciprocal' tariffs on nearly all trading partners."},
+        {"date": "2025-04-03", "text": "Global markets plunged, wiping trillions from equities over two days."},
+        {"date": "2025-04-05", "text": "A baseline 10% tariff took effect, with higher country-specific rates set for April 9."},
+        {"date": "2025-04-07", "text": "The president publicly rejected calls to pause the tariffs and urged countries to negotiate."}
+      ],
+      "candidate_actions": ["hold_position", "escalate", "delay", "concede"],
+      "actual_action": "delay",
+      "source_note": "The administration announced a 90-day pause on most reciprocal tariffs on 2025-04-09 while raising tariffs on China."
+    },
+    {
+      "case_id": "boj_2024_end_negative_rates",
+      "actor_id": "Bank_of_Japan", "role": "central_bank",
+      "as_of": "2024-03-15", "actual_action_date": "2024-03-19",
+      "situation": "You are the Bank of Japan's policy board. Inflation has run at or above your two-percent target for many months, and the spring wage negotiations have just produced the largest pay increases in over three decades, the confirmation you have said you needed. Ending the world's last negative-interest-rate policy and yield-curve control would be historic; moving too soon risks choking a fragile recovery. You meet this week.",
+      "domain": "monetary", "posture": "followed_public_posture",
+      "goals": ["normalize policy without derailing the recovery", "maintain credibility on the inflation target", "avoid market disruption"],
+      "commitments": [{"statement": "The BOJ had guided that normalization required confirmation of sustained wage growth", "binding": false}],
+      "evidence": [
+        {"date": "2024-01-19", "text": "Japan's inflation had held at or above the 2% target for many months."},
+        {"date": "2024-03-13", "text": "Japan's largest labor federation reported the biggest annual wage increases in over three decades."},
+        {"date": "2024-03-14", "text": "Multiple reports said the BOJ board was leaning toward ending negative rates at the March meeting."},
+        {"date": "2024-03-15", "text": "Markets priced a strong chance the BOJ would exit negative rates and scrap yield-curve control."}
+      ],
+      "candidate_actions": ["hold_position", "exit", "delay", "escalate"],
+      "actual_action": "exit",
+      "source_note": "The Bank of Japan ended negative interest rates and yield-curve control on 2024-03-19, its first rate hike since 2007."
+    },
+    {
+      "case_id": "tsipras_2015_bailout_accept",
+      "actor_id": "Alexis_Tsipras", "role": "head_of_government",
+      "as_of": "2015-07-09", "actual_action_date": "2015-07-13",
+      "situation": "You are Greece's prime minister. Days ago you called a referendum in which voters resoundingly rejected the creditors' bailout terms, and your finance minister then resigned. Yet the banks are shuttered, the economy is seizing, and the creditors are offering a new loan only on terms as harsh as those just rejected, with euro membership itself now in question. A eurozone summit will decide Greece's fate.",
+      "domain": "monetary", "posture": "contradicted_public_posture",
+      "goals": ["keep Greece in the euro", "honor the referendum result", "reopen the banks and stabilize the economy"],
+      "commitments": [{"statement": "Tsipras had campaigned for the 'No' vote against the creditors' terms", "binding": false}],
+      "evidence": [
+        {"date": "2015-07-05", "text": "Greek voters rejected the creditors' bailout terms in a referendum, backing Tsipras's 'No' call."},
+        {"date": "2015-07-06", "text": "Finance Minister Varoufakis resigned the morning after the vote."},
+        {"date": "2015-07-08", "text": "Greece formally requested a new three-year ESM loan."},
+        {"date": "2015-07-09", "text": "Athens submitted reform proposals close to the creditors' demands to remain in the euro."}
+      ],
+      "candidate_actions": ["reject", "exit", "accept", "hold_position"],
+      "actual_action": "accept",
+      "source_note": "Tsipras accepted a new three-year bailout on harsh terms at the 2015-07-13 eurozone summit despite the 'No' vote."
+    },
+    {
+      "case_id": "ubs_2023_credit_suisse",
+      "actor_id": "UBS", "role": "global_bank",
+      "as_of": "2023-03-18", "actual_action_date": "2023-03-19",
+      "situation": "You are UBS. Over the weekend Swiss authorities have pressed you to take over your stricken rival Credit Suisse, whose shares collapsed after its largest shareholder ruled out more capital and whose central-bank liquidity backstop failed to stop client outflows. A deal before markets open Monday could avert a wider crisis, but the target carries enormous risks and legal exposures. You must decide before the open.",
+      "domain": "monetary", "posture": "no_clear_posture",
+      "goals": ["avoid a systemic banking crisis", "protect its own balance sheet and shareholders", "secure favorable terms and guarantees"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2023-03-15", "text": "Credit Suisse shares plunged after its largest shareholder ruled out providing more capital."},
+        {"date": "2023-03-16", "text": "The Swiss National Bank extended a CHF 50B liquidity backstop that failed to halt outflows."},
+        {"date": "2023-03-17", "text": "Swiss authorities pressed for a UBS takeover of Credit Suisse before markets reopened."},
+        {"date": "2023-03-18", "text": "Deposit and asset outflows from Credit Suisse accelerated as a weekend rescue was negotiated."}
+      ],
+      "candidate_actions": ["reject", "acquire", "delay", "counteroffer"],
+      "actual_action": "acquire",
+      "source_note": "UBS agreed to acquire Credit Suisse in a state-brokered rescue announced 2023-03-19."
+    },
+    {
+      "case_id": "biden_2024_drop_out",
+      "actor_id": "Joe_Biden", "role": "us_president",
+      "as_of": "2024-07-17", "actual_action_date": "2024-07-21",
+      "situation": "You are the President of the United States and your party's presumptive nominee. Since your widely panned debate performance in late June, a swelling chorus of your own party's lawmakers and donors has urged you to leave the race, and reports say senior leaders have privately told you your path is collapsing. You have repeatedly insisted you will stay in, and you are now isolating after a COVID-19 diagnosis. You must decide whether to continue your candidacy.",
+      "domain": "personal", "posture": "contradicted_public_posture",
+      "goals": ["preserve his candidacy and legacy", "give his party the best chance to win", "protect his agenda"],
+      "commitments": [{"statement": "Biden had repeatedly and publicly insisted he would remain in the race", "binding": false}],
+      "evidence": [
+        {"date": "2024-06-27", "text": "Biden's halting debate performance against Trump triggered widespread alarm in his party."},
+        {"date": "2024-07-15", "text": "More than a dozen additional congressional Democrats had publicly called for him to step aside."},
+        {"date": "2024-07-16", "text": "Reports said senior Democrats, including Pelosi and Schumer, had privately warned Biden his path was collapsing."},
+        {"date": "2024-07-17", "text": "Biden tested positive for COVID-19 and went into isolation at his Delaware home."}
+      ],
+      "candidate_actions": ["hold_position", "delay", "exit", "concede"],
+      "actual_action": "exit",
+      "source_note": "Biden withdrew from the presidential race on 2024-07-21 and endorsed Kamala Harris."
+    },
+    {
+      "case_id": "bannon_2021_subpoena_defy",
+      "actor_id": "Steve_Bannon", "role": "former_official",
+      "as_of": "2021-10-11", "actual_action_date": "2021-10-14",
+      "situation": "You are a former White House strategist. The House committee investigating January 6 has subpoenaed you for documents and testimony, with deadlines this week. The former president's lawyer has urged ex-aides to refuse cooperation on executive-privilege grounds, and the committee has signaled it will pursue criminal contempt against anyone who defies its demands. You must decide how to respond to the subpoena.",
+      "domain": "personal", "posture": "followed_public_posture",
+      "goals": ["avoid self-incrimination and preserve leverage", "align with the former president's stance", "contest the committee's legitimacy"],
+      "commitments": [{"statement": "Bannon had signaled through counsel he would resist the subpoena on privilege grounds", "binding": false}],
+      "evidence": [
+        {"date": "2021-09-23", "text": "The House January 6 committee subpoenaed Bannon for documents and testimony."},
+        {"date": "2021-10-07", "text": "The former president's lawyer urged ex-aides to refuse cooperation, citing executive privilege."},
+        {"date": "2021-10-08", "text": "Bannon's attorney said he would not comply until privilege issues were resolved or a court ruled."},
+        {"date": "2021-10-11", "text": "The committee signaled it would pursue criminal contempt for non-compliance."}
+      ],
+      "candidate_actions": ["accept", "delay", "reject", "seek_mediator"],
+      "actual_action": "reject",
+      "source_note": "Bannon defied the January 6 committee subpoena by the 2021-10-14 deadline and was later convicted of contempt of Congress."
+    },
+    {
+      "case_id": "northam_2019_refuse_resign",
+      "actor_id": "Ralph_Northam", "role": "state_governor",
+      "as_of": "2019-02-01", "actual_action_date": "2019-02-02",
+      "situation": "You are the governor of Virginia. Yesterday a photograph from your 1984 medical-school yearbook page, showing one person in blackface and another in a Ku Klux Klan hood, was published, and you issued a statement apologizing for appearing in it. Overnight, calls for your resignation have poured in from across your own party, including presidential candidates. You face the state's press today and must decide your course.",
+      "domain": "personal", "posture": "contradicted_public_posture",
+      "goals": ["remain in office", "salvage his reputation", "avoid abandoning his agenda"],
+      "commitments": [{"statement": "Northam had issued a statement the previous day apologizing for appearing in the photo", "binding": false}],
+      "evidence": [
+        {"date": "2019-02-01", "text": "A photo from Northam's 1984 medical-school yearbook page, showing blackface and a KKK hood, was published."},
+        {"date": "2019-02-01", "text": "Northam issued a statement apologizing and acknowledging he was in the photo."},
+        {"date": "2019-02-01", "text": "Numerous Democratic officials and 2020 presidential candidates called on him to resign."},
+        {"date": "2019-02-01", "text": "Virginia's political establishment widely expected his resignation within days."}
+      ],
+      "candidate_actions": ["exit", "hold_position", "concede", "delay"],
+      "actual_action": "hold_position",
+      "source_note": "Northam reversed his apology and refused to resign at a 2019-02-02 press conference, denying he was in the photo."
+    }
+  ]
+}

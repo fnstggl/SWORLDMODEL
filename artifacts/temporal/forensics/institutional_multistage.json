@@ -1,0 +1,552 @@
+{
+ "case_id": "institutional_multistage",
+ "input": {
+  "question": "Will the city zoning board approve the depot conversion permit application by September 30?",
+  "as_of": "2026-07-06",
+  "horizon": "2026-09-30",
+  "intervention": null,
+  "user_context": {
+   "note": "application filed July 3; the board meets monthly; a public comment period is required before any vote"
+  }
+ },
+ "simulation_status": "completed_with_degradation",
+ "support_grade": "exploratory",
+ "distribution": {
+  "approved": 0.5,
+  "denied": 0.5
+ },
+ "generated_causal_world": {
+  "plan_hash": "f602fc78e570",
+  "manifest": {
+   "phase1_compiler": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "always required",
+    "version": "compiler",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase2_evidence": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "as_of supplied",
+    "version": "phase2-1.0",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase3_posterior": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "evidence bundle present",
+    "version": "phase3",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase4_actor_policy": {
+    "available": true,
+    "selected": true,
+    "executed": false,
+    "omitted": true,
+    "reason": "mechanism selected but produced no StateDelta (event never consumed)",
+    "version": "phase4",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": true,
+     "why": "causal signal ['causal_dependencies.strategic_actor_decisions'] + declared strategic actors"
+    },
+    "status": "blocked_no_mechanism"
+   },
+   "phase6_registry": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "social causal mechanism required (dependency signal)",
+    "version": "",
+    "n_events": 0,
+    "n_state_deltas": 4,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": true,
+     "why": "social causal mechanism required (dependency signal)"
+    },
+    "status": "causally_active"
+   },
+   "phase7_nonlinear": {
+    "available": true,
+    "selected": false,
+    "executed": false,
+    "omitted": true,
+    "reason": "no nonlinear causal structure named",
+    "version": "phase7",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": true,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": false,
+     "why": "no nonlinear causal structure named"
+    },
+    "status": "no_op_causally_irrelevant"
+   },
+   "phase8_persistence": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "default-on persistence-aware rollout",
+    "version": "phase8-1.0",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase9_populations": {
+    "available": true,
+    "selected": false,
+    "executed": false,
+    "omitted": true,
+    "reason": "populations (constructible) declared but no causal process of this kind \u2014 context only",
+    "version": "phase9-pop",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": true,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": false,
+     "why": "populations (constructible) declared but no causal process of this kind \u2014 context only"
+    },
+    "status": "no_op_causally_irrelevant"
+   },
+   "phase9_networks": {
+    "available": true,
+    "selected": false,
+    "executed": false,
+    "omitted": true,
+    "reason": "relations (or inferable entity/population substrate) declared but no causal process of this kind \u2014 context only",
+    "version": "",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": true,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": false,
+     "why": "relations (or inferable entity/population substrate) declared but no causal process of this kind \u2014 context only"
+    },
+    "status": "no_op_causally_irrelevant"
+   },
+   "phase10_institutions": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "causal signal ['causal_dependencies.institutional_decision_process'] + declared institutions",
+    "version": "phase10",
+    "n_events": 0,
+    "n_state_deltas": 2,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "normalization": {
+     "executable_rules_before": 2,
+     "executable_rules_after": 2,
+     "institutions": 2,
+     "rules_total": 2,
+     "already_executable": 2,
+     "normalized": 0,
+     "unmapped_to_procedure": 0
+    },
+    "relevance": {
+     "required": true,
+     "why": "causal signal ['causal_dependencies.institutional_decision_process'] + declared institutions"
+    },
+    "status": "causally_active"
+   },
+   "phase11_recompilation": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "observations available",
+    "version": "phase11",
+    "n_events": 12,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   }
+  },
+  "fidelity": {
+   "entities_added": 5,
+   "relations_added": 16,
+   "institutions_grounded": 2
+  },
+  "scheduled_reality": {
+   "n_facts_extracted": 0,
+   "n_scheduled_in_window": 0,
+   "n_outcome_entailing": 0,
+   "facts": []
+  },
+  "event_time": {
+   "contract": "binary_first_passage",
+   "options": [
+    "approved",
+    "denied"
+   ],
+   "event_polarity": "occurrence_resolves_yes",
+   "polarity_source": "criterion_parser",
+   "deadline_ts": 1790726400.0,
+   "n_absorbing_fact_events": 0,
+   "fact_floor": 0.0,
+   "n_opposite_direction_facts": 0,
+   "absorbing_institutions": [
+    "zoning_board_quorum_rule"
+   ],
+   "n_residual_processes": 0,
+   "scheduling": "continuous_first_passage",
+   "residual_skipped_reason": "institutional decision is the resolution path",
+   "consumed_state": [
+    {
+     "var": "mechanism_outcome:fallback:strategic_actor_decisions",
+     "weight": 0.1
+    },
+    {
+     "var": "mechanism_outcome:fallback:institutional_decision_process",
+     "weight": 0.1
+    },
+    {
+     "var": "actor_action_share",
+     "weight": 0.15
+    }
+   ],
+   "endogenous_channels": [],
+   "family": "approval_or_passage",
+   "hazard_curve_source": "fitted_family_survival(n=1)",
+   "fallback_rate_provenance": "global_pooled",
+   "posterior_calibrated": true,
+   "n_resolver_events_removed": 1
+  }
+ },
+ "temporal_model_report": {
+  "temporal_model_hash": "5a4e173faea9a831",
+  "n_channels": 2,
+  "n_actor_profiles": 0,
+  "n_institutional_processes": 1,
+  "n_continuous_processes": 0,
+  "n_deadline_events": 1,
+  "n_recurrence_events": 3,
+  "n_recurrences_accepted": 1,
+  "n_critic_findings": 13,
+  "n_llm_calls": 4,
+  "degraded": null,
+  "unresolved": [
+   "exact scheduling of board meetings beyond assumed monthly pattern",
+   "whether board can hold special meeting before next regular meeting",
+   "channels.filing_channel.transmission: demoted by temporal_critic_B \u2014 Exact timestamp 2026-07-03T00:00:00Z for filing is given without evidence; should be a range or unresolved.",
+   "channels.filing_channel.delivery: demoted by temporal_critic_B \u2014 Exact delivery timestamp same as transmission without evidence; should be unresolved or range.",
+   "deadlines[0].timing: demoted by temporal_critic_B \u2014 Exact deadline timestamp 1790726398 (just before horizon) is invented precision; no evidence for exact second.",
+   "institutional_processes[0].stages[2].deadline: demoted by temporal_critic_B \u2014 Exact deadline timestamp for board_vote stage is invented precision; should be unresolved."
+  ]
+ },
+ "temporal_runtime": {
+  "event_counts": {
+   "decision_opportunity": 2,
+   "external_shock": 2,
+   "observe_evidence": 16,
+   "recurring_obligation": 6,
+   "structural_process_prior": 4,
+   "actor_action_aggregation": 2,
+   "institutional_decision": 2,
+   "deadline": 2
+  },
+  "actor_invocations": {},
+  "n_decision_triggers": 0,
+  "decision_triggers": [],
+  "delivery_to_attention_delays_s": null,
+  "attention_to_decision_delays_s": null,
+  "decision_to_action_delays_s": null,
+  "action_to_completion_delays_s": null,
+  "same_time_batches": 16,
+  "max_batch_size": 8,
+  "max_microsteps": 1,
+  "simultaneity_conflicts": [],
+  "n_simultaneity_conflicts": 0,
+  "events_canceled": 0,
+  "events_rescheduled": 0,
+  "pending_at_horizon": [],
+  "temporally_truncated": false,
+  "truncation": null,
+  "safety_limits": {
+   "safety_max_events": 2000
+  },
+  "unresolved_timing": [],
+  "interval_advances": 12,
+  "attention_batch_sizes": [],
+  "n_branches": 2,
+  "n_branches_truncated": 0,
+  "truncated_branch_share": 0.0,
+  "temporal_model_hashes": [
+   "5a4e173faea9a831"
+  ],
+  "temporal_model_id": "732696fced9b",
+  "temporal_model_hash": "5a4e173faea9a831",
+  "as_of": 1783296000.0,
+  "horizon_ts": 1790726400.0,
+  "timezone_assumptions": {
+   "zoning_board_chair": "America/New_York",
+   "zoning_board_member_1": "America/New_York",
+   "zoning_board_member_2": "America/New_York",
+   "zoning_board_member_3": "America/New_York",
+   "zoning_board_member_4": "America/New_York",
+   "zoning_board_member_5": "America/New_York",
+   "applicant": "America/New_York",
+   "city_council_liason": "America/New_York",
+   "neighborhood_opposition_leader": "America/New_York",
+   "neighborhood_support_leader": "America/New_York",
+   "planning_board_chair": "America/New_York",
+   "planning_director": "America/New_York",
+   "mayor": "America/New_York",
+   "city_attorney": "America/New_York",
+   "public_hearing_officer": "America/New_York"
+  },
+  "calendar_assumptions": {
+   "zoning_board_calendar": {
+    "tz": "America/New_York",
+    "business_days": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "open_hour": 9.0,
+    "close_hour": 17.0,
+    "holidays": [
+     "2026-09-07"
+    ],
+    "provenance": "model_knowledge"
+   }
+  },
+  "known_scheduled_facts": [],
+  "generated_channels": [
+   "filing_channel",
+   "public_hearing_channel"
+  ],
+  "generated_actor_profiles": [],
+  "institutional_stage_processes": [
+   "depot_conversion_permit"
+  ],
+  "continuous_processes": [],
+  "temporal_latent_hypotheses": [],
+  "temporal_uncertainties": [
+   {
+    "about": "exact date of board meeting after public comment",
+    "why_unknown": "board meets monthly but exact date depends on scheduling; assumed 15th but may shift",
+    "impact": "if meeting falls after Sep 30, decision cannot be made by deadline"
+   },
+   {
+    "about": "duration of submission review",
+    "why_unknown": "planning director's workload unknown",
+    "impact": "delays start of public comment period"
+   },
+   {
+    "about": "board_vote.duration",
+    "why_unknown": "The board vote stage treats the decision as effective immediately after the meeting, but in practice there is a lag for drafting the written decision, filing it, and notifying the applicant.",
+    "impact": "critic-adjusted timing: {\"kind\": \"after_event\", \"depends_on\": \"next_board_meeting\", \"lag\": {\"kind\": \"range\", \"lo_s\": 86400, \"hi_s\": 172800, \"pro",
+    "critic": "temporal_critic_A"
+   },
+   {
+    "about": "submission_review.duration",
+    "why_unknown": "The submission review duration of 1\u20133 days is unrealistically fast for a planning director to review a depot conversion application, which typically involves checking against zoning codes, site plans,",
+    "impact": "critic-adjusted timing: {\"kind\": \"range\", \"lo_s\": 259200, \"hi_s\": 604800, \"provenance\": \"model_knowledge\", \"confidence\": 0.5}",
+    "critic": "temporal_critic_A"
+   }
+  ],
+  "unresolved_timing_mechanisms": [
+   "exact scheduling of board meetings beyond assumed monthly pattern",
+   "whether board can hold special meeting before next regular meeting",
+   "channels.filing_channel.transmission: demoted by temporal_critic_B \u2014 Exact timestamp 2026-07-03T00:00:00Z for filing is given without evidence; should be a range or unresolved.",
+   "channels.filing_channel.delivery: demoted by temporal_critic_B \u2014 Exact delivery timestamp same as transmission without evidence; should be unresolved or range.",
+   "deadlines[0].timing: demoted by temporal_critic_B \u2014 Exact deadline timestamp 1790726398 (just before horizon) is invented precision; no evidence for exact second.",
+   "institutional_processes[0].stages[2].deadline: demoted by temporal_critic_B \u2014 Exact deadline timestamp for board_vote stage is invented precision; should be unresolved."
+  ],
+  "timing_support_classification": "scenario_generated_unvalidated",
+  "temporal_compilation_llm_calls": 4,
+  "critic_findings": [
+   {
+    "critic": "temporal_critic_A",
+    "class": "missing_stages",
+    "where": "institutional_processes.depot_conversion_permit.stages",
+    "problem": "The model collapses the entire zoning board review into three stages, omitting the mandatory planning board review and recommendation stage that typically precedes the zoning board vote.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_A",
+    "class": "missing_implementation_lag",
+    "where": "institutional_processes.depot_conversion_permit.stages.board_vote",
+    "problem": "The board vote stage treats the decision as effective immediately after the meeting, but in practice there is a lag for drafting the written decision, filing it, and notifying the applicant.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_A",
+    "class": "missing_availability",
+    "where": "actor_profiles",
+    "problem": "No availability constraints are defined for individually simulated humans (e.g., zoning board members may have conflicts, vacations, or other commitments that prevent meeting attendance).",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_A",
+    "class": "too_fast",
+    "where": "institutional_processes.depot_conversion_permit.stages.submission_review.duration",
+    "problem": "The submission review duration of 1\u20133 days is unrealistically fast for a planning director to review a depot conversion application, which typically involves checking against zoning codes, site plans,",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "invented_precision",
+    "where": "channels.filing_channel.transmission.ts",
+    "problem": "Exact timestamp 2026-07-03T00:00:00Z for filing is given without evidence; should be a range or unresolved.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "invented_precision",
+    "where": "channels.filing_channel.delivery.ts",
+    "problem": "Exact delivery timestamp same as transmission without evidence; should be unresolved or range.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "invented_precision",
+    "where": "deadlines[0].timing.ts",
+    "problem": "Exact deadline timestamp 1790726398 (just before horizon) is invented precision; no evidence for exact second.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "invented_precision",
+    "where": "institutional_processes[0].stages[2].deadline.ts",
+    "problem": "Exact deadline timestamp for board_vote stage is invented precision; should be unresolved.",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_calendar_effect",
+    "where": "institutional_processes[0].stages[0].duration",
+    "problem": "Submission review duration (1-3 days) does not account for holiday 2026-09-07 (Labor Day) which may extend calendar days.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_calendar_effect",
+    "where": "institutional_processes[0].stages[1].duration",
+    "problem": "Public comment period duration (7-14 days) does not account for holiday 2026-09-07 which may extend calendar days.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_deadline",
+    "where": "institutional_processes[0].stages[0]",
+    "problem": "No deadline for submission_review stage; a statutory or regulatory deadline may bind completeness determination.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_deadline",
+    "where": "institutional_processes[0].stages[1]",
+    "problem": "No deadline for public_comment_period stage; a statutory or regulatory deadline may bind comment closure.",
+    "applied": false
+   }
+  ],
+  "degraded": null
+ },
+ "individual_temporal": null,
+ "actor_policy_report": {
+  "requested_actor_policy_mode": "numeric_policy",
+  "actual_actor_policy_mode": "numeric_policy",
+  "reason": "no production_actor_policy operator bound",
+  "actors_routed_qualitatively": [],
+  "actors_routed_numerically": [],
+  "fallbacks": 0,
+  "fallback_reasons": []
+ },
+ "consequence_report": {
+  "requested_mode": "generated_actor_mediated_world",
+  "actual_mode": "generated_actor_mediated_world",
+  "actions_compiled": 0,
+  "direct_operations_applied": 0,
+  "events_scheduled": 0,
+  "processes_started": 0,
+  "objects_created": 0,
+  "facts_changed": 0,
+  "institutional_submissions": 0,
+  "actor_decisions_opened": 0,
+  "population_responses_opened": 0,
+  "information_deliveries": 0,
+  "unsupported_semantics": 0,
+  "fallbacks": 0,
+  "fallback_reasons": [],
+  "legacy_scalar_writes": 0,
+  "scenario_schema_id": "",
+  "scenario_schema_version": "",
+  "scenario_types_generated": 0,
+  "scenario_events_emitted": 0,
+  "schema_extensions": 0,
+  "observations_delivered": 0,
+  "actors_reconsidered": 0,
+  "actors_invoked": 0,
+  "actor_actions_executed": 0,
+  "actors_declined_to_act": 0,
+  "recursive_cascade_depth": 0,
+  "human_reactions_written_directly": 0,
+  "fixed_ontology_uses": 0,
+  "mechanistic_fallbacks": 0,
+  "numeric_fallbacks": 0,
+  "attention_events": 0,
+  "observation_bundles_delivered": 0,
+  "temporal_truncations": [],
+  "note": "no production_actor_policy runtime executed"
+ },
+ "limitations": [
+  "degraded: support grade exploratory; 3 fallback mechanism(s) used",
+  "integration failure: phase4_actor_policy blocked_no_mechanism (mechanism selected but produced no StateDelta (event never c)"
+ ],
+ "llm": {
+  "n_calls": 28,
+  "chars_in": 76408,
+  "chars_out": 50991,
+  "cost_usd": "not_reported_by_backend (deepseek-v4-flash; call/char proxy recorded)"
+ },
+ "runtime_s": 144.76,
+ "verification": {
+  "no_periodic_strategic_review": true,
+  "no_six_actor_truncation": true,
+  "no_fixed_30min_reconsideration": true,
+  "no_fixed_one_hour_broadcast": true,
+  "no_numeric_actor_fallback_on_truncation": true,
+  "same_time_batches_live": true,
+  "canonical_runtime_used": true,
+  "temporal_model_compiled": true,
+  "decision_triggers_recorded": true,
+  "all_passed": true
+ }
+}

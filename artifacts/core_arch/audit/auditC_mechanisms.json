@@ -1,0 +1,258 @@
+{
+  "audit": "auditC_mechanisms",
+  "repo": "/home/user/SWORLDMODEL",
+  "branch": "claude/worldmodel-v2-core-arch-73s7eq",
+  "date": "2026-07-19",
+  "summary_counts": {
+    "registered_transition_operators": 32,
+    "direct_instantiated_operators_outside_registry": 8,
+    "registered_event_types": 43,
+    "lean_mechanism_entries": 11,
+    "phase6_registry_records": 63,
+    "phase6_registry_by_status": {"implemented": 45, "domain_restricted": 7, "research_encoded": 5, "production_eligible": 3, "locally_validated": 2, "quarantined": 1},
+    "phase6_parameter_packs": 17,
+    "parallel_mechanism_registries": 5,
+    "status_vocabularies_in_use": 3,
+    "legacy_kernels_inventoried": 22,
+    "port_recommended": 10,
+    "reject_recommended": 9
+  },
+
+  "v2_mechanism_plumbing": [
+    {
+      "module": "swm/world_model_v2/mechanisms.py",
+      "role": "Lean mechanism registry — the compiler's vocabulary. MechanismEntry{mech_id, ontology_type, causal_role, required_state, parameter_source(free text), temporal_scale, calibration_status(calibrated|prior|uncalibrated|experimental), domains, operator(string key into transitions registry), experimental}. 11 foundational entries. Unknown ids raise; compiler must mark unknowns experimental.",
+      "entries": ["agent_decision(prior)", "production_actor_policy(calibrated)", "belief_update(prior)", "relationship_update(prior)", "resource_update(calibrated)", "institutional_vote(calibrated)", "background_dynamics(prior)", "generic_outcome_prior(experimental,tier6/7)", "poisson_arrival(prior,PORTED v1 kernel)", "poll_error_aggregation(experimental, NO V2 OPERATOR — v1 kernel unported)", "whipcount_binomial(experimental, NO V2 OPERATOR — v1 kernel unported)"],
+      "executes_on_shared_state": "indirect — entry.operator names a transitions-registry operator that runs on WorldState+clock and emits StateDelta",
+      "gaps_vs_strict_spec": ["no version", "no read_set/write_set (only coarse required_state)", "no event_inputs/event_outputs", "no parameter_schema (single free-text parameter_source)", "no units/conservation_rules/validation_rules/known_limits", "calibration_status enum unenforced (scheduled_facts injects an inline mech dict with status 'deterministic' bypassing register_mechanism)", "kind vocabulary (ontology_type) differs from target kinds (no market/algorithm/queue/operational/physical/legal/external-adapter)"]
+    },
+    {
+      "module": "swm/world_model_v2/transitions.py",
+      "role": "Operator registry + StateDelta contract. register_operator(name, operator, requires, modifies, temporal_scale, parameter_source, invariants, validated, experimental). TransitionOperator interface: applicable(world,event) -> propose(world,event,rng)->TransitionProposal -> validate (default: every institution's validate_action) -> apply -> StateDelta. StateDelta{at, event_type, operator, changes[{path,before,after}], reason_codes, uncertainty, evidence_deps, follow_up_events}. get_operator refuses unknown names and gates experimental behind allow_experimental.",
+      "executes_on_shared_state": true,
+      "provenance": "parameter_source free text + invariants tuple on registration; per-delta reason_codes/uncertainty/evidence_deps",
+      "findings": ["ALL 32 registered operators have validated=True and experimental=False — 'validated' means contract-tested, not empirically calibrated; the operator-level experimental gate is dead code in practice", "requires/modifies are advisory strings never checked against actual StateDelta.changes", "follow_up_events on the delta is the endogenous event channel (validated+queued by the engine)"]
+    },
+    {
+      "module": "swm/world_model_v2/state.py",
+      "role": "WorldState typing + clock. StateField(value|dist)+Provenance{status observed|derived|inferred|assumed|sampled, sources, confidence, method, updated_at, dependencies, calibrated, uncertainty_type, valid_from/until, sensitivity, lineage}. Entity with closed ENTITY_FIELDS + register_entity_extension (typed extension door, incl. latent_state namespace). SimulationClock{now, as_of; advance_to refuses backward}. WorldState{entities, populations, network, institutions, quantities, information, objects(WorldObject), scenario_schema, semantic_log, mechanism_instances, parent_version, evidence_hash, versions, uncertainty_meta, omissions}. clone() deep-copies for counterfactual branches. WorldBranch carries weight + [StateDelta] log.",
+      "executes_on_shared_state": true,
+      "gaps": ["dynamic attrs added outside the dataclass by other modules (world.temporal_hazards) — untyped seam", "no typed registry of state paths, so read_set/write_set strings have no schema to validate against"]
+    },
+    {
+      "module": "swm/world_model_v2/events.py",
+      "role": "Event-driven real-time queue. register_event_type(name, participants, preconditions, scheduling scheduled|hazard|endogenous, visibility, reads, deltas, duration_s, parameter_source, validated). Event carries ts, etype (must be registered), participants, payload, visibility, source(scheduled|hazard:x|endogenous:op), causal metadata (event_id, parent_ids, dependency_ids, microstep, read_set, write_set, trigger). EventQueue: heap + StochasticHazard (exponential inter-arrival, optional rate_fn(world)), pop_batch pops same-timestamp batches for causal microstep layering (insertion order carries no semantics).",
+      "executes_on_shared_state": true,
+      "findings": ["event-level read_set/write_set exists but is a third, separate declaration site from operator requires/modifies and event-type reads/deltas — none reconciled"]
+    },
+    {
+      "module": "swm/world_model_v2/scenario_schema.py",
+      "role": "Per-scenario GENERATED semantics: ScenarioSemanticModel with mechanism_definitions{description, causal_role(always mechanism_mediated), triggering_event_types, accepted_inputs, controlling_actor_or_system, authority_requirements, preconditions, required_records/resources, state_machine, initial/intermediate/success/failure/unresolved states, transition_rules, possible_output_event_types{on_success,on_failure}, possible_record_updates, observation_rules, timing_rules, evidence_basis, assumptions, uncertainty_source, executor_binding}. MECHANISM_EXECUTOR_BINDINGS = ('', generic_state_machine, institutional_aggregation, conserved_resource_settlement, information_transport, event_scheduling, population_response). Deterministic validation rejects numeric minting, human-reaction coefficients, undeclared references; LLM critic pass; frozen then branch-local versioned extension (extend_schema).",
+      "executes_on_shared_state": "via causal_boundary.MechanismRuntimeOperator over world.mechanism_instances",
+      "findings": ["this is the ONLY registry whose entries declare event inputs+outputs and per-mechanism state machines — the closest existing shape to the target MechanismSpec, but per-question and untrusted-LLM-generated, never global"]
+    },
+    {
+      "module": "swm/world_model_v2/causal_boundary.py",
+      "role": "Layer contract A/B/C/D (actor_controlled / mechanism_mediated / actor_mediated / terminal_readout). MechanismInstance{instance_id, mechanism_id, branch_id, state, status pending|succeeded|failed|unresolved, inputs, escrow, transitions[], provenance} lives on world.mechanism_instances (branch-local via deep copy). invoke_mechanism_op validates existence/authority/preconditions/inputs, escrows required resources, schedules ctrl_mechanism_step. MechanismRuntimeOperator resolution order: declared executable transition_rules -> neutral executor bindings (institutional aggregation over real decision records; conserved-resource settlement w/ escrow+refund) -> single declared next state -> LLM adjudication (one concrete state, probabilities forbidden, labeled model_based_unvalidated) -> honest unresolved. MechanismCompiler + boundary critic generate the scenario's mechanism model.",
+      "executes_on_shared_state": true,
+      "findings": ["instantiated directly in materialize.py, NOT via the string operator registry — a second binding mode", "conservation enforced operationally through escrow/settle/refund, not declared as a rule"]
+    },
+    {
+      "module": "swm/world_model_v2/world_dynamics.py",
+      "role": "In-run world dynamics: StanceReviewOperator (event-driven ripeness/winning/exhaustion/bandwagon stance moves, one level, material-change hysteresis), PersistenceCheckOperator (provisional absorption holds or collapses; resumes first-passage), contested_attrition_interval (per-day capacity drain over exact elapsed time), COUPLING_PRIORS (10 documented lognormal priors sampled once per branch; fit_coupling_pack importance-reweights from scored trajectories; experiments/replay_vault_v3/coupling_pack.json NOT present -> running on documented priors), declare_actor_capacity.",
+      "executes_on_shared_state": true,
+      "provenance": "sampled_coupling persists draws as quantities sampled_coupling:<name>; coupling_pack_info reports fitted vs documented_priors_unfitted"
+    },
+    {
+      "module": "swm/world_model_v2/quantities.py",
+      "role": "Typed quantity registry: register_quantity_type(name, units, lo, hi, temporal_resolution, observation_model); Quantity{name, qtype, value, sd, timestamp, prov} with clamp(). The ONLY place units exist.",
+      "gaps": ["operators register ad-hoc quantity types at apply time (units='bool'/'fact'/'share') — units are per-quantity, never per-mechanism; no dimensional checking"]
+    },
+    {
+      "module": "swm/world_model_v2/temporal_hazards.py",
+      "role": "Continuous-time first-passage machinery: CumulativeHazardState{threshold Exp(1) particle-rooted, accumulated Lambda, base_rates piecewise over 5 lifetime buckets, modulation, generation} persisted at world.temporal_hazards. Exact piecewise integration; on_state_change preserves Lambda + threshold (no redraw bias); schedule_crossing emits real queue events with generation guards; MODULATION_HOOKS registry; rates_from_target_mass gives mass-conservation identity Lambda_total = -ln(1-T).",
+      "executes_on_shared_state": true,
+      "assessment": "the natural backbone for an OutsideWorldProcess residual"
+    },
+    {
+      "module": "swm/world_model_v2/family_hazards.py",
+      "role": "Fitted event-family base rates: FROZEN keyword family rules over question text; partial-pooled rates fit on calibration split only; pack experiments/replay_vault_v3/family_hazard_pack.json EXISTS (fitted). family_base_rate() feeds aggregate-outcome and structural-prior mechanisms as fitted_family_prior instead of broad Beta.",
+      "calibration": "fitted (leakage-safe, versioned pack)"
+    },
+    {
+      "module": "swm/world_model_v2/scheduled_facts.py",
+      "role": "Scheduled-reality layer: LLM-extracted dated public facts (provenance evidence|model_knowledge, confidence, outcome_entailing + direction) executed deterministically by ScheduledFactOperator as typed quantities fact:<kind>:<entity> and fact_entailment; attach_scheduled_facts wires entailment into the outcome mechanism at weight 0.4.",
+      "findings": ["appends an inline accepted_mechanisms dict {mech_id: scheduled_reality, calibration_status: 'deterministic'} that never passes through register_mechanism — demonstrates the registry can be bypassed and the status enum is unenforced"]
+    },
+    {
+      "module": "swm/world_model_v2/nonlinear/",
+      "role": "Phase 7: typed structural-form registry (forms.py — evaluable pure-Python shapes: logistic, Hill, thresholds, fatigue, hysteresis, change-point, mixtures, regime, survival, self-exciting; each with param_schema, monotonicity, extrapolation behavior, maturity), offline fit.py (numpy/scipy optional; provenance: dataset hash/split/seed/method/versions), applicability + transport gates (keep_linear verdicts, extrapolation classes), posterior propagation E[f(X)]!=f(E[X]), pooling, composition + safety guards, and three registered operators (nonlinear_state_step, nonlinear_mechanism, nonlinear_contagion) driven by nonlinear_spec on event payloads.",
+      "assessment": "the most spec-complete subsystem: forms carry param_schema + invariants + failure conditions — reuse its metadata vocabulary for MechanismSpec.parameter_schema"
+    },
+    {
+      "module": "swm/world_model_v2/institutions.py + institutions_v2/",
+      "role": "institutions.py: executable Rule kinds (decision_right, deadline, budget, eligibility, procedure, capacity, quorum — closed set, unknown kinds FAIL CLOSED) + RuleSystem.validate_action run before every transition + run_vote deterministic tally. institutions_v2 (Phase 10): FAMILY->TEMPLATE->INSTANCE store with evidence-backed versioned rules, AuthorityGraph hard authorization, InformationBoundary, StageEngine, family procedures (bicameral+veto/override, appellate, approval chains, queue service timing), competing rule-model particles via Phase-3 compositional posterior, InstitutionOperator registered as institution_action.",
+      "executes_on_shared_state": true
+    },
+    {
+      "module": "swm/world_model_v2/population.py + phase9_population.py",
+      "role": "population.py: Population/PopulationSegment (weight StateField, heterogeneity dists, sensitivity), allocation prop to weight x uncertainty x sensitivity, particle sampling, check_marginals vs observed data. phase9_population.py: PopulationSpec + compositional Dirichlet weight posterior (Phase-3 engine), conjugate Beta-binomial segment-conditional rates, materialize_population_particles, poststratified_estimate; anti-ornamental latent specs.",
+      "consumed_by": "phase_consumers.PopulationAggregationOperator + activation_synthesis gates"
+    },
+    {
+      "module": "swm/world_model_v2/network.py + phase9_network.py + phase9_temporal.py",
+      "role": "network.py: typed RelationGraph with registered relation types, edges carrying strength dist/visibility/trust/channel/delay. phase9_network.py: MultilayerNetwork with per-edge Phase-3 existence posteriors (infer_edge_posterior; LLM proposes candidates only), missing-edge posteriors, dependency-free multi-restart EM StochasticBlockModel + BIC-penalized competing macro-structures. phase9_temporal.py: 8 typed edge transitions (trust_gain/loss, alliance_formation/defection via log-odds shifts; relationship_decay exponential half-life; edge_expiration; rewiring; role_change) emitting Phase9Delta.",
+      "gaps": ["phase9_temporal transitions emit Phase9Delta, not transitions.StateDelta, and are not in the operator registry — a parallel delta type"]
+    },
+    {
+      "module": "swm/world_model_v2/phase_consumers.py",
+      "role": "Six registered consumers that make declared structure move the terminal: institutional_decision (threshold/quorum over posterior member propensities), population_aggregation, aggregate_outcome_mechanism (posterior base rate + bounded consumption of upstream causal state), structural_process_prior (broad Beta, exploratory), actor_action_aggregation (lexical polarity), network_diffusion (layer transmissibility broad priors). Scheduled only when activation_synthesis says the phase is causally required.",
+      "executes_on_shared_state": true
+    },
+    {
+      "module": "swm/world_model_v2/event_time.py + temporal_model.py + temporal_runtime.py + temporal_compiler.py + mode_graph.py",
+      "role": "Event-time contract: terminal readout = per-particle first-passage times (readout, never resolver); operators absorption_monitor, hazard_round (dated outcome-entailing facts), first_passage (continuous-time cumulative hazard x sampled stance hazard-ratio x consumed state). mode_graph: typed END-STATES/PATHWAYS (actor-driven vs world-driven) + decision structures from which stance-combination law is derived. temporal_runtime: pop_batch -> causal layering -> declared-read deferral -> write-conflict resolution -> advance_interval (attrition, decay) — the default execution engine. temporal_compiler generates the scenario temporal model (channels, attention processes, decision triggers, recurring obligations).",
+      "executes_on_shared_state": true
+    },
+    {
+      "module": "swm/world_model_v2/semantic_registry.py + semantic_consequences.py",
+      "role": "semantic_registry: evidence-gated LLM semantic features with 10-status lifecycle (proposed..production_eligible, quarantined, rejected); seeded with REAL measured harm (interpretation channel quarantined everywhere tested). semantic_consequences: WorldObject typed facts, SemanticWorldEvent world-plane log, CommunicationDeliveryOperator (registered) delivering real content, typed predicate readouts.",
+      "findings": ["a third status vocabulary, incompatible with mechanisms.py and registry/record.py"]
+    },
+    {
+      "module": "swm/world_model_v2/registry/ (Phase 6)",
+      "role": "The heavyweight mechanism registry: MechanismRecord (9-status lifecycle proposed|research_encoded|implemented|locally_validated|transfer_validated|production_eligible|domain_restricted|quarantined|rejected), ParameterPack with PARAMETER_SOURCES vocab (observed|inferred_from_data|fitted|published_research|reference_class_prior|experimental|assumed|unsupported), Citation with limits, ValidationRecord (failures preserved), ApplicabilityRule, transport module. 63 committed records + 17 packs in data/. store.py mirrors production records into the lean mechanisms.py registry. families/ implement executable transitions (hazard: FeatureHazardOperator; behavioral: 5 published-estimate families; diffusion: 6 contagion hazards fitted on Higgs; choice: Fehr-Schmidt QRE population; social/learning/interaction/structural).",
+      "assessment": "already ~90% of the target MechanismSpec fields — the vocabulary donor for the typed contract"
+    },
+    {
+      "module": "swm/world_model_v2/fallback.py",
+      "role": "Tier 1-7 fallback hierarchy; generic_outcome_prior operator (broad Beta/Normal per-particle draw, tier 6/7, labeled exploratory) guarantees every coherent question resolves.",
+      "executes_on_shared_state": true
+    },
+    {
+      "module": "swm/world_model_v2/reference/ (fitted reference worlds)",
+      "role": "enron.py (fitted reply hazard buckets, recipient base rates, relationship/workload/time-of-day effects — status=fitted), behavior_games.py (fitted social-preference latents + cross-game transfer), higgs.py (network contagion fits), upworthy.py (population heterogeneity), omnibehavior.py (longitudinal persistence). These are the proof pattern for kind-typed fitted packs feeding FittedDecisionOperator.",
+      "calibration": "fitted on train splits; portfolio-measured"
+    }
+  ],
+
+  "operator_registry_live_inventory": {
+    "note": "from importing the modules; all validated=True, experimental=False",
+    "operators": {
+      "agent_decision": {"file": "transitions.py", "scale": "event", "requires": ["entity.*", "information"], "modifies": ["entity.current_action", "entity.past_actions"], "params": "uniform reference policy unless fitted bound; LLM minting experimental-only"},
+      "fitted_decision": {"file": "transitions.py", "scale": "event", "params": "fitted policy from a registry parameter pack"},
+      "production_actor_policy": {"file": "phase4_execution.py", "scale": "event", "requires": ["posterior_world_state", "actor_view", "typed_action_space"], "modifies": ["entity.current_action", "entity.past_actions", "entity.resources", "entity.commitments", "event_queue"], "params": "hierarchical fitted pack or Tier-7 broad mixture"},
+      "belief_update": {"file": "transitions.py", "scale": "event", "params": "rule core credibility*trust*salience, broad priors"},
+      "relationship_update": {"file": "transitions.py", "scale": "event", "params": "bounded shifts |d|<=0.25"},
+      "resource_update": {"file": "transitions.py", "scale": "event", "params": "conservation-checked deltas"},
+      "institutional_vote": {"file": "transitions.py", "scale": "scheduled", "params": "deterministic rule execution; writes typed outcome onto submission/process objects"},
+      "background_dynamics": {"file": "transitions.py", "scale": "interval", "params": "broad priors (attention mean-reversion, memory decay)"},
+      "poisson_arrival": {"file": "transitions.py", "scale": "horizon", "params": "hazard rate from plan; P=1-exp(-lambda*H) emerges from hazard sampling (ported v1 kernel)"},
+      "scheduled_fact": {"file": "scheduled_facts.py", "scale": "scheduled", "params": "dated public facts, deterministic"},
+      "stance_review": {"file": "world_dynamics.py", "scale": "scheduled", "params": "universal ripeness/winning/exhaustion/bandwagon rules"},
+      "persistence_check": {"file": "world_dynamics.py", "scale": "scheduled", "params": "documented persistence-survival priors, per-branch sampled, fittable"},
+      "generic_outcome_prior": {"file": "fallback.py", "scale": "horizon", "params": "broad prior; tier 6/7; not empirically validated"},
+      "institutional_decision": {"file": "phase_consumers.py", "scale": "scheduled", "params": "declared threshold/quorum; member propensity from evidence posterior"},
+      "population_aggregation": {"file": "phase_consumers.py", "scale": "scheduled", "params": "declared segment weights; broad-prior heterogeneity"},
+      "aggregate_outcome_mechanism": {"file": "phase_consumers.py", "scale": "scheduled", "params": "posterior base rate + bounded upstream-state consumption"},
+      "structural_process_prior": {"file": "phase_consumers.py", "scale": "scheduled", "params": "broad Beta; exploratory registry-gap fallback"},
+      "actor_action_aggregation": {"file": "phase_consumers.py", "scale": "scheduled", "params": "lexical polarity of chosen typed actions"},
+      "network_diffusion": {"file": "phase_consumers.py", "scale": "scheduled", "params": "declared relation graph; broad-prior transmissibility"},
+      "communication_delivery": {"file": "semantic_consequences.py", "scale": "event", "params": "deterministic delivery of real content"},
+      "absorption_monitor": {"file": "event_time.py", "scale": "event", "params": "pure observation of absorbing predicate"},
+      "hazard_round": {"file": "event_time.py", "scale": "scheduled", "params": "dated outcome-entailing facts; legacy grids ablation-only"},
+      "first_passage": {"file": "event_time.py", "scale": "event", "params": "cumulative-hazard first passage; particle-matched thresholds; fitted family curve x stance hazard ratio"},
+      "nonlinear_state_step": {"file": "nonlinear/operators.py", "scale": "interval", "params": "fitted growth/saturation form"},
+      "nonlinear_mechanism": {"file": "nonlinear/operators.py", "scale": "event", "params": "fitted structural form + Phase-3 particles + transport widening"},
+      "nonlinear_contagion": {"file": "nonlinear/operators.py", "scale": "event", "params": "fitted Hill/log-linear diffusion hazard + frailty"},
+      "feature_hazard": {"file": "registry/families/hazard.py", "scale": "event", "params": "fitted logistic pack, train split, transport widening"},
+      "behavioral_mechanism": {"file": "registry/families/behavioral.py", "scale": "event", "params": "verified published estimates (Bass, ultimatum, trust game, GOTV, matching)"},
+      "institution_action": {"file": "institutions_v2/operators.py", "scale": "event", "params": "evidence-backed institutional template"},
+      "persistence_update": {"file": "phase8_transitions.py", "scale": "event", "params": "reference-pack asymmetric-learning params"},
+      "memory_consolidation": {"file": "phase8_transitions.py", "scale": "interval", "params": "exponential memory half-life prior"},
+      "evidence_observation": {"file": "evidence_materialize.py", "scale": "event", "params": "evidence claims materialized as observations"}
+    },
+    "direct_instantiated_not_in_registry": ["causal_boundary.MechanismRuntimeOperator (ctrl_mechanism_step)", "causal_boundary.ScheduledAttemptOperator (ctrl_scheduled_attempt)", "generated_world.GeneratedSemanticEventOperator", "generated_world.GeneratedObservationDeliveryOperator", "generated_world.GeneratedActorInvocationOperator", "generated_world attention operator", "materialize.ScenarioPlanOperator", "phase9_temporal TRANSITIONS (Phase9Delta, own delta type)"]
+  },
+
+  "legacy_kernels": [
+    {"kernel": "sim_aggregation (latent share vs threshold with empirical poll error 3-6pt)", "old_location": "swm/api/mechanisms.py", "validated_semantics": "Monte-Carlo share ~ N(grounded share, poll-error sd) vs threshold; integrates measurement error so 52% lead != certainty", "models_human_cognition_numerically": false, "parameter_provenance": "grounded poll/current share supplied by router; sd empirical 3-6pt default 0.06", "tests": ["tests/test_mechanisms.py"], "v2_status": "orphaned (declared as poll_error_aggregation MechanismEntry, experimental, empty operator — compiler rejects it loudly; pinned by tests/test_wmv2_tier_a_fixes.py)", "port_recommendation": "port", "reason": "fills a declared dead registry entry; kind=measurement; trivial to express as an operator writing a quantities outcome from a latent share + observation model"},
+    {"kernel": "sim_whipcount (undecideds break at grounded lean; Binomial vs needed threshold)", "old_location": "swm/api/mechanisms.py", "validated_semantics": "committed_yes + Binomial(undecided, lean) >= needed; short-circuits when arithmetic decides", "models_human_cognition_numerically": true, "parameter_provenance": "whip counts / party lean grounded by caller", "tests": ["tests/test_mechanisms.py", "tests/test_wmv2_tier_a_fixes.py (rejection pin)"], "v2_status": "orphaned (whipcount_binomial entry experimental, no operator)", "port_recommendation": "port", "reason": "fills the second dead entry; kind=institution; complements institutional_vote (which needs simulated per-member actions) with a count-based aggregate when members are not individually modeled"},
+    {"kernel": "sim_arrival (Poisson rare-event by deadline, lognormal rate uncertainty)", "old_location": "swm/api/mechanisms.py", "validated_semantics": "P = 1 - exp(-lambda*H); lambda from rate_per_year or backed out of base_rate over ref_years", "models_human_cognition_numerically": false, "parameter_provenance": "base rates / observed rates", "tests": ["tests/test_mechanisms.py", "tests/test_wmv2_tier_a_fixes.py::test_poisson_arrival_is_now_executable"], "v2_status": "already_ported", "port_recommendation": "port", "reason": "DONE — RareEventArrivalOperator + StochasticHazard; closed form emerges from hazard sampling; the template for the other two"},
+    {"kernel": "sim_contest (Elo/logistic head-to-head with rating uncertainty)", "old_location": "swm/api/mechanisms.py", "validated_semantics": "win prob from odds or 400-scale Elo diff with Gaussian rating noise", "models_human_cognition_numerically": false, "parameter_provenance": "ratings/odds grounded by caller", "tests": ["tests/test_mechanisms.py"], "v2_status": "orphaned", "port_recommendation": "port", "reason": "kind=numerical; small, closed-form, domain-general (sports/court/race); no v2 equivalent"},
+    {"kernel": "sim_escalation (self-reinforcing tipping from measured pressure/trend)", "old_location": "swm/api/mechanisms.py", "validated_semantics": "logit drift from pressure + reinforcement, horizon-amplified, Gaussian uncertainty", "models_human_cognition_numerically": true, "parameter_provenance": "GDELT pressure signals; reinforcement gain assumed", "tests": ["tests/test_mechanisms.py"], "v2_status": "duplicated", "port_recommendation": "reject", "reason": "superseded by mode_graph world-driven pathways + nonlinear forms (threshold/saturation) + first_passage consumption of causal state; hand-set reinforcement gain fails v2 parameter-provenance rules"},
+    {"kernel": "sim_persistence (status-quo survival exp(-h*H))", "old_location": "swm/api/mechanisms.py", "validated_semantics": "survival of the default under a disruption hazard", "models_human_cognition_numerically": false, "parameter_provenance": "base rate over reference horizon", "tests": ["tests/test_mechanisms.py"], "v2_status": "duplicated", "port_recommendation": "reject", "reason": "exactly the first_passage/temporal_hazards machinery with a constant rate; porting would create a second survival path"},
+    {"kernel": "FutureEvent calendar + SurpriseHazard + branching (discrete multimodal jump term)", "old_location": "swm/transition/future_events.py + swm/simulation/branching_rollout.py", "validated_semantics": "dated events with categorical outcome distributions, per-outcome jumps or resolution; Poisson surprise hazard; pivotal-branch decomposition; linear in K trajectories", "models_human_cognition_numerically": false, "parameter_provenance": "calendar known; outcome dists grounded/judged; hazard base rates", "tests": ["tests/test_future_events.py", "tests/test_branching_rollout.py", "tests/test_event_coupled_rollout.py"], "v2_status": "duplicated in structure (EventQueue scheduled+hazard events, scheduled_facts) but the categorical-outcome-distribution-per-dated-event kernel and surprise-jump residual are orphaned", "port_recommendation": "port", "reason": "the strongest v1 backing for an OutsideWorldProcess residual: kind=exogenous; maps 1:1 onto queue events whose payload carries a typed outcome distribution resolved per branch"},
+    {"kernel": "calibrated event-variance placement (calendar + background jump hazard; interval coverage)", "old_location": "swm/simulation/event_model.py (EXP-077)", "validated_semantics": "calibrate() fits jump frequency+magnitude from realized per-step moves; interval_coverage validates nominal coverage over the horizon", "models_human_cognition_numerically": false, "parameter_provenance": "fitted from move history", "tests": ["tests/test_simulation.py-adjacent, exp077 experiments"], "v2_status": "orphaned", "port_recommendation": "port", "reason": "kind=exogenous/market; gives the OutsideWorldProcess residual a CALIBRATED magnitude model rather than broad priors"},
+    {"kernel": "heteroskedastic belief drift/variance (drift(state), log_var(state), decaying event drift)", "old_location": "swm/transition/event_model.py (EXP-035)", "validated_semantics": "martingale-anchored; variance state-dependent (recent vol, boundary distance); no-cheat train fits", "models_human_cognition_numerically": true, "parameter_provenance": "fitted on train trajectories", "tests": ["tests/test_event_model.py"], "v2_status": "orphaned", "port_recommendation": "port", "reason": "kind=market/numerical; belief-series dynamics for market-type quantities between events; fitted, leakage-safe"},
+    {"kernel": "BeliefTransition (event-conditioned belief-delta vs martingale null)", "old_location": "swm/transition/belief_dynamics.py", "validated_semantics": "predicts next belief from trajectory features + event features; null branch = efficient-market martingale baseline; optional LLM directional impact injection", "models_human_cognition_numerically": true, "parameter_provenance": "fitted, pre-shift features only (no leakage); design follows Yu et al. 2026 SWM", "tests": ["tests/test_belief_dynamics.py"], "v2_status": "orphaned", "port_recommendation": "port", "reason": "kind=numerical (belief dynamics for aggregate/market belief quantities); fitted provenance satisfies v2 rules; NOT for individual human actors (v2 actor policy owns that)"},
+    {"kernel": "DirectionModel (lean-predicts-direction classifier, ~70% for confident beliefs)", "old_location": "swm/transition/direction_model.py", "validated_semantics": "leakage-safe: belief lean predicts move direction at its calibration rate; explicitly not a point-forecast edge", "models_human_cognition_numerically": false, "parameter_provenance": "fitted, leakage-safe diagnostic", "tests": ["tests/test_direction_model.py"], "v2_status": "orphaned", "port_recommendation": "port", "reason": "kind=measurement prior; fold into family_hazards-style base-rate machinery for questions with a live market/belief series"},
+    {"kernel": "MeanFieldRollout (conformity + social proof + event shocks; influence-weighted aggregate)", "old_location": "swm/simulation/mean_field.py", "validated_semantics": "coupled belief evolution toward live aggregate; non-separable (dpi/dpj != 0); honestly held to beating the independent mean (EXP-053)", "models_human_cognition_numerically": true, "parameter_provenance": "k_social/k_event/k_proof couplings — priors, ablation-tested", "tests": ["tests/test_mean_field.py", "tests/test_population_simulator.py"], "v2_status": "orphaned (phase9 population is compositional/poststratified but has NO within-horizon coupled opinion dynamic; world_dynamics bandwagon is stance-level only)", "port_recommendation": "port", "reason": "kind=population; the only validated coupled population dynamic in the repo; couplings must migrate to sampled_coupling-style documented priors / fitted packs"},
+    {"kernel": "PopulationSimulator (demographic cells + stance-coupled differential turnout)", "old_location": "swm/simulation/population_simulator.py", "validated_semantics": "participation propensity coupled to aggregate momentum (mobilization/discouragement); cells from real survey/census rows", "models_human_cognition_numerically": true, "parameter_provenance": "cell weights from data; coupling priors", "tests": ["tests/test_population_simulator.py"], "v2_status": "orphaned", "port_recommendation": "port", "reason": "kind=population; complements phase9 poststratification with the participation-weighting dynamic; social_pressure_turnout pack (Phase 6, domain_restricted) covers only the GOTV effect"},
+    {"kernel": "BayesianLogistic (Laplace posterior over weights; shrink toward prior mean w0; predict_dist integrates weight uncertainty; variance_contribution triage)", "old_location": "swm/variables/bayes_logistic.py", "validated_semantics": "MAP + Laplace covariance; uncertain weights WIDEN predictions instead of biasing", "models_human_cognition_numerically": false, "parameter_provenance": "estimator; priors from LLM/literature elasticities", "tests": ["tests/test_bayes_logistic.py"], "v2_status": "duplicated in part (registry/ingestion.fit_logistic is point-estimate only)", "port_recommendation": "port", "reason": "upgrade registry ingestion's estimation core so parameter packs carry weight POSTERIORS (parameter_schema + uncertainty) — feeds MechanismSpec.parameter_sources"},
+    {"kernel": "elasticity_fit harness (prior-anchored logistic + per-recipient offset + ECE grade)", "old_location": "swm/decision/elasticity_fit.py", "validated_semantics": "estimator validated on synthetic ground truth (recovers known elasticities, calibrated held-out grade); real-world claim explicitly blocked on private data", "models_human_cognition_numerically": true, "parameter_provenance": "beta shrunk toward world-knowledge priors; grade A/B/C/F by ECE", "tests": ["tests/test_elasticity_fit.py"], "v2_status": "orphaned", "port_recommendation": "port", "reason": "as a Phase-6 pack PRODUCER (fitting harness), not a runtime mechanism; the graded-fit pattern is exactly MechanismSpec.calibration_status evidence"},
+    {"kernel": "demographic_to_values (demographics -> 10 latent value dims)", "old_location": "swm/variables/demographic_values.py", "validated_semantics": "grounded Inglehart-axis heuristic, non-circular (never sees the answer), interpretable", "models_human_cognition_numerically": true, "parameter_provenance": "published political-science associations (heuristic, unfitted)", "tests": ["tests/test_demographic_values.py"], "v2_status": "orphaned", "port_recommendation": "port", "reason": "kind=population trait-prior source for segment heterogeneity fields; label reference_class_prior"},
+    {"kernel": "ConformalBinary (split-conformal prediction sets over {0,1})", "old_location": "swm/uncertainty/conformal.py", "validated_semantics": "finite-sample coverage guarantee under exchangeability; {0,1} set = honest abstention analog", "models_human_cognition_numerically": false, "parameter_provenance": "distribution-free", "tests": ["tests/test_conformal.py"], "v2_status": "orphaned", "port_recommendation": "port", "reason": "kind=measurement; belongs in MechanismSpec.validation_rules tooling + result support-grades, not as a world mechanism"},
+    {"kernel": "calibration_grade (ECE A/B/C/F badge)", "old_location": "swm/uncertainty/calibration.py + swm/eval/metrics.py", "validated_semantics": "held-out ECE with n>=30 gate", "models_human_cognition_numerically": false, "parameter_provenance": "n/a", "tests": ["tests/test_calibration.py", "tests/test_metrics.py"], "v2_status": "duplicated (world_model_v2/calibration.py exists)", "port_recommendation": "port", "reason": "unify as the single grader behind MechanismSpec.calibration_status transitions"},
+    {"kernel": "independent_cascade / linear_threshold / hawkes_intensity", "old_location": "swm/transition/diffusion.py (swm/graph/diffusion.py is an unimplemented stub)", "validated_semantics": "textbook KKT-IC, Granovetter LT, Hawkes intensity; module itself labels output unvalidated until backtested", "models_human_cognition_numerically": true, "parameter_provenance": "edge weights/thresholds supplied, unfitted", "tests": ["none dedicated"], "v2_status": "duplicated", "port_recommendation": "reject", "reason": "superseded by Phase-6/7 FITTED diffusion families (simple/complex contagion, exposure_response — Higgs-validated; hawkes_self_excitation exists and is QUARANTINED on evidence); porting unfitted versions would regress provenance"},
+    {"kernel": "LLM-decision cascade simulator (archetype reshare decisions on heavy-tailed follower graph)", "old_location": "swm/engine/diffusion.py", "validated_semantics": "grade-or-abstain; ships ungraded", "models_human_cognition_numerically": false, "parameter_provenance": "sampled LLM decisions (probability minting)", "tests": ["engine tests"], "v2_status": "experimental", "port_recommendation": "reject", "reason": "LLM probability minting on the production path is exactly what gap-audit RC4 quarantined; nonlinear_contagion covers the class with fitted hazards"},
+    {"kernel": "hierarchical individual response stack (pooled rates, EWMA recency, interactions, GBDT readout, Platt)", "old_location": "swm/transition/response_model.py + individual_transition.py + learned_transition.py + swm/worlds/individual_world.py", "validated_semantics": "as-of online evaluation, no leakage; ablation toggles", "models_human_cognition_numerically": true, "parameter_provenance": "fitted online", "tests": ["tests/test_individual_simulator.py", "tests/test_recipient_history.py", "tests/test_retrieval_response.py"], "v2_status": "already_ported (re-fitted natively in reference/enron.py as fitted mechanism packs; hierarchical_rate_shrinkage in Phase-6 registry)", "port_recommendation": "reject", "reason": "porting the old stack would duplicate the Enron reference world's leak-free fitted mechanisms"},
+    {"kernel": "AggregateTransition + AggregateWorld (state-conditioned calibrated head + state recurrence)", "old_location": "swm/transition/aggregate_transition.py + swm/worlds/aggregate_world.py", "validated_semantics": "state enters prediction; state transitions after outcomes; temporal-backtest grade", "models_human_cognition_numerically": true, "parameter_provenance": "calibrated OutcomeHead over declared features", "tests": ["tests/test_state_world_model.py", "tests/test_rollout.py"], "v2_status": "duplicated", "port_recommendation": "reject", "reason": "the arbitrary-variable logistic-over-features path for human behavior is explicitly quarantined from v2 (pinned by test); its useful ideas (drift tracking, state-conditioned rates) already exist as nonstationarity + posterior machinery"},
+    {"kernel": "HN score-formation SimulationEngine + reactions", "old_location": "swm/simulation/engine.py + reactions.py + world_rollout.py; grades in models/hn_simulation_grade.json", "validated_semantics": "multi-step segment reactions with state updates; graded on HN backtest", "models_human_cognition_numerically": true, "parameter_provenance": "fitted/heuristic per HN", "tests": ["tests/test_simulation.py", "tests/test_world_model_bench.py"], "v2_status": "orphaned", "port_recommendation": "reject", "reason": "platform-specific; the generalizable pieces (position bias, platform ranking, examination) already exist as Phase-6 platform families (position_bias_propensity domain_restricted)"},
+    {"kernel": "nonstationarity drift indicator + uncertainty widening", "old_location": "swm/transition/nonstationarity.py", "validated_semantics": "windowed drift stat + interval widening under drift", "models_human_cognition_numerically": false, "parameter_provenance": "windowed statistics", "tests": ["covered via aggregate tests"], "v2_status": "orphaned", "port_recommendation": "port", "reason": "kind=measurement; feeds MechanismSpec transport/validity monitoring (a fitted pack whose base rate drifted should lose calibration_status)"},
+    {"kernel": "WorldSubstrate (persistent coupled multi-scale twin)", "old_location": "swm/world/substrate.py", "validated_semantics": "entities with own step_fn/readout coupled on one clock", "models_human_cognition_numerically": false, "parameter_provenance": "per-entity mechanisms", "tests": ["tests/test_world_substrate.py"], "v2_status": "duplicated", "port_recommendation": "reject", "reason": "WorldState + EventQueue + operators IS this, with provenance; nothing left to port"},
+    {"kernel": "stubs: swm/graph/diffusion.py, swm/inference/filter.py, swm/transition/mechanistic.py", "old_location": "as named", "validated_semantics": "IMPLEMENTED=False placeholders", "models_human_cognition_numerically": false, "parameter_provenance": "none", "tests": [], "v2_status": "orphaned", "port_recommendation": "reject", "reason": "no implementation exists"}
+  ],
+
+  "exogenous_outside_world_machinery": {
+    "existing_v2": [
+      {"component": "events.StochasticHazard", "role": "exponential inter-arrival rate process (optionally state-dependent rate_fn), re-armed on firing", "fit_for_outside_world_residual": "queue-level primitive"},
+      {"component": "temporal_hazards.CumulativeHazardState + MODULATION_HOOKS", "role": "continuous-time first passage with particle-rooted Exp(1) thresholds, preserved accumulated hazard across rate changes, generation-guarded rescheduling, mass-conservation calibration identity", "fit_for_outside_world_residual": "PRIMARY backbone — an OutsideWorldProcess is one CumulativeHazardState per residual process with a fitted/base-rate intensity"},
+      {"component": "family_hazards (fitted pack PRESENT: experiments/replay_vault_v3/family_hazard_pack.json)", "role": "leakage-safe fitted per-family base rates with partial pooling; feeds aggregate-outcome + structural priors", "fit_for_outside_world_residual": "the base-rate source for residual intensities"},
+      {"component": "scheduled_facts + hazard_round", "role": "deterministic dated public facts + dated outcome-entailing hazard modulation", "fit_for_outside_world_residual": "the deterministic calendar component"},
+      {"component": "event_time.FirstPassageOperator + world_dynamics.PersistenceCheckOperator", "role": "mode-level first passage + provisional-absorption collapse/resume", "fit_for_outside_world_residual": "consumes the residual"},
+      {"component": "phase8_events.EventLog (observed_time filtering, corrections, tamper-evident chain) + evidence_temporal.TemporalVerifier (Wayback verification)", "role": "leakage-safe ingestion of the REAL outside world", "fit_for_outside_world_residual": "kind=external_adapter — the evidence/measurement feed, already leak-gated"},
+      {"component": "world_dynamics.COUPLING_PRIORS + fit_coupling_pack (coupling_pack.json NOT yet fitted)", "role": "documented structural-constant priors sampled per branch", "fit_for_outside_world_residual": "pattern for residual-parameter provenance"}
+    ],
+    "v1_candidates_to_back_residual": [
+      "swm/transition/future_events.py FutureEvent + SurpriseHazard (categorical outcome distributions at dated events + unscheduled shock Poisson) — port as exogenous mechanism whose events land on the v2 queue",
+      "swm/simulation/event_model.py calibrate()/interval_coverage() — fitted magnitude/frequency for surprise jumps",
+      "swm/simulation/directional_event_model.py — conditional (state-dependent) signed impacts at calendar events, corpus-calibrated elasticities via swm/eval/harvest.py"
+    ]
+  },
+
+  "mechanism_spec_gap_matrix": {
+    "target_fields": ["mechanism_id", "version", "kind", "causal_role", "required_state", "read_set", "write_set", "event_inputs", "event_outputs", "temporal_behavior", "parameter_schema", "parameter_sources", "units", "conservation_rules", "validation_rules", "calibration_status", "domains", "known_limits", "operator"],
+    "coverage_today": {
+      "mechanism_id": "lean registry: mech_id; phase6: family_id; scenario: mechanism_definitions key — three id spaces, no join",
+      "version": "MISSING on lean entries; phase6 records/packs versioned; scenario schema versioned per branch; runtime_fingerprint.py hashes code",
+      "kind": "PARTIAL — ontology_type (lean, 9 values) and phase6 ONTOLOGY_TYPES (20 values) both differ from the target kind list; no market/queue/operational/physical/legal/external_adapter anywhere; legal/physical exist only as scenario-schema physical_constraints and institutional rules",
+      "causal_role": "present everywhere (free text; scenario mechanisms fixed to mechanism_mediated)",
+      "required_state": "lean required_state tuple (coarse names)",
+      "read_set_write_set": "SCATTERED x3 — operator requires/modifies, event-type reads/deltas, Event.read_set/write_set; all advisory strings, never validated against StateDelta.changes",
+      "event_inputs": "MISSING as declaration — encoded in each operator's applicable() code; only scenario mechanisms declare triggering_event_types",
+      "event_outputs": "PARTIAL — StateDelta.follow_up_events at runtime; only scenario mechanisms declare possible_output_event_types",
+      "temporal_behavior": "PARTIAL — temporal_scale enum (event|interval|scheduled|horizon) only; hazard/first-passage semantics live in code",
+      "parameter_schema": "MISSING on lean/operator registries; EXISTS in phase6 ParameterSpec and nonlinear StructuralForm.param_schema",
+      "parameter_sources": "lean: one free-text string; phase6: controlled 8-value vocabulary with per-parameter records — the vocab to adopt",
+      "units": "MISSING on mechanisms — only quantity types carry units; operators register ad-hoc quantity types at apply time",
+      "conservation_rules": "MISSING as declaration — enforced operationally in ResourceUpdateOperator.validate, causal_boundary escrow/settle/refund, scenario resource_definitions.conserved flag",
+      "validation_rules": "PARTIAL — operator invariants tuple (free strings); institutions Rule kinds fail closed; no per-mechanism executable validation",
+      "calibration_status": "THREE vocabularies (lean 4-value, phase6 9-value lifecycle, semantic registry 10-value) + unenforced (scheduled_facts uses 'deterministic'); operator validated=True universally overloads 'contract-tested' with 'calibrated'",
+      "domains": "lean domains tuple + phase6 ApplicabilityRule/transport — not joined",
+      "known_limits": "phase6 Citation.limits + transport records only",
+      "operator": "present (string key), but 8 operators bypass the registry via direct instantiation in materialize.py, and phase9_temporal uses its own Phase9Delta"
+    }
+  },
+
+  "shortest_path_to_typed_spec": [
+    "1. Add swm/world_model_v2/mechanism_spec.py: a MechanismSpec dataclass with the 19 target fields + a KINDS enum (institution, population, network, market, algorithm, queue, resource, operational, physical, legal, numerical, exogenous, measurement, external_adapter). Do NOT touch MechanismEntry/_OPERATORS.",
+    "2. Build specs by JOIN, not migration: from_registries(mech_id) merges mechanisms._REGISTRY (id, causal_role, required_state, calibration_status, domains, operator) + transitions._OPERATORS[entry.operator] (requires->read_set, modifies->write_set, temporal_scale->temporal_behavior.scale, parameter_source, invariants->validation_rules, validated/experimental) + events._EVENT_TYPES (reads/deltas for declared event types) + registry store (packs -> parameter_schema/parameter_sources/known_limits/citations where a phase6 record exists).",
+    "3. event_inputs: add an optional event_inputs kwarg to register_operator (default ()) and backfill the 32 existing registrations from their applicable() etypes (a static 32-row table; pure metadata, zero behavior change). event_outputs from a declared follow-up table + StateDelta.follow_up_events audit.",
+    "4. kind mapping table: ontology_type->kind (institutional->institution, diffusion->network, resource->resource, exogenous->exogenous, measurement->measurement, numerical->numerical, decision/belief/relationship stay actor-layer and are marked kind=null/actor — the spec covers world mechanisms, actor cognition remains Phase-4 policy); phase6 ONTOLOGY_TYPES + scenario executor_binding get their own rows (institutional_aggregation->institution, conserved_resource_settlement->resource, information_transport->network, event_scheduling->queue, population_response->population, generic_state_machine->operational).",
+    "5. Adopt phase6 vocabularies as the single source: PARAMETER_SOURCES for parameter_sources, the 9-status lifecycle for calibration_status (lean 4-value maps in: calibrated->production_eligible/locally_validated, prior->research_encoded/reference-prior pack, uncalibrated->implemented, experimental->proposed/quarantined); keep store.py mirroring but emit MechanismSpec instead of only MechanismEntry.",
+    "6. units/conservation: derive units from the quantity types a mechanism writes (require operators to pre-register their quantity types with units instead of registering at apply time); conservation_rules = declared {resource, rule: escrow|floor|closed_sum} mirrored from scenario resource_definitions and ResourceUpdate/settlement behavior.",
+    "7. Enforcement (later, behind a flag): a debug wrapper that diffs StateDelta.changes paths against write_set and logs violations — turning today's advisory strings into checked contracts without breaking any operator.",
+    "8. Scenario-generated mechanisms adapt via spec_from_mechanism_definition(md): version=schema version+content hash, calibration_status=experimental unless evidence_basis, kind from executor_binding, known_limits=assumptions+uncertainty_source."
+  ]
+}

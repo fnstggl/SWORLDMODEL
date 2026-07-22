@@ -1,0 +1,4901 @@
+{
+ "_meta": {
+  "n": 16,
+  "llm_calls": 111,
+  "est_cost_usd": 0.0748,
+  "runtime_s": 526.4
+ },
+ "traces": [
+  {
+   "domain": "messaging",
+   "question": "Will Elon Musk respond publicly to the FTC inquiry about Twitter?",
+   "as_of": "2023-07-01",
+   "horizon": "2023-08-01",
+   "n_requirements": 8,
+   "requirements": [
+    {
+     "id": "req_95dc780414",
+     "need": "If Elon Musk issues any public communication (tweet, press release, interview, s",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_fdcf73088b",
+     "need": "value/context of elon_musk.legal_risk_perception",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_a495037639",
+     "need": "value/context of elon_musk.desire_for_public_engagement",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    },
+    {
+     "id": "req_c74c66039b",
+     "need": "value/context of twitter_x_corp.legal_team_advice",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "Elon Musk respond publicly FTC inquiry Twitter elon musk ftc twitter x corp after:2023-02-01 before:2023-07-01",
+     "after": "2023-02-01",
+     "before": "2023-07-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "6ad1f8013517"
+    },
+    {
+     "query": "elon musk legal risk perception after:2023-02-01 before:2023-07-01",
+     "after": "2023-02-01",
+     "before": "2023-07-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 2,
+     "raw_hash": "962e73a5fbd9"
+    },
+    {
+     "query": "elon musk desire public engagement after:2023-02-01 before:2023-07-01",
+     "after": "2023-02-01",
+     "before": "2023-07-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 1,
+     "raw_hash": "9d347af467f3"
+    }
+   ],
+   "n_documents": 11,
+   "documents": [
+    {
+     "source": "WSJ",
+     "title": "Exclusive | House GOP Subpoenas FTC for Twitter Investigation Document",
+     "pub": 1681282800.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Business Insider",
+     "title": "Elon Musk reportedly asked to meet with the chair of the FTC but she r",
+     "pub": 1680246000.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Snopes",
+     "title": "Did Elon Musk Say Twitter Employees 'Who Are a 7 or Below' Are Fired? ",
+     "pub": 1678262400.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "The New York Times",
+     "title": "Senior Twitter Lawyer Resigns, the Latest in a Series of Executive Dep",
+     "pub": 1680764400.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Politico",
+     "title": "Lina Khan to testify for first time before Jim Jordan's Judiciary Comm",
+     "pub": 1687503600.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "MediaPost",
+     "title": "Havas Plays In New Sandbox: Taps Content, Tech, Fandom To 'Earn Consum",
+     "pub": 1679382000.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 11
+   },
+   "included_claims": [
+    {
+     "id": "944346ae5eee87d9:c0",
+     "class": "official_record",
+     "subject": "House GOP",
+     "predicate": "subpoenas",
+     "span": "House GOP Subpoenas FTC for Twitter Investigation Documents"
+    },
+    {
+     "id": "006725fa02edc701:c0",
+     "class": "opinion",
+     "subject": "journalists",
+     "predicate": "should leave",
+     "span": "Why journalists should finally leave Twitter"
+    },
+    {
+     "id": "8f0feea012c06775:c0",
+     "class": "observed_fact",
+     "subject": "Elon Musk",
+     "predicate": "fires",
+     "span": "Elon Musk fires a top Twitter engineer over his declining view count"
+    },
+    {
+     "id": "8f0feea012c06775:c1",
+     "class": "official_record",
+     "subject": "Platformer",
+     "predicate": "reports",
+     "span": "Platformer"
+    },
+    {
+     "id": "ac33aec1df7b0ecd:c0",
+     "class": "allegation",
+     "subject": "Elon Musk",
+     "predicate": "asked to meet with",
+     "span": "Elon Musk reportedly asked to meet with the chair of the FTC"
+    },
+    {
+     "id": "ac33aec1df7b0ecd:c1",
+     "class": "allegation",
+     "subject": "the chair of the FTC",
+     "predicate": "rejected",
+     "span": "but she rejected his request"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [
+    {
+     "mention": "House GOP",
+     "top": "house gop",
+     "resolved": true
+    },
+    {
+     "mention": "FTC",
+     "top": "ftc",
+     "resolved": true
+    },
+    {
+     "mention": "Twitter",
+     "top": "twitter",
+     "resolved": true
+    },
+    {
+     "mention": "journalists",
+     "top": "journalists",
+     "resolved": true
+    },
+    {
+     "mention": "Twitter",
+     "top": "twitter",
+     "resolved": true
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    }
+   ],
+   "n_independent_sources": 11,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 9
+   },
+   "leakage_flags": [],
+   "bundle_hash": "130c0371a213c0a5",
+   "plan_diff": {
+    "n_entries": 17,
+    "n_structural_changes": 16,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "entity_added",
+      "component": "house_gop",
+      "detail": "House GOP subpoenas FTC for Twitter investigation documents, indicating congressional involvement.",
+      "supporting_claim_ids": [
+       "944346ae5eee87d9:c0"
+      ],
+      "before": "",
+      "after": "house_gop"
+     },
+     {
+      "kind": "entity_added",
+      "component": "ftc_chair",
+      "detail": "FTC chair rejected Musk's meeting request, showing personal agency in the inquiry.",
+      "supporting_claim_ids": [
+       "ac33aec1df7b0ecd:c0",
+       "ac33aec1df7b0ecd:c1"
+      ],
+      "before": "",
+      "after": "ftc_chair"
+     },
+     {
+      "kind": "relation_added",
+      "component": "house_gop-subpoenas-ftc",
+      "detail": "",
+      "supporting_claim_ids": [
+       "944346ae5eee87d9:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "relation_added",
+      "component": "elon_musk-requested_meeting-ftc_chair",
+      "detail": "",
+      "supporting_claim_ids": [
+       "ac33aec1df7b0ecd:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "relation_added",
+      "component": "ftc_chair-rejected_meeting-elon_musk",
+      "detail": "",
+      "supporting_claim_ids": [
+       "ac33aec1df7b0ecd:c1"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "impulsive_response",
+      "detail": "Musk's firing of a top engineer and meeting request suggest impulsive engagement, increasing likelihood of public respon",
+      "supporting_claim_ids": [
+       "8f0feea012c06775:c0",
+       "ac33aec1df7b0ecd:c0"
+      ],
+      "before": "0.4",
+      "after": "0.6"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "cautious_silence",
+      "detail": "Rejection of meeting and legal troubles may increase caution, but Musk's impulsive actions reduce silence probability.",
+      "supporting_claim_ids": [
+       "ac33aec1df7b0ecd:c1",
+       "cc16ba0e62766154:c1"
+      ],
+      "before": "0.4",
+      "after": "0.24"
+     },
+     {
+      "kind": "lean_changed",
+      "component": "outcome_lean",
+      "detail": "",
+      "supporting_claim_ids": [
+       "8f0feea012c06775:c0",
+       "ac33aec1df7b0ecd:c0"
+      ],
+      "before": "neutral",
+      "after": "weak_yes"
+     },
+     {
+      "kind": "uncertainty_changed",
+      "component": "state_priors",
+      "detail": "Evidence of Musk's impulsive behavior and direct engagement with FTC narrows the range of possible outcomes, though reje",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "narrow"
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_95dc780414",
+      "detail": "4 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_fdcf73088b",
+      "detail": "3 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_a495037639",
+      "detail": "2 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_c74c66039b",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_e790b77012",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_8beee57b16",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_1b65ca65a3",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_be481b351a",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 16,
+   "lean_only": false,
+   "n_institutions_pre": 2,
+   "n_institutions_post": 2,
+   "n_events_pre": 1,
+   "n_events_post": 9,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "does_not_respond_publicly": 0.56,
+    "responds_publicly": 0.44
+   },
+   "terminal_post": {
+    "responds_publicly": 0.52,
+    "does_not_respond_publicly": 0.48
+   },
+   "terminal_changed": true,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "negotiation",
+   "question": "Will the UAW and Ford reach a tentative labor agreement?",
+   "as_of": "2023-10-01",
+   "horizon": "2023-11-01",
+   "n_requirements": 8,
+   "requirements": [
+    {
+     "id": "req_c007adfc76",
+     "need": "agreement_reached if a tentative contract is ratified or announced by both parti",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_d23a4af729",
+     "need": "value/context of uaw.leadership_militancy",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_dc0f19ce85",
+     "need": "value/context of ford.reservation_price",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_e8d3f867b2",
+     "need": "value/context of uaw.reservation_price",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "UAW Ford tentative labor agreement uaw ford shawn fain after:2023-05-04 before:2023-10-01",
+     "after": "2023-05-04",
+     "before": "2023-10-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "6fd423722b81"
+    },
+    {
+     "query": "uaw leadership militancy after:2023-05-04 before:2023-10-01",
+     "after": "2023-05-04",
+     "before": "2023-10-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "b3721709e32f"
+    },
+    {
+     "query": "ford reservation price after:2023-05-04 before:2023-10-01",
+     "after": "2023-05-04",
+     "before": "2023-10-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "934dc2dcde4a"
+    }
+   ],
+   "n_documents": 24,
+   "documents": [
+    {
+     "source": "ABC News - Breaking News, Latest News and Videos",
+     "title": "UAW launches strike against Big 3 automakers - ABC News - Breaking New",
+     "pub": 1694761200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Labor Notes |",
+     "title": "Ford and GM Agree to End At Least One Tier, Stellantis Still Holding O",
+     "pub": 1695625200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "CBS News",
+     "title": "General Motors issues counteroffer to UAW amid negotiations - CBS News",
+     "pub": 1694070000.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "The Detroit News",
+     "title": "Ford says 600 non-striking workers at Michigan Assembly Plant to be te",
+     "pub": 1694761200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "The Courier-Journal",
+     "title": "UAW strike threat: How Ford plans to combat worker shortage, disruptio",
+     "pub": 1694588400.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Detroit Free Press",
+     "title": "Ford demands secrecy as it preps salaried workers for blue-collar jobs",
+     "pub": 1692255600.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 23,
+    "uncertain": 1
+   },
+   "included_claims": [
+    {
+     "id": "0588f6113b7e425d:c0",
+     "class": "observed_fact",
+     "subject": "UAW",
+     "predicate": "launches",
+     "span": "UAW launches strike against Big 3 automakers"
+    },
+    {
+     "id": "9623a139b8047af1:c0",
+     "class": "opinion",
+     "subject": "Union Reform Caucus",
+     "predicate": "is responsible for",
+     "span": "We Can Thank a Union Reform Caucus for the Militant UAW Strike"
+    },
+    {
+     "id": "8b6d19e55b1a84ba:c0",
+     "class": "forecast",
+     "subject": "2023 Ford F-150 Lightning orders",
+     "predicate": "open",
+     "span": "2023 Ford F-150 Lightning Orders Open May 9 to Non-Reservation Holders: Report"
+    },
+    {
+     "id": "8e8840ef62b85a5d:c0",
+     "class": "observed_fact",
+     "subject": "Ford",
+     "predicate": "agrees to end",
+     "span": "Ford and GM Agree to End At Least One Tier"
+    },
+    {
+     "id": "8e8840ef62b85a5d:c1",
+     "class": "observed_fact",
+     "subject": "GM",
+     "predicate": "agrees to end",
+     "span": "Ford and GM Agree to End At Least One Tier"
+    },
+    {
+     "id": "8e8840ef62b85a5d:c2",
+     "class": "observed_fact",
+     "subject": "Stellantis",
+     "predicate": "is still holding out",
+     "span": "Stellantis Still Holding Out"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [
+    {
+     "mention": "UAW",
+     "top": "uaw",
+     "resolved": true
+    },
+    {
+     "mention": "Big 3 automakers",
+     "top": "big 3 automakers",
+     "resolved": true
+    },
+    {
+     "mention": "Union Reform Caucus",
+     "top": "union reform caucus",
+     "resolved": true
+    },
+    {
+     "mention": "UAW",
+     "top": "uaw",
+     "resolved": true
+    },
+    {
+     "mention": "2023 Ford F-150 Lightning",
+     "top": "2023 ford f-150 lightning",
+     "resolved": false
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    }
+   ],
+   "n_independent_sources": 24,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 10
+   },
+   "leakage_flags": [],
+   "bundle_hash": "6e1b12773386e1b6",
+   "plan_diff": {
+    "n_entries": 19,
+    "n_structural_changes": 18,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "entity_added",
+      "component": "union_reform_caucus",
+      "detail": "Claim [9623a139b8047af1:c0] identifies the Union Reform Caucus as responsible for the militant UAW strike, indicating a ",
+      "supporting_claim_ids": [
+       "9623a139b8047af1:c0"
+      ],
+      "before": "",
+      "after": "union_reform_caucus"
+     },
+     {
+      "kind": "entity_added",
+      "component": "stellantis",
+      "detail": "Claim [8e8840ef62b85a5d:c2] notes Stellantis is still holding out, making it a relevant third automaker in the broader b",
+      "supporting_claim_ids": [
+       "8e8840ef62b85a5d:c2"
+      ],
+      "before": "",
+      "after": "stellantis"
+     },
+     {
+      "kind": "institution_added",
+      "component": "uaw_bargaining_committee",
+      "detail": "The UAW bargaining committee is an existing entity in the plan; no new rules are added by the claims.",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "[\"approval\"]"
+     },
+     {
+      "kind": "rule_added",
+      "component": "uaw_bargaining_committee.approval",
+      "detail": "{}",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "relation_added",
+      "component": "union_reform_caucus-influences-uaw",
+      "detail": "",
+      "supporting_claim_ids": [
+       "9623a139b8047af1:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "relation_added",
+      "component": "uaw-strikes_against-ford",
+      "detail": "",
+      "supporting_claim_ids": [
+       "0588f6113b7e425d:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "relation_added",
+      "component": "uaw-strikes_against-stellantis",
+      "detail": "",
+      "supporting_claim_ids": [
+       "0588f6113b7e425d:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "event_added",
+      "component": "external_shock@2023-09-15",
+      "detail": "Claim [0588f6113b7e425d:c0] states the UAW launches a strike against Big 3 automakers, which is a significant external s",
+      "supporting_claim_ids": [
+       "0588f6113b7e425d:c0"
+      ],
+      "before": "",
+      "after": "external_shock"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "militant_showdown",
+      "detail": "Claims [9623a139b8047af1:c0] and [0588f6113b7e425d:c0] indicate a militant faction and an actual strike, supporting a mo",
+      "supporting_claim_ids": [
+       "9623a139b8047af1:c0",
+       "0588f6113b7e425d:c0"
+      ],
+      "before": "1.0",
+      "after": "1.5"
+     },
+     {
+      "kind": "lean_changed",
+      "component": "outcome_lean",
+      "detail": "",
+      "supporting_claim_ids": [
+       "8e8840ef62b85a5d:c0",
+       "8e8840ef62b85a5d:c1"
+      ],
+      "before": "neutral",
+      "after": "weak_yes"
+     },
+     {
+      "kind": "uncertainty_changed",
+      "component": "state_priors",
+      "detail": "Claims show concrete actions (strike, tier concessions) that reduce ambiguity about the bargaining process, though Stell",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "narrow"
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_c007adfc76",
+      "detail": "4 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_d23a4af729",
+      "detail": "3 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_dc0f19ce85",
+      "detail": "3 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_e8d3f867b2",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_620d0931c6",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_525df595df",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_2f2a40a166",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_230f0c5d13",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 18,
+   "lean_only": false,
+   "n_institutions_pre": 3,
+   "n_institutions_post": 4,
+   "n_events_pre": 1,
+   "n_events_post": 10,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "no_agreement": 0.52,
+    "agreement_reached": 0.48
+   },
+   "terminal_post": {
+    "agreement_reached": 0.56,
+    "no_agreement": 0.44
+   },
+   "terminal_changed": true,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "organizational_decision",
+   "question": "Will Disney's board extend Bob Iger's contract as CEO?",
+   "as_of": "2023-06-01",
+   "horizon": "2023-08-01",
+   "n_requirements": 8,
+   "requirements": [
+    {
+     "id": "req_bcd746f5d2",
+     "need": "The board's formal vote outcome as recorded in official minutes or public announ",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_842b4c6618",
+     "need": "value/context of board_members.preference_extend",
+     "why": "high-sensitivity latent (1.00) driving the outcome distribution",
+     "voi": 1.0
+    },
+    {
+     "id": "req_10a9789ff4",
+     "need": "value/context of board_members.loyalty_to_iger",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_83a116d33d",
+     "need": "value/context of iger_performance_metric",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "Disney board extend Bob Iger contract CEO bob iger board chair successor candidate internal after:2023-01-02 before:2023-06-01",
+     "after": "2023-01-02",
+     "before": "2023-06-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 5,
+     "raw_hash": "e93de2e3fe48"
+    },
+    {
+     "query": "board members preference extend after:2023-01-02 before:2023-06-01",
+     "after": "2023-01-02",
+     "before": "2023-06-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 2,
+     "raw_hash": "e67802e7f975"
+    },
+    {
+     "query": "board members loyalty iger after:2023-01-02 before:2023-06-01",
+     "after": "2023-01-02",
+     "before": "2023-06-01",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "ac6f3b475939"
+    }
+   ],
+   "n_documents": 7,
+   "documents": [
+    {
+     "source": "Business Insider",
+     "title": "Inside Disney it's 'Revenge of the Creatives' and woe to company foes ",
+     "pub": 1680850800.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Disney Tourist Blog",
+     "title": "Disney Reveals Reason for Firing Former CEO Bob Chapek, Salary & Sever",
+     "pub": 1674028800.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Disney Food Blog",
+     "title": "Can Activist Investors Derail Bob Iger\u2019s Board at Disney? - Disney Foo",
+     "pub": 1675497600.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "The Hollywood Reporter",
+     "title": "Behind Disney\u2019s Activist Investor Battle: A Marvel Mogul\u2019s Revenge Pla",
+     "pub": 1673942400.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Deadline",
+     "title": "Disney Replaces Susan Arnold As Chair, Seeks To Fend Off Activist Inve",
+     "pub": 1673424000.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "K-12 Dive",
+     "title": "Baron Davis resigns as superintendent of South Carolina\u2019s Richland Sch",
+     "pub": 1674115200.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 7
+   },
+   "included_claims": [
+    {
+     "id": "cdaf0b03424d4711:c0",
+     "class": "observed_fact",
+     "subject": "Disney",
+     "predicate": "is experiencing",
+     "span": "Inside Disney it's 'Revenge of the Creatives'"
+    },
+    {
+     "id": "cdaf0b03424d4711:c1",
+     "class": "observed_fact",
+     "subject": "CEO Bob Iger",
+     "predicate": "is taking",
+     "span": "CEO Bob Iger is taking no prisoners"
+    },
+    {
+     "id": "db3dce30f7baac39:c0",
+     "class": "observed_fact",
+     "subject": "Baron Davis",
+     "predicate": "resigns as",
+     "span": "Baron Davis resigns as superintendent of South Carolina\u2019s Richland School Distri"
+    },
+    {
+     "id": "e967acef0091a89d:c0",
+     "class": "official_record",
+     "subject": "Disney",
+     "predicate": "revealed",
+     "span": "Disney Reveals Reason for Firing Former CEO Bob Chapek"
+    },
+    {
+     "id": "e967acef0091a89d:c1",
+     "class": "official_record",
+     "subject": "Disney",
+     "predicate": "revealed",
+     "span": "Disney Reveals Reason for Firing Former CEO Bob Chapek, Salary & Severance"
+    },
+    {
+     "id": "3d33caf9c3b5e4aa:c0",
+     "class": "observed_fact",
+     "subject": "The Journalist's Resource",
+     "predicate": "published",
+     "span": "6 tips on covering race-based affirmative action in college admissions - The Jou"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [
+    {
+     "mention": "Disney",
+     "top": "disney",
+     "resolved": true
+    },
+    {
+     "mention": "Bob Iger",
+     "top": "bob iger",
+     "resolved": true
+    },
+    {
+     "mention": "Baron Davis",
+     "top": "baron davis",
+     "resolved": true
+    },
+    {
+     "mention": "South Carolina\u2019s Richland School District Two",
+     "top": "south carolina\u2019s richland school district two",
+     "resolved": true
+    },
+    {
+     "mention": "Disney",
+     "top": "disney",
+     "resolved": true
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    }
+   ],
+   "n_independent_sources": 7,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 8
+   },
+   "leakage_flags": [],
+   "bundle_hash": "73353b9eaf265c1c",
+   "plan_diff": {
+    "n_entries": 14,
+    "n_structural_changes": 13,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "entity_added",
+      "component": "activist_investors",
+      "detail": "Claim bd506efe84257779:c0 and e4dd8ce38a85f69d:c0 indicate activist investors are challenging the board, which is a new ",
+      "supporting_claim_ids": [
+       "bd506efe84257779:c0",
+       "e4dd8ce38a85f69d:c0"
+      ],
+      "before": "",
+      "after": "activist_investors"
+     },
+     {
+      "kind": "relation_added",
+      "component": "activist_investors-challenges-disney_board",
+      "detail": "",
+      "supporting_claim_ids": [
+       "bd506efe84257779:c0",
+       "e4dd8ce38a85f69d:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "event_added",
+      "component": "external_shock@2024-01-01",
+      "detail": "Claims bd506efe84257779:c0 and e4dd8ce38a85f69d:c0 describe an activist investor battle that could disrupt board dynamic",
+      "supporting_claim_ids": [
+       "bd506efe84257779:c0",
+       "e4dd8ce38a85f69d:c0"
+      ],
+      "before": "",
+      "after": "external_shock"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "board_seeks_change",
+      "detail": "Activist investor pressure (bd506efe84257779:c0, e4dd8ce38a85f69d:c0) increases likelihood of board seeking change.",
+      "supporting_claim_ids": [
+       "bd506efe84257779:c0",
+       "e4dd8ce38a85f69d:c0"
+      ],
+      "before": "0.3",
+      "after": "0.45"
+     },
+     {
+      "kind": "lean_changed",
+      "component": "outcome_lean",
+      "detail": "",
+      "supporting_claim_ids": [
+       "bd506efe84257779:c0",
+       "e4dd8ce38a85f69d:c0"
+      ],
+      "before": "neutral",
+      "after": "weak_no"
+     },
+     {
+      "kind": "uncertainty_changed",
+      "component": "state_priors",
+      "detail": "Activist investor claims provide a clear directional pressure against Iger's extension, reducing ambiguity.",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "narrow"
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_bcd746f5d2",
+      "detail": "6 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_842b4c6618",
+      "detail": "2 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_10a9789ff4",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_83a116d33d",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_fb0eddc481",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_2f9407119b",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_e292fb1988",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_bc6b2136cf",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 13,
+   "lean_only": false,
+   "n_institutions_pre": 2,
+   "n_institutions_post": 2,
+   "n_events_pre": 3,
+   "n_events_post": 12,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "not_extend": 0.54,
+    "extend": 0.46
+   },
+   "terminal_post": {
+    "not_extend": 0.54,
+    "extend": 0.46
+   },
+   "terminal_changed": false,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "election",
+   "question": "Will the Republicans win the Kentucky governor race in 2023?",
+   "as_of": "2023-10-15",
+   "horizon": "2023-11-08",
+   "n_requirements": 8,
+   "requirements": [
+    {
+     "id": "req_affbbec6d6",
+     "need": "The candidate receiving the most votes in the general election is the winner; if",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_4e87026280",
+     "need": "value/context of kentucky_voters.true_preference_distribution",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_ac839eb7ab",
+     "need": "value/context of andy_beshear.approval_rating",
+     "why": "high-sensitivity latent (0.85) driving the outcome distribution",
+     "voi": 0.85
+    },
+    {
+     "id": "req_2d4f3ee610",
+     "need": "value/context of kentucky_voters.turnout_propensity_by_segment",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "Republicans win Kentucky governor race 2023 andy beshear daniel cameron kentucky state board of elections after:2023-05-18 before:2023-10-15",
+     "after": "2023-05-18",
+     "before": "2023-10-15",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "41265934879a"
+    },
+    {
+     "query": "kentucky voters true preference distribution after:2023-05-18 before:2023-10-15",
+     "after": "2023-05-18",
+     "before": "2023-10-15",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "d48a168ece9e"
+    },
+    {
+     "query": "andy beshear approval rating after:2023-05-18 before:2023-10-15",
+     "after": "2023-05-18",
+     "before": "2023-10-15",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "859032150f4d"
+    }
+   ],
+   "n_documents": 16,
+   "documents": [
+    {
+     "source": "Kentucky Lantern",
+     "title": "Why I\u2019m very worried about a Gov. Cameron - Kentucky Lantern",
+     "pub": 1694588400.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "The 19th News",
+     "title": "How abortion is set to shape the Kentucky governor\u2019s race - The 19th N",
+     "pub": 1693206000.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "boltsmag.org",
+     "title": "Your Cheat Sheet to the 2023 General Elections - boltsmag.org",
+     "pub": 1697049755.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Center For Politics",
+     "title": "Notes on the State of Politics: June 7, 2023 - Center For Politics",
+     "pub": 1686121200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Inside Climate News",
+     "title": "Kentucky\u2019s Democratic Governor Steers Clear of a Climate Agenda in His",
+     "pub": 1696402800.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "The Courier-Journal",
+     "title": "Daniel Cameron's campaign touts his lawsuits against Beshear and Biden",
+     "pub": 1686553200.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 16
+   },
+   "included_claims": [
+    {
+     "id": "d0380dd5f68cdc37:c0",
+     "class": "opinion",
+     "subject": "I",
+     "predicate": "am very worried about",
+     "span": "Why I\u2019m very worried about a Gov. Cameron"
+    },
+    {
+     "id": "12d91d16565f6ea2:c0",
+     "class": "observed_fact",
+     "subject": "Kentucky Gov. Beshear",
+     "predicate": "leads re-election race by",
+     "span": "Poll: Kentucky Gov. Beshear leads re-election race by 10 points"
+    },
+    {
+     "id": "3657c7f257678b1a:c0",
+     "class": "forecast",
+     "subject": "abortion",
+     "predicate": "is set to shape",
+     "span": "How abortion is set to shape the Kentucky governor\u2019s race"
+    },
+    {
+     "id": "11bd415bfda29a9a:c0",
+     "class": "observed_fact",
+     "subject": "Beshear",
+     "predicate": "is",
+     "span": "Poll: Beshear is America\u2019s 5th most popular governor"
+    },
+    {
+     "id": "11bd415bfda29a9a:c1",
+     "class": "observed_fact",
+     "subject": "Beshear",
+     "predicate": "has",
+     "span": "bolstered by highest approval among GOP voters than any other Democratic governo"
+    },
+    {
+     "id": "b3ccbb0a5d23467d:c0",
+     "class": "observed_fact",
+     "subject": "boltsmag.org",
+     "predicate": "published",
+     "span": "Your Cheat Sheet to the 2023 General Elections - boltsmag.org"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [
+    {
+     "mention": "Cameron",
+     "top": "cameron",
+     "resolved": true
+    },
+    {
+     "mention": "Kentucky Gov. Beshear",
+     "top": "kentucky beshear",
+     "resolved": true
+    },
+    {
+     "mention": "abortion",
+     "top": "abortion",
+     "resolved": true
+    },
+    {
+     "mention": "Kentucky governor\u2019s race",
+     "top": "kentucky governor\u2019s race",
+     "resolved": true
+    },
+    {
+     "mention": "Beshear",
+     "top": "beshear",
+     "resolved": true
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "exact_duplicate",
+     "n": 2
+    }
+   ],
+   "n_independent_sources": 15,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 7
+   },
+   "leakage_flags": [],
+   "bundle_hash": "855bc0fe76c466d6",
+   "plan_diff": {
+    "n_entries": 14,
+    "n_structural_changes": 13,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "entity_added",
+      "component": "abortion_rights_groups",
+      "detail": "Abortion is a key issue in the race, implying organized groups will mobilize.",
+      "supporting_claim_ids": [
+       "3657c7f257678b1a:c0"
+      ],
+      "before": "",
+      "after": "abortion_rights_groups"
+     },
+     {
+      "kind": "relation_added",
+      "component": "abortion_rights_groups-mobilizes_for-andy_beshear",
+      "detail": "",
+      "supporting_claim_ids": [
+       "3657c7f257678b1a:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "incumbent_advantage",
+      "detail": "Beshear leads by 10 points and is the 5th most popular governor, with high GOP approval.",
+      "supporting_claim_ids": [
+       "12d91d16565f6ea2:c0",
+       "11bd415bfda29a9a:c0",
+       "11bd415bfda29a9a:c1"
+      ],
+      "before": "0.5",
+      "after": "0.75"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "nationalization",
+      "detail": "Abortion as a key issue may nationalize the race but Beshear's cross-party appeal weakens nationalization effect.",
+      "supporting_claim_ids": [
+       "3657c7f257678b1a:c0",
+       "11bd415bfda29a9a:c1"
+      ],
+      "before": "0.5",
+      "after": "0.3"
+     },
+     {
+      "kind": "lean_changed",
+      "component": "outcome_lean",
+      "detail": "",
+      "supporting_claim_ids": [
+       "12d91d16565f6ea2:c0",
+       "11bd415bfda29a9a:c0",
+       "11bd415bfda29a9a:c1"
+      ],
+      "before": "neutral",
+      "after": "strong_no"
+     },
+     {
+      "kind": "uncertainty_changed",
+      "component": "state_priors",
+      "detail": "Multiple polls and approval data consistently show Beshear leading, reducing uncertainty.",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "narrow"
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_affbbec6d6",
+      "detail": "3 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_4e87026280",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_ac839eb7ab",
+      "detail": "4 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_2d4f3ee610",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_c62c96443b",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_35e4699bc8",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_81c2afc8e5",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_4d2b7a6391",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 13,
+   "lean_only": false,
+   "n_institutions_pre": 2,
+   "n_institutions_post": 2,
+   "n_events_pre": 2,
+   "n_events_post": 9,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "Democrat_win": 0.56,
+    "Republican_win": 0.44
+   },
+   "terminal_post": {
+    "Republican_win": 0.5,
+    "Democrat_win": 0.5
+   },
+   "terminal_changed": true,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "legislation",
+   "question": "Will the US Congress pass a stopgap funding bill to avoid a shutdown?",
+   "error": "KeyError: \"unknown entity 'house_of_representatives' (known: ['freedom_caucus', 'house_conservatives_group', 'president', 'senate_majority_leader', 'senate_mino"
+  },
+  {
+   "domain": "acquisition",
+   "question": "Will Microsoft complete its acquisition of Activision Blizzard?",
+   "as_of": "2023-08-01",
+   "horizon": "2023-11-01",
+   "n_requirements": 7,
+   "requirements": [
+    {
+     "id": "req_3fb9834f26",
+     "need": "completed if by 2023-11-01 the transaction has closed (all regulatory approvals ",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_92310fa134",
+     "need": "value/context of ftc.enforcement_philosophy",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_cba99a1a20",
+     "need": "value/context of ec.political_factors",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    },
+    {
+     "id": "req_a983a76a4a",
+     "need": "value/context of microsoft.willingness_to_concede",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "Microsoft complete acquisition Activision Blizzard microsoft activision blizzard ftc after:2023-03-04 before:2023-08-01",
+     "after": "2023-03-04",
+     "before": "2023-08-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "d1987b4a73be"
+    },
+    {
+     "query": "ftc enforcement philosophy after:2023-03-04 before:2023-08-01",
+     "after": "2023-03-04",
+     "before": "2023-08-01",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "fd79363c5775"
+    },
+    {
+     "query": "political factors after:2023-03-04 before:2023-08-01",
+     "after": "2023-03-04",
+     "before": "2023-08-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "857c24d6f2d2"
+    }
+   ],
+   "n_documents": 16,
+   "documents": [
+    {
+     "source": "CNBC",
+     "title": "Microsoft-Activision deal moves closer as judge denies FTC injunction ",
+     "pub": 1689058800.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "PBS",
+     "title": "Microsoft heads to court over $69 billion deal that could reshape vide",
+     "pub": 1687417200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "GamesIndustry.biz",
+     "title": "Microsoft allowed to complete Activision Blizzard acquisition in the U",
+     "pub": 1689058800.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "The New York Times",
+     "title": "Judge Rejects F.T.C. Delay of $70 Billion Microsoft-Activision Deal (P",
+     "pub": 1689058800.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "WTVG",
+     "title": "FTC appeals judge\u2019s ruling that would allow Microsoft\u2019s Activision Bli",
+     "pub": 1689231600.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "vox.com",
+     "title": "The FTC\u2019s case against Microsoft\u2019s Activision acquisition is not going",
+     "pub": 1689058800.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 16
+   },
+   "included_claims": [
+    {
+     "id": "e56b958c5d1066b7:c0",
+     "class": "observed_fact",
+     "subject": "Microsoft-Activision deal",
+     "predicate": "moves closer",
+     "span": "Microsoft-Activision deal moves closer"
+    },
+    {
+     "id": "e56b958c5d1066b7:c1",
+     "class": "official_record",
+     "subject": "judge",
+     "predicate": "denies",
+     "span": "judge denies FTC injunction request"
+    },
+    {
+     "id": "9d47cab383f252b6:c0",
+     "class": "observed_fact",
+     "subject": "Mercator Institute for China Studies (ME",
+     "predicate": "has",
+     "span": "Political and social factors - Mercator Institute for China Studies (MERICS)."
+    },
+    {
+     "id": "045c6143dbda0647:c0",
+     "class": "observed_fact",
+     "subject": "Microsoft",
+     "predicate": "heads to court over",
+     "span": "Microsoft heads to court over $69 billion deal that could reshape video gaming"
+    },
+    {
+     "id": "41b8e85835b75a27:c0",
+     "class": "observed_fact",
+     "subject": "Sudan",
+     "predicate": "has",
+     "span": "A House Divided: Sudan\u2019s Troubled Transition"
+    },
+    {
+     "id": "22504a7309fe5f8a:c0",
+     "class": "official_record",
+     "subject": "Microsoft",
+     "predicate": "allowed to complete",
+     "span": "Microsoft allowed to complete Activision Blizzard acquisition in the US"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [
+    {
+     "mention": "Microsoft",
+     "top": "microsoft",
+     "resolved": true
+    },
+    {
+     "mention": "Activision",
+     "top": "activision",
+     "resolved": true
+    },
+    {
+     "mention": "FTC",
+     "top": "ftc",
+     "resolved": true
+    },
+    {
+     "mention": "Mercator Institute for China Studies (MERICS)",
+     "top": "mercator institute for china studies (merics)",
+     "resolved": true
+    },
+    {
+     "mention": "Microsoft",
+     "top": "microsoft",
+     "resolved": true
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    }
+   ],
+   "n_independent_sources": 16,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 7
+   },
+   "leakage_flags": [],
+   "bundle_hash": "125865884af19f80",
+   "plan_diff": {
+    "n_entries": 16,
+    "n_structural_changes": 15,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "entity_added",
+      "component": "us_district_court",
+      "detail": "The judge denying the FTC injunction request implies a specific court entity that made the decision.",
+      "supporting_claim_ids": [
+       "e56b958c5d1066b7:c1"
+      ],
+      "before": "",
+      "after": "us_district_court"
+     },
+     {
+      "kind": "institution_added",
+      "component": "us_district_court",
+      "detail": "The court's denial of the FTC injunction effectively approves the deal in the US, adding a decision point.",
+      "supporting_claim_ids": [
+       "e56b958c5d1066b7:c1",
+       "22504a7309fe5f8a:c0"
+      ],
+      "before": "",
+      "after": "[\"approval\"]"
+     },
+     {
+      "kind": "rule_added",
+      "component": "us_district_court.approval",
+      "detail": "{}",
+      "supporting_claim_ids": [
+       "e56b958c5d1066b7:c1",
+       "22504a7309fe5f8a:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "relation_added",
+      "component": "us_district_court-approves-microsoft",
+      "detail": "",
+      "supporting_claim_ids": [
+       "22504a7309fe5f8a:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "relation_added",
+      "component": "ftc-challenges-microsoft",
+      "detail": "",
+      "supporting_claim_ids": [
+       "e56b958c5d1066b7:c1"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "event_added",
+      "component": "approval@2023-07-11",
+      "detail": "The judge denied the FTC injunction, allowing the deal to proceed in the US.",
+      "supporting_claim_ids": [
+       "e56b958c5d1066b7:c1",
+       "22504a7309fe5f8a:c0"
+      ],
+      "before": "",
+      "after": "approval"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "regulatory_approval_chain",
+      "detail": "The US court approval removes a major regulatory hurdle, increasing likelihood of completion.",
+      "supporting_claim_ids": [
+       "e56b958c5d1066b7:c1",
+       "22504a7309fe5f8a:c0"
+      ],
+      "before": "0.7",
+      "after": "1.05"
+     },
+     {
+      "kind": "lean_changed",
+      "component": "outcome_lean",
+      "detail": "",
+      "supporting_claim_ids": [
+       "22504a7309fe5f8a:c0",
+       "e56b958c5d1066b7:c1"
+      ],
+      "before": "neutral",
+      "after": "weak_yes"
+     },
+     {
+      "kind": "uncertainty_changed",
+      "component": "state_priors",
+      "detail": "The US court decision resolves a key uncertainty, but other regulators (CMA, EC) remain, so uncertainty narrows but not ",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "narrow"
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_3fb9834f26",
+      "detail": "4 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_92310fa134",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_cba99a1a20",
+      "detail": "3 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_a983a76a4a",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_1326ab3416",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_1b65ca65a3",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_17196e9c9a",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 15,
+   "lean_only": false,
+   "n_institutions_pre": 5,
+   "n_institutions_post": 6,
+   "n_events_pre": 1,
+   "n_events_post": 9,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "not_completed": 0.58,
+    "completed": 0.42
+   },
+   "terminal_post": {
+    "completed": 0.56,
+    "not_completed": 0.44
+   },
+   "terminal_changed": true,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "product_launch",
+   "question": "Will Apple release the iPhone 15 on its announced date?",
+   "as_of": "2023-09-01",
+   "horizon": "2023-10-01",
+   "n_requirements": 8,
+   "requirements": [
+    {
+     "id": "req_a975f2f5e6",
+     "need": "release_on_date if Apple publicly releases iPhone 15 on the announced date (2023",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_4778caf966",
+     "need": "value/context of Apple.supply_chain_readiness",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_82de89f019",
+     "need": "value/context of Apple.internal_decision",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    },
+    {
+     "id": "req_9626623043",
+     "need": "value/context of TSMC.chip_supply_volume",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "Apple release iPhone announced date Apple Foxconn TSMC after:2023-04-04 before:2023-09-01",
+     "after": "2023-04-04",
+     "before": "2023-09-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 3,
+     "raw_hash": "3d53ea1dead9"
+    },
+    {
+     "query": "Apple supply chain readiness after:2023-04-04 before:2023-09-01",
+     "after": "2023-04-04",
+     "before": "2023-09-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 2,
+     "raw_hash": "77e29463f079"
+    },
+    {
+     "query": "Apple internal decision after:2023-04-04 before:2023-09-01",
+     "after": "2023-04-04",
+     "before": "2023-09-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 6,
+     "raw_hash": "021739c134de"
+    }
+   ],
+   "n_documents": 11,
+   "documents": [
+    {
+     "source": "The Korea Economic Daily Global Edition",
+     "title": "Apple, Samsung in distinct cash management styles - The Korea Economic",
+     "pub": 1684134000.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Forbes India",
+     "title": "Explained: The unbelievably complex process of making semiconductor ch",
+     "pub": 1689231600.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Business Today",
+     "title": "Foxconn starts production of upcoming Apple iPhone 15 in Tamil Nadu ah",
+     "pub": 1692169200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Forbes India",
+     "title": "iPhone manufacturer Foxconn ready to cash in on India's expanding econ",
+     "pub": 1692601200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "9to5Mac",
+     "title": "Gurman: First M3 Apple Silicon Macs likely to launch in October - 9to5",
+     "pub": 1689490800.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "inc.com",
+     "title": "Apple's Culture Rejects the Conventional Wisdom of Product Design. Tha",
+     "pub": 1684393200.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 10,
+    "uncertain": 1
+   },
+   "included_claims": [
+    {
+     "id": "39ce33e13f9d493c:c0",
+     "class": "observed_fact",
+     "subject": "Apple",
+     "predicate": "has",
+     "span": "Apple, Samsung in distinct cash management styles"
+    },
+    {
+     "id": "39ce33e13f9d493c:c1",
+     "class": "observed_fact",
+     "subject": "Samsung",
+     "predicate": "has",
+     "span": "Apple, Samsung in distinct cash management styles"
+    },
+    {
+     "id": "da191e6b16a90811:c0",
+     "class": "observed_fact",
+     "subject": "Foxconn",
+     "predicate": "is ready to cash in on",
+     "span": "iPhone manufacturer Foxconn ready to cash in on India's expanding economy"
+    },
+    {
+     "id": "aa42a18834fc9fc9:c0",
+     "class": "opinion",
+     "subject": "Apple's Culture",
+     "predicate": "rejects",
+     "span": "Apple's Culture Rejects the Conventional Wisdom of Product Design."
+    },
+    {
+     "id": "aa42a18834fc9fc9:c1",
+     "class": "opinion",
+     "subject": "Apple",
+     "predicate": "is",
+     "span": "That's Why Apple Is the Best"
+    },
+    {
+     "id": "2800457e3f1bc498:c0",
+     "class": "observed_fact",
+     "subject": "The process of making semiconductor chip",
+     "predicate": "is",
+     "span": "The unbelievably complex process of making semiconductor chips"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [
+    {
+     "mention": "Apple",
+     "top": "apple",
+     "resolved": false
+    },
+    {
+     "mention": "Samsung",
+     "top": "samsung",
+     "resolved": true
+    },
+    {
+     "mention": "Foxconn",
+     "top": "foxconn",
+     "resolved": true
+    },
+    {
+     "mention": "India",
+     "top": "india",
+     "resolved": true
+    },
+    {
+     "mention": "Apple",
+     "top": "apple",
+     "resolved": false
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    }
+   ],
+   "n_independent_sources": 11,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 10
+   },
+   "leakage_flags": [],
+   "bundle_hash": "0300f7f422fd403b",
+   "plan_diff": {
+    "n_entries": 18,
+    "n_structural_changes": 17,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "entity_added",
+      "component": "Samsung",
+      "detail": "Claim c0 and c1 mention Samsung's distinct cash management styles alongside Apple, indicating Samsung is a relevant peer",
+      "supporting_claim_ids": [
+       "39ce33e13f9d493c:c0",
+       "39ce33e13f9d493c:c1"
+      ],
+      "before": "",
+      "after": "Samsung"
+     },
+     {
+      "kind": "entity_added",
+      "component": "Forbes_India",
+      "detail": "Claim c1 identifies Forbes India as the publisher of an official record explaining semiconductor chip complexity, releva",
+      "supporting_claim_ids": [
+       "2800457e3f1bc498:c1"
+      ],
+      "before": "",
+      "after": "Forbes_India"
+     },
+     {
+      "kind": "relation_added",
+      "component": "Foxconn-produces_for-Apple",
+      "detail": "",
+      "supporting_claim_ids": [
+       "f39239b38fb58b2a:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "relation_added",
+      "component": "Foxconn-located_in-India",
+      "detail": "",
+      "supporting_claim_ids": [
+       "da191e6b16a90811:c0",
+       "f39239b38fb58b2a:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "event_added",
+      "component": "external_shock@2023-10-01",
+      "detail": "Claim c0 forecasts first M3 Apple Silicon Macs likely to launch in October, which could affect iPhone 15 release timing ",
+      "supporting_claim_ids": [
+       "3ba3c2b3deb25686:c0"
+      ],
+      "before": "",
+      "after": "external_shock"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "supply_chain_driven",
+      "detail": "Claim f39239c0 confirms Foxconn has started production of iPhone 15 in Tamil Nadu, supporting supply chain readiness and",
+      "supporting_claim_ids": [
+       "f39239b38fb58b2a:c0"
+      ],
+      "before": "0.6",
+      "after": "0.9"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "regulatory_driven",
+      "detail": "No claims provide evidence of regulatory hurdles; the only regulatory mention is an unrelated Forbes India article on ch",
+      "supporting_claim_ids": [
+       "2800457e3f1bc498:c0",
+       "2800457e3f1bc498:c1"
+      ],
+      "before": "0.2",
+      "after": "0.12"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "executive_whim",
+      "detail": "Claims about Apple's culture rejecting conventional wisdom (aa42a188c0) and being 'the best' (aa42a188c1) are opinions, ",
+      "supporting_claim_ids": [
+       "aa42a18834fc9fc9:c0",
+       "aa42a18834fc9fc9:c1"
+      ],
+      "before": "0.2",
+      "after": "0.12"
+     },
+     {
+      "kind": "lean_changed",
+      "component": "outcome_lean",
+      "detail": "",
+      "supporting_claim_ids": [
+       "f39239b38fb58b2a:c0",
+       "f39239b38fb58b2a:c1"
+      ],
+      "before": "weak_yes",
+      "after": "strong_yes"
+     },
+     {
+      "kind": "uncertainty_changed",
+      "component": "state_priors",
+      "detail": "Direct evidence of production start and a September launch forecast narrows uncertainty around the announced date.",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "narrow"
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_a975f2f5e6",
+      "detail": "6 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_4778caf966",
+      "detail": "2 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_82de89f019",
+      "detail": "2 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_9626623043",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_f6718adfe0",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_8c1d03f0d9",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_767b95622e",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_451eece34b",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 17,
+   "lean_only": false,
+   "n_institutions_pre": 2,
+   "n_institutions_post": 2,
+   "n_events_pre": 2,
+   "n_events_post": 11,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "release_on_date": 0.56,
+    "not_release_on_date": 0.44
+   },
+   "terminal_post": {
+    "release_on_date": 0.58,
+    "not_release_on_date": 0.42
+   },
+   "terminal_changed": true,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "social_media_diffusion",
+   "question": "Will Meta's Threads app reach 100 million users in its first month?",
+   "as_of": "2023-07-06",
+   "horizon": "2023-08-06",
+   "n_requirements": 8,
+   "requirements": [
+    {
+     "id": "req_929db365be",
+     "need": "If Meta publicly reports or credible third-party data confirms Threads reached 1",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_e800a761cc",
+     "need": "value/context of threads_app.user_count",
+     "why": "high-sensitivity latent (1.00) driving the outcome distribution",
+     "voi": 1.0
+    },
+    {
+     "id": "req_d90943b5fe",
+     "need": "value/context of instagram_users.interest_in_threads",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    },
+    {
+     "id": "req_aa22f6f3f8",
+     "need": "evidence discriminating structural hypothesis viral_adoption",
+     "why": "a fact that reweights competing structural hypotheses materially changes the out",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "Meta Threads app 100 million users first meta platforms threads app instagram after:2023-02-06 before:2023-07-06",
+     "after": "2023-02-06",
+     "before": "2023-07-06",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "2e8be39b0204"
+    },
+    {
+     "query": "threads app user count after:2023-02-06 before:2023-07-06",
+     "after": "2023-02-06",
+     "before": "2023-07-06",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "f930ff70ced4"
+    },
+    {
+     "query": "instagram users interest threads after:2023-02-06 before:2023-07-06",
+     "after": "2023-02-06",
+     "before": "2023-07-06",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "96e04f0f3578"
+    }
+   ],
+   "n_documents": 24,
+   "documents": [
+    {
+     "source": "The Guardian",
+     "title": "Threads app: Instagram owner\u2019s Twitter rival logs 5 million users in f",
+     "pub": 1688540400.0,
+     "temporal": "uncertain"
+    },
+    {
+     "source": "Investopedia",
+     "title": "Meta\u2019s 'Threads' App Draws 10 Million Users At Launch, Hopes For More ",
+     "pub": 1688626800.0,
+     "temporal": "uncertain"
+    },
+    {
+     "source": "Time Magazine",
+     "title": "Why E.U. Users May Not Get to Use Threads - Time Magazine",
+     "pub": 1688626800.0,
+     "temporal": "uncertain"
+    },
+    {
+     "source": "NBC News",
+     "title": "Instagram Threads is live, threatening Twitter\u2019s reign: What to know a",
+     "pub": 1688626800.0,
+     "temporal": "uncertain"
+    },
+    {
+     "source": "NPR",
+     "title": "Is Threads really a 'Twitter killer'? Here's what we know so far - NPR",
+     "pub": 1688626800.0,
+     "temporal": "uncertain"
+    },
+    {
+     "source": "CNBC",
+     "title": "Meta launches Instagram Threads in a direct challenge to Twitter - CNB",
+     "pub": 1688540400.0,
+     "temporal": "uncertain"
+    }
+   ],
+   "temporal_summary": {
+    "uncertain": 23,
+    "likely_pre_asof": 1
+   },
+   "included_claims": [
+    {
+     "id": "75c52edce64c6bae:c0",
+     "class": "observed_fact",
+     "subject": "Threads",
+     "predicate": "is",
+     "span": "What is Threads? Instagram\u2019s Twitter alternative to launch July 6"
+    },
+    {
+     "id": "75c52edce64c6bae:c1",
+     "class": "forecast",
+     "subject": "Threads",
+     "predicate": "launch",
+     "span": "What is Threads? Instagram\u2019s Twitter alternative to launch July 6"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 9,
+   "entities": [
+    {
+     "mention": "Threads",
+     "top": "threads",
+     "resolved": false
+    },
+    {
+     "mention": "Instagram",
+     "top": "instagram",
+     "resolved": true
+    },
+    {
+     "mention": "Twitter",
+     "top": "twitter",
+     "resolved": true
+    },
+    {
+     "mention": "Threads",
+     "top": "threads",
+     "resolved": false
+    },
+    {
+     "mention": "Threads app",
+     "top": "threads app",
+     "resolved": false
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "exact_duplicate",
+     "n": 2
+    }
+   ],
+   "n_independent_sources": 21,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 11
+   },
+   "leakage_flags": [],
+   "bundle_hash": "e46a77f672b09966",
+   "plan_diff": {
+    "n_entries": 11,
+    "n_structural_changes": 11,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "event_added",
+      "component": "external_shock@2023-07-06",
+      "detail": "Threads launch date confirmed as July 6, providing a clear start for the first month count.",
+      "supporting_claim_ids": [
+       "75c52edce64c6bae:c1"
+      ],
+      "before": "",
+      "after": "external_shock"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "viral_adoption",
+      "detail": "Threads is positioned as Instagram's Twitter alternative, leveraging Instagram's existing user base for potential viral ",
+      "supporting_claim_ids": [
+       "75c52edce64c6bae:c0"
+      ],
+      "before": "0.7",
+      "after": "1.05"
+     },
+     {
+      "kind": "uncertainty_changed",
+      "component": "state_priors",
+      "detail": "The launch date is confirmed, and the positioning as Instagram's Twitter alternative suggests strong initial interest, n",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "narrow"
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_929db365be",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_e800a761cc",
+      "detail": "2 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_d90943b5fe",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_aa22f6f3f8",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_2347b86fcd",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_9877123dda",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_e8223e8ac0",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_86d06bd9b8",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 11,
+   "lean_only": false,
+   "n_institutions_pre": 2,
+   "n_institutions_post": 2,
+   "n_events_pre": 3,
+   "n_events_post": 6,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "yes": 0.58,
+    "no": 0.42
+   },
+   "terminal_post": {
+    "yes": 0.62,
+    "no": 0.38
+   },
+   "terminal_changed": true,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "protest",
+   "question": "Will the climate protests disrupt the UN General Assembly in New York?",
+   "as_of": "2023-09-10",
+   "horizon": "2023-09-25",
+   "n_requirements": 8,
+   "requirements": [
+    {
+     "id": "req_41a1f1ffd2",
+     "need": "disruption if any protest action forces cancellation, postponement, or significa",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_cfcae4d53f",
+     "need": "value/context of climate_protesters.radical_flank.willingness_to_escalate",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_02c7a6aaea",
+     "need": "value/context of un_security_chief.decision_threshold_for_cancellation",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_89c9d8f79c",
+     "need": "value/context of climate_protesters.moderate_majority.coordination_capacity",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "climate protests disrupt General Assembly York un ga president un security chief nyc mayor after:2023-04-13 before:2023-09-10",
+     "after": "2023-04-13",
+     "before": "2023-09-10",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "83c92303df56"
+    },
+    {
+     "query": "climate protesters radical flank willingness escalate after:2023-04-13 before:2023-09-10",
+     "after": "2023-04-13",
+     "before": "2023-09-10",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "737904ec0828"
+    },
+    {
+     "query": "security chief decision threshold cancellation after:2023-04-13 before:2023-09-10",
+     "after": "2023-04-13",
+     "before": "2023-09-10",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "6c0d527a442a"
+    }
+   ],
+   "n_documents": 0,
+   "documents": [],
+   "temporal_summary": {},
+   "included_claims": [],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [],
+   "dependence_groups": [],
+   "n_independent_sources": 0,
+   "contradictions": [],
+   "actor_visibility": {},
+   "leakage_flags": [],
+   "bundle_hash": "af80faec85331112",
+   "plan_diff": {
+    "n_entries": 0,
+    "n_structural_changes": 0,
+    "lean_only": true,
+    "entries": []
+   },
+   "structural_changes": 0,
+   "lean_only": true,
+   "n_institutions_pre": 3,
+   "n_institutions_post": 3,
+   "n_events_pre": 3,
+   "n_events_post": 3,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "no_disruption": 0.54,
+    "disruption": 0.46
+   },
+   "terminal_post": {
+    "no_disruption": 0.54,
+    "disruption": 0.46
+   },
+   "terminal_changed": false,
+   "evidence_is_causal": false
+  },
+  {
+   "domain": "strike",
+   "question": "Will the SAG-AFTRA actors strike end with a studio agreement?",
+   "as_of": "2023-10-01",
+   "horizon": "2023-11-15",
+   "n_requirements": 8,
+   "requirements": [
+    {
+     "id": "req_c13bb83577",
+     "need": "agreement_reached if a tentative or ratified contract is publicly announced by 2",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_0d7e222d7b",
+     "need": "value/context of amptp_leadership.concession_willingness",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_5b2c309a46",
+     "need": "value/context of sag_aftra_leadership.internal_hawk_dove_split",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    },
+    {
+     "id": "req_2138b2c30d",
+     "need": "value/context of sag_aftra_membership.contract_approval_threshold_lean",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "SAG AFTRA actors strike end studio agreement sag aftra leadership amptp leadership sag aftra membership after:2023-05-04 before:2023-10-01",
+     "after": "2023-05-04",
+     "before": "2023-10-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "e9f479ec6bd7"
+    },
+    {
+     "query": "amptp leadership concession willingness after:2023-05-04 before:2023-10-01",
+     "after": "2023-05-04",
+     "before": "2023-10-01",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "71850c6b59fa"
+    },
+    {
+     "query": "sag aftra leadership internal hawk dove after:2023-05-04 before:2023-10-01",
+     "after": "2023-05-04",
+     "before": "2023-10-01",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "f1e9dcf993be"
+    }
+   ],
+   "n_documents": 8,
+   "documents": [
+    {
+     "source": "Los Angeles Times",
+     "title": "SAG-AFTRA leaders cite \u2018extremely productive\u2019 contract talks with Holl",
+     "pub": 1687590000.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Time Magazine",
+     "title": "Why Actors Are Going on Strike - Time Magazine",
+     "pub": 1689193805.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "The Hollywood Reporter",
+     "title": "After SAG-AFTRA Releases List of Contract Proposals, Union Members Cal",
+     "pub": 1689750000.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Deadline",
+     "title": "SAG-AFTRA: Studios \"Wouldn't Meaningfully Engage\" On Key Issues Ahead ",
+     "pub": 1689577200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "The Washington Post",
+     "title": "SAG-AFTRA is on strike. What to know about the impact on Hollywood. - ",
+     "pub": 1689145200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Collider",
+     "title": "Everything You Need to Know About the SAG-AFTRA Strike - Collider",
+     "pub": 1689231600.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 8
+   },
+   "included_claims": [
+    {
+     "id": "1fac1e48001493fe:c0",
+     "class": "actor_statement",
+     "subject": "SAG-AFTRA leaders",
+     "predicate": "cite",
+     "span": "SAG-AFTRA leaders cite \u2018extremely productive\u2019 contract talks with Hollywood stud"
+    },
+    {
+     "id": "b7a3c111056caa03:c0",
+     "class": "observed_fact",
+     "subject": "Actors",
+     "predicate": "are going on strike",
+     "span": "Why Actors Are Going on Strike"
+    },
+    {
+     "id": "b7a3c111056caa03:c1",
+     "class": "observed_fact",
+     "subject": "Time Magazine",
+     "predicate": "published article titled",
+     "span": "Why Actors Are Going on Strike - Time Magazine"
+    },
+    {
+     "id": "f24431ad06fb349d:c0",
+     "class": "observed_fact",
+     "subject": "SAG-AFTRA",
+     "predicate": "releases",
+     "span": "After SAG-AFTRA Releases List of Contract Proposals"
+    },
+    {
+     "id": "8c79a31bb1d8d3da:c0",
+     "class": "actor_statement",
+     "subject": "SAG-AFTRA",
+     "predicate": "stated",
+     "span": "SAG-AFTRA: Studios \"Wouldn't Meaningfully Engage\" On Key Issues Ahead Of Strike"
+    },
+    {
+     "id": "377fcf440c4fb6f2:c0",
+     "class": "observed_fact",
+     "subject": "SAG-AFTRA",
+     "predicate": "is on strike",
+     "span": "SAG-AFTRA is on strike."
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 1,
+   "entities": [
+    {
+     "mention": "SAG-AFTRA",
+     "top": "sag-aftra",
+     "resolved": true
+    },
+    {
+     "mention": "Hollywood studios",
+     "top": "hollywood studios",
+     "resolved": false
+    },
+    {
+     "mention": "Actors",
+     "top": "actors",
+     "resolved": true
+    },
+    {
+     "mention": "Time Magazine",
+     "top": "time magazine",
+     "resolved": true
+    },
+    {
+     "mention": "SAG-AFTRA",
+     "top": "sag-aftra",
+     "resolved": true
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    }
+   ],
+   "n_independent_sources": 8,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 9
+   },
+   "leakage_flags": [],
+   "bundle_hash": "e8d1b564a5295e6d",
+   "plan_diff": {
+    "n_entries": 14,
+    "n_structural_changes": 13,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "hawk_dominates",
+      "detail": "Claim [1fac1e48001493fe:c0] indicates 'extremely productive' talks, suggesting progress that reduces likelihood of a haw",
+      "supporting_claim_ids": [
+       "1fac1e48001493fe:c0"
+      ],
+      "before": "0.3",
+      "after": "0.18"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "studios_concede",
+      "detail": "Claim [1fac1e48001493fe:c0] of productive talks and claim [f24431ad06fb349d:c0] of SAG-AFTRA releasing proposals imply a",
+      "supporting_claim_ids": [
+       "1fac1e48001493fe:c0",
+       "f24431ad06fb349d:c0"
+      ],
+      "before": "0.3",
+      "after": "0.45"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "membership_rejects",
+      "detail": "Claim [1fac1e48001493fe:c0] of productive talks suggests leadership may secure terms acceptable to membership, reducing ",
+      "supporting_claim_ids": [
+       "1fac1e48001493fe:c0"
+      ],
+      "before": "0.2",
+      "after": "0.12"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "mediation_success",
+      "detail": "Claim [1fac1e48001493fe:c0] of productive talks and claim [f24431ad06fb349d:c0] of proposals indicate progress, which co",
+      "supporting_claim_ids": [
+       "1fac1e48001493fe:c0",
+       "f24431ad06fb349d:c0"
+      ],
+      "before": "0.2",
+      "after": "0.3"
+     },
+     {
+      "kind": "lean_changed",
+      "component": "outcome_lean",
+      "detail": "",
+      "supporting_claim_ids": [
+       "1fac1e48001493fe:c0",
+       "f24431ad06fb349d:c0"
+      ],
+      "before": "neutral",
+      "after": "weak_yes"
+     },
+     {
+      "kind": "uncertainty_changed",
+      "component": "state_priors",
+      "detail": "Productive talks and released proposals suggest narrowing of options toward agreement, though strike continues per claim",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "narrow"
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_c13bb83577",
+      "detail": "8 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_0d7e222d7b",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_5b2c309a46",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_2138b2c30d",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_52e1655c2b",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_3c33c49dca",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_14be9f4f8a",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_43c57653c6",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 13,
+   "lean_only": false,
+   "n_institutions_pre": 2,
+   "n_institutions_post": 2,
+   "n_events_pre": 8,
+   "n_events_post": 16,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "agreement_reached": 0.5,
+    "no_agreement": 0.5
+   },
+   "terminal_post": {
+    "agreement_reached": 0.58,
+    "no_agreement": 0.42
+   },
+   "terminal_changed": true,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "court_ruling",
+   "question": "Will a US court rule on the Google antitrust search case?",
+   "as_of": "2023-09-01",
+   "horizon": "2024-01-01",
+   "n_requirements": 7,
+   "requirements": [
+    {
+     "id": "req_5500c6a916",
+     "need": "A ruling on the merits (e.g., summary judgment, trial verdict, or dispositive mo",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_a0edf2dad0",
+     "need": "value/context of us_district_court_dc.judge_mehta.decision_speed_factor",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    },
+    {
+     "id": "req_6da7c2b8a4",
+     "need": "evidence discriminating structural hypothesis expedited_ruling",
+     "why": "a fact that reweights competing structural hypotheses materially changes the out",
+     "voi": 0.8
+    },
+    {
+     "id": "req_ff9cb0b9fe",
+     "need": "evidence discriminating structural hypothesis standard_pace",
+     "why": "a fact that reweights competing structural hypotheses materially changes the out",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "court rule Google antitrust search case us government google llc us district court dc after:2023-04-04 before:2023-09-01",
+     "after": "2023-04-04",
+     "before": "2023-09-01",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "5e9607f7f0db"
+    },
+    {
+     "query": "district court judge mehta decision speed after:2023-04-04 before:2023-09-01",
+     "after": "2023-04-04",
+     "before": "2023-09-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 1,
+     "raw_hash": "1e31aa05816d"
+    },
+    {
+     "query": "structural hypothesis expedited ruling evidence discriminating after:2023-04-04 before:2023-09-01",
+     "after": "2023-04-04",
+     "before": "2023-09-01",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "0b8434076e59"
+    }
+   ],
+   "n_documents": 1,
+   "documents": [
+    {
+     "source": "Convenience Store News",
+     "title": "Judge Tosses FDA's Rule Over Premium Cigars - Convenience Store News",
+     "pub": 1691650800.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 1
+   },
+   "included_claims": [
+    {
+     "id": "56803fe5fe4a27b4:c0",
+     "class": "observed_fact",
+     "subject": "Judge",
+     "predicate": "tosses",
+     "span": "Judge Tosses FDA's Rule Over Premium Cigars"
+    },
+    {
+     "id": "56803fe5fe4a27b4:c1",
+     "class": "official_record",
+     "subject": "Convenience Store News",
+     "predicate": "reports",
+     "span": "Judge Tosses FDA's Rule Over Premium Cigars - Convenience Store News"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [
+    {
+     "mention": "Judge",
+     "top": "fda",
+     "resolved": false
+    },
+    {
+     "mention": "FDA",
+     "top": "fda",
+     "resolved": true
+    },
+    {
+     "mention": "Premium Cigars",
+     "top": "premium cigars",
+     "resolved": true
+    },
+    {
+     "mention": "Convenience Store News",
+     "top": "convenience store news",
+     "resolved": true
+    },
+    {
+     "mention": "Judge",
+     "top": "fda",
+     "resolved": false
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    }
+   ],
+   "n_independent_sources": 1,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 2
+   },
+   "leakage_flags": [],
+   "bundle_hash": "0bf1085ff674bfae",
+   "plan_diff": {
+    "n_entries": 8,
+    "n_structural_changes": 7,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "lean_changed",
+      "component": "outcome_lean",
+      "detail": "",
+      "supporting_claim_ids": [],
+      "before": "weak_no",
+      "after": "neutral"
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_5500c6a916",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_a0edf2dad0",
+      "detail": "2 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_6da7c2b8a4",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_ff9cb0b9fe",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_a300ff9f0e",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_25d770b12f",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_51c48477de",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 7,
+   "lean_only": false,
+   "n_institutions_pre": 1,
+   "n_institutions_post": 1,
+   "n_events_pre": 3,
+   "n_events_post": 5,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "no": 0.62,
+    "yes": 0.38
+   },
+   "terminal_post": {
+    "no": 0.62,
+    "yes": 0.38
+   },
+   "terminal_changed": false,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "fundraising",
+   "question": "Will OpenAI raise a new funding round valuing it above 80 billion?",
+   "as_of": "2023-10-01",
+   "horizon": "2024-01-01",
+   "n_requirements": 8,
+   "requirements": [
+    {
+     "id": "req_649d42a859",
+     "need": "yes if a funding round closes with a valuation >= 80 billion USD by 2024-01-01, ",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_6363c56948",
+     "need": "value/context of potential_investors.risk_appetite",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_9561306146",
+     "need": "value/context of openai.negotiation_leverage",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    },
+    {
+     "id": "req_46bd6bb2c5",
+     "need": "value/context of microsoft.willingness_to_invest_more",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "OpenAI raise funding round valuing above billion openai sam altman microsoft after:2023-05-04 before:2023-10-01",
+     "after": "2023-05-04",
+     "before": "2023-10-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "95e9eac49a32"
+    },
+    {
+     "query": "potential investors risk appetite after:2023-05-04 before:2023-10-01",
+     "after": "2023-05-04",
+     "before": "2023-10-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "bd56d8a7b49f"
+    },
+    {
+     "query": "openai negotiation leverage after:2023-05-04 before:2023-10-01",
+     "after": "2023-05-04",
+     "before": "2023-10-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 1,
+     "raw_hash": "33fa55891e7d"
+    }
+   ],
+   "n_documents": 17,
+   "documents": [
+    {
+     "source": "WSJ",
+     "title": "Exclusive | OpenAI Seeks New Valuation of Up to $90 Billion in Sale of",
+     "pub": 1695711600.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "The Information",
+     "title": "Sam Altman\u2019s Tangle of Investments - The Information",
+     "pub": 1689145200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Business Insider",
+     "title": "OpenAI CEO Sam Altman says there's 'too much of an investor frenzy aro",
+     "pub": 1686121200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "TechCrunch",
+     "title": "Sam Altman shares his optimistic view of our AI future - TechCrunch",
+     "pub": 1685084400.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "CNBC",
+     "title": "OpenAI launches ChatGPT Enterprise, the company's biggest announcement",
+     "pub": 1693206000.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "observer.com",
+     "title": "Sam Altman, Grimes and Others Warn A.I. Poses an Extinction Threat - o",
+     "pub": 1685602800.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 17
+   },
+   "included_claims": [
+    {
+     "id": "a6f9d325c322da23:c0",
+     "class": "official_record",
+     "subject": "OpenAI",
+     "predicate": "seeks new valuation of up to",
+     "span": "OpenAI Seeks New Valuation of Up to $90 Billion in Sale of Existing Shares"
+    },
+    {
+     "id": "387922fca3085e15:c0",
+     "class": "observed_fact",
+     "subject": "Risk Tolerance and Risk Capacity",
+     "predicate": "is topic of article",
+     "span": "Risk Tolerance and Risk Capacity: Why the Difference Matters - Morningstar"
+    },
+    {
+     "id": "7bf686f381c76de4:c0",
+     "class": "official_record",
+     "subject": "OpenAI",
+     "predicate": "signs deal with",
+     "span": "ChatGPT-maker OpenAI signs deal with AP to license news stories"
+    },
+    {
+     "id": "4533d5daab36c670:c0",
+     "class": "observed_fact",
+     "subject": "Sam Altman",
+     "predicate": "has",
+     "span": "Sam Altman\u2019s Tangle of Investments"
+    },
+    {
+     "id": "4533d5daab36c670:c1",
+     "class": "official_record",
+     "subject": "The Information",
+     "predicate": "reported on",
+     "span": "Sam Altman\u2019s Tangle of Investments - The Information"
+    },
+    {
+     "id": "0821af2d0b2dd492:c0",
+     "class": "observed_fact",
+     "subject": "invesco.com",
+     "predicate": "presents",
+     "span": "A macro approach to navigating the business cycle - invesco.com"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [
+    {
+     "mention": "OpenAI",
+     "top": "openai",
+     "resolved": true
+    },
+    {
+     "mention": "Morningstar",
+     "top": "morningstar",
+     "resolved": true
+    },
+    {
+     "mention": "OpenAI",
+     "top": "openai",
+     "resolved": true
+    },
+    {
+     "mention": "AP",
+     "top": "ap",
+     "resolved": true
+    },
+    {
+     "mention": "Sam Altman",
+     "top": "sam altman",
+     "resolved": true
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    }
+   ],
+   "n_independent_sources": 17,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 7
+   },
+   "leakage_flags": [],
+   "bundle_hash": "7036ab874c2b7f34",
+   "plan_diff": {
+    "n_entries": 14,
+    "n_structural_changes": 13,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "entity_added",
+      "component": "associated_press",
+      "detail": "OpenAI signed a deal with AP to license news stories, indicating a strategic partnership that may affect valuation.",
+      "supporting_claim_ids": [
+       "7bf686f381c76de4:c0"
+      ],
+      "before": "",
+      "after": "associated_press"
+     },
+     {
+      "kind": "relation_added",
+      "component": "openai-partner-associated_press",
+      "detail": "",
+      "supporting_claim_ids": [
+       "7bf686f381c76de4:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "high_demand",
+      "detail": "Official record shows OpenAI seeks valuation up to $90 billion, above the $80 billion threshold, supporting high demand.",
+      "supporting_claim_ids": [
+       "a6f9d325c322da23:c0"
+      ],
+      "before": "0.4",
+      "after": "0.6"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "low_demand",
+      "detail": "Sam Altman's statement about 'too much investor frenzy' suggests caution but does not negate the high valuation target.",
+      "supporting_claim_ids": [
+       "35bcb8fba8c4ce98:c0"
+      ],
+      "before": "0.2",
+      "after": "0.12"
+     },
+     {
+      "kind": "lean_changed",
+      "component": "outcome_lean",
+      "detail": "",
+      "supporting_claim_ids": [
+       "a6f9d325c322da23:c0"
+      ],
+      "before": "neutral",
+      "after": "strong_yes"
+     },
+     {
+      "kind": "uncertainty_changed",
+      "component": "state_priors",
+      "detail": "Official record confirms a valuation target above $80 billion, narrowing uncertainty toward a positive outcome.",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "narrow"
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_649d42a859",
+      "detail": "4 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_6363c56948",
+      "detail": "2 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_9561306146",
+      "detail": "1 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_46bd6bb2c5",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_535f48c3e9",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_6ff24c2a90",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_07a1dde056",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_ad99b9d627",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 13,
+   "lean_only": false,
+   "n_institutions_pre": 2,
+   "n_institutions_post": 2,
+   "n_events_pre": 2,
+   "n_events_post": 9,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "no": 0.54,
+    "yes": 0.46
+   },
+   "terminal_post": {
+    "yes": 0.54,
+    "no": 0.46
+   },
+   "terminal_changed": true,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "coalition",
+   "question": "Will the Dutch parties form a governing coalition after the November election?",
+   "as_of": "2023-11-25",
+   "horizon": "2024-03-01",
+   "n_requirements": 6,
+   "requirements": [
+    {
+     "id": "req_68ec09dfd2",
+     "need": "A coalition is formed if a formal agreement is announced by 2024-03-01; otherwis",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_6ade2e0f6f",
+     "need": "value/context of vvd.negotiation_stance",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    },
+    {
+     "id": "req_029162be20",
+     "need": "value/context of d66.negotiation_stance",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    },
+    {
+     "id": "req_c8b527bd3f",
+     "need": "value/context of pvv.negotiation_stance",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "Dutch parties form governing coalition November election dutch government house of representatives king willem alexander after:2023-06-28 before:2023-11-25",
+     "after": "2023-06-28",
+     "before": "2023-11-25",
+     "status": "ok",
+     "code": 200,
+     "n_items": 1,
+     "raw_hash": "4a3f8c169fdf"
+    },
+    {
+     "query": "vvd negotiation stance after:2023-06-28 before:2023-11-25",
+     "after": "2023-06-28",
+     "before": "2023-11-25",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "b074e1ccd366"
+    },
+    {
+     "query": "d66 negotiation stance after:2023-06-28 before:2023-11-25",
+     "after": "2023-06-28",
+     "before": "2023-11-25",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "61cc9e1e6a02"
+    }
+   ],
+   "n_documents": 1,
+   "documents": [
+    {
+     "source": "DW.com",
+     "title": "Dutch election: Wilders' far-right PVV set to win \u2014 poll - DW.com",
+     "pub": 1700640000.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 1
+   },
+   "included_claims": [
+    {
+     "id": "eed1d3f6e6bf4a4a:c0",
+     "class": "forecast",
+     "subject": "Wilders' far-right PVV",
+     "predicate": "set to win",
+     "span": "Wilders' far-right PVV set to win \u2014 poll"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [
+    {
+     "mention": "Wilders",
+     "top": "wilders",
+     "resolved": true
+    },
+    {
+     "mention": "PVV",
+     "top": "pvv",
+     "resolved": true
+    },
+    {
+     "mention": "Dutch election",
+     "top": "dutch election",
+     "resolved": true
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    }
+   ],
+   "n_independent_sources": 1,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 1
+   },
+   "leakage_flags": [],
+   "bundle_hash": "75b475e366327bbe",
+   "plan_diff": {
+    "n_entries": 8,
+    "n_structural_changes": 8,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "entity_added",
+      "component": "pvv",
+      "detail": "PVV is the far-right party projected to win the election, making it a key actor in coalition formation.",
+      "supporting_claim_ids": [
+       "eed1d3f6e6bf4a4a:c0"
+      ],
+      "before": "",
+      "after": "pvv"
+     },
+     {
+      "kind": "relation_added",
+      "component": "pvv-competes_in-house_of_representatives",
+      "detail": "",
+      "supporting_claim_ids": [
+       "eed1d3f6e6bf4a4a:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_68ec09dfd2",
+      "detail": "1 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_6ade2e0f6f",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_029162be20",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_c8b527bd3f",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_acbc2882fa",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_285648a938",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 8,
+   "lean_only": false,
+   "n_institutions_pre": 2,
+   "n_institutions_post": 2,
+   "n_events_pre": 1,
+   "n_events_post": 2,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "no_coalition_formed": 0.58,
+    "coalition_formed": 0.42
+   },
+   "terminal_post": {
+    "no_coalition_formed": 0.58,
+    "coalition_formed": 0.42
+   },
+   "terminal_changed": false,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "market",
+   "question": "Will the US Federal Reserve raise interest rates at its September 2023 meeting?",
+   "as_of": "2023-09-01",
+   "horizon": "2023-09-21",
+   "n_requirements": 7,
+   "requirements": [
+    {
+     "id": "req_4621a7415e",
+     "need": "If the FOMC announces an increase in the target range for the federal funds rate",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_958d9c4f37",
+     "need": "value/context of fomc.members_preferred_rate_path",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_cd22f057ed",
+     "need": "value/context of fomc.internal_consensus",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    },
+    {
+     "id": "req_5b8663beae",
+     "need": "evidence discriminating structural hypothesis data_dependent",
+     "why": "a fact that reweights competing structural hypotheses materially changes the out",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "Federal Reserve raise interest rates September 2023 meeting fomc jerome powell after:2023-04-04 before:2023-09-01",
+     "after": "2023-04-04",
+     "before": "2023-09-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "290ff104c0bf"
+    },
+    {
+     "query": "fomc members preferred rate path after:2023-04-04 before:2023-09-01",
+     "after": "2023-04-04",
+     "before": "2023-09-01",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "bf1d8ecb0526"
+    },
+    {
+     "query": "fomc internal consensus after:2023-04-04 before:2023-09-01",
+     "after": "2023-04-04",
+     "before": "2023-09-01",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "9a899eb505c5"
+    }
+   ],
+   "n_documents": 8,
+   "documents": [
+    {
+     "source": "Bankrate",
+     "title": "When will the Fed stop raising rates? The time could be coming soon - ",
+     "pub": 1683702000.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "J.P. Morgan",
+     "title": "July 2023 Fed Meeting: Interest Rate Hikes Resume - J.P. Morgan",
+     "pub": 1690566916.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "CNBC",
+     "title": "Fed approves hike that takes interest rates to highest level in more t",
+     "pub": 1690354800.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "CBS News",
+     "title": "Fed Reserve officials continue to see \"significant\" inflation risk tha",
+     "pub": 1692169200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "The New York Times",
+     "title": "Federal Reserve Meeting: Fed Raises Rates Again (Published 2023) - The",
+     "pub": 1690354800.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "NPR",
+     "title": "Fed Chair Jerome Powell warns the fight against inflation is far from ",
+     "pub": 1692946800.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 8
+   },
+   "included_claims": [
+    {
+     "id": "945ab83af37bdb31:c0",
+     "class": "forecast",
+     "subject": "the Fed",
+     "predicate": "stop raising rates",
+     "span": "The time could be coming soon"
+    },
+    {
+     "id": "bf12cf642ef835a3:c0",
+     "class": "observed_fact",
+     "subject": "Federal Reserve",
+     "predicate": "resumed",
+     "span": "July 2023 Fed Meeting: Interest Rate Hikes Resume"
+    },
+    {
+     "id": "840a9bed953ed20a:c0",
+     "class": "observed_fact",
+     "subject": "Fed",
+     "predicate": "approves",
+     "span": "Fed approves hike"
+    },
+    {
+     "id": "840a9bed953ed20a:c1",
+     "class": "observed_fact",
+     "subject": "hike",
+     "predicate": "takes",
+     "span": "takes interest rates to highest level in more than 22 years"
+    },
+    {
+     "id": "c7a133ed60b2c451:c0",
+     "class": "observed_fact",
+     "subject": "Fed Reserve officials",
+     "predicate": "continue to see",
+     "span": "Fed Reserve officials continue to see \"significant\" inflation risk"
+    },
+    {
+     "id": "c7a133ed60b2c451:c1",
+     "class": "forecast",
+     "subject": "significant inflation risk",
+     "predicate": "may require",
+     "span": "may require more rate hikes"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [
+    {
+     "mention": "Fed",
+     "top": "fed",
+     "resolved": false
+    },
+    {
+     "mention": "Federal Reserve",
+     "top": "federal reserve",
+     "resolved": true
+    },
+    {
+     "mention": "J.P. Morgan",
+     "top": "j p morgan",
+     "resolved": true
+    },
+    {
+     "mention": "Fed",
+     "top": "fed",
+     "resolved": false
+    },
+    {
+     "mention": "Fed Reserve officials",
+     "top": "fed reserve officials",
+     "resolved": true
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    }
+   ],
+   "n_independent_sources": 8,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 8
+   },
+   "leakage_flags": [],
+   "bundle_hash": "8696614ac549baa5",
+   "plan_diff": {
+    "n_entries": 12,
+    "n_structural_changes": 11,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "hawkish_shift",
+      "detail": "Claims show resumed hikes, highest rates in 22 years, and Powell warning inflation fight is far from over, supporting a ",
+      "supporting_claim_ids": [
+       "bf12cf642ef835a3:c0",
+       "840a9bed953ed20a:c1",
+       "b260c3d238c41df8:c0"
+      ],
+      "before": "0.1",
+      "after": "0.15"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "data_dependent",
+      "detail": "Despite a forecast that hikes may stop soon, observed facts of resumed hikes and significant inflation risk reduce the l",
+      "supporting_claim_ids": [
+       "945ab83af37bdb31:c0",
+       "c7a133ed60b2c451:c0",
+       "c7a133ed60b2c451:c1"
+      ],
+      "before": "0.6",
+      "after": "0.36"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "forward_guidance",
+      "detail": "Powell's statement that the fight is far from over aligns with forward guidance signaling further hikes.",
+      "supporting_claim_ids": [
+       "b260c3d238c41df8:c0"
+      ],
+      "before": "0.3",
+      "after": "0.45"
+     },
+     {
+      "kind": "lean_changed",
+      "component": "outcome_lean",
+      "detail": "",
+      "supporting_claim_ids": [
+       "bf12cf642ef835a3:c0",
+       "840a9bed953ed20a:c1",
+       "c7a133ed60b2c451:c1",
+       "b260c3d238c41df8:c0"
+      ],
+      "before": "neutral",
+      "after": "strong_yes"
+     },
+     {
+      "kind": "uncertainty_changed",
+      "component": "state_priors",
+      "detail": "Multiple observed facts and a direct statement from the Fed Chair consistently point toward a rate hike, reducing uncert",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "narrow"
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_4621a7415e",
+      "detail": "8 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_958d9c4f37",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_cd22f057ed",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_5b8663beae",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_92d1bdcdec",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_9d9946a577",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_cd184c3f5e",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 11,
+   "lean_only": false,
+   "n_institutions_pre": 1,
+   "n_institutions_post": 1,
+   "n_events_pre": 3,
+   "n_events_post": 11,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "no_raise": 0.56,
+    "raise": 0.44
+   },
+   "terminal_post": {
+    "raise": 0.5,
+    "no_raise": 0.5
+   },
+   "terminal_changed": true,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "reputation_crisis",
+   "question": "Will Bud Light sales recover after the boycott controversy?",
+   "as_of": "2023-07-01",
+   "horizon": "2023-10-01",
+   "n_requirements": 8,
+   "requirements": [
+    {
+     "id": "req_478df539c3",
+     "need": "The outcome is the ratio of Bud Light weekly sales volume in the last week of Se",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_e7588c5c98",
+     "need": "value/context of us_beer_drinkers.conservative_males_21_40.boycott_persistence",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_24834a548d",
+     "need": "value/context of anheuser_busch_inbev.crisis_response_effectiveness",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    },
+    {
+     "id": "req_08aee25d1f",
+     "need": "evidence discriminating structural hypothesis boycott_fades",
+     "why": "a fact that reweights competing structural hypotheses materially changes the out",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "Bud Light sales recover boycott controversy anheuser busch inbev bud light brand dylan mulvaney after:2023-02-01 before:2023-07-01",
+     "after": "2023-02-01",
+     "before": "2023-07-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 7,
+     "raw_hash": "cb8e9a513b8d"
+    },
+    {
+     "query": "beer drinkers conservative males boycott persistence after:2023-02-01 before:2023-07-01",
+     "after": "2023-02-01",
+     "before": "2023-07-01",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "94ea48f678bc"
+    },
+    {
+     "query": "anheuser busch inbev crisis response effectiveness after:2023-02-01 before:2023-07-01",
+     "after": "2023-02-01",
+     "before": "2023-07-01",
+     "status": "ok",
+     "code": 200,
+     "n_items": 3,
+     "raw_hash": "91a57b5e3709"
+    }
+   ],
+   "n_documents": 10,
+   "documents": [
+    {
+     "source": "CBS News",
+     "title": "Bud Light fumbles, but inclusive advertising are here to stay - CBS Ne",
+     "pub": 1682492400.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Fox Business",
+     "title": "CEO distances Anheuser-Busch from Bud Light Dylan Mulvaney controversy",
+     "pub": 1683183600.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Barron's",
+     "title": "Bud Light Sales Keep Cratering After Promotion With Transgender Influe",
+     "pub": 1684825200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Marketing Dive",
+     "title": "Bud Light looks to rebound from controversy with huge summer push - Ma",
+     "pub": 1687417200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Newsweek",
+     "title": "The Truth About Bud Light Brewery\u2019s Stock and Sales Since Mulvaney Fal",
+     "pub": 1683702000.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Fox Business",
+     "title": "Bud Light to spend 'heavily' on marketing after Dylan Mulvaney controv",
+     "pub": 1682578800.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 10
+   },
+   "included_claims": [
+    {
+     "id": "e26b33a2c0452786:c0",
+     "class": "observed_fact",
+     "subject": "Bud Light",
+     "predicate": "fumbles",
+     "span": "Bud Light fumbles"
+    },
+    {
+     "id": "e26b33a2c0452786:c1",
+     "class": "opinion",
+     "subject": "inclusive advertising",
+     "predicate": "are here to stay",
+     "span": "inclusive advertising are here to stay"
+    },
+    {
+     "id": "81e882152b87d3d9:c0",
+     "class": "observed_fact",
+     "subject": "AB InBev",
+     "predicate": "is helping address",
+     "span": "5 ways AB InBev is helping address global water challenges"
+    },
+    {
+     "id": "c71a8a88a9af080c:c0",
+     "class": "actor_statement",
+     "subject": "CEO",
+     "predicate": "distances",
+     "span": "CEO distances Anheuser-Busch from Bud Light Dylan Mulvaney controversy: 'Not a f"
+    },
+    {
+     "id": "c71a8a88a9af080c:c1",
+     "class": "actor_statement",
+     "subject": "CEO",
+     "predicate": "said",
+     "span": "'Not a formal campaign'"
+    },
+    {
+     "id": "b1d4051c6dbdd17e:c0",
+     "class": "opinion",
+     "subject": "Self-inflicted wounds",
+     "predicate": "haunt",
+     "span": "Self-inflicted wounds haunt Anheuser-Busch\u2019s Dylan Mulvaney crisis response"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [
+    {
+     "mention": "Bud Light",
+     "top": "bud light",
+     "resolved": true
+    },
+    {
+     "mention": "AB InBev",
+     "top": "ab inbev",
+     "resolved": true
+    },
+    {
+     "mention": "CEO",
+     "top": "bud light",
+     "resolved": false
+    },
+    {
+     "mention": "Anheuser-Busch",
+     "top": "anheuser-busch",
+     "resolved": true
+    },
+    {
+     "mention": "Bud Light",
+     "top": "bud light",
+     "resolved": true
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "independent",
+     "n": 1
+    }
+   ],
+   "n_independent_sources": 10,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 9
+   },
+   "leakage_flags": [],
+   "bundle_hash": "6ec160d29970eb95",
+   "plan_diff": {
+    "n_entries": 15,
+    "n_structural_changes": 15,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "entity_added",
+      "component": "ab_inbev_ceo",
+      "detail": "CEO made a statement distancing Anheuser-Busch from the Bud Light campaign, indicating a key decision-maker.",
+      "supporting_claim_ids": [
+       "c71a8a88a9af080c:c0",
+       "c71a8a88a9af080c:c1"
+      ],
+      "before": "",
+      "after": "ab_inbev_ceo"
+     },
+     {
+      "kind": "relation_added",
+      "component": "ab_inbev_ceo-leads-anheuser_busch_inbev",
+      "detail": "",
+      "supporting_claim_ids": [
+       "c71a8a88a9af080c:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "event_added",
+      "component": "external_shock@2023-04-01",
+      "detail": "The controversy began with the promotion featuring Dylan Mulvaney, leading to boycott and sales decline.",
+      "supporting_claim_ids": [
+       "e0e93a2f31ecef86:c0"
+      ],
+      "before": "",
+      "after": "external_shock"
+     },
+     {
+      "kind": "event_added",
+      "component": "decision_opportunity@2023-04-14",
+      "detail": "CEO publicly distanced the company from the campaign, a strategic response to the boycott.",
+      "supporting_claim_ids": [
+       "c71a8a88a9af080c:c0",
+       "c71a8a88a9af080c:c1"
+      ],
+      "before": "",
+      "after": "decision_opportunity"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "boycott_fades",
+      "detail": "Sales continue to crater and the CEO's distancing may not reverse the trend; inclusive advertising persist as an opinion",
+      "supporting_claim_ids": [
+       "e0e93a2f31ecef86:c0",
+       "e26b33a2c0452786:c1",
+       "b1d4051c6dbdd17e:c0"
+      ],
+      "before": "0.3",
+      "after": "0.18"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "boycott_persists",
+      "detail": "Evidence of ongoing sales decline and self-inflicted crisis response supports persistence of boycott.",
+      "supporting_claim_ids": [
+       "e0e93a2f31ecef86:c0",
+       "b1d4051c6dbdd17e:c0"
+      ],
+      "before": "1.0",
+      "after": "1.5"
+     },
+     {
+      "kind": "uncertainty_changed",
+      "component": "state_priors",
+      "detail": "Evidence consistently shows sales decline and poor crisis response, narrowing the range of possible recovery outcomes.",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "narrow"
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_478df539c3",
+      "detail": "6 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_e7588c5c98",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_24834a548d",
+      "detail": "3 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_08aee25d1f",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_846ed1f8ec",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_a7bd73e407",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_b876a76f35",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_f29d3010b3",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 15,
+   "lean_only": false,
+   "n_institutions_pre": 2,
+   "n_institutions_post": 2,
+   "n_events_pre": 1,
+   "n_events_post": 11,
+   "observation_state_deltas": 0,
+   "terminal_pre": null,
+   "terminal_post": null,
+   "terminal_changed": false,
+   "evidence_is_causal": true
+  },
+  {
+   "domain": "best_action",
+   "question": "Should the Writers Guild accept the studios' latest contract offer?",
+   "as_of": "2023-09-20",
+   "horizon": "2023-10-01",
+   "n_requirements": 8,
+   "requirements": [
+    {
+     "id": "req_ea932dacb4",
+     "need": "majority vote of WGA membership",
+     "why": "the terminal outcome standing as of the question date sets the base rate",
+     "voi": 1.0
+    },
+    {
+     "id": "req_b66c1a18e9",
+     "need": "value/context of AMPTP.offer_details",
+     "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+     "voi": 0.9
+    },
+    {
+     "id": "req_d97f2f87c4",
+     "need": "value/context of WGA_members.segments.strike_hawks.reservation_wage",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    },
+    {
+     "id": "req_01bebe3c1f",
+     "need": "value/context of WGA_members.segments.moderates.reservation_wage",
+     "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+     "voi": 0.8
+    }
+   ],
+   "rss_windows": [
+    {
+     "query": "Writers Guild accept studios latest contract offer WGA AMPTP WGA leadership after:2023-04-23 before:2023-09-20",
+     "after": "2023-04-23",
+     "before": "2023-09-20",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "5ee9b7492ecd"
+    },
+    {
+     "query": "AMPTP offer details after:2023-04-23 before:2023-09-20",
+     "after": "2023-04-23",
+     "before": "2023-09-20",
+     "status": "ok",
+     "code": 200,
+     "n_items": 8,
+     "raw_hash": "ff2e172bcf0c"
+    },
+    {
+     "query": "WGA members segments strike hawks reservation after:2023-04-23 before:2023-09-20",
+     "after": "2023-04-23",
+     "before": "2023-09-20",
+     "status": "zero_results",
+     "code": 200,
+     "n_items": 0,
+     "raw_hash": "3675cf45fc83"
+    }
+   ],
+   "n_documents": 16,
+   "documents": [
+    {
+     "source": "Deadline",
+     "title": "Studios Reveal New AI, Data Transparency & Residuals Proposals To WGA;",
+     "pub": 1692687600.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "The Hollywood Reporter",
+     "title": "Writers Guild Replies to Studios\u2019 Counteroffer: Not \u201cNearly Enough\u201d - ",
+     "pub": 1692860400.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Jacobin",
+     "title": "The Hollywood Studios Still Aren\u2019t Serious About Ending the Writers\u2019 S",
+     "pub": 1692946800.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Los Angeles Times",
+     "title": "Why Hollywood\u2019s labor nightmare won\u2019t end soon: Frustration, fear and ",
+     "pub": 1693551600.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Variety",
+     "title": "WGA Restarts Negotiations With Studios and Will Respond to Latest Offe",
+     "pub": 1691737200.0,
+     "temporal": "likely_pre_asof"
+    },
+    {
+     "source": "Deadline",
+     "title": "Hollywood Hit With Writers Strike After Talks With AMPTP Fail; Guild S",
+     "pub": 1682924400.0,
+     "temporal": "likely_pre_asof"
+    }
+   ],
+   "temporal_summary": {
+    "likely_pre_asof": 16
+   },
+   "included_claims": [
+    {
+     "id": "df9312f7a2211369:c0",
+     "class": "official_record",
+     "subject": "Studios",
+     "predicate": "reveal",
+     "span": "Studios Reveal New AI, Data Transparency & Residuals Proposals To WGA"
+    },
+    {
+     "id": "df9312f7a2211369:c1",
+     "class": "official_record",
+     "subject": "Guild",
+     "predicate": "meets with",
+     "span": "Guild Meets With CEOs"
+    },
+    {
+     "id": "9112f5ca6f4fa61c:c0",
+     "class": "actor_statement",
+     "subject": "Writers Guild",
+     "predicate": "replies to",
+     "span": "Writers Guild Replies to Studios\u2019 Counteroffer: Not \u201cNearly Enough\u201d"
+    },
+    {
+     "id": "9112f5ca6f4fa61c:c1",
+     "class": "actor_statement",
+     "subject": "Writers Guild",
+     "predicate": "states that the counteroffer is",
+     "span": "Not \u201cNearly Enough\u201d"
+    },
+    {
+     "id": "8be0a8e6c1780961:c0",
+     "class": "official_record",
+     "subject": "SAG-AFTRA's streaming revenue sharing pr",
+     "predicate": "was flatly rejected by",
+     "span": "Why SAG-AFTRA\u2019s Streaming Revenue Sharing Proposal for Casts Was Flatly Rejected"
+    },
+    {
+     "id": "501d730302b0e753:c0",
+     "class": "opinion",
+     "subject": "The Hollywood Studios",
+     "predicate": "are not serious about ending",
+     "span": "The Hollywood Studios Still Aren\u2019t Serious About Ending the Writers\u2019 Strike"
+    }
+   ],
+   "n_excluded": 0,
+   "n_suspicious": 0,
+   "entities": [
+    {
+     "mention": "Studios",
+     "top": "studios",
+     "resolved": true
+    },
+    {
+     "mention": "WGA",
+     "top": "wga",
+     "resolved": true
+    },
+    {
+     "mention": "Guild",
+     "top": "guild",
+     "resolved": true
+    },
+    {
+     "mention": "CEOs",
+     "top": "ceos",
+     "resolved": true
+    },
+    {
+     "mention": "Writers Guild",
+     "top": "writers guild",
+     "resolved": true
+    }
+   ],
+   "dependence_groups": [
+    {
+     "type": "exact_duplicate",
+     "n": 2
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "exact_duplicate",
+     "n": 2
+    },
+    {
+     "type": "independent",
+     "n": 1
+    },
+    {
+     "type": "exact_duplicate",
+     "n": 2
+    }
+   ],
+   "n_independent_sources": 13,
+   "contradictions": [],
+   "actor_visibility": {
+    "public": 10
+   },
+   "leakage_flags": [],
+   "bundle_hash": "98c78764be4e5d6c",
+   "plan_diff": {
+    "n_entries": 16,
+    "n_structural_changes": 15,
+    "lean_only": false,
+    "entries": [
+     {
+      "kind": "entity_added",
+      "component": "SAG-AFTRA",
+      "detail": "SAG-AFTRA's streaming revenue proposal rejection is a parallel labor action that influences WGA's perception of AMPTP's ",
+      "supporting_claim_ids": [
+       "8be0a8e6c1780961:c0"
+      ],
+      "before": "",
+      "after": "SAG-AFTRA"
+     },
+     {
+      "kind": "relation_added",
+      "component": "WGA-observes-SAG-AFTRA",
+      "detail": "",
+      "supporting_claim_ids": [
+       "8be0a8e6c1780961:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "relation_added",
+      "component": "WGA_leadership-negotiates_with-AMPTP",
+      "detail": "",
+      "supporting_claim_ids": [
+       "df9312f7a2211369:c1",
+       "b18b61cb945a414c:c0"
+      ],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "event_added",
+      "component": "decision_opportunity@2023-09-20",
+      "detail": "WGA restarted negotiations and will respond to latest offer next week, creating a decision point.",
+      "supporting_claim_ids": [
+       "b18b61cb945a414c:c0",
+       "b18b61cb945a414c:c1"
+      ],
+      "before": "",
+      "after": "decision_opportunity"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "deal_seeker_majority",
+      "detail": "WGA's public rejection of the counteroffer as 'not nearly enough' and AMPTP's rejection of SAG-AFTRA's proposal indicate",
+      "supporting_claim_ids": [
+       "9112f5ca6f4fa61c:c1",
+       "8be0a8e6c1780961:c0",
+       "501d730302b0e753:c0"
+      ],
+      "before": "0.3",
+      "after": "0.18"
+     },
+     {
+      "kind": "hypothesis_reweighted",
+      "component": "hawk_dominance",
+      "detail": "WGA's strong rejection and the characterization of frustration and mistrust support hawkish stance.",
+      "supporting_claim_ids": [
+       "9112f5ca6f4fa61c:c1",
+       "32be0743e47c00fe:c1"
+      ],
+      "before": "0.3",
+      "after": "0.45"
+     },
+     {
+      "kind": "lean_changed",
+      "component": "outcome_lean",
+      "detail": "",
+      "supporting_claim_ids": [
+       "9112f5ca6f4fa61c:c1",
+       "501d730302b0e753:c0",
+       "32be0743e47c00fe:c0"
+      ],
+      "before": "neutral",
+      "after": "strong_no"
+     },
+     {
+      "kind": "uncertainty_changed",
+      "component": "state_priors",
+      "detail": "Evidence consistently points to rejection and mistrust, narrowing the range of plausible outcomes toward strong no.",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": "narrow"
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_ea932dacb4",
+      "detail": "7 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_fulfilled",
+      "component": "req_b66c1a18e9",
+      "detail": "3 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_d97f2f87c4",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_01bebe3c1f",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_c2bd120f13",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_76c1bcc615",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_b4e594c6b2",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     },
+     {
+      "kind": "requirement_unmet",
+      "component": "req_2732565c8e",
+      "detail": "0 included claims",
+      "supporting_claim_ids": [],
+      "before": "",
+      "after": ""
+     }
+    ]
+   },
+   "structural_changes": 15,
+   "lean_only": false,
+   "n_institutions_pre": 2,
+   "n_institutions_post": 2,
+   "n_events_pre": 3,
+   "n_events_post": 12,
+   "observation_state_deltas": 0,
+   "terminal_pre": {
+    "accept": 0.5,
+    "reject": 0.5
+   },
+   "terminal_post": {
+    "reject": 0.52,
+    "accept": 0.48
+   },
+   "terminal_changed": true,
+   "evidence_is_causal": true
+  }
+ ]
+}

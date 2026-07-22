@@ -1,0 +1,3339 @@
+{
+  "artifact_checksum": "2ac7ea8d83716c09f4afb71b7fabcfe3ccb94a38ed275e07c029655e85a4b79a",
+  "records": [
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [],
+        "requires_state": [],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:random_utility",
+      "formal_description": "U_a=V_a+epsilon_a; integrate epsilon",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:random_utility",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:random_utility:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: random utility",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "choices"
+        ],
+        "requires_state": [],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:multinomial_logit",
+      "formal_description": "P(a)=exp(lambda U_a)/sum_j exp(lambda U_j)",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:multinomial_logit",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:multinomial_logit:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: multinomial logit",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "choices"
+        ],
+        "requires_state": [],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:nested_discrete_choice",
+      "formal_description": "P(a)=P(nest(a))*P(a|nest(a))",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:nested_discrete_choice",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:nested_discrete_choice:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: nested discrete choice",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "choices"
+        ],
+        "requires_state": [],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:quantal_response",
+      "formal_description": "P(a) proportional to exp(lambda EU_a)",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:quantal_response",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:quantal_response:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: quantal response",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "choices"
+        ],
+        "requires_state": [],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:satisficing",
+      "formal_description": "P(a) positive when EU_a>=tau; otherwise residual search mass",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:satisficing",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:satisficing:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: satisficing",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "choices"
+        ],
+        "requires_state": [
+          "attention"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:bounded_search",
+      "formal_description": "search first K perceived actions and choose best encountered",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:bounded_search",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:bounded_search:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "attention"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: bounded search",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "repeated_choices"
+        ],
+        "requires_state": [
+          "action_history"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:habit",
+      "formal_description": "score_a=EU_a+eta*log(1+n_a)",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:habit",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:habit:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "action_history"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: habit",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "actions_and_rewards"
+        ],
+        "requires_state": [
+          "action_history",
+          "policy_state"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:reinforcement_learning",
+      "formal_description": "Q_a<-Q_a+alpha(r-Q_a); score=(EU+Q)/2",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:reinforcement_learning",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:reinforcement_learning:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "action_history",
+        "policy_state"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: reinforcement learning",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "repeated_actions_payoffs"
+        ],
+        "requires_state": [
+          "action_history",
+          "policy_state"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:ewa",
+      "formal_description": "A_a'=(phi*N*A_a+[delta+(1-delta)I_a]*pi_a)/(rho*N+1)",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:ewa",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:ewa:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "action_history",
+        "policy_state"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: ewa",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "belief_or_reaction_history"
+        ],
+        "requires_state": [
+          "beliefs",
+          "expected_reactions"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:belief_planning",
+      "formal_description": "score_a=EU_a+log P_actor(success|a)",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:belief_planning",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:belief_planning:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "beliefs",
+        "expected_reactions"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: belief planning",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "norm_observations"
+        ],
+        "requires_state": [
+          "obligations"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:norm_compliance",
+      "formal_description": "score_a=EU_a+kappa*norm_alignment_a",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:norm_compliance",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:norm_compliance:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "obligations"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: norm compliance",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "commitment_behavior"
+        ],
+        "requires_state": [
+          "commitments",
+          "obligations"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:obligation",
+      "formal_description": "score_a=EU_a+kappa*obligation_alignment_a",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:obligation",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:obligation:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "commitments",
+        "obligations"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: obligation",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "dyadic_history"
+        ],
+        "requires_state": [
+          "relationships"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:reciprocity",
+      "formal_description": "score_a=EU_a+rho*perceived_partner_kindness",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:reciprocity",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:reciprocity:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "relationships"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: reciprocity",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "network_actions"
+        ],
+        "requires_state": [
+          "relationships",
+          "perceived_actions"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:imitation",
+      "formal_description": "score_a=EU_a+mu*observed_peer_frequency_a",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:imitation",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:imitation:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "relationships",
+        "perceived_actions"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: imitation",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "exposure_and_actions"
+        ],
+        "requires_state": [
+          "perceived_actions"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:social_proof",
+      "formal_description": "score_a=EU_a+sigma*log(1+observed_count_a)",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:social_proof",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:social_proof:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "perceived_actions"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: social proof",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "rule_compliance"
+        ],
+        "requires_state": [
+          "institution_rules",
+          "authority"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:institutional_obedience",
+      "formal_description": "score_a=EU_a+kappa*perceived_rule_alignment_a",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:institutional_obedience",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:institutional_obedience:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "institution_rules",
+        "authority"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: institutional obedience",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "risky_choices"
+        ],
+        "requires_state": [
+          "risk_beliefs"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:risk_sensitive",
+      "formal_description": "score_a=E[U_a]-gamma*SD[U_a]",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:risk_sensitive",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:risk_sensitive:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "risk_beliefs"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: risk sensitive",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "choices_with_reference_points"
+        ],
+        "requires_state": [
+          "preferences"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:loss_aversion",
+      "formal_description": "v(x)=x if x>=0 else lambda_loss*x",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:loss_aversion",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:loss_aversion:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "preferences"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: loss aversion",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "strategic_sequences"
+        ],
+        "requires_state": [
+          "beliefs",
+          "expected_reactions"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:strategic_anticipation",
+      "formal_description": "score_a=EU_a+log P_actor(response|a)",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:strategic_anticipation",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:strategic_anticipation:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "beliefs",
+        "expected_reactions"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: strategic anticipation",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "strategic_sequences"
+        ],
+        "requires_state": [
+          "beliefs",
+          "expected_reactions"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:limited_depth_reasoning",
+      "formal_description": "pi^k=BR_lambda(pi^(k-1)), k<=K",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:limited_depth_reasoning",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:limited_depth_reasoning:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "beliefs",
+        "expected_reactions"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: limited depth reasoning",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "timed_choices"
+        ],
+        "requires_state": [
+          "workload",
+          "attention"
+        ],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:delay_hazard",
+      "formal_description": "score_a=EU_a-duration_a/one_day",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:delay_hazard",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:delay_hazard:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [
+        "workload",
+        "attention"
+      ],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: delay hazard",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    },
+    {
+      "action_dependencies": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "applicability": {
+        "answers_processes": [
+          "actor_selects_typed_action"
+        ],
+        "domains": [
+          "*"
+        ],
+        "excluded_domains": [],
+        "exclusion_conditions": [],
+        "population_kinds": [],
+        "requires_data": [
+          "choices"
+        ],
+        "requires_state": [],
+        "time_scales": [],
+        "transport_risk": "high"
+      },
+      "causal_inputs": [
+        "actor_view",
+        "typed_feasible_actions",
+        "subjective_consequences"
+      ],
+      "causal_outputs": [
+        "action_posterior"
+      ],
+      "citations": [],
+      "code_ref": "swm.world_model_v2.phase4_policy:ActorPolicyModel",
+      "created_at": "",
+      "family_id": "actor_policy:regime_mixture",
+      "formal_description": "P(a|x)=sum_r P(r|x)P(a|r,x)",
+      "implementation_note": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "known_failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "ontology_type": "decision",
+      "owner": "wmv2",
+      "packs": [
+        {
+          "citations": [],
+          "created_at": "",
+          "domain": "*",
+          "family_id": "actor_policy:regime_mixture",
+          "fit_method": "unfitted broad structural prior",
+          "fitted_on": "",
+          "pack_id": "phase4:regime_mixture:tier7:4.0.0",
+          "population": "cold_start_reference_class",
+          "time_scale": "",
+          "transport_note": "Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+          "validation": [],
+          "values": {
+            "family_weight": {
+              "method": "structural mixture prior; refit on trajectories",
+              "sd": 0.15,
+              "source": "reference_class_prior",
+              "value": 0.045454545454545456
+            },
+            "precision": {
+              "method": "deliberately broad Phase 4 fallback",
+              "sd": 0.5,
+              "source": "reference_class_prior",
+              "value": 0.7
+            }
+          },
+          "version": "4.0.0"
+        }
+      ],
+      "parameters": [
+        {
+          "default_source": "fitted",
+          "description": "choice precision",
+          "hi": null,
+          "lo": 0.0,
+          "name": "precision"
+        },
+        {
+          "default_source": "fitted",
+          "description": "posterior structural weight",
+          "hi": 1.0,
+          "lo": 0.0,
+          "name": "family_weight"
+        }
+      ],
+      "required_state": [],
+      "status": "implemented",
+      "status_reason": "typed numeric execution exists; empirical production promotion is withheld",
+      "temporal_scale": "event",
+      "test_ref": "tests/test_wmv2_phase4_contracts.py",
+      "title": "Actor policy: regime mixture",
+      "uncertainty_note": "posterior family weight and parameter distribution",
+      "updated_at": "",
+      "validation": [],
+      "version": "4.0.0"
+    }
+  ],
+  "runtime_specs": {
+    "belief_planning": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "bounded subjective model predicts consequences",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "belief_planning",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "score_a=EU_a+log P_actor(success|a)",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "belief_or_reaction_history"
+      ],
+      "required_state": [
+        "beliefs",
+        "expected_reactions"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "bounded_search": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "finite ordered consideration set",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "bounded_search",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "search first K perceived actions and choose best encountered",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "choices"
+      ],
+      "required_state": [
+        "attention"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "delay_hazard": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "inaction and delay are competing time hazards",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "delay_hazard",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "score_a=EU_a-duration_a/one_day",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "timed_choices"
+      ],
+      "required_state": [
+        "workload",
+        "attention"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "ewa": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "experience-weighted attractions combine reinforcement and forgone payoffs",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "ewa",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "A_a'=(phi*N*A_a+[delta+(1-delta)I_a]*pi_a)/(rho*N+1)",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "repeated_actions_payoffs"
+      ],
+      "required_state": [
+        "action_history",
+        "policy_state"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "habit": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "repetition raises action accessibility",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "habit",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "score_a=EU_a+eta*log(1+n_a)",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "repeated_choices"
+      ],
+      "required_state": [
+        "action_history"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "imitation": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "observed alters' actions supply social evidence",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "imitation",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "score_a=EU_a+mu*observed_peer_frequency_a",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "network_actions"
+      ],
+      "required_state": [
+        "relationships",
+        "perceived_actions"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "institutional_obedience": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "perceived legitimate rules affect choice",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "institutional_obedience",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "score_a=EU_a+kappa*perceived_rule_alignment_a",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "rule_compliance"
+      ],
+      "required_state": [
+        "institution_rules",
+        "authority"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "limited_depth_reasoning": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "actor recursively reasons to a finite depth",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "limited_depth_reasoning",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "pi^k=BR_lambda(pi^(k-1)), k<=K",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "strategic_sequences"
+      ],
+      "required_state": [
+        "beliefs",
+        "expected_reactions"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "loss_aversion": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "losses relative to an identified reference point loom larger",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "loss_aversion",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "v(x)=x if x>=0 else lambda_loss*x",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "choices_with_reference_points"
+      ],
+      "required_state": [
+        "preferences"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "multinomial_logit": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "IIA within the choice set",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "multinomial_logit",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "P(a)=exp(lambda U_a)/sum_j exp(lambda U_j)",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "choices"
+      ],
+      "required_state": [],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "nested_discrete_choice": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "IIA only within action-family nests",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "nested_discrete_choice",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "P(a)=P(nest(a))*P(a|nest(a))",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "choices"
+      ],
+      "required_state": [],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "norm_compliance": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "perceived norms add utility or penalties",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "norm_compliance",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "score_a=EU_a+kappa*norm_alignment_a",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "norm_observations"
+      ],
+      "required_state": [
+        "obligations"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "obligation": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "binding commitments affect choice",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "obligation",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "score_a=EU_a+kappa*obligation_alignment_a",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "commitment_behavior"
+      ],
+      "required_state": [
+        "commitments",
+        "obligations"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "quantal_response": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "noisy response to perceived utility",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "quantal_response",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "P(a) proportional to exp(lambda EU_a)",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "choices"
+      ],
+      "required_state": [],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "random_utility": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "additive random utility errors",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "random_utility",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "U_a=V_a+epsilon_a; integrate epsilon",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [],
+      "required_state": [],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "reciprocity": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "observed partner conduct changes social utility",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "reciprocity",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "score_a=EU_a+rho*perceived_partner_kindness",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "dyadic_history"
+      ],
+      "required_state": [
+        "relationships"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "regime_mixture": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "latent decision regimes switch by context",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "regime_mixture",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "P(a|x)=sum_r P(r|x)P(a|r,x)",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "choices"
+      ],
+      "required_state": [],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "reinforcement_learning": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "experienced rewards update cached action values",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "reinforcement_learning",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "Q_a<-Q_a+alpha(r-Q_a); score=(EU+Q)/2",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "actions_and_rewards"
+      ],
+      "required_state": [
+        "action_history",
+        "policy_state"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "risk_sensitive": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "actor penalizes subjective consequence dispersion",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "risk_sensitive",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "score_a=E[U_a]-gamma*SD[U_a]",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "risky_choices"
+      ],
+      "required_state": [
+        "risk_beliefs"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "satisficing": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "actor accepts an action above an aspiration level",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "satisficing",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "P(a) positive when EU_a>=tau; otherwise residual search mass",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "choices"
+      ],
+      "required_state": [],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "social_proof": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "aggregate observed behavior affects perceived value",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "social_proof",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "score_a=EU_a+sigma*log(1+observed_count_a)",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "exposure_and_actions"
+      ],
+      "required_state": [
+        "perceived_actions"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    },
+    "strategic_anticipation": {
+      "applicability": "state requirements satisfied",
+      "assumptions": "actor anticipates a bounded opponent response",
+      "compatible_families": [
+        "messaging",
+        "negotiation",
+        "participation",
+        "platform",
+        "institutional",
+        "organizational_market",
+        "generic"
+      ],
+      "diagnostics": [
+        "log_loss",
+        "calibration",
+        "family_weight",
+        "posterior_predictive_check"
+      ],
+      "exclusions": "exclude when required actor-visible state is absent",
+      "execution_behavior": "produces a posterior over the actor-perceived feasible TypedAction set",
+      "failure_modes": [
+        "transport shift",
+        "unidentified family",
+        "sparse actor history"
+      ],
+      "family_id": "strategic_anticipation",
+      "fit_method": "hierarchical likelihood",
+      "mathematical_form": "score_a=EU_a+log P_actor(response|a)",
+      "parameter_schema": {
+        "family_specific": "provenance-bearing distribution",
+        "precision": "nonnegative distribution",
+        "weight": "posterior probability"
+      },
+      "policy_uncertainty": "posterior family weight and parameter distribution",
+      "required_evidence": [
+        "strategic_sequences"
+      ],
+      "required_state": [
+        "beliefs",
+        "expected_reactions"
+      ],
+      "transport_limits": "parameters must widen outside fitted domain",
+      "validation_status": "implemented"
+    }
+  },
+  "schema": "phase6.MechanismRecord"
+}

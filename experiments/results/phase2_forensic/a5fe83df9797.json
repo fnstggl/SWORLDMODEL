@@ -1,0 +1,398 @@
+{
+ "domain": "product_launch",
+ "question": "Will Apple release the iPhone 15 on its announced date?",
+ "as_of": "2023-09-01",
+ "horizon": "2023-10-01",
+ "n_requirements": 8,
+ "requirements": [
+  {
+   "id": "req_a975f2f5e6",
+   "need": "release_on_date if Apple publicly releases iPhone 15 on the announced date (2023",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_4778caf966",
+   "need": "value/context of Apple.supply_chain_readiness",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  },
+  {
+   "id": "req_82de89f019",
+   "need": "value/context of Apple.internal_decision",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  },
+  {
+   "id": "req_9626623043",
+   "need": "value/context of TSMC.chip_supply_volume",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "Apple release iPhone announced date Apple Foxconn TSMC after:2023-04-04 before:2023-09-01",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 3,
+   "raw_hash": "3d53ea1dead9"
+  },
+  {
+   "query": "Apple supply chain readiness after:2023-04-04 before:2023-09-01",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 2,
+   "raw_hash": "77e29463f079"
+  },
+  {
+   "query": "Apple internal decision after:2023-04-04 before:2023-09-01",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 6,
+   "raw_hash": "021739c134de"
+  }
+ ],
+ "n_documents": 11,
+ "documents": [
+  {
+   "source": "The Korea Economic Daily Global Edition",
+   "title": "Apple, Samsung in distinct cash management styles - The Korea Economic",
+   "pub": 1684134000.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Forbes India",
+   "title": "Explained: The unbelievably complex process of making semiconductor ch",
+   "pub": 1689231600.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Business Today",
+   "title": "Foxconn starts production of upcoming Apple iPhone 15 in Tamil Nadu ah",
+   "pub": 1692169200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Forbes India",
+   "title": "iPhone manufacturer Foxconn ready to cash in on India's expanding econ",
+   "pub": 1692601200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "9to5Mac",
+   "title": "Gurman: First M3 Apple Silicon Macs likely to launch in October - 9to5",
+   "pub": 1689490800.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "inc.com",
+   "title": "Apple's Culture Rejects the Conventional Wisdom of Product Design. Tha",
+   "pub": 1684393200.0,
+   "temporal": "likely_pre_asof"
+  }
+ ],
+ "temporal_summary": {
+  "likely_pre_asof": 10,
+  "uncertain": 1
+ },
+ "included_claims": [
+  {
+   "id": "39ce33e13f9d493c:c0",
+   "class": "observed_fact",
+   "subject": "Apple",
+   "predicate": "has",
+   "span": "Apple, Samsung in distinct cash management styles"
+  },
+  {
+   "id": "39ce33e13f9d493c:c1",
+   "class": "observed_fact",
+   "subject": "Samsung",
+   "predicate": "has",
+   "span": "Apple, Samsung in distinct cash management styles"
+  },
+  {
+   "id": "da191e6b16a90811:c0",
+   "class": "observed_fact",
+   "subject": "Foxconn",
+   "predicate": "is ready to cash in on",
+   "span": "iPhone manufacturer Foxconn ready to cash in on India's expanding economy"
+  },
+  {
+   "id": "aa42a18834fc9fc9:c0",
+   "class": "opinion",
+   "subject": "Apple's Culture",
+   "predicate": "rejects",
+   "span": "Apple's Culture Rejects the Conventional Wisdom of Product Design."
+  },
+  {
+   "id": "aa42a18834fc9fc9:c1",
+   "class": "opinion",
+   "subject": "Apple",
+   "predicate": "is",
+   "span": "That's Why Apple Is the Best"
+  },
+  {
+   "id": "2800457e3f1bc498:c0",
+   "class": "observed_fact",
+   "subject": "The process of making semiconductor chip",
+   "predicate": "is",
+   "span": "The unbelievably complex process of making semiconductor chips"
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 0,
+ "entities": [
+  {
+   "mention": "Apple",
+   "top": "apple",
+   "resolved": false
+  },
+  {
+   "mention": "Samsung",
+   "top": "samsung",
+   "resolved": true
+  },
+  {
+   "mention": "Foxconn",
+   "top": "foxconn",
+   "resolved": true
+  },
+  {
+   "mention": "India",
+   "top": "india",
+   "resolved": true
+  },
+  {
+   "mention": "Apple",
+   "top": "apple",
+   "resolved": false
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  }
+ ],
+ "n_independent_sources": 11,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 10
+ },
+ "leakage_flags": [],
+ "bundle_hash": "0300f7f422fd403b",
+ "plan_diff": {
+  "n_entries": 18,
+  "n_structural_changes": 17,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "entity_added",
+    "component": "Samsung",
+    "detail": "Claim c0 and c1 mention Samsung's distinct cash management styles alongside Apple, indicating Samsung is a relevant peer",
+    "supporting_claim_ids": [
+     "39ce33e13f9d493c:c0",
+     "39ce33e13f9d493c:c1"
+    ],
+    "before": "",
+    "after": "Samsung"
+   },
+   {
+    "kind": "entity_added",
+    "component": "Forbes_India",
+    "detail": "Claim c1 identifies Forbes India as the publisher of an official record explaining semiconductor chip complexity, releva",
+    "supporting_claim_ids": [
+     "2800457e3f1bc498:c1"
+    ],
+    "before": "",
+    "after": "Forbes_India"
+   },
+   {
+    "kind": "relation_added",
+    "component": "Foxconn-produces_for-Apple",
+    "detail": "",
+    "supporting_claim_ids": [
+     "f39239b38fb58b2a:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "relation_added",
+    "component": "Foxconn-located_in-India",
+    "detail": "",
+    "supporting_claim_ids": [
+     "da191e6b16a90811:c0",
+     "f39239b38fb58b2a:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "event_added",
+    "component": "external_shock@2023-10-01",
+    "detail": "Claim c0 forecasts first M3 Apple Silicon Macs likely to launch in October, which could affect iPhone 15 release timing ",
+    "supporting_claim_ids": [
+     "3ba3c2b3deb25686:c0"
+    ],
+    "before": "",
+    "after": "external_shock"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "supply_chain_driven",
+    "detail": "Claim f39239c0 confirms Foxconn has started production of iPhone 15 in Tamil Nadu, supporting supply chain readiness and",
+    "supporting_claim_ids": [
+     "f39239b38fb58b2a:c0"
+    ],
+    "before": "0.6",
+    "after": "0.9"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "regulatory_driven",
+    "detail": "No claims provide evidence of regulatory hurdles; the only regulatory mention is an unrelated Forbes India article on ch",
+    "supporting_claim_ids": [
+     "2800457e3f1bc498:c0",
+     "2800457e3f1bc498:c1"
+    ],
+    "before": "0.2",
+    "after": "0.12"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "executive_whim",
+    "detail": "Claims about Apple's culture rejecting conventional wisdom (aa42a188c0) and being 'the best' (aa42a188c1) are opinions, ",
+    "supporting_claim_ids": [
+     "aa42a18834fc9fc9:c0",
+     "aa42a18834fc9fc9:c1"
+    ],
+    "before": "0.2",
+    "after": "0.12"
+   },
+   {
+    "kind": "lean_changed",
+    "component": "outcome_lean",
+    "detail": "",
+    "supporting_claim_ids": [
+     "f39239b38fb58b2a:c0",
+     "f39239b38fb58b2a:c1"
+    ],
+    "before": "weak_yes",
+    "after": "strong_yes"
+   },
+   {
+    "kind": "uncertainty_changed",
+    "component": "state_priors",
+    "detail": "Direct evidence of production start and a September launch forecast narrows uncertainty around the announced date.",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": "narrow"
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_a975f2f5e6",
+    "detail": "6 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_4778caf966",
+    "detail": "2 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_82de89f019",
+    "detail": "2 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_9626623043",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_f6718adfe0",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_8c1d03f0d9",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_767b95622e",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_451eece34b",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 17,
+ "lean_only": false,
+ "n_institutions_pre": 2,
+ "n_institutions_post": 2,
+ "n_events_pre": 2,
+ "n_events_post": 11,
+ "observation_state_deltas": 0,
+ "terminal_pre": {
+  "release_on_date": 0.56,
+  "not_release_on_date": 0.44
+ },
+ "terminal_post": {
+  "release_on_date": 0.58,
+  "not_release_on_date": 0.42
+ },
+ "terminal_changed": true,
+ "evidence_is_causal": true
+}

@@ -1,0 +1,341 @@
+{
+ "domain": "market",
+ "question": "Will the US Federal Reserve raise interest rates at its September 2023 meeting?",
+ "as_of": "2023-09-01",
+ "horizon": "2023-09-21",
+ "n_requirements": 7,
+ "requirements": [
+  {
+   "id": "req_4621a7415e",
+   "need": "If the FOMC announces an increase in the target range for the federal funds rate",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_958d9c4f37",
+   "need": "value/context of fomc.members_preferred_rate_path",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  },
+  {
+   "id": "req_cd22f057ed",
+   "need": "value/context of fomc.internal_consensus",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  },
+  {
+   "id": "req_5b8663beae",
+   "need": "evidence discriminating structural hypothesis data_dependent",
+   "why": "a fact that reweights competing structural hypotheses materially changes the out",
+   "voi": 0.8
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "Federal Reserve raise interest rates September 2023 meeting fomc jerome powell after:2023-04-04 before:2023-09-01",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "290ff104c0bf"
+  },
+  {
+   "query": "fomc members preferred rate path after:2023-04-04 before:2023-09-01",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "bf1d8ecb0526"
+  },
+  {
+   "query": "fomc internal consensus after:2023-04-04 before:2023-09-01",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "9a899eb505c5"
+  }
+ ],
+ "n_documents": 8,
+ "documents": [
+  {
+   "source": "Bankrate",
+   "title": "When will the Fed stop raising rates? The time could be coming soon - ",
+   "pub": 1683702000.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "J.P. Morgan",
+   "title": "July 2023 Fed Meeting: Interest Rate Hikes Resume - J.P. Morgan",
+   "pub": 1690566916.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "CNBC",
+   "title": "Fed approves hike that takes interest rates to highest level in more t",
+   "pub": 1690354800.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "CBS News",
+   "title": "Fed Reserve officials continue to see \"significant\" inflation risk tha",
+   "pub": 1692169200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "The New York Times",
+   "title": "Federal Reserve Meeting: Fed Raises Rates Again (Published 2023) - The",
+   "pub": 1690354800.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "NPR",
+   "title": "Fed Chair Jerome Powell warns the fight against inflation is far from ",
+   "pub": 1692946800.0,
+   "temporal": "likely_pre_asof"
+  }
+ ],
+ "temporal_summary": {
+  "likely_pre_asof": 8
+ },
+ "included_claims": [
+  {
+   "id": "945ab83af37bdb31:c0",
+   "class": "forecast",
+   "subject": "the Fed",
+   "predicate": "stop raising rates",
+   "span": "The time could be coming soon"
+  },
+  {
+   "id": "bf12cf642ef835a3:c0",
+   "class": "observed_fact",
+   "subject": "Federal Reserve",
+   "predicate": "resumed",
+   "span": "July 2023 Fed Meeting: Interest Rate Hikes Resume"
+  },
+  {
+   "id": "840a9bed953ed20a:c0",
+   "class": "observed_fact",
+   "subject": "Fed",
+   "predicate": "approves",
+   "span": "Fed approves hike"
+  },
+  {
+   "id": "840a9bed953ed20a:c1",
+   "class": "observed_fact",
+   "subject": "hike",
+   "predicate": "takes",
+   "span": "takes interest rates to highest level in more than 22 years"
+  },
+  {
+   "id": "c7a133ed60b2c451:c0",
+   "class": "observed_fact",
+   "subject": "Fed Reserve officials",
+   "predicate": "continue to see",
+   "span": "Fed Reserve officials continue to see \"significant\" inflation risk"
+  },
+  {
+   "id": "c7a133ed60b2c451:c1",
+   "class": "forecast",
+   "subject": "significant inflation risk",
+   "predicate": "may require",
+   "span": "may require more rate hikes"
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 0,
+ "entities": [
+  {
+   "mention": "Fed",
+   "top": "fed",
+   "resolved": false
+  },
+  {
+   "mention": "Federal Reserve",
+   "top": "federal reserve",
+   "resolved": true
+  },
+  {
+   "mention": "J.P. Morgan",
+   "top": "j p morgan",
+   "resolved": true
+  },
+  {
+   "mention": "Fed",
+   "top": "fed",
+   "resolved": false
+  },
+  {
+   "mention": "Fed Reserve officials",
+   "top": "fed reserve officials",
+   "resolved": true
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  }
+ ],
+ "n_independent_sources": 8,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 8
+ },
+ "leakage_flags": [],
+ "bundle_hash": "8696614ac549baa5",
+ "plan_diff": {
+  "n_entries": 12,
+  "n_structural_changes": 11,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "hawkish_shift",
+    "detail": "Claims show resumed hikes, highest rates in 22 years, and Powell warning inflation fight is far from over, supporting a ",
+    "supporting_claim_ids": [
+     "bf12cf642ef835a3:c0",
+     "840a9bed953ed20a:c1",
+     "b260c3d238c41df8:c0"
+    ],
+    "before": "0.1",
+    "after": "0.15"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "data_dependent",
+    "detail": "Despite a forecast that hikes may stop soon, observed facts of resumed hikes and significant inflation risk reduce the l",
+    "supporting_claim_ids": [
+     "945ab83af37bdb31:c0",
+     "c7a133ed60b2c451:c0",
+     "c7a133ed60b2c451:c1"
+    ],
+    "before": "0.6",
+    "after": "0.36"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "forward_guidance",
+    "detail": "Powell's statement that the fight is far from over aligns with forward guidance signaling further hikes.",
+    "supporting_claim_ids": [
+     "b260c3d238c41df8:c0"
+    ],
+    "before": "0.3",
+    "after": "0.45"
+   },
+   {
+    "kind": "lean_changed",
+    "component": "outcome_lean",
+    "detail": "",
+    "supporting_claim_ids": [
+     "bf12cf642ef835a3:c0",
+     "840a9bed953ed20a:c1",
+     "c7a133ed60b2c451:c1",
+     "b260c3d238c41df8:c0"
+    ],
+    "before": "neutral",
+    "after": "strong_yes"
+   },
+   {
+    "kind": "uncertainty_changed",
+    "component": "state_priors",
+    "detail": "Multiple observed facts and a direct statement from the Fed Chair consistently point toward a rate hike, reducing uncert",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": "narrow"
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_4621a7415e",
+    "detail": "8 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_958d9c4f37",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_cd22f057ed",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_5b8663beae",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_92d1bdcdec",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_9d9946a577",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_cd184c3f5e",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 11,
+ "lean_only": false,
+ "n_institutions_pre": 1,
+ "n_institutions_post": 1,
+ "n_events_pre": 3,
+ "n_events_post": 11,
+ "observation_state_deltas": 0,
+ "terminal_pre": {
+  "no_raise": 0.56,
+  "raise": 0.44
+ },
+ "terminal_post": {
+  "raise": 0.5,
+  "no_raise": 0.5
+ },
+ "terminal_changed": true,
+ "evidence_is_causal": true
+}

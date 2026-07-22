@@ -1,0 +1,421 @@
+{
+ "schema_id": "schema_de210bad0d3453ab",
+ "version": "1",
+ "question": "Will Kite Robotics and Halvorsen Motors sign a component-supply partnership before the fall production freeze?",
+ "prediction_timestamp": 1752800000.0,
+ "horizon": 1757984000.0,
+ "entity_types": {
+  "company": {
+   "fields": {
+    "name": "str",
+    "industry": "str"
+   }
+  },
+  "person": {
+   "fields": {
+    "name": "str",
+    "role": "str"
+   }
+  },
+  "component_supply_proposal": {
+   "fields": {
+    "proposal_id": "str",
+    "supplier_company": "id",
+    "buyer_company": "id",
+    "volume_discount_percent": "float",
+    "co_marketing_clause_included": "bool",
+    "submission_date": "time",
+    "status": "str"
+   }
+  },
+  "procurement_committee_meeting": {
+   "fields": {
+    "meeting_id": "str",
+    "committee_id": "id",
+    "meeting_date": "time",
+    "agenda_items": "list"
+   }
+  },
+  "decision_record": {
+   "fields": {
+    "record_id": "str",
+    "decision_maker": "id",
+    "proposal_id": "id",
+    "vote": "str",
+    "recorded_at": "time"
+   }
+  },
+  "production_freeze_event": {
+   "fields": {
+    "freeze_id": "str",
+    "company": "id",
+    "freeze_date": "time",
+    "status": "str"
+   }
+  }
+ },
+ "fact_types": {
+  "proposal_submitted": {
+   "fields": {
+    "proposal_id": "id",
+    "submitted_by": "id",
+    "submitted_to": "id",
+    "timestamp": "time"
+   }
+  },
+  "committee_decision_made": {
+   "fields": {
+    "meeting_id": "id",
+    "proposal_id": "id",
+    "decision": "str",
+    "decision_date": "time"
+   }
+  },
+  "production_freeze_activated": {
+   "fields": {
+    "freeze_id": "id",
+    "company": "id",
+    "freeze_date": "time"
+   }
+  }
+ },
+ "relation_types": {
+  "chairs": {
+   "fields": {
+    "person": "id",
+    "committee": "id"
+   }
+  },
+  "member_of": {
+   "fields": {
+    "person": "id",
+    "committee": "id"
+   }
+  },
+  "delegated_authority": {
+   "fields": {
+    "delegator": "id",
+    "delegate": "id",
+    "scope": "str"
+   }
+  },
+  "proposal_under_review": {
+   "fields": {
+    "proposal_id": "id",
+    "committee_id": "id"
+   }
+  }
+ },
+ "semantic_event_types": {
+  "proposal_submission_event": {
+   "fields": {
+    "event_id": "str",
+    "proposal_id": "id",
+    "submitting_company": "id",
+    "receiving_company": "id",
+    "timestamp": "time"
+   },
+   "preconditions": [],
+   "effects": [
+    {
+     "fact_type": "proposal_submitted",
+     "fields": {
+      "proposal_id": "proposal_id",
+      "submitted_by": "submitting_company",
+      "submitted_to": "receiving_company",
+      "timestamp": "timestamp"
+     }
+    }
+   ]
+  },
+  "committee_vote_recorded": {
+   "fields": {
+    "event_id": "str",
+    "meeting_id": "id",
+    "proposal_id": "id",
+    "voter": "id",
+    "vote": "str",
+    "timestamp": "time"
+   },
+   "preconditions": [
+    {
+     "fact_type": "proposal_submitted",
+     "field": "proposal_id",
+     "op": "eq",
+     "value": "proposal_id"
+    }
+   ],
+   "effects": [
+    {
+     "fact_type": "decision_record",
+     "fields": {
+      "record_id": "event_id",
+      "decision_maker": "voter",
+      "proposal_id": "proposal_id",
+      "vote": "vote",
+      "recorded_at": "timestamp"
+     }
+    }
+   ]
+  },
+  "production_freeze_triggered": {
+   "fields": {
+    "event_id": "str",
+    "company": "id",
+    "freeze_date": "time"
+   },
+   "preconditions": [],
+   "effects": [
+    {
+     "fact_type": "production_freeze_activated",
+     "fields": {
+      "freeze_id": "event_id",
+      "company": "company",
+      "freeze_date": "freeze_date"
+     }
+    }
+   ]
+  },
+  "unmodeled_actor_action": {
+   "description": "schema-scoped scaffolding: an actor action whose semantics could not be compiled; exact content preserved; counted as a fallback",
+   "fields": {
+    "action_name": "str",
+    "content": "str",
+    "target": "str"
+   },
+   "typical_visibility": "participants",
+   "scaffolding": true
+  }
+ },
+ "process_definitions": {
+  "supplier_onboarding_process": {
+   "states": [
+    "proposal_drafted",
+    "proposal_submitted",
+    "under_committee_review",
+    "committee_voting",
+    "decision_recorded",
+    "contract_signed",
+    "rejected"
+   ],
+   "transitions": [
+    {
+     "from": "proposal_drafted",
+     "to": "proposal_submitted",
+     "trigger": "proposal_submission_event"
+    },
+    {
+     "from": "proposal_submitted",
+     "to": "under_committee_review",
+     "trigger": "committee_meeting_scheduled"
+    },
+    {
+     "from": "under_committee_review",
+     "to": "committee_voting",
+     "trigger": "committee_vote_recorded"
+    },
+    {
+     "from": "committee_voting",
+     "to": "decision_recorded",
+     "trigger": "aggregation_complete"
+    },
+    {
+     "from": "decision_recorded",
+     "to": "contract_signed",
+     "trigger": "approval_notification"
+    },
+    {
+     "from": "decision_recorded",
+     "to": "rejected",
+     "trigger": "rejection_notification"
+    }
+   ],
+   "initial_state": "proposal_drafted"
+  },
+  "production_freeze_process": {
+   "states": [
+    "scheduled",
+    "active",
+    "completed"
+   ],
+   "transitions": [
+    {
+     "from": "scheduled",
+     "to": "active",
+     "trigger": "production_freeze_triggered"
+    },
+    {
+     "from": "active",
+     "to": "completed",
+     "trigger": "freeze_lifted"
+    }
+   ],
+   "initial_state": "scheduled"
+  }
+ },
+ "institutional_definitions": {
+  "halvorsen_procurement_committee": {
+   "members": [
+    "sofia_brandt"
+   ],
+   "decision_holders": [
+    "sofia_brandt"
+   ],
+   "decision_record_type": "decision_record",
+   "aggregation_arithmetic": {
+    "kind": "single_authority",
+    "authority": "sofia_brandt"
+   },
+   "evidence": "Erik Halvorsen delegates supplier onboarding to the procurement committee chaired by Sofia Brandt; committee meets monthly and its decision is recorded.",
+   "assumed": true,
+   "aggregation": {
+    "kind": "single_authority"
+   }
+  }
+ },
+ "physical_constraints": {
+  "item_0": {
+   "constraint_id": "production_freeze_deadline",
+   "description": "Production freeze occurs in ~8 weeks from prediction time (2025-07-18), i.e., around 2025-09-16.",
+   "rule": "production_freeze_activated.freeze_date <= 2025-09-16",
+   "unresolved": true
+  },
+  "item_1": {
+   "constraint_id": "proposal_exclusivity",
+   "description": "Kite can offer a 12% volume discount or a co-marketing clause, not both.",
+   "rule": "component_supply_proposal.volume_discount_percent == 12.0 XOR component_supply_proposal.co_marketing_clause_included == true",
+   "unresolved": true
+  }
+ },
+ "resource_definitions": {
+  "component_supply_contract": {
+   "type": "legal_agreement",
+   "required_fields": [
+    "supplier_company",
+    "buyer_company",
+    "terms"
+   ],
+   "availability": "conditional_on_committee_approval"
+  },
+  "committee_meeting_slot": {
+   "type": "time_slot",
+   "frequency": "monthly",
+   "next_available": "2025-08-01"
+  }
+ },
+ "information_rules": {
+  "item_0": {
+   "rule_id": "committee_decision_visibility",
+   "description": "Committee decisions are recorded and visible to authorized parties after the meeting.",
+   "rule": "decision_record.recorded_at <= committee_meeting.meeting_date + 2 days"
+  },
+  "item_1": {
+   "rule_id": "proposal_submission_deadline",
+   "description": "Proposal must be submitted before the committee meeting that will decide on it.",
+   "rule": "proposal_submitted.timestamp < committee_meeting.meeting_date"
+  }
+ },
+ "actor_roles": {
+  "amara_diallo": {
+   "role": "kite_robotics_representative",
+   "why_consequential": "Amara Diallo is the person who would submit the proposal on behalf of Kite Robotics.",
+   "affordances": [
+    "draft a component_supply_proposal with either 12% volume discount or co-marketing clause",
+    "submit the proposal to halvorsen_procurement_committee via proposal_submission_event"
+   ]
+  },
+  "erik_halvorsen": {
+   "role": "halvorsen_motors_ceo",
+   "why_consequential": "Erik Halvorsen delegated authority to the procurement committee; he could potentially override or influence the process.",
+   "affordances": [
+    "delegate or revoke authority from the procurement committee",
+    "communicate preferences to sofia_brandt"
+   ]
+  },
+  "sofia_brandt": {
+   "role": "procurement_committee_chair",
+   "why_consequential": "Sofia Brandt chairs the committee and holds the single decision authority for supplier onboarding.",
+   "affordances": [
+    "schedule a committee meeting",
+    "record a vote on the proposal via committee_vote_recorded",
+    "approve or reject the proposal"
+   ]
+  }
+ },
+ "outcome_predicates": [
+  {
+   "predicate_id": "partnership_signed_before_freeze",
+   "record_type": "decision_record",
+   "field": "vote",
+   "op": "eq",
+   "value": "approve",
+   "option_true": "Yes, Kite Robotics and Halvorsen Motors will sign a component-supply partnership before the fall production freeze.",
+   "option_false": "No, they will not sign before the freeze."
+  }
+ ],
+ "unresolved_mechanisms": [
+  "The exact date of the next committee meeting is not specified; it is assumed monthly but the specific date is unknown.",
+  "Whether Erik Halvorsen will exercise any override authority is unknown.",
+  "Whether Amara Diallo will actually submit a proposal is unknown.",
+  "item_0",
+  "item_1"
+ ],
+ "evidence_basis": [],
+ "assumptions": [
+  "The production freeze date is assumed to be 2025-09-16 (8 weeks from 2025-07-18).",
+  "The procurement committee meets on the first business day of each month; next meeting assumed 2025-08-01.",
+  "Sofia Brandt is the sole decision authority as chair (single_authority).",
+  "No other proposals or competing suppliers are considered."
+ ],
+ "provenance": {
+  "kind": "scenario.semantic.model.v1",
+  "compiler": "llm",
+  "compiled_at": 1752800000.0,
+  "auto_repairs": [
+   "constraint 'item_0' labeled unresolved (no executable rule)",
+   "constraint 'item_1' labeled unresolved (no executable rule)",
+   "institution 'halvorsen_procurement_committee' aggregation defaulted to single_authority (none declared; labeled assumed)"
+  ],
+  "critic": {
+   "missing_decisive_elements": [
+    "No representation of the 'fall production freeze' date \u2014 the model has a freeze event type but no calendar anchor or deadline against which 'before' can be evaluated.",
+    "No entity or fact for 'Kite Robotics' as a company \u2014 only 'amara_diallo' as a representative, but the company itself is not instantiated in the model's entity_types.",
+    "No entity or fact for 'Halvorsen Motors' as a company \u2014 only 'erik_halvorsen' and 'sofia_brandt' as actors, but the company is not defined.",
+    "No time constraints or scheduling logic linking the supplier_onboarding_process to the production_freeze_process \u2014 the two processes run in parallel with no temporal dependency or deadline mechanism.",
+    "No mechanism for 'fall' seasonality \u2014 the model has no calendar, season, or date-range concept to define when 'fall' begins or ends.",
+    "No 'component-supply partnership' outcome type \u2014 the model only tracks proposals, decisions, and contracts, but 'partnership' is a broader relational state not captured.",
+    "No fallback or escalation affordance for Erik Halvorsen to override the committee \u2014 his affordances mention delegation but no concrete event or precondition for override.",
+    "No representation of external factors (e.g., market conditions, supply chain disruptions) that could accelerate or delay the process."
+   ],
+   "relabeled_progress_bars": [
+    "The 'supplier_onboarding_process' states are labeled as if linear, but the model allows committee_vote_recorded to occur without a scheduled meeting \u2014 the transition from 'proposal_submitted' to 'under_committee_review' requires a 'committee_meeting_scheduled' trigger that is never defined as an event type.",
+    "The 'production_freeze_process' has an initial state 'scheduled' but no event or precondition to set the freeze date \u2014 the freeze_date is only set at trigger time, making it impossible to know if a freeze is 'scheduled' before it activates."
+   ],
+   "hidden_answer_risks": [
+    "The model assumes Sofia Brandt is the sole decision authority, but the institutional definition says 'committee meets monthly' \u2014 if the next meeting is after the freeze, the proposal cannot be decided in time, yet no meeting scheduling logic exists.",
+    "Amara Diallo can submit a proposal with either 12% discount or co-marketing clause, but the model does not track which option was chosen or how that affects committee decision \u2014 the decision record only captures vote, not rationale or conditions.",
+    "The 'aggregation_complete' trigger is undefined \u2014 no event or precondition specifies how individual votes are aggregated into a decision, even though only one voter exists."
+   ],
+   "direct_human_reaction_encodings": [
+    "Erik Halvorsen's 'communicate preferences' affordance has no corresponding fact or event type \u2014 it is a free-form human action with no model trace.",
+    "Sofia Brandt's 'schedule a committee meeting' affordance is not linked to any event or precondition \u2014 meetings appear to happen magically without scheduling events."
+   ],
+   "public_posture_vs_private_reality_conflations": [
+    "The model treats 'committee_decision_made' as a public fact, but the decision_record only stores votes \u2014 there is no distinction between a public announcement and the private tally.",
+    "The 'contract_signed' state is reached via 'approval_notification', but no event type for signing or notification exists \u2014 the model conflates internal approval with external legal commitment."
+   ],
+   "outcome_predicate_matches_question": false,
+   "missing_nonhuman_mechanisms": [
+    "No calendar or clock mechanism to compare event timestamps against a 'fall freeze' deadline.",
+    "No mechanism for production freeze to affect the supplier onboarding process (e.g., freeze might halt all new contracts).",
+    "No mechanism for proposal expiration or withdrawal if not decided before freeze.",
+    "No mechanism for multiple proposals or competitive bidding \u2014 only one proposal path exists."
+   ],
+   "verdict": "needs_extension"
+  },
+  "frozen_at": 1752800000.0,
+  "content_hash": "b5496a79625255b7"
+ },
+ "frozen": true,
+ "ancestry": []
+}

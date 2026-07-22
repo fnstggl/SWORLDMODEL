@@ -1,0 +1,125 @@
+{
+ "_meta": {
+  "note": "Part-24 counterfactual sensitivity \u2014 response curves obey the fitted form's invariants; NOT a substitute for held-out validation.",
+  "n": 4
+ },
+ "tests": [
+  {
+   "test": "telco tenure \u2191 \u2192 churn \u2193",
+   "curve": [
+    [
+     1,
+     0.6298
+    ],
+    [
+     6,
+     0.4156
+    ],
+    [
+     12,
+     0.3347
+    ],
+    [
+     24,
+     0.22
+    ],
+    [
+     48,
+     0.1449
+    ],
+    [
+     72,
+     0.0532
+    ]
+   ],
+   "invariant": "declining hazard",
+   "holds": true
+  },
+  {
+   "test": "Hill exposure \u2191 \u2192 response saturates",
+   "curve": [
+    [
+     0,
+     0.0
+    ],
+    [
+     2,
+     0.0588
+    ],
+    [
+     8,
+     0.5
+    ],
+    [
+     32,
+     0.9412
+    ],
+    [
+     128,
+     0.9961
+    ]
+   ],
+   "invariant": "monotone increasing, \u2192\u03b8",
+   "holds": true
+  },
+  {
+   "test": "repeated exposure \u2192 fatigue (response \u2193)",
+   "curve": [
+    [
+     0,
+     1.0
+    ],
+    [
+     1,
+     0.64
+    ],
+    [
+     2,
+     0.424
+    ],
+    [
+     3,
+     0.2944
+    ],
+    [
+     4,
+     0.2166
+    ],
+    [
+     5,
+     0.17
+    ]
+   ],
+   "invariant": "decreasing \u2192 floor",
+   "holds": true
+  },
+  {
+   "test": "adoption share \u2191 \u2192 growth increment saturates to 0 at L",
+   "curve": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.025,
+     0.01125
+    ],
+    [
+     0.05,
+     0.015
+    ],
+    [
+     0.075,
+     0.01125
+    ],
+    [
+     0.1,
+     0.0
+    ]
+   ],
+   "invariant": "increment\u21920 as S\u2192L",
+   "holds": true
+  }
+ ],
+ "all_invariants_hold": true
+}
