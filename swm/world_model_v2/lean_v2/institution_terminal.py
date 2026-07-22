@@ -67,6 +67,7 @@ def resolve_institution_terminal(bp, representation, grounding: dict, *, states_
 
     per_combo, num, den = [], 0.0, 0.0
     band_lo, band_hi = 1.0, 0.0
+    resolved_threshold = None
     combos = shared_combos or [({}, 1.0)]
     for combo, w in combos:
         ck = _json.dumps(combo, sort_keys=True)
@@ -87,6 +88,7 @@ def resolve_institution_terminal(bp, representation, grounding: dict, *, states_
             # a repair unit (or an unmapped voter) starts at the grounded settling rate, never 0.5
             init[u.unit_id] = s if s is not None else (ref if ref is not None else 0.5)
         res = resolve_institution_vote(representation, init, model, max_rounds=max_rounds)
+        resolved_threshold = res.threshold                     # the ABSOLUTE threshold actually used
         lo, hi = res.convergence_band()
         band_lo, band_hi = min(band_lo, lo), max(band_hi, hi)
         num += float(w) * res.p_yes
@@ -97,7 +99,8 @@ def resolve_institution_terminal(bp, representation, grounding: dict, *, states_
     return {"p_yes": round(p_yes, 4) if p_yes is not None else None,
             "band": [round(band_lo, 4), round(band_hi, 4)] if den > 0 else None,
             "institution_type": model.institution_type,
-            "threshold": representation.threshold,
+            "threshold": resolved_threshold,
+            "declared_threshold": representation.threshold,
             "total_seats": representation.total_voting_power(),
             "consensus_forces": model.forces.as_dict(),
             "per_combo": per_combo, "version": INSTITUTION_TERMINAL_VERSION,

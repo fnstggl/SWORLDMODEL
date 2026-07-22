@@ -72,20 +72,23 @@ def pure_terminal_outcome(bp, *, votes: dict = None, world_state: dict = None,
             m = len(members)
             thr = rp.get("threshold")
             if thr is None or str(thr) == "":
-                yes = count / max(1, m) > 0.5
+                yes = count / max(1, m) > 0.5            # majority of the roster present here
             else:
                 thr = float(thr)
                 if thr < 1.0:
                     yes = count / max(1, m) > thr        # explicit fraction ("more than 50%")
-                elif thr < m:
-                    yes = count >= thr                   # absolute count achievable in-model
+                elif thr <= m:
+                    yes = count >= thr                   # absolute count, seat-per-member here
                 else:
-                    # an absolute threshold that meets-or-exceeds the MODELED member count is
-                    # a real-body count (a majority of a larger parliament/board) collapsed
-                    # onto representative actors/blocs — 26 of 50 modeled as 5, 5 of 9 modeled
-                    # as 5. A 'majority' rule means a majority: translate to a majority of the
-                    # modeled substantive votes rather than an unreachable absolute count.
-                    yes = count / max(1, m) > 0.5
+                    # D7: an absolute threshold that EXCEEDS the roster present is a real-body
+                    # count collapsed onto too few modeled actors (26 of 50 modeled as 5; 5 of 9
+                    # modeled as 5). We DO NOT rescale reality to the broken blueprint. This node
+                    # cannot faithfully resolve the vote without the full represented roster, so
+                    # it DEFERS to the faithful deliberative resolver (institution_terminal.py),
+                    # which repairs the roster (D7) and tallies seat-weighted against the REAL
+                    # threshold — the rescaling logic that used to live here is deleted.
+                    return {"resolved": False, "cause":
+                            "representation_incomplete:threshold_exceeds_modeled_roster"}
         else:
             return {"resolved": False, "cause": f"unknown_rule:{rule}"}
         return {"resolved": True, "outcome": "YES" if yes else "NO",

@@ -213,6 +213,20 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
     lean_v2_prov["obligations"] = {k: o.as_dict() for k, o in obligations.items()}
     map_combo = shared_combos[0][0] if shared_combos else {}
 
+    # ---------------- 6e-bis. DELIBERATIVE INSTITUTION-VOTE RESOLUTION (D7 + D8 + D14) ------
+    # An institution vote is resolved by a deliberative sub-simulation over the FAITHFUL roster
+    # (D7) with grounded initial positions (D8) and grounded convergence (D14), tallied
+    # seat-weighted against the REAL threshold — never by counting independent per-member votes
+    # against a rescaled threshold. This becomes the simulation-conditional forecast for
+    # institution_vote terminals; the wave engine still runs for dynamics and audit.
+    inst_terminal = None
+    if str(bp.terminal.get("kind") or "") == "institution_vote":
+        inst_terminal = ckpt.run_stage(
+            "deliberative_institution_vote",
+            lambda: _resolve_institution_vote_terminal(
+                bp, question, evidence_text, grounding, validated, gw_by_combo, shared_combos))
+        lean_v2_prov["institution_terminal"] = inst_terminal
+
     # ---------------- 6e. MISSING-MECHANISM RECOVERY (predicate terminals) --------------
     # a numeric-threshold terminal with no mechanical writer gets the 5-attempt bridge
     # ladder BEFORE rollout — `missing_mechanism = 1.0` is never an accepted end state
@@ -394,7 +408,8 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
     # ---------------- 11. terminal projection + calibrated combination -------------------
     res = ckpt.run_stage("terminal_projection", lambda: _assemble_result(
         question, bp, eng, challenger_engine, unresolved_share, evidence_text,
-        grounding=grounding, obligations=obligations, lean_v2_prov=lean_v2_prov))
+        grounding=grounding, obligations=obligations, lean_v2_prov=lean_v2_prov,
+        inst_terminal=inst_terminal))
     lean_v2_prov["consequences"] = consequences_manifest(executor)
     finished = _finish(res)
     # ---------------- 12. full traces + human report ------------------------------------
@@ -685,8 +700,40 @@ def _build_unresolved_ledger(eng) -> UnresolvedLedger:
     return led
 
 
+def _resolve_institution_vote_terminal(bp, question, evidence_text, grounding, validated,
+                                       gw_by_combo, shared_combos) -> dict:
+    """Compose D7 (faithful representation) + D8 (grounded initial positions) + D14 (deliberative
+    convergence + seat-weighted tally) into the institution-vote forecast. Returns the deliberative
+    resolution dict (or a withheld marker when the faithful representation is not ready)."""
+    from swm.world_model_v2.lean_v2.resolution_spec import INSTITUTION_VOTE, parse_resolution
+    from swm.world_model_v2.lean_v2.representation import ensure_faithful_representation
+    from swm.world_model_v2.lean_v2.institution_terminal import resolve_institution_terminal
+    from swm.world_model_v2.lean_v2.state_completeness import feasible_options_for
+    rspec = parse_resolution(
+        bp.resolution.get("interpretation") or bp.resolution.get("yes_means") or "",
+        question=question, terminal_kind_hint=INSTITUTION_VOTE)
+    rep = ensure_faithful_representation(bp, rspec, evidence_text=evidence_text,
+                                         grounding=grounding)
+    if rep.verdict == "not_ready":
+        return {"p_yes": None, "verdict": rep.verdict, "representation": rep.as_dict(),
+                "note": "faithful representation not ready — deliberative resolution withheld"}
+    feas = {}
+    for u in rep.voter_units():
+        for aid in list(getattr(u, "member_ids", None) or []) + [u.unit_id]:
+            if bp.actor_by_id(aid):
+                feas[aid] = feasible_options_for(bp, aid)
+                break
+    target = rep.target_option or str((bp.terminal.get("rule_params") or {}).get("option") or "")
+    out = resolve_institution_terminal(
+        bp, rep, grounding, states_by_actor=validated, gw_by_combo=gw_by_combo,
+        shared_combos=shared_combos, feasible_options_by_actor=feas, target_option=target)
+    out["representation"] = rep.as_dict()
+    out["verdict"] = rep.verdict
+    return out
+
+
 def _assemble_result(question, bp, eng, ch_eng, unresolved_share, evidence_text, *,
-                     grounding, obligations, lean_v2_prov) -> SimulationResult:
+                     grounding, obligations, lean_v2_prov, inst_terminal=None) -> SimulationResult:
     dist = eng.distribution()
     options = eng.options or ["YES", "NO"]
     led = _build_unresolved_ledger(eng)
@@ -712,6 +759,32 @@ def _assemble_result(question, bp, eng, ch_eng, unresolved_share, evidence_text,
         provenance={"yes_mass": round(eng.yes_mass, 4), "no_mass": round(eng.no_mass, 4),
                     "dependence_range": (list(eng.dependence_range)
                                          if eng.dependence_range else None)})
+
+    # ---- D7+D8+D14: an INSTITUTION VOTE is resolved by the deliberative sub-simulation over the
+    # faithful roster and the REAL threshold — that IS the simulation-conditional forecast, and it
+    # resolves fully (a probability), so it also sets the resolved distribution. The independent
+    # per-node vote count no longer drives the institution answer.
+    inst_p = (inst_terminal or {}).get("p_yes")
+    inst_override = bp.terminal.get("kind") == "institution_vote" and inst_p is not None
+    if inst_override:
+        band = (inst_terminal or {}).get("band")
+        yes_lab = str(options[0]) if options else "YES"
+        no_lab = str(options[1]) if len(options) > 1 else "NO"
+        dist = {yes_lab: round(inst_p, 4), no_lab: round(1.0 - inst_p, 4)}
+        resolved_mass = 1.0
+        genuine_share, status = 0.0, "completed"
+        sim = SimulationConditionalForecast(
+            p=round(inst_p, 4), resolved_mass=1.0,
+            interval=(band[0], band[1]) if band else None,
+            weight_sensitive=bool(band and band[0] < 0.5 < band[1]),
+            dependence_sensitive=bool(band and (band[1] - band[0]) > DISAGREEMENT_SPREAD),
+            provenance={"source": "deliberative_institution_vote",
+                        "institution_type": inst_terminal.get("institution_type"),
+                        "threshold": inst_terminal.get("threshold"),
+                        "total_seats": inst_terminal.get("total_seats"),
+                        "convergence_band": band,
+                        "law": "D7 faithful roster + D8 grounded initial positions + D14 "
+                               "convergence + seat-weighted absolute-threshold tally"})
     # material structural disagreement keeps BOTH models visible; the challenger becomes a
     # second simulation input (never hidden), reported separately
     structural_sensitivity = False
@@ -786,7 +859,12 @@ def _assemble_result(question, bp, eng, ch_eng, unresolved_share, evidence_text,
     #     never a fixed blend, the same principled mechanism both other profiles use. The
     #     simulation forecast is preserved (it drives the resolved share); the prior is a
     #     separate, disclosed input for the unresolved share — never a wholesale replacement.
-    if combo_report.combined is not None:
+    if inst_override:
+        # the deliberative institution vote fully resolves the terminal — it IS the headline,
+        # not a wave-mass blend and not a combiner output (there is no unresolved mass to hand
+        # to the prior; the faithful roster + real threshold already produced P(YES))
+        headline, source = round(inst_p, 4), "deliberative_institution_vote"
+    elif combo_report.combined is not None:
         headline, source = combo_report.combined, "combined_calibrated"
     elif sim.p is not None or prior.p is not None:
         rec = recover_forecast(
