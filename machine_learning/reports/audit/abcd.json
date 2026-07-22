@@ -1,0 +1,124 @@
+{
+  "dataset_id": "abcd",
+  "official_source": "https://github.com/asappresearch/abcd",
+  "official_paper": "https://aclanthology.org/2021.naacl-main.239/",
+  "license": "MIT",
+  "license_class": "permissive_commercial",
+  "dataset_role": "TRAIN_CANDIDATE",
+  "conversion_status": "PENDING",
+  "acquisition_status": "acquired",
+  "raw_files": 10,
+  "raw_bytes": 43144167,
+  "normalized": {
+    "n_valid": 141653,
+    "n_quarantined": 0,
+    "n_episodes": 10042,
+    "n_actors": 10042,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 95129,
+      "PREDICT_NEXT_ACTION": 36482,
+      "PREDICT_FINAL_OUTCOME": 10042
+    }
+  },
+  "distributions": {
+    "dataset_id": "abcd",
+    "n_records": 20000,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 13499,
+      "PREDICT_NEXT_ACTION": 5088,
+      "PREDICT_FINAL_OUTCOME": 1413
+    },
+    "action_type_counts": {
+      "pull-up-account": 1018,
+      "verify-identity": 533,
+      "search-faq": 332,
+      "validate-purchase": 325,
+      "enter-details": 291,
+      "ask-the-oracle": 247,
+      "select-faq": 228,
+      "record-reason": 225,
+      "update-order": 205,
+      "membership": 197,
+      "shipping-status": 134,
+      "send-link": 115,
+      "offer-refund": 114,
+      "log-out-in": 113,
+      "try-again": 103,
+      "update-account": 98,
+      "subscription-status": 98,
+      "promo-code": 85,
+      "notify-team": 79,
+      "search-membership": 76,
+      "make-purchase": 58,
+      "search-pricing": 56,
+      "search-policy": 56,
+      "make-password": 53,
+      "instructions": 49,
+      "search-timing": 45,
+      "search-jeans": 42,
+      "search-boots": 41,
+      "search-jacket": 41,
+      "search-shirt": 31
+    },
+    "outcome_counts": {
+      "None": 1413
+    },
+    "missing_field_counts": {
+      "timestamps": 20000,
+      "available_action_set": 5088
+    },
+    "inactivity": {
+      "n_inactive": 0,
+      "n_action_or_response": 5088,
+      "inactivity_rate": 0.0
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 235.0,
+      "p25": 662.0,
+      "median": 1092.0,
+      "p75": 1531.0,
+      "p95": 2220.0,
+      "max": 3523.0,
+      "mean": 1147.56,
+      "n": 4000
+    },
+    "n_participants": 1413,
+    "n_episodes": 1413,
+    "warnings": []
+  },
+  "split_counts": {
+    "train": 112690,
+    "test_in_domain": 14034,
+    "validation": 14929
+  },
+  "leakage": {
+    "dataset_id": "abcd",
+    "ok": true,
+    "n_records": 141653,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "abcd",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 141653,
+      "notes": []
+    }
+  },
+  "assumptions": [
+    "original and delexed lists are index-aligned"
+  ],
+  "known_limitations": [
+    "only agent turns are modeled for messages/actions; customer turns are context"
+  ],
+  "unavailable_fields": [
+    "timestamps",
+    "customer identity"
+  ],
+  "training_recommendation": "Eligible for training pending human approval (training_approvals.yaml).",
+  "evaluation_recommendation": "Usable for in-domain evaluation on its own test split."
+}

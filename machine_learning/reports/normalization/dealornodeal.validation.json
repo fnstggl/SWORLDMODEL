@@ -1,0 +1,122 @@
+{
+  "dataset_id": "dealornodeal",
+  "n_records": 40000,
+  "critical_ok": true,
+  "critical": {
+    "schema": true,
+    "chronology": true,
+    "leakage": true,
+    "provenance": true,
+    "licensing": true
+  },
+  "warnings": [
+    "3 coincidental verbatim message repeats (target text recurs in history; below the systematic-bug threshold)"
+  ],
+  "schema": {
+    "n_ok": 40000,
+    "n_bad": 0,
+    "failures": []
+  },
+  "chronology": {
+    "dataset_id": "dealornodeal",
+    "n_checked": 40000,
+    "n_issues": 3,
+    "ok": false,
+    "hard_ok": true,
+    "n_hard": 0,
+    "n_soft": 3,
+    "issues": [
+      {
+        "record_id": "dealornodeal:PREDICT_NEXT_MESSAGE:d70d1f481167d2b9",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "dealornodeal:PREDICT_NEXT_MESSAGE:e911cfc7267fba4d",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "dealornodeal:PREDICT_NEXT_MESSAGE:62b1ff7d7a38333b",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      }
+    ]
+  },
+  "provenance": {
+    "dataset_id": "dealornodeal",
+    "n_checked": 40000,
+    "n_missing": 0,
+    "ok": true,
+    "missing": []
+  },
+  "leakage": {
+    "dataset_id": "dealornodeal",
+    "ok": true,
+    "n_records": 48830,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "dealornodeal",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 48830,
+      "notes": []
+    }
+  },
+  "deduplication": null,
+  "distributions": {
+    "dataset_id": "dealornodeal",
+    "n_records": 40000,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 24040,
+      "PREDICT_NEXT_ACTION": 5963,
+      "PREDICT_FINAL_OUTCOME": 9997
+    },
+    "action_type_counts": {
+      "selection": 4954,
+      "deal": 1009
+    },
+    "outcome_counts": {
+      "None": 9997
+    },
+    "missing_field_counts": {
+      "timestamps": 40000
+    },
+    "inactivity": {
+      "n_inactive": 0,
+      "n_action_or_response": 5963,
+      "inactivity_rate": 0.0
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 335.0,
+      "p25": 432.0,
+      "median": 551.0,
+      "p75": 728.0,
+      "p95": 1075.0,
+      "max": 2394.0,
+      "mean": 611.89,
+      "n": 8000
+    },
+    "n_participants": 19994,
+    "n_episodes": 9997,
+    "warnings": []
+  },
+  "licensing": {
+    "dataset": "dealornodeal",
+    "license": "CC-BY-NC (non-commercial)",
+    "license_class": "cc_by_nc",
+    "role": "TRAIN_CANDIDATE",
+    "commercial_use": "no",
+    "derivatives": "yes",
+    "redistribution": "yes",
+    "training_allowed_by_license": "yes",
+    "training_eligible_now": false,
+    "training_eligible_reason": "not approved in training_approvals.yaml (awaiting human review)",
+    "eligible_if_approved": true
+  }
+}

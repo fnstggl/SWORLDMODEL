@@ -8,5 +8,7 @@
 | criteo_uplift | CROSS_DATASET_EVAL_ONLY | partial | 4004 | 0 | True | NOT for training (role=CROSS_DATASET_EVA |
 | persuasionforgood | TRAIN_CANDIDATE | acquired | 52464 | 0 | True | Eligible for training pending human appr |
 | craigslistbargain | CROSS_DATASET_EVAL_ONLY | acquired | 106922 | 0 | True | NOT for training (role=CROSS_DATASET_EVA |
+| dealornodeal | TRAIN_CANDIDATE | acquired | 48830 | 0 | True | Eligible for training pending human appr |
 | casino | TRAIN_CANDIDATE | acquired | 15327 | 0 | True | Eligible for training pending human appr |
 | werewolf | TRAIN_CANDIDATE | acquired | 54632 | 0 | None | Eligible for training pending human appr |
+| abcd | TRAIN_CANDIDATE | acquired | 141653 | 0 | True | Eligible for training pending human appr |

@@ -16,6 +16,12 @@ report only a trivial reference — meaningful eval requires the model.
 | persuasionforgood | PREDICT_FINAL_OUTCOME | 72 | majority-class(None) | accuracy=1.0 |
 | persuasionforgood | PREDICT_NEXT_MESSAGE | 1468 | most-frequent-message | token_f1=0.0062 |
 | persuasionforgood | PREDICT_RESPONSE_OR_NONRESPONSE | 745 | base-rate(0.976) | accuracy=0.9705 |
+| dealornodeal | PREDICT_FINAL_OUTCOME | 1002 | majority-class(None) | accuracy=1.0 |
+| dealornodeal | PREDICT_NEXT_ACTION | 597 | majority-class(selection) | accuracy=0.8191 |
+| dealornodeal | PREDICT_NEXT_MESSAGE | 2300 | most-frequent-message | token_f1=0.0821 |
 | casino | PREDICT_FINAL_OUTCOME | 100 | majority-class(None) | accuracy=1.0 |
 | casino | PREDICT_NEXT_ACTION | 220 | majority-class(Submit-Deal) | accuracy=0.4955 |
 | casino | PREDICT_NEXT_MESSAGE | 1157 | most-frequent-message | token_f1=0.0063 |
+| abcd | PREDICT_FINAL_OUTCOME | 275 | majority-class(None) | accuracy=1.0 |
+| abcd | PREDICT_NEXT_ACTION | 1000 | majority-class(pull-up-account) | accuracy=0.201 |
+| abcd | PREDICT_NEXT_MESSAGE | 2709 | most-frequent-message | token_f1=0.181 |

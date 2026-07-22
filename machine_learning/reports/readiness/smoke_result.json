@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "checks": {
+    "1_dataset_loading": true,
+    "2_formatting": true,
+    "3_loss_masking": true,
+    "4_only_adapters_trainable": true,
+    "5_loss_decreases": true,
+    "6_overfit": true,
+    "9_evaluation_runs": true,
+    "11_base_vs_trained_differ": true,
+    "7_checkpoint_save": true,
+    "8_resume": true,
+    "10_adapter_export_reload": true,
+    "12_shuffled_control": true
+  },
+  "details": {
+    "n_records": 32,
+    "target_tokens": 36,
+    "masked_tokens": 220,
+    "trainable_report": {
+      "trainable": 294912,
+      "total": 82207488,
+      "trainable_fraction": 0.003587,
+      "all_trainable_are_adapters": true,
+      "n_trainable_tensors": 12
+    },
+    "train_loss_first": 3.0084,
+    "train_loss_last": 1.2355,
+    "base_val_loss": 3.7556,
+    "trained_val_loss": 3.5581,
+    "shuffled_val_loss": 4.0217
+  }
+}

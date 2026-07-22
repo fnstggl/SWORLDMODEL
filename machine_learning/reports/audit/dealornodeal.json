@@ -1,0 +1,96 @@
+{
+  "dataset_id": "dealornodeal",
+  "official_source": "https://github.com/facebookresearch/end-to-end-negotiator",
+  "official_paper": "https://arxiv.org/abs/1706.05125",
+  "license": "CC-BY-NC (non-commercial)",
+  "license_class": "cc_by_nc",
+  "dataset_role": "TRAIN_CANDIDATE",
+  "conversion_status": "PENDING",
+  "acquisition_status": "acquired",
+  "raw_files": 42,
+  "raw_bytes": 10077718,
+  "normalized": {
+    "n_valid": 48830,
+    "n_quarantined": 0,
+    "n_episodes": 12234,
+    "n_actors": 12234,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 29298,
+      "PREDICT_NEXT_ACTION": 7298,
+      "PREDICT_FINAL_OUTCOME": 12234
+    }
+  },
+  "distributions": {
+    "dataset_id": "dealornodeal",
+    "n_records": 20000,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 11955,
+      "PREDICT_NEXT_ACTION": 3020,
+      "PREDICT_FINAL_OUTCOME": 5025
+    },
+    "action_type_counts": {
+      "selection": 2496,
+      "deal": 524
+    },
+    "outcome_counts": {
+      "None": 5025
+    },
+    "missing_field_counts": {
+      "timestamps": 20000
+    },
+    "inactivity": {
+      "n_inactive": 0,
+      "n_action_or_response": 3020,
+      "inactivity_rate": 0.0
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 341.0,
+      "p25": 431.0,
+      "median": 548.0,
+      "p75": 718.0,
+      "p95": 1072.0,
+      "max": 2378.0,
+      "mean": 608.08,
+      "n": 4000
+    },
+    "n_participants": 10052,
+    "n_episodes": 5026,
+    "warnings": []
+  },
+  "split_counts": {
+    "train": 39148,
+    "test_in_domain": 4834,
+    "validation": 4848
+  },
+  "leakage": {
+    "dataset_id": "dealornodeal",
+    "ok": true,
+    "n_records": 48830,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "dealornodeal",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 48830,
+      "notes": []
+    }
+  },
+  "assumptions": [
+    "3 items, 6-number input encodes count,value pairs"
+  ],
+  "known_limitations": [
+    "item names book/hat/ball assumed (standard DND ordering)"
+  ],
+  "unavailable_fields": [
+    "timestamps",
+    "stable worker id",
+    "partner's private values (from YOU's view)"
+  ],
+  "training_recommendation": "Eligible for training pending human approval (training_approvals.yaml).",
+  "evaluation_recommendation": "Usable for in-domain evaluation on its own test split."
+}

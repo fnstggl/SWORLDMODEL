@@ -11,7 +11,9 @@
   "datasets_included": [
     "psych101",
     "persuasionforgood",
-    "casino"
+    "dealornodeal",
+    "casino",
+    "abcd"
   ],
   "datasets_excluded": [
     {
@@ -75,15 +77,7 @@
       "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
     },
     {
-      "dataset": "dealornodeal",
-      "reason": "no records in split=train for tasks"
-    },
-    {
       "dataset": "werewolf",
-      "reason": "no records in split=train for tasks"
-    },
-    {
-      "dataset": "abcd",
       "reason": "no records in split=train for tasks"
     },
     {
@@ -95,18 +89,22 @@
       "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
     }
   ],
-  "n_raw_examples": 16947,
-  "n_sampled_examples": 16947,
-  "n_manifest_records": 16947,
-  "estimated_tokens": 5423040,
+  "n_raw_examples": 34735,
+  "n_sampled_examples": 34735,
+  "n_manifest_records": 34735,
+  "estimated_tokens": 11115200,
   "per_group_weight": {
-    "casino:PREDICT_FINAL_OUTCOME": 0.37808,
-    "persuasionforgood:PREDICT_FINAL_OUTCOME": 0.02435,
-    "persuasionforgood:PREDICT_TRAJECTORY_CONTINUATION": 0.47565,
-    "psych101:PREDICT_TRAJECTORY_CONTINUATION": 0.12192
+    "abcd:PREDICT_FINAL_OUTCOME": 0.24737,
+    "casino:PREDICT_FINAL_OUTCOME": 0.05047,
+    "dealornodeal:PREDICT_FINAL_OUTCOME": 0.28483,
+    "persuasionforgood:PREDICT_FINAL_OUTCOME": 0.01953,
+    "persuasionforgood:PREDICT_TRAJECTORY_CONTINUATION": 0.38153,
+    "psych101:PREDICT_TRAJECTORY_CONTINUATION": 0.01628
   },
   "per_group_count": {
+    "abcd:PREDICT_FINAL_OUTCOME": 8001,
     "casino:PREDICT_FINAL_OUTCOME": 826,
+    "dealornodeal:PREDICT_FINAL_OUTCOME": 9787,
     "persuasionforgood:PREDICT_FINAL_OUTCOME": 777,
     "persuasionforgood:PREDICT_TRAJECTORY_CONTINUATION": 15180,
     "psych101:PREDICT_TRAJECTORY_CONTINUATION": 164
@@ -129,12 +127,22 @@
       "license_class": "permissive_commercial",
       "commercial_use_allowed": "yes"
     },
+    "dealornodeal": {
+      "license": "CC-BY-NC (non-commercial)",
+      "license_class": "cc_by_nc",
+      "commercial_use_allowed": "no"
+    },
     "casino": {
       "license": "CC-BY-4.0",
       "license_class": "cc_by",
       "commercial_use_allowed": "yes"
+    },
+    "abcd": {
+      "license": "MIT",
+      "license_class": "permissive_commercial",
+      "commercial_use_allowed": "yes"
     }
   },
   "adapter": "8b_long_horizon",
-  "manifest_hash": "ce8f5703ee3c9c79"
+  "manifest_hash": "17b76b6a3fd4b447"
 }

@@ -1,0 +1,196 @@
+{
+  "dataset_id": "abcd",
+  "n_records": 40000,
+  "critical_ok": true,
+  "critical": {
+    "schema": true,
+    "chronology": true,
+    "leakage": true,
+    "provenance": true,
+    "licensing": true
+  },
+  "warnings": [
+    "12 coincidental verbatim message repeats (target text recurs in history; below the systematic-bug threshold)"
+  ],
+  "schema": {
+    "n_ok": 40000,
+    "n_bad": 0,
+    "failures": []
+  },
+  "chronology": {
+    "dataset_id": "abcd",
+    "n_checked": 40000,
+    "n_issues": 12,
+    "ok": false,
+    "hard_ok": true,
+    "n_hard": 0,
+    "n_soft": 12,
+    "issues": [
+      {
+        "record_id": "abcd:PREDICT_NEXT_MESSAGE:3c571bc2c574d26a",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "abcd:PREDICT_NEXT_MESSAGE:a5d259f3a20242ed",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "abcd:PREDICT_NEXT_MESSAGE:31e7d23c8b3a644d",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "abcd:PREDICT_NEXT_MESSAGE:a91d91dc0d186a84",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "abcd:PREDICT_NEXT_MESSAGE:f31f89c635e38262",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "abcd:PREDICT_NEXT_MESSAGE:f029967d8e000e45",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "abcd:PREDICT_NEXT_MESSAGE:1d3328c3c0b799bb",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "abcd:PREDICT_NEXT_MESSAGE:f002a1755315f084",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "abcd:PREDICT_NEXT_MESSAGE:adcc0ad4134fa9ef",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "abcd:PREDICT_NEXT_MESSAGE:775512dcf6f43f54",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "abcd:PREDICT_NEXT_MESSAGE:91c558a3abf4d41a",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      },
+      {
+        "record_id": "abcd:PREDICT_NEXT_MESSAGE:2830b7ab41391c8d",
+        "kind": "target_in_history",
+        "detail": "long target message appears verbatim in dialogue history"
+      }
+    ]
+  },
+  "provenance": {
+    "dataset_id": "abcd",
+    "n_checked": 40000,
+    "n_missing": 0,
+    "ok": true,
+    "missing": []
+  },
+  "leakage": {
+    "dataset_id": "abcd",
+    "ok": true,
+    "n_records": 141653,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "abcd",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 141653,
+      "notes": []
+    }
+  },
+  "deduplication": null,
+  "distributions": {
+    "dataset_id": "abcd",
+    "n_records": 40000,
+    "task_counts": {
+      "PREDICT_NEXT_MESSAGE": 26922,
+      "PREDICT_NEXT_ACTION": 10264,
+      "PREDICT_FINAL_OUTCOME": 2814
+    },
+    "action_type_counts": {
+      "pull-up-account": 1984,
+      "verify-identity": 1047,
+      "search-faq": 678,
+      "validate-purchase": 675,
+      "enter-details": 595,
+      "ask-the-oracle": 501,
+      "select-faq": 471,
+      "record-reason": 447,
+      "update-order": 444,
+      "membership": 397,
+      "shipping-status": 256,
+      "log-out-in": 243,
+      "offer-refund": 238,
+      "send-link": 227,
+      "try-again": 212,
+      "update-account": 200,
+      "subscription-status": 191,
+      "notify-team": 163,
+      "promo-code": 156,
+      "search-membership": 147,
+      "search-pricing": 121,
+      "search-policy": 120,
+      "make-purchase": 117,
+      "instructions": 109,
+      "make-password": 102,
+      "search-timing": 91,
+      "search-jeans": 91,
+      "search-jacket": 88,
+      "search-boots": 85,
+      "search-shirt": 68
+    },
+    "outcome_counts": {
+      "None": 2814
+    },
+    "missing_field_counts": {
+      "timestamps": 40000,
+      "available_action_set": 10264
+    },
+    "inactivity": {
+      "n_inactive": 0,
+      "n_action_or_response": 10264,
+      "inactivity_rate": 0.0
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 235.0,
+      "p25": 668.0,
+      "median": 1094.0,
+      "p75": 1545.0,
+      "p95": 2273.0,
+      "max": 3727.0,
+      "mean": 1158.33,
+      "n": 8000
+    },
+    "n_participants": 2815,
+    "n_episodes": 2815,
+    "warnings": []
+  },
+  "licensing": {
+    "dataset": "abcd",
+    "license": "MIT",
+    "license_class": "permissive_commercial",
+    "role": "TRAIN_CANDIDATE",
+    "commercial_use": "yes",
+    "derivatives": "yes",
+    "redistribution": "yes",
+    "training_allowed_by_license": "yes",
+    "training_eligible_now": false,
+    "training_eligible_reason": "not approved in training_approvals.yaml (awaiting human review)",
+    "eligible_if_approved": true
+  }
+}

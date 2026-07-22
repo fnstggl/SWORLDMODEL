@@ -25,7 +25,9 @@
     "psych101",
     "open_bandit",
     "persuasionforgood",
-    "casino"
+    "dealornodeal",
+    "casino",
+    "abcd"
   ],
   "datasets_excluded": [
     {
@@ -85,15 +87,7 @@
       "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
     },
     {
-      "dataset": "dealornodeal",
-      "reason": "no records in split=train for tasks"
-    },
-    {
       "dataset": "werewolf",
-      "reason": "no records in split=train for tasks"
-    },
-    {
-      "dataset": "abcd",
       "reason": "no records in split=train for tasks"
     },
     {
@@ -105,27 +99,39 @@
       "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
     }
   ],
-  "n_raw_examples": 156943,
-  "n_sampled_examples": 156943,
-  "n_manifest_records": 156943,
-  "estimated_tokens": 50221760,
+  "n_raw_examples": 308781,
+  "n_sampled_examples": 308781,
+  "n_manifest_records": 308781,
+  "estimated_tokens": 98809920,
   "per_group_weight": {
-    "casino:PREDICT_FINAL_OUTCOME": 0.0315,
-    "casino:PREDICT_NEXT_ACTION": 0.02571,
-    "casino:PREDICT_NEXT_MESSAGE": 0.12793,
-    "open_bandit:PREDICT_NEXT_ACTION": 0.16931,
-    "open_bandit:PREDICT_POLICY_VALUE": 0.16931,
-    "persuasionforgood:PREDICT_FINAL_OUTCOME": 0.0185,
-    "persuasionforgood:PREDICT_NEXT_MESSAGE": 0.13324,
-    "persuasionforgood:PREDICT_RESPONSE_OR_NONRESPONSE": 0.06743,
-    "persuasionforgood:PREDICT_TRAJECTORY_CONTINUATION": 0.12659,
-    "psych101:PREDICT_NEXT_CHOICE": 0.12791,
-    "psych101:PREDICT_TRAJECTORY_CONTINUATION": 0.00256
+    "abcd:PREDICT_FINAL_OUTCOME": 0.02017,
+    "abcd:PREDICT_NEXT_ACTION": 0.07323,
+    "abcd:PREDICT_NEXT_MESSAGE": 0.19071,
+    "casino:PREDICT_FINAL_OUTCOME": 0.00505,
+    "casino:PREDICT_NEXT_ACTION": 0.01176,
+    "casino:PREDICT_NEXT_MESSAGE": 0.05852,
+    "dealornodeal:PREDICT_FINAL_OUTCOME": 0.03766,
+    "dealornodeal:PREDICT_NEXT_ACTION": 0.02253,
+    "dealornodeal:PREDICT_NEXT_MESSAGE": 0.09046,
+    "open_bandit:PREDICT_NEXT_ACTION": 0.12921,
+    "open_bandit:PREDICT_POLICY_VALUE": 0.12921,
+    "persuasionforgood:PREDICT_FINAL_OUTCOME": 0.00296,
+    "persuasionforgood:PREDICT_NEXT_MESSAGE": 0.06095,
+    "persuasionforgood:PREDICT_RESPONSE_OR_NONRESPONSE": 0.05,
+    "persuasionforgood:PREDICT_TRAJECTORY_CONTINUATION": 0.05791,
+    "psych101:PREDICT_NEXT_CHOICE": 0.05851,
+    "psych101:PREDICT_TRAJECTORY_CONTINUATION": 0.00117
   },
   "per_group_count": {
+    "abcd:PREDICT_FINAL_OUTCOME": 8001,
+    "abcd:PREDICT_NEXT_ACTION": 29046,
+    "abcd:PREDICT_NEXT_MESSAGE": 75643,
     "casino:PREDICT_FINAL_OUTCOME": 826,
     "casino:PREDICT_NEXT_ACTION": 1925,
     "casino:PREDICT_NEXT_MESSAGE": 9579,
+    "dealornodeal:PREDICT_FINAL_OUTCOME": 9787,
+    "dealornodeal:PREDICT_NEXT_ACTION": 5855,
+    "dealornodeal:PREDICT_NEXT_MESSAGE": 23506,
     "open_bandit:PREDICT_NEXT_ACTION": 48115,
     "open_bandit:PREDICT_POLICY_VALUE": 48115,
     "persuasionforgood:PREDICT_FINAL_OUTCOME": 777,
@@ -158,12 +164,22 @@
       "license_class": "permissive_commercial",
       "commercial_use_allowed": "yes"
     },
+    "dealornodeal": {
+      "license": "CC-BY-NC (non-commercial)",
+      "license_class": "cc_by_nc",
+      "commercial_use_allowed": "no"
+    },
     "casino": {
       "license": "CC-BY-4.0",
       "license_class": "cc_by",
       "commercial_use_allowed": "yes"
+    },
+    "abcd": {
+      "license": "MIT",
+      "license_class": "permissive_commercial",
+      "commercial_use_allowed": "yes"
     }
   },
   "adapter": "8b_unified_multitask",
-  "manifest_hash": "6e9473dcf3176eac"
+  "manifest_hash": "3610fa81502b9fa6"
 }

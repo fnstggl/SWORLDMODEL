@@ -11,7 +11,9 @@
   ],
   "datasets_included": [
     "persuasionforgood",
-    "casino"
+    "dealornodeal",
+    "casino",
+    "abcd"
   ],
   "datasets_excluded": [
     {
@@ -79,15 +81,7 @@
       "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
     },
     {
-      "dataset": "dealornodeal",
-      "reason": "no records in split=train for tasks"
-    },
-    {
       "dataset": "werewolf",
-      "reason": "no records in split=train for tasks"
-    },
-    {
-      "dataset": "abcd",
       "reason": "no records in split=train for tasks"
     },
     {
@@ -99,16 +93,20 @@
       "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
     }
   ],
-  "n_raw_examples": 25556,
-  "n_sampled_examples": 25556,
-  "n_manifest_records": 25556,
-  "estimated_tokens": 8177920,
+  "n_raw_examples": 124705,
+  "n_sampled_examples": 124705,
+  "n_manifest_records": 124705,
+  "estimated_tokens": 39905600,
   "per_group_weight": {
-    "casino:PREDICT_NEXT_MESSAGE": 0.5,
-    "persuasionforgood:PREDICT_NEXT_MESSAGE": 0.5
+    "abcd:PREDICT_NEXT_MESSAGE": 0.49667,
+    "casino:PREDICT_NEXT_MESSAGE": 0.11691,
+    "dealornodeal:PREDICT_NEXT_MESSAGE": 0.21916,
+    "persuasionforgood:PREDICT_NEXT_MESSAGE": 0.16726
   },
   "per_group_count": {
+    "abcd:PREDICT_NEXT_MESSAGE": 75643,
     "casino:PREDICT_NEXT_MESSAGE": 9579,
+    "dealornodeal:PREDICT_NEXT_MESSAGE": 23506,
     "persuasionforgood:PREDICT_NEXT_MESSAGE": 15977
   },
   "sampling": {
@@ -124,12 +122,22 @@
       "license_class": "permissive_commercial",
       "commercial_use_allowed": "yes"
     },
+    "dealornodeal": {
+      "license": "CC-BY-NC (non-commercial)",
+      "license_class": "cc_by_nc",
+      "commercial_use_allowed": "no"
+    },
     "casino": {
       "license": "CC-BY-4.0",
       "license_class": "cc_by",
       "commercial_use_allowed": "yes"
+    },
+    "abcd": {
+      "license": "MIT",
+      "license_class": "permissive_commercial",
+      "commercial_use_allowed": "yes"
     }
   },
   "adapter": "8b_social_interaction",
-  "manifest_hash": "43a00e16f33cb3f0"
+  "manifest_hash": "266995663621460a"
 }
