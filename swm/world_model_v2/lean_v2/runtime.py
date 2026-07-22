@@ -309,6 +309,16 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
                 as_of=as_of, gateway=gateway, cache=cache, budget_ledger=ledger,
                 world_condition_keys=shared_cids))
     lean_v2_prov["mechanism_recovery"] = mech_manifest
+    # ---------------- 6e-ter. DIMENSIONAL OUTCOME MECHANISM CHECK (D16) -----------------
+    # a recovered numeric mechanism must produce the EXACT variable+unit the question requires;
+    # a votes/count/rate/level terminal is never scored by a mechanism of another dimension and a
+    # numeric terminal is never collapsed to a boolean.
+    if mechanism:
+        from swm.world_model_v2.lean_v2.outcome_mechanism import dimensional_check_mechanism
+        from swm.world_model_v2.lean_v2.resolution_spec import parse_resolution
+        _rspec = parse_resolution(bp.resolution.get("interpretation")
+                                  or bp.resolution.get("yes_means") or "", question=question)
+        lean_v2_prov["outcome_mechanism_dimensions"] = dimensional_check_mechanism(mechanism, _rspec)
 
     # ---------------- 7. three-valued answerability preflight ---------------------------
     pre = ckpt.run_stage("answerability_preflight", lambda: run_preflight(
