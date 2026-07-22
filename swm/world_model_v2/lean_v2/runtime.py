@@ -563,6 +563,7 @@ def _variant_to_hypothesis(actor_id: str, v: dict):
         beliefs=list(st.get("beliefs") or []), goals=list(st.get("goals") or []),
         stances=list(st.get("stances") or []), pressures=str(st.get("pressures") or ""),
         relationships=dict(st.get("relationships") or {}),
+        action_if_state=str(v.get("action_if_state") or ""),
         reversal_capable=bool(v.get("reversal_capable")),
         aligned_condition=dict(v.get("aligned_condition") or {}))
 

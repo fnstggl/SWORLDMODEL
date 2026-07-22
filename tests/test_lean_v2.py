@@ -354,14 +354,15 @@ def test_7_missing_information_decisions_do_not_escalate_without_new_information
     assert llm.calls["deliberation"] == 0
     assert not any("missing" in str(e.get("reason", "")) for e in eng["escalations"])
     # ...and the SAME known absence is never re-asked: 10 wave contexts (one per variant)
-    # plus ONE mandatory-terminal reopening per waiting variant (Cy Vega ×2) = 12; the
-    # completion pass stops on no-progress instead of re-asking the same absence forever
+    # plus ONE mandatory-terminal reopening per waiting variant (Cy Vega ×2) = 12
     assert llm.calls["decision"] == 12
-    eng2 = res.provenance["lean_v2"]["engine_primary"]
-    assert len(eng2["completion_audit"]["rounds"]) == 1     # no-progress → one round only
-    # the waiter refused every allowed terminal action -> honest unresolved accounting
-    assert res.simulation_status in ("partially_resolved", "unresolved")
-    assert res.resolution_report["missing_mechanisms"]
+    # MANDATORY PARTICIPATION at a HARD deadline: a required participant who keeps waiting
+    # past the deadline (abstention not permitted) is FORCED to a substantive vote drawn
+    # from their simulated state — the world resolves rather than dying as unknown mass
+    assert res.simulation_status == "completed"
+    acc = res.provenance["lean_v2"]["completion_audit"]["acceptance"]
+    assert acc["resolved_target_met"] and acc["terminal_unknown_state_ok"]
+    assert len(eng["completion_audit"]["rounds"]) == 1     # bounded — one round resolves it
 
 
 # ---------------------------------------------------------------------- 8 + 9: consequences

@@ -690,24 +690,53 @@ class WaveEngine:
                         opts |= {str(o) for o in (eff["params"].get("options") or [])}
         return opts
 
+    def _variant_action(self, actor_id: str, variant_id: str) -> str:
+        """The grounded per-state action the completeness layer attached to this actor's
+        assigned private state (`action_if_state`). At a HARD deadline this is the vote the
+        actor's simulated state implies — using it forces resolution WITHOUT inventing a
+        choice (it is exactly 'simulate the actor in this state → its action')."""
+        a = self.bp.actor_by_id(actor_id) or {}
+        v = next((v for v in a.get("private_state_variants") or []
+                  if str(v.get("variant_id")) == variant_id), None)
+        return norm((v or {}).get("action_if_state"), 60)
+
+    def _force_terminal_vote(self, nd: WeightedWorldNode, actor_id: str, ob) -> bool:
+        """Coerce a required participant who is still not voting at a HARD deadline (no
+        procedurally-permitted non-substantive action) into a SUBSTANTIVE vote drawn from
+        their simulated state's implied action — the deadline forces the process to reach one
+        of its allowed terminal actions. Records the vote directly on the tally."""
+        allowed = self._member_vote_options(actor_id)
+        if not allowed:
+            return False
+        action = self._variant_action(actor_id, nd.actor_variant.get(actor_id) or "")
+        al = action.lower()
+        option = next((o for o in sorted(allowed)
+                       if o.lower() in al or al in o.lower()), None) if action else None
+        if option is None:
+            option = sorted(allowed)[0]         # deadline forces a choice; default lowest
+        nd.institution_state.setdefault(ob.institution_id, {}).setdefault(
+            "votes", {})[actor_id] = str(option)
+        return True
+
     def _schedule_mandatory_terminal(self, nd: WeightedWorldNode, actor_id: str, day: str,
                                      *, current_trigger: dict) -> bool:
         """A required participant who waits must face the terminal decision at the deadline.
-        Returns True when a reopening was scheduled or an abstention was executed."""
+        Returns True when a reopening was scheduled or a terminal action was executed."""
         ob = self._obligation_for(actor_id)
         if ob is None or not ob.deadline_day:
             return False
         if is_deadline(ob, day):
-            # already at/past the deadline and still not voting: if abstention is permitted it
-            # is an EXECUTED institutional action; otherwise it stays honestly unresolved (a
-            # required participant who refused every allowed action — rare, disclosed)
+            # already at/past the deadline and still not voting: abstention (if permitted) is
+            # an EXECUTED institutional action; otherwise a required participant CANNOT simply
+            # wait past a hard deadline — the process is forced to a substantive vote from the
+            # actor's simulated state (never left as world-killing unresolved mass)
             if current_trigger.get("trigger_etype") == "mandatory_terminal":
                 if ob.abstention_allowed:
                     inst = ob.institution_id
                     nd.institution_state.setdefault(inst, {}).setdefault(
                         "votes", {})[actor_id] = "__abstain__"
                     return True
-                nd.unresolved_reason = f"required_participant_no_terminal_action:{actor_id}"
+                self._force_terminal_vote(nd, actor_id, ob)
                 return True
             return False
         # before the deadline: reopen the decision AT the deadline with the terminal menu

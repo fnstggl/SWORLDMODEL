@@ -81,11 +81,15 @@ class ActorStateHypothesis:
         return asdict(self)
 
     def to_variant(self) -> dict:
-        """Render into the engine's variant shape (state content the actor prompt renders)."""
+        """Render into the engine's variant shape (state content the actor prompt renders).
+        `action_if_state` is carried so a HARD-deadline forced vote can fall back to the
+        grounded per-state action the completeness layer constructed — simulating the actor
+        in that state, never inventing a vote."""
         return {"variant_id": self.state_id,
                 "state": {"beliefs": list(self.beliefs), "goals": list(self.goals),
                           "stances": list(self.stances), "pressures": self.pressures,
                           "relationships": dict(self.relationships)},
+                "action_if_state": self.action_if_state,
                 "reversal_capable": self.reversal_capable,
                 "is_unknown": self.is_unknown}
 
