@@ -22,6 +22,7 @@
     "RANK_CANDIDATE_ACTIONS"
   ],
   "datasets_included": [
+    "debate",
     "psych101",
     "open_bandit",
     "persuasionforgood",
@@ -30,10 +31,6 @@
     "abcd"
   ],
   "datasets_excluded": [
-    {
-      "dataset": "debate",
-      "reason": "role=ACCESS_BLOCKED (not a training candidate)"
-    },
     {
       "dataset": "mirobench",
       "reason": "role=ACCESS_BLOCKED (not a training candidate)"
@@ -99,28 +96,33 @@
       "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
     }
   ],
-  "n_raw_examples": 308781,
-  "n_sampled_examples": 308781,
-  "n_manifest_records": 308781,
-  "estimated_tokens": 98809920,
+  "n_raw_examples": 315167,
+  "n_sampled_examples": 315167,
+  "n_manifest_records": 315167,
+  "estimated_tokens": 100853440,
   "per_group_weight": {
-    "abcd:PREDICT_FINAL_OUTCOME": 0.02017,
-    "abcd:PREDICT_NEXT_ACTION": 0.07323,
-    "abcd:PREDICT_NEXT_MESSAGE": 0.19071,
-    "casino:PREDICT_FINAL_OUTCOME": 0.00505,
-    "casino:PREDICT_NEXT_ACTION": 0.01176,
-    "casino:PREDICT_NEXT_MESSAGE": 0.05852,
-    "dealornodeal:PREDICT_FINAL_OUTCOME": 0.03766,
-    "dealornodeal:PREDICT_NEXT_ACTION": 0.02253,
-    "dealornodeal:PREDICT_NEXT_MESSAGE": 0.09046,
-    "open_bandit:PREDICT_NEXT_ACTION": 0.12921,
-    "open_bandit:PREDICT_POLICY_VALUE": 0.12921,
-    "persuasionforgood:PREDICT_FINAL_OUTCOME": 0.00296,
-    "persuasionforgood:PREDICT_NEXT_MESSAGE": 0.06095,
+    "abcd:PREDICT_FINAL_OUTCOME": 0.01759,
+    "abcd:PREDICT_NEXT_ACTION": 0.06384,
+    "abcd:PREDICT_NEXT_MESSAGE": 0.16626,
+    "casino:PREDICT_FINAL_OUTCOME": 0.0044,
+    "casino:PREDICT_NEXT_ACTION": 0.01025,
+    "casino:PREDICT_NEXT_MESSAGE": 0.05102,
+    "dealornodeal:PREDICT_FINAL_OUTCOME": 0.03283,
+    "dealornodeal:PREDICT_NEXT_ACTION": 0.01964,
+    "dealornodeal:PREDICT_NEXT_MESSAGE": 0.07886,
+    "debate:PREDICT_BELIEF_CHANGE": 0.05,
+    "debate:PREDICT_FINAL_OUTCOME": 0.00155,
+    "debate:PREDICT_NEXT_MESSAGE": 0.01871,
+    "debate:PREDICT_NEXT_SPEAKER": 0.05,
+    "debate:PREDICT_TRAJECTORY_CONTINUATION": 0.00155,
+    "open_bandit:PREDICT_NEXT_ACTION": 0.11265,
+    "open_bandit:PREDICT_POLICY_VALUE": 0.11265,
+    "persuasionforgood:PREDICT_FINAL_OUTCOME": 0.00258,
+    "persuasionforgood:PREDICT_NEXT_MESSAGE": 0.05313,
     "persuasionforgood:PREDICT_RESPONSE_OR_NONRESPONSE": 0.05,
-    "persuasionforgood:PREDICT_TRAJECTORY_CONTINUATION": 0.05791,
-    "psych101:PREDICT_NEXT_CHOICE": 0.05851,
-    "psych101:PREDICT_TRAJECTORY_CONTINUATION": 0.00117
+    "persuasionforgood:PREDICT_TRAJECTORY_CONTINUATION": 0.05048,
+    "psych101:PREDICT_NEXT_CHOICE": 0.051,
+    "psych101:PREDICT_TRAJECTORY_CONTINUATION": 0.00102
   },
   "per_group_count": {
     "abcd:PREDICT_FINAL_OUTCOME": 8001,
@@ -132,6 +134,11 @@
     "dealornodeal:PREDICT_FINAL_OUTCOME": 9787,
     "dealornodeal:PREDICT_NEXT_ACTION": 5855,
     "dealornodeal:PREDICT_NEXT_MESSAGE": 23506,
+    "debate:PREDICT_BELIEF_CHANGE": 763,
+    "debate:PREDICT_FINAL_OUTCOME": 223,
+    "debate:PREDICT_NEXT_MESSAGE": 2700,
+    "debate:PREDICT_NEXT_SPEAKER": 2477,
+    "debate:PREDICT_TRAJECTORY_CONTINUATION": 223,
     "open_bandit:PREDICT_NEXT_ACTION": 48115,
     "open_bandit:PREDICT_POLICY_VALUE": 48115,
     "persuasionforgood:PREDICT_FINAL_OUTCOME": 777,
@@ -149,6 +156,11 @@
     "rare_task_min_fraction": 0.05
   },
   "license_notes": {
+    "debate": {
+      "license": "DEBATE Research-Only License (Non-Commercial, v1.0)",
+      "license_class": "research_noncommercial",
+      "commercial_use_allowed": "no"
+    },
     "psych101": {
       "license": "Apache-2.0",
       "license_class": "permissive_commercial",
@@ -181,5 +193,5 @@
     }
   },
   "adapter": "8b_unified_multitask",
-  "manifest_hash": "3610fa81502b9fa6"
+  "manifest_hash": "263196f16246af86"
 }

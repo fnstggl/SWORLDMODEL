@@ -10,16 +10,13 @@
     "PREDICT_NEXT_SPEAKER"
   ],
   "datasets_included": [
+    "debate",
     "persuasionforgood",
     "dealornodeal",
     "casino",
     "abcd"
   ],
   "datasets_excluded": [
-    {
-      "dataset": "debate",
-      "reason": "role=ACCESS_BLOCKED (not a training candidate)"
-    },
     {
       "dataset": "mirobench",
       "reason": "role=ACCESS_BLOCKED (not a training candidate)"
@@ -93,20 +90,26 @@
       "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
     }
   ],
-  "n_raw_examples": 124705,
-  "n_sampled_examples": 124705,
-  "n_manifest_records": 124705,
-  "estimated_tokens": 39905600,
+  "n_raw_examples": 130645,
+  "n_sampled_examples": 130645,
+  "n_manifest_records": 130645,
+  "estimated_tokens": 41806400,
   "per_group_weight": {
-    "abcd:PREDICT_NEXT_MESSAGE": 0.49667,
-    "casino:PREDICT_NEXT_MESSAGE": 0.11691,
-    "dealornodeal:PREDICT_NEXT_MESSAGE": 0.21916,
-    "persuasionforgood:PREDICT_NEXT_MESSAGE": 0.16726
+    "abcd:PREDICT_NEXT_MESSAGE": 0.43063,
+    "casino:PREDICT_NEXT_MESSAGE": 0.10137,
+    "dealornodeal:PREDICT_NEXT_MESSAGE": 0.19002,
+    "debate:PREDICT_BELIEF_CHANGE": 0.05,
+    "debate:PREDICT_NEXT_MESSAGE": 0.03298,
+    "debate:PREDICT_NEXT_SPEAKER": 0.05,
+    "persuasionforgood:PREDICT_NEXT_MESSAGE": 0.14501
   },
   "per_group_count": {
     "abcd:PREDICT_NEXT_MESSAGE": 75643,
     "casino:PREDICT_NEXT_MESSAGE": 9579,
     "dealornodeal:PREDICT_NEXT_MESSAGE": 23506,
+    "debate:PREDICT_BELIEF_CHANGE": 763,
+    "debate:PREDICT_NEXT_MESSAGE": 2700,
+    "debate:PREDICT_NEXT_SPEAKER": 2477,
     "persuasionforgood:PREDICT_NEXT_MESSAGE": 15977
   },
   "sampling": {
@@ -117,6 +120,11 @@
     "rare_task_min_fraction": 0.05
   },
   "license_notes": {
+    "debate": {
+      "license": "DEBATE Research-Only License (Non-Commercial, v1.0)",
+      "license_class": "research_noncommercial",
+      "commercial_use_allowed": "no"
+    },
     "persuasionforgood": {
       "license": "Apache-2.0",
       "license_class": "permissive_commercial",
@@ -139,5 +147,5 @@
     }
   },
   "adapter": "8b_social_interaction",
-  "manifest_hash": "266995663621460a"
+  "manifest_hash": "ef21305c8c6fac06"
 }

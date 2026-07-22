@@ -9,6 +9,7 @@
     "PREDICT_TRAJECTORY_CONTINUATION"
   ],
   "datasets_included": [
+    "debate",
     "psych101",
     "persuasionforgood",
     "dealornodeal",
@@ -16,10 +17,6 @@
     "abcd"
   ],
   "datasets_excluded": [
-    {
-      "dataset": "debate",
-      "reason": "role=ACCESS_BLOCKED (not a training candidate)"
-    },
     {
       "dataset": "mirobench",
       "reason": "role=ACCESS_BLOCKED (not a training candidate)"
@@ -89,22 +86,26 @@
       "reason": "role=CROSS_DATASET_EVAL_ONLY (not a training candidate)"
     }
   ],
-  "n_raw_examples": 34735,
-  "n_sampled_examples": 34735,
-  "n_manifest_records": 34735,
-  "estimated_tokens": 11115200,
+  "n_raw_examples": 35181,
+  "n_sampled_examples": 35181,
+  "n_manifest_records": 35181,
+  "estimated_tokens": 11257920,
   "per_group_weight": {
-    "abcd:PREDICT_FINAL_OUTCOME": 0.24737,
-    "casino:PREDICT_FINAL_OUTCOME": 0.05047,
-    "dealornodeal:PREDICT_FINAL_OUTCOME": 0.28483,
-    "persuasionforgood:PREDICT_FINAL_OUTCOME": 0.01953,
-    "persuasionforgood:PREDICT_TRAJECTORY_CONTINUATION": 0.38153,
-    "psych101:PREDICT_TRAJECTORY_CONTINUATION": 0.01628
+    "abcd:PREDICT_FINAL_OUTCOME": 0.23951,
+    "casino:PREDICT_FINAL_OUTCOME": 0.04887,
+    "dealornodeal:PREDICT_FINAL_OUTCOME": 0.27579,
+    "debate:PREDICT_FINAL_OUTCOME": 0.01587,
+    "debate:PREDICT_TRAJECTORY_CONTINUATION": 0.01587,
+    "persuasionforgood:PREDICT_FINAL_OUTCOME": 0.01891,
+    "persuasionforgood:PREDICT_TRAJECTORY_CONTINUATION": 0.36942,
+    "psych101:PREDICT_TRAJECTORY_CONTINUATION": 0.01576
   },
   "per_group_count": {
     "abcd:PREDICT_FINAL_OUTCOME": 8001,
     "casino:PREDICT_FINAL_OUTCOME": 826,
     "dealornodeal:PREDICT_FINAL_OUTCOME": 9787,
+    "debate:PREDICT_FINAL_OUTCOME": 223,
+    "debate:PREDICT_TRAJECTORY_CONTINUATION": 223,
     "persuasionforgood:PREDICT_FINAL_OUTCOME": 777,
     "persuasionforgood:PREDICT_TRAJECTORY_CONTINUATION": 15180,
     "psych101:PREDICT_TRAJECTORY_CONTINUATION": 164
@@ -117,6 +118,11 @@
     "rare_task_min_fraction": 0.05
   },
   "license_notes": {
+    "debate": {
+      "license": "DEBATE Research-Only License (Non-Commercial, v1.0)",
+      "license_class": "research_noncommercial",
+      "commercial_use_allowed": "no"
+    },
     "psych101": {
       "license": "Apache-2.0",
       "license_class": "permissive_commercial",
@@ -144,5 +150,5 @@
     }
   },
   "adapter": "8b_long_horizon",
-  "manifest_hash": "17b76b6a3fd4b447"
+  "manifest_hash": "d6633a63f04f109b"
 }
