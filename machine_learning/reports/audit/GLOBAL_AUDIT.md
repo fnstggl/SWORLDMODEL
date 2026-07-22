@@ -2,6 +2,7 @@
 
 | dataset | role | acquired | examples | quarantined | leakage_ok | train_rec |
 |---|---|---|---:|---:|---|---|
+| debate | TRAIN_CANDIDATE | None | 7555 | 0 | True | Eligible for training pending human appr |
 | psych101 | TRAIN_CANDIDATE | partial | 10200 | 0 | True | Eligible for training pending human appr |
 | socsci210 | LICENSE_RESTRICTED_EVAL_ONLY | partial | 315 | 0 | True | NOT for training (role=LICENSE_RESTRICTE |
 | open_bandit | TRAIN_CANDIDATE | acquired | 120000 | 0 | True | Eligible for training pending human appr |

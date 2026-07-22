@@ -1,6 +1,33 @@
 {
   "baselines": [
     {
+      "baseline": "majority-class(None)",
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "dataset": "debate",
+      "task": "PREDICT_FINAL_OUTCOME",
+      "n_test": 16,
+      "n_train": 223
+    },
+    {
+      "baseline": "most-frequent-message",
+      "token_f1": 0.0052,
+      "note": "generation task; real eval needs the model",
+      "dataset": "debate",
+      "task": "PREDICT_NEXT_MESSAGE",
+      "n_test": 193,
+      "n_train": 2700
+    },
+    {
+      "baseline": "majority-class(debate-participant-208ce)",
+      "accuracy": 0.0,
+      "macro_f1": 0.0,
+      "dataset": "debate",
+      "task": "PREDICT_NEXT_SPEAKER",
+      "n_test": 177,
+      "n_train": 2477
+    },
+    {
       "baseline": "majority-class(C)",
       "accuracy": 0.0526,
       "macro_f1": 0.0038,
@@ -168,5 +195,5 @@
       "n_train": 21187
     }
   ],
-  "n_datasets": 9
+  "n_datasets": 10
 }

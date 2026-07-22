@@ -1,0 +1,97 @@
+{
+  "dataset_id": "debate",
+  "official_source": "https://huggingface.co/datasets/debatellm/DEBATE",
+  "official_paper": "https://arxiv.org/abs/2510.25110",
+  "license": "DEBATE Research-Only License (Non-Commercial, v1.0)",
+  "license_class": "research_noncommercial",
+  "dataset_role": "TRAIN_CANDIDATE",
+  "conversion_status": "PENDING",
+  "acquisition_status": null,
+  "raw_files": 0,
+  "raw_bytes": null,
+  "normalized": {
+    "n_valid": 7555,
+    "n_quarantined": 0,
+    "n_episodes": 264,
+    "n_actors": 1056,
+    "task_counts": {
+      "PREDICT_BELIEF_CHANGE": 903,
+      "PREDICT_NEXT_MESSAGE": 3194,
+      "PREDICT_NEXT_SPEAKER": 2930,
+      "PREDICT_TRAJECTORY_CONTINUATION": 264,
+      "PREDICT_FINAL_OUTCOME": 264
+    }
+  },
+  "distributions": {
+    "dataset_id": "debate",
+    "n_records": 7555,
+    "task_counts": {
+      "PREDICT_BELIEF_CHANGE": 903,
+      "PREDICT_NEXT_MESSAGE": 3194,
+      "PREDICT_NEXT_SPEAKER": 2930,
+      "PREDICT_TRAJECTORY_CONTINUATION": 264,
+      "PREDICT_FINAL_OUTCOME": 264
+    },
+    "action_type_counts": {},
+    "outcome_counts": {
+      "None": 264
+    },
+    "missing_field_counts": {
+      "timestamps": 7555
+    },
+    "inactivity": {
+      "n_inactive": 0,
+      "n_action_or_response": 0,
+      "inactivity_rate": 0.0
+    },
+    "response_time_seconds": {},
+    "context_length_chars": {
+      "min": 272.0,
+      "p25": 1073.0,
+      "median": 1711.0,
+      "p75": 2428.0,
+      "p95": 3127.0,
+      "max": 4859.0,
+      "mean": 1757.19,
+      "n": 1511
+    },
+    "n_participants": 1056,
+    "n_episodes": 264,
+    "warnings": []
+  },
+  "split_counts": {
+    "train": 6386,
+    "test_in_domain": 453,
+    "validation": 716
+  },
+  "leakage": {
+    "dataset_id": "debate",
+    "ok": true,
+    "n_records": 7555,
+    "episode_violations": 0,
+    "unit_violations": 0,
+    "cross_split_dupes": 0,
+    "details": {
+      "dataset_id": "debate",
+      "ok": true,
+      "episode_violations": [],
+      "unit_violations": [],
+      "cross_split_dupes": [],
+      "n_records": 7555,
+      "notes": []
+    }
+  },
+  "assumptions": [
+    "golden/<study>/<topic>/*.csv layout; trailing ULID identifies the conversation"
+  ],
+  "known_limitations": [
+    "uses curated golden/ split",
+    "belief is a 1-7 self-reported slider"
+  ],
+  "unavailable_fields": [
+    "per-tweet timestamps (only ordering)",
+    "cross-conversation participant identity"
+  ],
+  "training_recommendation": "Eligible for training pending human approval (training_approvals.yaml).",
+  "evaluation_recommendation": "Usable for in-domain evaluation on its own test split."
+}

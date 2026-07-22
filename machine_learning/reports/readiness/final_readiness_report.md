@@ -1,16 +1,16 @@
 # SWORLDMODEL behaviour-ML — Final readiness report
 
-**Ready for GPU training:** YES (smoke test passed; 7 datasets normalized+validated).
+**Ready for GPU training:** YES (smoke test passed; 8 datasets normalized+validated).
 
 ## Dataset status summary
 
 - total datasets: **23**
-- normalized + validated (train-usable): **7**
+- normalized + validated (train-usable): **8**
 - normalized eval-only: **3**
-- blocked / infrastructure / license-blocked: **6**
-- status breakdown: `{'ACCESS_BLOCKED': 4, 'CONVERTER_READY_STORAGE_BLOCKED': 7, 'INFRASTRUCTURE_ONLY': 1, 'NORMALIZED_AND_VALIDATED': 7, 'NORMALIZED_EVAL_ONLY': 3, 'LICENSE_BLOCKED': 1}`
-- exact example count (validated train-usable, as normalized here): **443,106**
-- estimated tokens (validated train-usable): **~141,793,920**
+- blocked / infrastructure / license-blocked: **5**
+- status breakdown: `{'NORMALIZED_AND_VALIDATED': 8, 'ACCESS_BLOCKED': 3, 'CONVERTER_READY_STORAGE_BLOCKED': 7, 'INFRASTRUCTURE_ONLY': 1, 'NORMALIZED_EVAL_ONLY': 3, 'LICENSE_BLOCKED': 1}`
+- exact example count (validated train-usable, as normalized here): **450,661**
+- estimated tokens (validated train-usable): **~144,211,520**
 
 > Note: several large datasets are CONVERTER_READY_STORAGE_BLOCKED — their converters are
 > implemented + fixture/sample-tested, but full normalization is deferred until run on a
@@ -22,7 +22,6 @@
 |---|---|---|---:|---|---|
 | acl_online_shopping | ACCESS_BLOCKED | ACCESS_BLOCKED | 0 | None | False |
 | darpa_socialsim | ACCESS_BLOCKED | ACCESS_BLOCKED | 0 | None | False |
-| debate | ACCESS_BLOCKED | ACCESS_BLOCKED | 0 | None | False |
 | mirobench | ACCESS_BLOCKED | ACCESS_BLOCKED | 0 | None | False |
 | kuairand | CONVERTER_READY_STORAGE_BLOCKED | TRAIN_CANDIDATE | 0 | None | True |
 | omnibehavior | CONVERTER_READY_STORAGE_BLOCKED | TRAIN_CANDIDATE | 0 | None | True |
@@ -36,6 +35,7 @@
 | abcd | NORMALIZED_AND_VALIDATED | TRAIN_CANDIDATE | 141,653 | True | True |
 | casino | NORMALIZED_AND_VALIDATED | TRAIN_CANDIDATE | 15,327 | True | True |
 | dealornodeal | NORMALIZED_AND_VALIDATED | TRAIN_CANDIDATE | 48,830 | True | True |
+| debate | NORMALIZED_AND_VALIDATED | TRAIN_CANDIDATE | 7,555 | True | True |
 | open_bandit | NORMALIZED_AND_VALIDATED | TRAIN_CANDIDATE | 120,000 | True | True |
 | persuasionforgood | NORMALIZED_AND_VALIDATED | TRAIN_CANDIDATE | 52,464 | True | True |
 | psych101 | NORMALIZED_AND_VALIDATED | TRAIN_CANDIDATE | 10,200 | True | True |
@@ -49,11 +49,11 @@
 | view | datasets | manifest records | est. tokens |
 |---|---|---:|---:|
 | actor_choice_v1 | psych101|open_bandit|persuasionforgood|dealornodeal|casino|a | 101,226 | 32,392,320 |
-| social_interaction_v1 | persuasionforgood|dealornodeal|casino|abcd | 124,705 | 39,905,600 |
-| long_horizon_behavior_v1 | psych101|persuasionforgood|dealornodeal|casino|abcd | 34,735 | 11,115,200 |
+| social_interaction_v1 | debate|persuasionforgood|dealornodeal|casino|abcd | 130,645 | 41,806,400 |
+| long_horizon_behavior_v1 | debate|psych101|persuasionforgood|dealornodeal|casino|abcd | 35,181 | 11,257,920 |
 | population_response_v1 |  | 0 | 0 |
 | causal_intervention_v1 | open_bandit | 48,115 | 15,396,800 |
-| unified_behavior_multitask_v1 | psych101|open_bandit|persuasionforgood|dealornodeal|casino|a | 308,781 | 98,809,920 |
+| unified_behavior_multitask_v1 | debate|psych101|open_bandit|persuasionforgood|dealornodeal|c | 315,167 | 100,853,440 |
 | cross_dataset_evaluation_v1 | socsci210|criteo_uplift|craigslistbargain | 108,241 | 34,637,120 |
 
 ## Recommended first adapters

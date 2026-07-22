@@ -6,6 +6,9 @@ report only a trivial reference — meaningful eval requires the model.
 
 | dataset | task | n_test | baseline | key metric |
 |---|---|---:|---|---|
+| debate | PREDICT_FINAL_OUTCOME | 16 | majority-class(None) | accuracy=1.0 |
+| debate | PREDICT_NEXT_MESSAGE | 193 | most-frequent-message | token_f1=0.0052 |
+| debate | PREDICT_NEXT_SPEAKER | 177 | majority-class(debate-participant-208ce) | accuracy=0.0 |
 | psych101 | PREDICT_NEXT_CHOICE | 950 | majority-class(C) | accuracy=0.0526 |
 | socsci210 | PREDICT_INTERVENTION_EFFECT | 7 | zero-effect | predict no effect; effect MAE requires model estimate vs realized arm |
 | socsci210 | PREDICT_POPULATION_RESPONSE | 8 | mean-rate | no scalar rate in aggregate_metrics |

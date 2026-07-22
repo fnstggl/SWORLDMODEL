@@ -18,17 +18,13 @@ Each blocked dataset is documented with the exact reason + the human action need
 - role: ACCESS_BLOCKED  |  license: No public license; program/DUA terms
 - blocker: No public/archival download. Human action: contact DARPA/Leidos or partner with a former SocialSim performer (USC/ISI, UCF, UVA Biocomplexity, PNNL) under a data-use agreement. Twitter/X ToS separately bars public redistribution of raw data.
 
-## debate — ACCESS_BLOCKED
-- role: ACCESS_BLOCKED  |  license: Not stated (data not yet publicly released)
-- blocker: Dataset not publicly released as of last_verified_at. Human action: watch arxiv/OpenReview page rMnZbCOhSS for the promised code+data release, or email the authors (UW-Madison / Google DeepMind / Stanford) for pre-release access.
-
 ## kuairand — CONVERTER_READY_STORAGE_BLOCKED
 - role: TRAIN_CANDIDATE  |  license: CC-BY-SA-4.0
 - blocker: KuaiRand-Pure (~194MB) is acquirable but tar.gz extraction + CSV normalization is disk-heavy; keep randomized-exposure (is_rand=1) separate from organic. Converter implemented + fixture-tested. Resume: acquire kuairand --allow-large (Pure) then normalize. Do NOT let its size dominate the sampler (per-dataset cap set).
 
 ## mirobench — ACCESS_BLOCKED
-- role: ACCESS_BLOCKED  |  license: Not stated; underlying Reddit content under Reddit ToS
-- blocker: No public release located. Human action: watch arxiv 2606.14715 for a code/data link; if released, verify Reddit-ToS compliance before redistribution (local conversion only).
+- role: ACCESS_BLOCKED  |  license: MIT (repo/code + reference scores). Underlying Reddit reply-trees NOT released; Reddit ToS applies.
+- blocker: MIT repo found (yyu6/MiroBench) but it ships only aggregate REFERENCE SCORES + a synthetic-thread generation pipeline — the raw human Reddit reply-trees (needed for behaviour records) are NOT released, and Reddit ToS restricts redistribution. Human action: watch the repo for the pending HuggingFace data release, then verify Reddit-ToS compliance (local conversion only). The intended converter mapping is documented in the converter DOC.
 
 ## omnibehavior — CONVERTER_READY_STORAGE_BLOCKED
 - role: TRAIN_CANDIDATE  |  license: CC-BY-NC-SA-4.0 (non-commercial)
