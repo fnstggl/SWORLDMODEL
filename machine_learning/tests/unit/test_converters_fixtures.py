@@ -22,7 +22,9 @@ _DOC_VALIDATOR = jsonschema.Draft7Validator(_DOC_SCHEMA)
 
 _FIXTURE_DATASETS = sorted(p.name for p in FIXTURES_DIR.iterdir()
                            if p.is_dir() and any(p.iterdir())) if FIXTURES_DIR.exists() else []
-_BLOCKED = ["debate", "mirobench"]
+# mirobench is still a blocked stub (raw reply-trees not released). debate now has a real
+# released source (debatellm/DEBATE) + a fixture, so it is covered by the normal path above.
+_BLOCKED = ["mirobench"]
 
 
 @pytest.mark.parametrize("dataset_id", _FIXTURE_DATASETS)

@@ -17,47 +17,51 @@ datasets:
 
 # ------------------------------------------------------------------ multi-agent / social
   - dataset_id: debate
-    official_name: "DEBATE: A Large-Scale Benchmark for Evaluating Opinion Dynamics in Role-Playing LLM Agents"
-    description: "Real US human debates with private 6-point Likert beliefs measured before AND after multi-round discussion, plus public chat messages. 2,788 participants / 697 groups / 107 topics; 5,302 pre/post opinion ratings."
+    official_name: "DEBATE — human opinion-dynamics debates (debatellm/DEBATE)"
+    description: "Real human debates on controversial claims with per-participant PRE- and POST-discussion belief sliders (Initial Opinion / Post Opinion) plus public tweet messages. Curated golden split = 264 conversations across depth/breadth studies; raw = 708. ~203k event rows."
     official_paper: "https://arxiv.org/abs/2510.25110"
-    official_data_source: "https://openreview.net/forum?id=rMnZbCOhSS"
+    official_data_source: "https://huggingface.co/datasets/debatellm/DEBATE"
     official_code_source: ""
-    license: "Not stated (data not yet publicly released)"
-    license_class: unknown_unstated
-    commercial_use_allowed: unknown
-    derivatives_allowed: unknown
-    redistribution_allowed: unknown
-    personal_data_notes: "Human belief ratings + chat text; participants are real people. Handle as personal data if released."
-    access_requirements: "Reviewer-gated at submission; authors state a public release is planned but no stable URL confirmed."
-    gated: true
-    expected_size: "small (text): ~29-30k utterances, 5,302 pre/post ratings"
-    full_expected_bytes: null
-    download_method: manual
+    license: "DEBATE Research-Only License (Non-Commercial, v1.0)"
+    license_class: research_noncommercial
+    commercial_use_allowed: no
+    derivatives_allowed: yes
+    redistribution_allowed: no
+    personal_data_notes: "Human belief ratings + debate text; worker ids are conversation-scoped (pseudonymized). Non-commercial research use; do not redistribute the data."
+    access_requirements: "Open on HF (no gate). Non-commercial research license — confirm the full LICENSE text before use."
+    gated: false
+    expected_size: "~22.5 MB (972 CSVs), ~203k event rows"
+    full_expected_bytes: 23592960
+    download_method: hf
     checksum_method: sha256
-    dataset_role: ACCESS_BLOCKED
-    supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_NEXT_SPEAKER, PREDICT_BELIEF_CHANGE, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
-    split_unit: participant   # also hold out groups + topics
-    conversion_status: ACCESS_BLOCKED
-    blockers: "Dataset not publicly released as of last_verified_at. Human action: watch arxiv/OpenReview page rMnZbCOhSS for the promised code+data release, or email the authors (UW-Madison / Google DeepMind / Stanford) for pre-release access."
+    dataset_role: TRAIN_CANDIDATE   # sole source of PREDICT_BELIEF_CHANGE; non-commercial research only
+    supported_tasks: [PREDICT_BELIEF_CHANGE, PREDICT_NEXT_MESSAGE, PREDICT_NEXT_SPEAKER, PREDICT_TRAJECTORY_CONTINUATION, PREDICT_FINAL_OUTCOME]
+    split_unit: topic   # also hold out conversations + participants (all conversation-scoped)
+    conversion_status: PENDING
+    blockers: ""
     last_verified_at: "2026-07-22"
-    verification: {confidence: high, note: "Identity high-confidence; public data URL unconfirmed.", sources: ["https://arxiv.org/abs/2510.25110", "https://openreview.net/forum?id=rMnZbCOhSS"]}
+    verification: {confidence: high, note: "Real release found at debatellm/DEBATE (open, non-commercial research). Pre/post belief sliders confirmed from the CSV schema.", sources: ["https://huggingface.co/datasets/debatellm/DEBATE", "https://arxiv.org/abs/2510.25110"]}
+    acquire:
+      method: hf
+      estimated_bytes: 23592960
+      hf: {repo_id: "debatellm/DEBATE", mode: snapshot, repo_type: dataset}
     converter: machine_learning.normalization.converters.debate.Converter
 
   - dataset_id: mirobench
     official_name: "MiroBench: Benchmarking Realism in Agentic Simulation of Real-world Discussions"
     description: "4,292 real Reddit threads (875 seeds, 5 product domains) used as ground truth for agentic discussion simulation. Reply-tree structure with seed-post cutoff."
     official_paper: "https://arxiv.org/abs/2606.14715"
-    official_data_source: ""
-    official_code_source: ""
-    license: "Not stated; underlying Reddit content under Reddit ToS"
+    official_data_source: "https://github.com/yyu6/MiroBench"
+    official_code_source: "https://github.com/yyu6/MiroBench"
+    license: "MIT (repo/code + reference scores). Underlying Reddit reply-trees NOT released; Reddit ToS applies."
     license_class: upstream_tos_restricted
     commercial_use_allowed: no
     derivatives_allowed: unknown
     redistribution_allowed: no
-    personal_data_notes: "Real Reddit user content; Reddit ToS restricts redistribution."
-    access_requirements: "No public data link located; appears unreleased or forthcoming."
-    gated: true
-    expected_size: "small (text): 4,292 threads"
+    personal_data_notes: "Repo ships only aggregate REFERENCE SCORES (CSV metrics) for real threads + a synthetic-thread generation pipeline (OASIS). The raw human Reddit reply-tree text is NOT distributed (Reddit ToS); a HuggingFace release is 'coming soon'."
+    access_requirements: "Repo open (MIT). Raw human reply-tree DATA not downloadable (only reference scores + a generation pipeline). Watch the repo for the pending HF data release."
+    gated: false
+    expected_size: "reference-score CSVs small; raw threads not released"
     full_expected_bytes: null
     download_method: manual
     checksum_method: sha256
@@ -65,9 +69,9 @@ datasets:
     supported_tasks: [PREDICT_NEXT_MESSAGE, PREDICT_DISCUSSION_TREE, PREDICT_POPULATION_RESPONSE, PREDICT_TRAJECTORY_CONTINUATION]
     split_unit: topic   # by seed-post / thread; hold out domains
     conversion_status: ACCESS_BLOCKED
-    blockers: "No public release located. Human action: watch arxiv 2606.14715 for a code/data link; if released, verify Reddit-ToS compliance before redistribution (local conversion only)."
+    blockers: "MIT repo found (yyu6/MiroBench) but it ships only aggregate REFERENCE SCORES + a synthetic-thread generation pipeline — the raw human Reddit reply-trees (needed for behaviour records) are NOT released, and Reddit ToS restricts redistribution. Human action: watch the repo for the pending HuggingFace data release, then verify Reddit-ToS compliance (local conversion only). The intended converter mapping is documented in the converter DOC."
     last_verified_at: "2026-07-22"
-    verification: {confidence: medium, note: "Identity high; release unconfirmed.", sources: ["https://arxiv.org/abs/2606.14715"]}
+    verification: {confidence: high, note: "Repo found (MIT); raw reply-tree data not released (reference scores + generation pipeline only).", sources: ["https://github.com/yyu6/MiroBench", "https://arxiv.org/abs/2606.14715"]}
     converter: machine_learning.normalization.converters.mirobench.Converter
 
   - dataset_id: darpa_socialsim
