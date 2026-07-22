@@ -129,6 +129,21 @@ def test_40_coalition_body_converges_within_blocs():
     assert res.consensus_strength == 0.8
 
 
+# ============================================================ 40b — visible tally is a real force
+def test_40b_visible_tally_strengthens_bandwagon_herding():
+    # members lean YES (0.7) while the reference settling rate says NO (0.3). A visible/sequential
+    # tally lets members observe and herd toward the emerging majority; a hidden ballot cannot.
+    r = _rep(9, 5)
+    init = {f"m{i}": 0.7 for i in range(9)}
+    hidden = resolve_institution_vote(r, init, ConvergenceModel(
+        CONSENSUS_BODY, ConvergenceForces(consensus_norm=0.8, reference_prior=0.3,
+                                          tally_visible=False)))
+    visible = resolve_institution_vote(r, init, ConvergenceModel(
+        CONSENSUS_BODY, ConvergenceForces(consensus_norm=0.8, reference_prior=0.3,
+                                          tally_visible=True)))
+    assert visible.p_yes > hidden.p_yes                         # visible tally herds toward the lean
+
+
 # ============================================================ 41 — bounded rounds + material gate
 def test_41_bounded_rounds_and_material_change_gate():
     r = _rep(5, 3)

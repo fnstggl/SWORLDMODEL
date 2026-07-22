@@ -167,7 +167,11 @@ class ConvergenceModel:
         if f.reference_prior is not None:
             parts.append(f.reference_prior); wts.append(max(0.1, f.consensus_norm))
         mean = self._seat_weighted_mean(positions, seats)
-        parts.append(mean); wts.append(1.0)
+        # a VISIBLE running tally / sequential roll-call is a real convergence force: members
+        # observe the emerging majority and herd toward it (bandwagon), so it weights the mean
+        # more heavily. A hidden simultaneous ballot cannot, so the mean carries its base weight.
+        # This only amplifies the emerging (grounded-lean) majority — it invents no direction.
+        parts.append(mean); wts.append(2.0 if (f.tally_visible or f.sequential) else 1.0)
         z = sum(wts) or 1.0
         return sum(p * w for p, w in zip(parts, wts)) / z
 
