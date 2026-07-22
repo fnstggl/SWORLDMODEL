@@ -85,6 +85,17 @@ def write_traces(qid: str, *, gateway_rows, lean_v2_prov: dict, result_dict: dic
          "checkpoints": (lean_v2_prov.get("lean_v2") or lean_v2_prov)
          .get("checkpoints")}, indent=1, default=str))
 
+    # D18: the SELF-CONTAINED trace — every call (with truncation + cache provenance) plus the
+    # fidelity artifacts, verified to have no dangling id references. The run is auditable from
+    # this file alone (uncapped; the human report may sample separately).
+    try:
+        from swm.world_model_v2.lean_v2.trace_provenance import build_self_contained_trace
+        sct = build_self_contained_trace(gateway_rows, lean_v2_prov)
+        (d / "self_contained_trace.json").write_text(json.dumps(sct, indent=1, default=str))
+    except Exception as e:  # noqa: BLE001 — tracing must never break a completed run
+        (d / "self_contained_trace.json").write_text(
+            json.dumps({"error": f"{type(e).__name__}: {e}"}, indent=1))
+
     report = render_report(qid, lean_v2_prov=lean_v2_prov, result_dict=result_dict)
     (d / "report.md").write_text(report)
     return str(d)
