@@ -124,7 +124,7 @@
    },
    {
     "check": "terminal_round_trip",
-    "ok": false,
+    "ok": true,
     "note": "synthetic YES\u21921 / NO\u21920 through the live path"
    }
   ],
@@ -140,20 +140,9 @@
    {
     "check": "actor_weights:tamura_naoki",
     "repair": "renormalize_represented_weights"
-   },
-   {
-    "check": "terminal_round_trip",
-    "repair": "terminal_mapping_repair"
    }
   ],
   "repairs_applied": [
-   {
-    "repair": "canonicalize_terminal_writers",
-    "record": {
-     "needed": false,
-     "why": "vote terminals read the tally directly"
-    }
-   },
    {
     "repair": "schedule_mandatory_trigger",
     "actor": "ueda_kazuo",
@@ -200,10 +189,10 @@
    "checks": [
     {
      "case": "known_yes",
-     "evaluator_ok": false,
+     "evaluator_ok": true,
      "evaluator_out": {
       "resolved": true,
-      "outcome": "NO",
+      "outcome": "YES",
       "detail": {
        "votes": {
         "ueda_kazuo": "Raise to 1.0%",
@@ -227,10 +216,10 @@
       "outcome": "NO",
       "detail": {
        "votes": {
-        "ueda_kazuo": "Raise to 1.0%",
-        "nakagawa_junko": "Raise to 1.0%",
-        "takata_hajime": "Raise to 1.0%",
-        "tamura_naoki": "Raise to 1.0%",
+        "ueda_kazuo": "Maintain at 0.75%",
+        "nakagawa_junko": "Maintain at 0.75%",
+        "takata_hajime": "Maintain at 0.75%",
+        "tamura_naoki": "Maintain at 0.75%",
         "other_members": "Maintain at 0.75%"
        },
        "rule": "majority",
@@ -241,7 +230,7 @@
      "mapping_ok": true
     }
    ],
-   "ok": false
+   "ok": true
   },
   "version": "lean_v2.readiness.v1"
  },

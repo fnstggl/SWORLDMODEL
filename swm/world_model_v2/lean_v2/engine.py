@@ -137,9 +137,12 @@ class EngineResult:
     def distribution(self) -> dict:
         yes_label, no_label = (self.options + ["YES", "NO"])[:2]
         d = {}
-        if self.yes_mass > 0:
+        # ALWAYS emit BOTH binary keys when any mass resolved — an all-NO (or all-YES)
+        # resolved distribution is a valid mapped forecast (P=0 / P=1). Omitting the
+        # zero-mass key made forecast recovery see "no yes-key" and silently fall back to
+        # the prior (the §10 class) — a completed simulation must never be discarded.
+        if self.yes_mass > 0 or self.no_mass > 0:
             d[str(yes_label)] = round(self.yes_mass, 6)
-        if self.no_mass > 0:
             d[str(no_label)] = round(self.no_mass, 6)
         if self.unresolved_mass > 0:
             d["unresolved_mechanism"] = round(self.unresolved_mass, 6)
@@ -678,6 +681,14 @@ class WaveEngine:
     def _obligation_for(self, actor_id: str):
         for ob in self.obligations.values():
             if actor_id in (ob.required_participants or []):
+                return ob
+        # fallback: match by the obligation institution's MEMBER list — required_participants
+        # may use different id aliases than the institution's members (e.g. an obligation
+        # naming 'governor_ueda' while the actor/member id is 'ueda'), which would otherwise
+        # leave a terminal voter with no deadline and never force their vote
+        for ob in self.obligations.values():
+            inst = self.bp.institution_by_id(ob.institution_id) or {}
+            if actor_id in (inst.get("members") or []):
                 return ob
         return None
 
