@@ -1,0 +1,38 @@
+{
+ "pre_run": {
+  "version": "lean_v2.mechanisms.v1",
+  "cause": "terminal_pathway_construction",
+  "attempts": [
+   {
+    "attempt": 1,
+    "action": "reuse_existing_mechanisms",
+    "outcome": "0 verbatim numeric(s) reused",
+    "calls": 0
+   },
+   {
+    "attempt": 2,
+    "action": "deterministic_threshold_parse",
+    "outcome": "no numeric threshold in resolution text",
+    "calls": 0
+   }
+  ],
+  "diagnosis": {
+   "variable": "daily_transit_count >= 50 on any day in window",
+   "required_input_type": "numeric series in the question's units",
+   "expected_output_type": "boolean terminal (YES/NO)",
+   "controller": "us_navy, iran_revolutionary_guards, oil_tanker_operators, reuters_lloyds_bloomberg",
+   "bridge_kind": "physical",
+   "downstream": "terminal YES/NO projection",
+   "threshold": null,
+   "comparator": ">=",
+   "aggregation": "any_day",
+   "evidence_needed": [
+    "dated observations of: daily_transit_count >= 50 on any day in window",
+    "regime conditions under which each observation held"
+   ]
+  },
+  "validated": false,
+  "failure_proof": "the resolution criterion carries no parseable numeric threshold \u2014 a bounded numeric mechanism is not the right bridge for this terminal"
+ },
+ "post_run": null
+}

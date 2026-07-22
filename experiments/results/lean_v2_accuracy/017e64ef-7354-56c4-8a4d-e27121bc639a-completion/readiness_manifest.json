@@ -1,0 +1,232 @@
+{
+ "readiness": {
+  "verdict": "repairable",
+  "checks": [
+   {
+    "check": "actor_states:us_navy",
+    "ok": true,
+    "note": "2 state(s)"
+   },
+   {
+    "check": "actor_weights:us_navy",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "actor_states:iran_revolutionary_guards",
+    "ok": true,
+    "note": "2 state(s)"
+   },
+   {
+    "check": "actor_weights:iran_revolutionary_guards",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "actor_states:oil_tanker_operators",
+    "ok": true,
+    "note": "3 state(s)"
+   },
+   {
+    "check": "actor_weights:oil_tanker_operators",
+    "ok": true,
+    "note": "weight sum 0.9999"
+   },
+   {
+    "check": "shared_conditions_exist",
+    "ok": true,
+    "note": "6 combo(s)"
+   },
+   {
+    "check": "actor_trigger:us_navy",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:us_navy",
+    "ok": true,
+    "note": "1 option(s)"
+   },
+   {
+    "check": "actor_trigger:iran_revolutionary_guards",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:iran_revolutionary_guards",
+    "ok": true,
+    "note": "1 option(s)"
+   },
+   {
+    "check": "actor_trigger:oil_tanker_operators",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:oil_tanker_operators",
+    "ok": true,
+    "note": "1 option(s)"
+   },
+   {
+    "check": "terminal_writer",
+    "ok": true,
+    "note": "canonical-key writer or bounded mechanism"
+   },
+   {
+    "check": "terminal_units",
+    "ok": false,
+    "note": "numeric predicates need a bounded mechanism in question units"
+   },
+   {
+    "check": "terminal_round_trip",
+    "ok": true,
+    "note": "synthetic YES\u21921 / NO\u21920 through the live path"
+   }
+  ],
+  "repairs_needed": [
+   {
+    "check": "terminal_units",
+    "repair": "mechanism_recovery"
+   }
+  ],
+  "repairs_applied": [
+   {
+    "repair": "schedule_mandatory_trigger",
+    "actor": "us_navy",
+    "day": "2026-06-01"
+   },
+   {
+    "repair": "schedule_mandatory_trigger",
+    "actor": "iran_revolutionary_guards",
+    "day": "2026-06-01"
+   },
+   {
+    "repair": "schedule_mandatory_trigger",
+    "actor": "oil_tanker_operators",
+    "day": "2026-06-01"
+   }
+  ],
+  "round_trip": {
+   "mapping": {
+    "yes_label": "YES",
+    "no_label": "NO",
+    "aliases_yes": [
+     "1",
+     "daily_transit_count >= 50 on any day in window",
+     "true",
+     "yes"
+    ],
+    "aliases_no": [
+     "0",
+     "daily_transit_count < 50 on all days in window",
+     "false",
+     "no"
+    ]
+   },
+   "checks": [
+    {
+     "case": "known_yes",
+     "evaluator_ok": true,
+     "evaluator_out": {
+      "resolved": true,
+      "outcome": "YES",
+      "detail": {
+       "predicate": "__terminal_yes__"
+      }
+     },
+     "recovery_p": 1.0,
+     "mapping_ok": true
+    },
+    {
+     "case": "known_no",
+     "evaluator_ok": true,
+     "evaluator_out": {
+      "resolved": true,
+      "outcome": "NO",
+      "detail": {
+       "predicate": "__terminal_yes__"
+      }
+     },
+     "recovery_p": 0.0,
+     "mapping_ok": true
+    }
+   ],
+   "ok": true
+  },
+  "version": "lean_v2.readiness.v1"
+ },
+ "terminal_canonicalization": {
+  "needed": true,
+  "rewritten": [
+   {
+    "action_id": "us_lift_blockade",
+    "old_key": "blockade_status",
+    "new_key": "__terminal_yes__"
+   },
+   {
+    "action_id": "iran_clear_mines",
+    "old_key": "mine_status",
+    "new_key": "__terminal_yes__"
+   },
+   {
+    "action_id": "tanker_operators_transit",
+    "old_key": "daily_transit_count",
+    "new_key": "__terminal_yes__"
+   }
+  ],
+  "canonical_key": "__terminal_yes__"
+ },
+ "preflight": {
+  "verdict": "answerable",
+  "checks": [
+   {
+    "check": "terminal_predicate_exists",
+    "ok": true,
+    "note": "kind=state_predicate"
+   },
+   {
+    "check": "terminal_writer_exists",
+    "ok": true,
+    "note": "writers=['tanker_operators_transit', 'us_lift_blockade', 'iran_clear_mines']"
+   },
+   {
+    "check": "terminal_writer_instantiated",
+    "ok": true,
+    "note": "instantiated=['tanker_operators_transit', 'us_lift_blockade', 'iran_clear_mines'] of 3"
+   },
+   {
+    "check": "writer_inputs_producible",
+    "ok": true,
+    "note": "writer tanker_operators_transit reachable at 2026-04-29"
+   },
+   {
+    "check": "yes_path_exists",
+    "ok": true,
+    "note": "state_predicate: both predicates stated"
+   },
+   {
+    "check": "no_path_exists",
+    "ok": true,
+    "note": "state_predicate: both predicates stated"
+   },
+   {
+    "check": "outcome_mechanism_accepted",
+    "ok": true,
+    "note": "all terminal-writing effects are known mechanical kinds"
+   },
+   {
+    "check": "unresolved_recovery_pathway",
+    "ok": true,
+    "note": "forecast_recovery active; grounded_rates=1"
+   },
+   {
+    "check": "not_inevitably_unresolved",
+    "ok": true,
+    "note": "at least one resolving path exists"
+   }
+  ],
+  "blocking": [],
+  "probe": {},
+  "one_sided": ""
+ }
+}

@@ -1,0 +1,673 @@
+{
+ "grounding": {
+  "version": "lean_v2.grounding.v1",
+  "shared_world_conditions": {
+   "hormuz_closure_regime": {
+    "claim": "The Strait of Hormuz is effectively closed to commercial oil tanker traffic due to military conflict and blockade.",
+    "affects_actors": [
+     "us_navy"
+    ],
+    "states": [
+     "closed",
+     "partially_open",
+     "fully_open"
+    ],
+    "table": {
+     "key": "207cd95adf9c5394",
+     "quantity": "shared:hormuz_closure_regime",
+     "source_class": "counted_reference_class",
+     "rate": 0.8333,
+     "interval": [
+      0.5268,
+      1.0
+     ],
+     "n": 2,
+     "provenance": {
+      "definition": "The Strait of Hormuz is effectively closed to commercial oil tanker traffic due to military conflict and blockade.",
+      "inclusion_criteria": "",
+      "exclusion_criteria": "",
+      "hierarchy_level": "broad_human_decision_class",
+      "level_fallback_reason": "all levels sparse (total 2 usable case(s)); rate is wide by construction",
+      "n_considered": 2,
+      "n_included": 2,
+      "numerator": 2,
+      "denominator": 2,
+      "rate_mean": 0.8333,
+      "rate_interval": [
+       0.5268,
+       1.0
+      ],
+      "evidence_cutoff": "2026-04-30",
+      "cases": [
+       {
+        "case_id": "case_0",
+        "description": "Iran shut the strait and mined the waterway after U.S.-Israeli strikes killed Supreme Leader Khamenei on February 28, 2026.",
+        "date": "2026-02-28",
+        "outcome": true,
+        "source": "Al Jazeera",
+        "basis_quote": "Iran shut the strait and reportedly mined parts of the waterway; the U.S. subsequently imposed a naval blockade of Iranian ports.",
+        "hierarchy_level": "same_institution",
+        "included": true,
+        "exclusion_reason": ""
+       },
+       {
+        "case_id": "case_1",
+        "description": "As of April 27, 2026, only about 7 ships transited the strait in the prior 24 hours, none of which were oil tankers carrying cargo for the global market.",
+        "date": "2026-04-27",
+        "outcome": true,
+        "source": "Reuters",
+        "basis_quote": "As of April 27, 2026, only about 7 ships transited the strait in the prior 24 hours, none of which were oil tankers carrying cargo for the global market.",
+        "hierarchy_level": "same_institution",
+        "included": true,
+        "exclusion_reason": ""
+       }
+      ],
+      "version": "lean_v2.grounding.v1"
+     }
+    },
+    "evidence_ids": []
+   },
+   "global_oil_market_disruption": {
+    "claim": "Global oil markets are under severe supply disruption due to the Hormuz closure, with EIA estimating reduced Middle East oil production.",
+    "affects_actors": [
+     "us_navy"
+    ],
+    "states": [
+     "normal",
+     "disrupted",
+     "crisis"
+    ],
+    "table": {
+     "key": "f980380a3848d36b",
+     "quantity": "shared:global_oil_market_disruption",
+     "source_class": "counted_reference_class",
+     "rate": 0.75,
+     "interval": [
+      0.3387,
+      1.0
+     ],
+     "n": 1,
+     "provenance": {
+      "definition": "Global oil markets are under severe supply disruption due to the Hormuz closure, with EIA estimating reduced Middle East oil production.",
+      "inclusion_criteria": "",
+      "exclusion_criteria": "",
+      "hierarchy_level": "broad_human_decision_class",
+      "level_fallback_reason": "all levels sparse (total 1 usable case(s)); rate is wide by construction",
+      "n_considered": 1,
+      "n_included": 1,
+      "numerator": 1,
+      "denominator": 1,
+      "rate_mean": 0.75,
+      "rate_interval": [
+       0.3387,
+       1.0
+      ],
+      "evidence_cutoff": "2026-04-30",
+      "cases": [
+       {
+        "case_id": "case_0",
+        "description": "Energy Information Administration (EIA) estimated in its April 2026 Short-Term Energy Outlook that Middle East oil production was reduced.",
+        "date": "2026-04-01",
+        "outcome": true,
+        "source": "EIA STEO April 2026",
+        "basis_quote": "Energy Information Administration (EIA) estimated in its April 2026 Short-Term Energy Outlook (STEO) that Middle East oil production was reduced.",
+        "hierarchy_level": "same_institution",
+        "included": true,
+        "exclusion_reason": ""
+       }
+      ],
+      "version": "lean_v2.grounding.v1"
+     }
+    },
+    "evidence_ids": []
+   }
+  },
+  "actor_state_reference_classes": {},
+  "outcome_reference_class": {
+   "key": "6dda27e7bccd6e00",
+   "quantity": "daily oil tanker transits through Strait of Hormuz reach 50 or more on any day between April 29 and June 1, 2026",
+   "source_class": "counted_reference_class",
+   "rate": 0.5,
+   "interval": [
+    0.0887,
+    0.9113
+   ],
+   "n": 2,
+   "provenance": {
+    "definition": "At least 50 commercial oil tankers (crude oil tankers or oil/chemical tankers by AIS type) transit the Strait of Hormuz in a single calendar day (UTC) within the specified window.",
+    "inclusion_criteria": "Any day from April 29, 2026 to June 1, 2026 inclusive where the count is >=50.",
+    "exclusion_criteria": "Days outside the window, counts below 50, non-commercial vessels.",
+    "hierarchy_level": "broad_human_decision_class",
+    "level_fallback_reason": "all levels sparse (total 2 usable case(s)); rate is wide by construction",
+    "n_considered": 2,
+    "n_included": 2,
+    "numerator": 1,
+    "denominator": 2,
+    "rate_mean": 0.5,
+    "rate_interval": [
+     0.0887,
+     0.9113
+    ],
+    "evidence_cutoff": "2026-04-30",
+    "cases": [
+     {
+      "case_id": "case_0",
+      "description": "Pre-conflict daily oil tanker traffic was roughly 50-70 tankers per day (half of 125-140 total vessels).",
+      "date": "2025-06-15",
+      "outcome": true,
+      "source": "Reuters",
+      "basis_quote": "Pre-conflict, between 125 and 140 ships typically crossed in and out of the strait daily.",
+      "hierarchy_level": "same_institution",
+      "included": true,
+      "exclusion_reason": ""
+     },
+     {
+      "case_id": "case_1",
+      "description": "Since the conflict began on February 28, commercial crossings have fallen by approximately 94% from peacetime levels.",
+      "date": "2026-03-01",
+      "outcome": false,
+      "source": "Reuters",
+      "basis_quote": "Since the conflict began on February 28, commercial crossings have fallen by approximately 94% from peacetime levels.",
+      "hierarchy_level": "same_institution",
+      "included": true,
+      "exclusion_reason": ""
+     }
+    ],
+    "version": "lean_v2.grounding.v1"
+   }
+  },
+  "institutional_obligations": {
+   "reuters_reporting": {
+    "deadline_day": "2026-06-01",
+    "required_participants": [
+     "reuters"
+    ],
+    "allowed_terminal_actions": [
+     "report_threshold_met",
+     "report_threshold_not_met",
+     "no_report"
+    ],
+    "abstention_allowed": false,
+    "recusal_allowed": false,
+    "absence_allowed": false,
+    "delegation_allowed": false,
+    "quorum": "",
+    "waiting_allowed_before_deadline": true,
+    "consequence_of_nonparticipation": "If Reuters does not report the threshold by deadline, question resolves NO."
+   }
+  },
+  "numeric_rejections": [],
+  "grounding_call_made": true
+ },
+ "state_posteriors": {
+  "us_navy": [
+   {
+    "combo": {
+     "global_oil_market_disruption": "normal",
+     "hormuz_closure_regime": "closed"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "blockade_enforcement_high": 0.5,
+     "blockade_enforcement_low": 0.5
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "normal",
+     "hormuz_closure_regime": "partially_open"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "blockade_enforcement_high": 0.5,
+     "blockade_enforcement_low": 0.5
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "normal",
+     "hormuz_closure_regime": "fully_open"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "blockade_enforcement_high": 0.5,
+     "blockade_enforcement_low": 0.5
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "disrupted",
+     "hormuz_closure_regime": "closed"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "blockade_enforcement_high": 0.5,
+     "blockade_enforcement_low": 0.5
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "disrupted",
+     "hormuz_closure_regime": "partially_open"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "blockade_enforcement_high": 0.5,
+     "blockade_enforcement_low": 0.5
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "disrupted",
+     "hormuz_closure_regime": "fully_open"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "blockade_enforcement_high": 0.5,
+     "blockade_enforcement_low": 0.5
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   }
+  ],
+  "iran_revolutionary_guards": [
+   {
+    "combo": {
+     "global_oil_market_disruption": "normal",
+     "hormuz_closure_regime": "closed"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "mining_and_attacks_high": 0.5,
+     "mining_and_attacks_low": 0.5
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "normal",
+     "hormuz_closure_regime": "partially_open"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "mining_and_attacks_high": 0.5,
+     "mining_and_attacks_low": 0.5
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "normal",
+     "hormuz_closure_regime": "fully_open"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "mining_and_attacks_high": 0.5,
+     "mining_and_attacks_low": 0.5
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "disrupted",
+     "hormuz_closure_regime": "closed"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "mining_and_attacks_high": 0.5,
+     "mining_and_attacks_low": 0.5
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "disrupted",
+     "hormuz_closure_regime": "partially_open"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "mining_and_attacks_high": 0.5,
+     "mining_and_attacks_low": 0.5
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "disrupted",
+     "hormuz_closure_regime": "fully_open"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "mining_and_attacks_high": 0.5,
+     "mining_and_attacks_low": 0.5
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 2 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   }
+  ],
+  "oil_tanker_operators": [
+   {
+    "combo": {
+     "global_oil_market_disruption": "normal",
+     "hormuz_closure_regime": "closed"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "risk_acceptance_high": 0.3333,
+     "risk_aversion_high": 0.3333,
+     "selective_transit": 0.3333
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "normal",
+     "hormuz_closure_regime": "partially_open"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "risk_acceptance_high": 0.3333,
+     "risk_aversion_high": 0.3333,
+     "selective_transit": 0.3333
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "normal",
+     "hormuz_closure_regime": "fully_open"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "risk_acceptance_high": 0.3333,
+     "risk_aversion_high": 0.3333,
+     "selective_transit": 0.3333
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "disrupted",
+     "hormuz_closure_regime": "closed"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "risk_acceptance_high": 0.3333,
+     "risk_aversion_high": 0.3333,
+     "selective_transit": 0.3333
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "disrupted",
+     "hormuz_closure_regime": "partially_open"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "risk_acceptance_high": 0.3333,
+     "risk_aversion_high": 0.3333,
+     "selective_transit": 0.3333
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   },
+   {
+    "combo": {
+     "global_oil_market_disruption": "disrupted",
+     "hormuz_closure_regime": "fully_open"
+    },
+    "unknown": 0.2,
+    "weights": {
+     "risk_acceptance_high": 0.3333,
+     "risk_aversion_high": 0.3333,
+     "selective_transit": 0.3333
+    },
+    "provenance": [
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     },
+     {
+      "source": "counted_complement",
+      "note": "complement of the counted matched rates (1 - 0.000) shared among 3 unmatched modeled state(s) \u2014 grounded, not a label"
+     }
+    ]
+   }
+  ]
+ },
+ "shared_condition_worlds": [
+  {
+   "combo": {
+    "global_oil_market_disruption": "normal",
+    "hormuz_closure_regime": "closed"
+   },
+   "weight": 0.166667
+  },
+  {
+   "combo": {
+    "global_oil_market_disruption": "normal",
+    "hormuz_closure_regime": "partially_open"
+   },
+   "weight": 0.166667
+  },
+  {
+   "combo": {
+    "global_oil_market_disruption": "normal",
+    "hormuz_closure_regime": "fully_open"
+   },
+   "weight": 0.166667
+  },
+  {
+   "combo": {
+    "global_oil_market_disruption": "disrupted",
+    "hormuz_closure_regime": "closed"
+   },
+   "weight": 0.166667
+  },
+  {
+   "combo": {
+    "global_oil_market_disruption": "disrupted",
+    "hormuz_closure_regime": "partially_open"
+   },
+   "weight": 0.166667
+  },
+  {
+   "combo": {
+    "global_oil_market_disruption": "disrupted",
+    "hormuz_closure_regime": "fully_open"
+   },
+   "weight": 0.166667
+  }
+ ],
+ "actor_residual_bounds": {
+  "us_navy": 0.2,
+  "iran_revolutionary_guards": 0.2,
+  "oil_tanker_operators": 0.2
+ },
+ "dependence": null,
+ "no_label_derived_weights_invariant": {
+  "ok": true,
+  "label_derived_weights_found": 0,
+  "rule": "every weight traces to a counted reference class or is explicit unknown mass; no qualitative label is mapped to a number"
+ }
+}

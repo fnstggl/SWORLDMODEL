@@ -2,7 +2,7 @@
 
 **Question:** Will the Bank of Japan raise its short-term policy interest rate at the June 15–16, 2026 Monetary Policy Meeting?
 
-**Status:** partially_resolved | **probability:** 0.0043 | **source:** mass_weighted:partial_rollouts+grounded_prior | **grounding:** exploratory | **confidence:** low
+**Status:** completed | **probability:** 0.0364 | **source:** mass_weighted:completed_rollouts+grounded_prior | **grounding:** exploratory | **confidence:** low
 
 
 ## Causal world
@@ -19,28 +19,27 @@
 ## Forecast decomposition
 
 - prior_forecast (grounded prior): 0.875 (n=3, source=counted_outcome_reference_class)
-- simulation_forecast (conditional on resolved mass): 0.0004 (resolved mass 0.9955)
-- simulation probability bounds (residual-widened): [0.0, 0.6332] (residual bound 0.63136)
-- headline_forecast: 0.0043 via mass_weighted:partial_rollouts+grounded_prior
-- prior/simulation disagreement: 0.8746
+- simulation_forecast (conditional on resolved mass): 0.0364 (resolved mass 1.0)
+- simulation probability bounds (residual-widened): [0.0, 0.7153] (residual bound 0.63136)
+- headline_forecast: 0.0364 via mass_weighted:completed_rollouts+grounded_prior
+- prior/simulation disagreement: 0.8386
   - no leakage-audited reliability combiner is fitted — prior and simulation are reported separately with the feasible combined range; no fixed blend is applied and Lean V2 must not become default on this basis
 
 ## Simulation completion audit
 
-- resolved mass: 0.995535 of 1.0 (target ≥0.8 met: True)
-- unresolved by cause: {'unresolved_truncation': 0.004465}
+- resolved mass: 1.0 of 1.0 (target ≥0.8 met: True)
+- unresolved by cause: {}
 - unknown-state terminal mass: 0.0 (must be 0: True)
 - missing-mechanism terminal mass: 0.0 (ok: True)
-- readiness verdict: repairable | round-trip ok: True
+- readiness verdict: ready | round-trip ok: True
 
 ## Unresolved mass by cause
 
-- unresolved_truncation: 0.004465 — preserved as unfinished branch mass; disclosed
 
 ## Cost
 
-- calls: 40 | wall: 212.73s | peak nodes: 4096
-- deliberations: 10 | challenger: False
-- limitation: forecast decomposition — grounded prior 0.875 (counted n=3); simulation-conditional 0.0004 (resolved mass 1.00); headline 0.0043 via combiner_unavailable_range_only. Prior and simulation are reported separately and never blended by a fixed rule.
-- limitation: bounded omitted-state residual 0.631: the interval widens to [0.0, 0.6332] — private-state omissions are BOUNDS, never unknown-state worlds
+- calls: 41 | wall: 189.85s | peak nodes: 1536
+- deliberations: 16 | challenger: False
+- limitation: forecast decomposition — grounded prior 0.875 (counted n=3); simulation-conditional 0.0364 (resolved mass 1.00); headline 0.0364 via combiner_unavailable_range_only. Prior and simulation are reported separately and never blended by a fixed rule.
+- limitation: bounded omitted-state residual 0.631: the interval widens to [0.0, 0.7153] — private-state omissions are BOUNDS, never unknown-state worlds
 - limitation: no leakage-audited prior↔simulation reliability combiner is fitted — the headline is the mass-based recovery blend (resolved mass keeps its simulated conditional; unresolved mass takes the grounded prior); the two inputs are reported separately and never blended by a fixed rule
