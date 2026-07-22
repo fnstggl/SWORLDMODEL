@@ -135,7 +135,7 @@ def _extract(qid, q, d, calls, wall, ui, uo, ch, cost, lv2) -> dict:
         "unresolved_by_cause": (lv2.get("unresolved") or {}).get("by_cause"),
         "shared_conditions": [c["combo"] for c in (lv2.get("shared_condition_worlds") or [])][:6],
         "n_actor_states": {a: len(s) for a, s in (lv2.get("actor_states") or {}).items()},
-        "unknown_state_mass": lv2.get("unknown_state_mass"),
+        "actor_residual_bounds": lv2.get("actor_residual_bounds"),
         "dependence_sensitive": eng.get("dependence_sensitive"),
         "dependence_range": eng.get("dependence_range"),
         "challenger": lv2.get("challenger"),
@@ -220,7 +220,7 @@ def _print_human_report(qid, m, lv2, d):
           f"combined {m['combined']} via {m['combine_method']}")
     print(f"unresolved by cause: {m['unresolved_by_cause']}")
     print(f"shared conditions: {m['shared_conditions']}")
-    print(f"actor states: {m['n_actor_states']} | unknown-state mass: {m['unknown_state_mass']}")
+    print(f"actor states: {m['n_actor_states']} | residual bounds: {m['actor_residual_bounds']}")
     print(f"dependence_sensitive={m['dependence_sensitive']} range={m['dependence_range']} | "
           f"weight_sensitive={m['weight_sensitive']}")
     print(f"challenger: {(m['challenger'] or {}).get('triggered')} | "
