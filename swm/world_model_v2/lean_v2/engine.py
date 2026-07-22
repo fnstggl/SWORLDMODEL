@@ -18,28 +18,31 @@ Event-driven time over WEIGHTED WORLD NODES:
         selective ONE-shot deliberation when a deterministic trigger fires;
         mechanical consequence-template execution (novel actions compile once);
         exact weighted coalescing (mass-conserving, audit-logged);
+    → deadline-forced COMPLETION pass: unresolved worlds are not accepted while a repair
+      exists — missing terminal votes reopen the decision at the deadline through the SAME
+      decision machinery (bounded rounds, every action audited);
     → terminal accounting: resolved YES/NO mass, unresolved mass, truncated mass — weights
       preserved, never renormalized away; bounded corner-sweep sensitivity across the
-      grounded variant weight RANGES sets weight_sensitive honestly."""
+      grounded variant weight RANGES sets weight_sensitive honestly; per-actor bounded
+      residuals widen the interval (1 - prod(1-r_a)) instead of ever becoming
+      unknown-state worlds."""
 from __future__ import annotations
 
 import hashlib
 import json
-import random as _random
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
 from swm.world_model_v2.lean_context import (DecisionRelevantContext,
-                                             DecisionRelevantContextBuilder, context_rng_seed)
+                                             DecisionRelevantContextBuilder)
 from swm.world_model_v2.lean_decision_cache import (ActorDecisionTemplate,
                                                     DecisionEquivalenceCache)
 from swm.world_model_v2.lean_v2 import PROMPT_VERSION
 from swm.world_model_v2.lean_v2.blueprint import (ConsumerWorldBlueprint, norm, parse_day)
 from swm.world_model_v2.lean_v2.obligations import is_deadline
-
-#: the explicit unknown-state variant id (never gets the prior, the average action, or 0.5)
-UNKNOWN_STATE = "__other_unknown_state__"
+from swm.world_model_v2.lean_v2.readiness import pure_terminal_outcome
+from swm.world_model_v2.lean_v2.states import MAX_ACTOR_RESIDUAL
 from swm.world_model_v2.lean_v2.consequences import TemplateExecutor, compile_novel_action
 from swm.world_model_v2.lean_v2.deliberation import classify_limitation, run_deliberation
 from swm.world_model_v2.lean_v2.gateway import BudgetExhausted
@@ -91,6 +94,10 @@ class EngineConfig:
     max_workers: int = 6
     max_waves: int = 40
     behavioral_replicate_index: int = 0
+    #: bounded deadline-forced completion rounds after the wave loop — a repairable
+    #: unresolved world (missing terminal votes, retryable failed decision) is reopened,
+    #: never silently accepted
+    max_completion_rounds: int = 2
 
 
 @dataclass
@@ -117,6 +124,15 @@ class EngineResult:
     node_audit_full: list = field(default_factory=list)
     decision_trace: list = field(default_factory=list)
     unresolved_reasons: dict = field(default_factory=dict)
+    #: P(at least one actor is in an unrepresented private state) — widens the interval,
+    #: never branch mass (the completeness law)
+    residual_bound: float = 0.0
+    p_low_bounded: float = None
+    p_high_bounded: float = None
+    #: the deadline-forced completion pass audit (rounds, reopenings, re-evaluations)
+    completion_audit: dict = field(default_factory=dict)
+    #: a bounded numeric mechanism resolved a terminal with min/max straddling the threshold
+    mechanism_straddle: bool = False
 
     def distribution(self) -> dict:
         yes_label, no_label = (self.options + ["YES", "NO"])[:2]
@@ -141,7 +157,9 @@ class WaveEngine:
                  structural_model: str = "primary",
                  grounded_weights: dict = None, obligations: dict = None,
                  shared_world: dict = None, shared_world_combos: list = None,
-                 grounded_weights_by_combo: dict = None):
+                 grounded_weights_by_combo: dict = None,
+                 mechanism: dict = None, actor_residuals: dict = None,
+                 consequential_actors: list = None):
         self.bp = bp
         self.kept = list(kept_actors)
         self.promotable = set(promotable or [])
@@ -160,6 +178,16 @@ class WaveEngine:
         # correlation induced by the shared common cause (conditional independence given combo).
         self.shared_world_combos = shared_world_combos or []
         self.grounded_weights_by_combo = grounded_weights_by_combo or {}
+        # a recovered bounded numeric mechanism (missing-mechanism ladder) — the terminal
+        # evaluation law consults it for predicate terminals with no canonical-key writer
+        self.mechanism = mechanism
+        # per-actor BOUNDED residuals r_a from the completeness invariant (counted
+        # out-of-set frequency, capped) — interval widening only, never branch mass
+        self.actor_residual: dict = {a: min(MAX_ACTOR_RESIDUAL, max(0.0, float(r or 0.0)))
+                                     for a, r in (actor_residuals or {}).items()}
+        self.consequential = set(consequential_actors or [])
+        self.unweighted_actors: list = []    # variants present but zero represented weight
+        self._final_nodes: list = []
         self.cfg = config or EngineConfig()
         self.coalescer = coalescer or WeightedBranchCoalescer(
             max_nodes=budget_ledger.budget.max_weighted_nodes)
@@ -185,7 +213,6 @@ class WaveEngine:
         self.variant_mid: dict = {}          # actor -> {variant: grounded weight} (MAP combo)
         self.variant_rng: dict = {}          # actor -> {variant: (lo, mid, hi)} (MAP combo)
         self.variant_mid_by_combo: dict = {}  # combo_key -> {actor -> {variant: weight}}
-        self.actor_unknown: dict = {}        # actor -> unknown-state mass (never label-derived)
         self._delib_done: dict = {}          # context_hash -> (revised_r, record)
         self.result.decision_trace = []
         self._lock = threading.RLock()
@@ -195,36 +222,59 @@ class WaveEngine:
     def _combo_key(combo: dict) -> str:
         return json.dumps(combo or {}, sort_keys=True)
 
-    def _normalize_actor_weights(self, gw: dict) -> tuple:
-        """One actor's grounded weights → (normalized mid, normalized rng, unknown). An actor
-        with NO counted basis gets all mass on the explicit unknown state — never a label or
-        uniform number."""
+    @staticmethod
+    def _normalize_actor_weights(gw: dict) -> tuple:
+        """One actor's grounded weights → (normalized mid, normalized rng, bounded residual).
+        THE COMPLETENESS LAW: the represented states carry the FULL branch mass (they
+        normalize to 1). The residual is a BOUNDED omitted-state uncertainty that widens the
+        final interval — it is NEVER a world branch, and it is never multiplied across actors
+        as unknown worlds. An empty represented set is returned empty for the caller to
+        treat as the hard invariant violation it is."""
         mid = {vid: w for vid, w in (gw.get("mid") or {}).items() if w > 0}
         rng = dict(gw.get("rng") or {})
-        unknown = float(gw.get("unknown", 0.0))
+        residual = min(MAX_ACTOR_RESIDUAL, max(0.0, float(gw.get("unknown", 0.0) or 0.0)))
         if not mid:
-            unknown = 1.0
-        if unknown > 1e-9:
-            mid[UNKNOWN_STATE] = round(unknown, 6)
-            rng[UNKNOWN_STATE] = (unknown, unknown, unknown)
+            return {}, {}, MAX_ACTOR_RESIDUAL
         z = sum(mid.values()) or 1.0
         return ({vid: w / z for vid, w in mid.items()},
-                {vid: tuple(x / z for x in r) for vid, r in rng.items() if vid in mid},
-                round(unknown, 6))
+                {vid: tuple(min(1.0, x / z) for x in r)
+                 for vid, r in rng.items() if vid in mid},
+                round(residual, 6))
 
     # ---------------------------------------------------------------- variant weight law
     def _load_grounded_weights(self):
         """Load the COUNTED per-actor weights (ActorStatePosteriorEngine) for the MAP combo and
-        for every shared-world combo. No qualitative label becomes a number here."""
+        for every shared-world combo. No qualitative label becomes a number here.
+
+        Unknown private state is an INPUT to simulation, never a stop: a CONSEQUENTIAL actor
+        reaching this point with zero represented states means the completeness invariant +
+        readiness gate were bypassed — that fails LOUDLY here, before any world is seeded. A
+        non-consequential actor without weighted states simply does not branch (their
+        decisions still run from the base persona) and their omission is bounded."""
         for a in self.bp.actors:
             aid = a["id"]
             if not (a.get("private_state_variants") or []):
                 continue
-            mid, rng, unknown = self._normalize_actor_weights(
+            mid, rng, residual = self._normalize_actor_weights(
                 self.grounded_weights.get(aid) or {})
+            if not mid:
+                if aid in self.consequential:
+                    raise RuntimeError(
+                        f"state-completeness invariant bypassed: consequential actor {aid} "
+                        f"reached the engine with zero represented private states — rollout "
+                        f"refused (this must be repaired BEFORE simulation, never converted "
+                        f"into unknown-state mass)")
+                self.unweighted_actors.append(aid)
+                self.actor_residual[aid] = MAX_ACTOR_RESIDUAL
+                continue
             self.variant_mid[aid] = mid
             self.variant_rng[aid] = rng
-            self.actor_unknown[aid] = unknown
+            if aid not in self.actor_residual:
+                # no completeness-ladder residual supplied for this actor — fall back to the
+                # posterior's bounded residual. When the ladder DID assess the actor, its
+                # counted out-of-set law is authoritative (a decision-spanning basis has
+                # residual 0 by construction, even with no counted class).
+                self.actor_residual[aid] = residual
         for combo, _w in (self.shared_world_combos or [{}]) if self.shared_world_combos \
                 else [(self.shared_world, 1.0)]:
             ck = self._combo_key(combo)
@@ -232,10 +282,10 @@ class WaveEngine:
             table = {}
             for a in self.bp.actors:
                 aid = a["id"]
-                if not (a.get("private_state_variants") or []):
+                if aid not in self.variant_mid:
                     continue
-                mid, _rng, _u = self._normalize_actor_weights(gwc.get(aid) or {})
-                table[aid] = mid
+                mid, _rng, _r = self._normalize_actor_weights(gwc.get(aid) or {})
+                table[aid] = mid or dict(self.variant_mid[aid])
             self.variant_mid_by_combo[ck] = table
 
     def _combo_mid(self, nd: WeightedWorldNode, actor_id: str) -> dict:
@@ -311,6 +361,7 @@ class WaveEngine:
     # ---------------------------------------------------------------- the wave loop
     def run(self, *, as_of: str, horizon: str) -> EngineResult:
         nodes = self.seed_roots(as_of=as_of, horizon=horizon)
+        self._final_nodes = nodes
         hor = parse_day(horizon) or parse_day(self.bp.terminal.get("evaluation_day"))
         for _wave in range(self.cfg.max_waves):
             days = [e["day"] for nd in nodes for e in nd.event_queue
@@ -322,9 +373,16 @@ class WaveEngine:
                 break
             self.result.waves += 1
             nodes = self._wave(nodes, day)
+            self._final_nodes = nodes
             self.ledger.observe_nodes(len(nodes))
             if all(nd.terminal.get("resolved") for nd in nodes):
                 break
+        # deadline-forced completion: a world left unresolved by a repairable cause (missing
+        # terminal votes, a retryable failed decision) is REOPENED and driven to its terminal
+        # through the same decision machinery — silently accepting a broken world is never
+        # the answer. Bounded rounds; every reopening audited.
+        nodes = self._completion_pass(nodes, horizon=horizon)
+        self._final_nodes = nodes
         self._finalize(nodes)
         return self.result
 
@@ -367,10 +425,6 @@ class WaveEngine:
                     aid = e["actor_id"]
                     if not nd.actor_variant.get(aid) and self._combo_mid(nd, aid):
                         continue             # split next wave (same day re-queued)
-                    if nd.actor_variant.get(aid) == UNKNOWN_STATE:
-                        # the actor is in an unmodeled private reality — we do NOT invent a
-                        # decision for it; its terminal contribution is unknown-state mass
-                        continue
                     if self._skip_reask(nd, e, aid):
                         continue
                     ctx = self._build_context(nd, aid, e)
@@ -398,6 +452,134 @@ class WaveEngine:
         self.coalescer.executed_unique_nodes += len(merged)
         return merged
 
+    # ---------------------------------------------------------------- completion pass
+    def _completion_actors(self, nd: WeightedWorldNode) -> list:
+        """The actors whose missing terminal decision keeps this node unresolved: for a vote
+        terminal, the kept members without a recorded vote; plus the actor of a retryable
+        failed decision (`decision_unavailable:<actor>`)."""
+        out = []
+        term = self.bp.terminal
+        if term.get("kind") == "institution_vote":
+            inst = self.bp.institution_by_id(term.get("institution_id")) or {}
+            votes = (nd.institution_state.get(inst.get("id")) or {}).get("votes", {})
+            out += [m for m in (inst.get("members") or [])
+                    if m in self.kept and m not in votes]
+        cause = str(nd.unresolved_reason or "")
+        if cause.startswith("decision_unavailable:"):
+            aid = cause.split(":", 1)[1]
+            if aid in self.kept and aid not in out:
+                out.append(aid)
+        return out
+
+    def _completion_day(self, nd: WeightedWorldNode, actor_id: str, horizon: str) -> str:
+        ob = self._obligation_for(actor_id)
+        if ob is not None and ob.deadline_day and parse_day(ob.deadline_day):
+            return str(ob.deadline_day)[:10]
+        ev = str(self.bp.terminal.get("evaluation_day") or "")[:10]
+        return ev if parse_day(ev) else (nd.day or str(horizon)[:10])
+
+    def _completion_eligible(self, nd: WeightedWorldNode, horizon: str) -> bool:
+        """Only a node whose simulated time GENUINELY reached the terminal window may be
+        completed: pre-horizon events still queued (a wave-cap stop) mean forcing the
+        terminal would fake time that was never simulated — that mass stays honestly
+        unresolved instead."""
+        if nd.terminal.get("resolved"):
+            return False
+        hor = parse_day(horizon) or parse_day(self.bp.terminal.get("evaluation_day"))
+        if hor is None:
+            return True
+        return not any((parse_day(e.get("day")) or hor) < hor for e in nd.event_queue)
+
+    def _completion_pass(self, nodes: list, *, horizon: str) -> list:
+        """Reopen-then-evaluate, bounded: each round (1) splits any still-unassigned variant
+        for a missing decider, (2) runs the missing terminal decisions through the SAME
+        distinct-context machinery as the waves (mandatory_terminal menu — the deadline has
+        arrived), (3) re-evaluates every unresolved terminal. Rounds stop when nothing is
+        unresolved, nothing progressed, or the bound is hit. Budget exhaustion mid-pass keeps
+        every completed world and records the stop — it never destroys the run."""
+        audit = {"rounds": [], "policy": "deadline_forced_completion:reopen_then_eval",
+                 "max_rounds": self.cfg.max_completion_rounds}
+        for rnd in range(1, self.cfg.max_completion_rounds + 1):
+            unresolved = [nd for nd in nodes if self._completion_eligible(nd, horizon)]
+            if not unresolved:
+                break
+            rec = {"round": rnd, "splits": 0, "reopened_decisions": 0, "re_evaluated": 0,
+                   "budget_stop": "", "still_unresolved": []}
+            # (1) variant splits so a missing decider holds a concrete private state — an
+            # unknown state is the reason to BRANCH, never a reason to stop
+            splitting = True
+            while splitting:
+                splitting = False
+                out_nodes = []
+                for nd in nodes:
+                    pend = None
+                    if self._completion_eligible(nd, horizon):
+                        pend = next((m for m in self._completion_actors(nd)
+                                     if not nd.actor_variant.get(m)
+                                     and len(self._combo_mid(nd, m)) > 1), None)
+                    if pend is None:
+                        out_nodes.append(nd)
+                        continue
+                    parts = [(f"{pend[:8]}-{vid}", w, self._variant_mutator(pend, vid))
+                             for vid, w in sorted(self._combo_mid(nd, pend).items())]
+                    out_nodes.extend(self.coalescer.split(nd, parts))
+                    rec["splits"] += 1
+                    splitting = True
+                nodes = out_nodes
+            # (2) the missing terminal decisions, batched through the shared decision cache
+            requests = []
+            for nd in nodes:
+                if not self._completion_eligible(nd, horizon):
+                    continue
+                for m in self._completion_actors(nd):
+                    cm = self._combo_mid(nd, m)
+                    if not nd.actor_variant.get(m) and len(cm) == 1:
+                        self._assign_variant(nd, m, next(iter(cm)))
+                    day = self._completion_day(nd, m, horizon)
+                    ob = self._obligation_for(m)
+                    inst = ob.institution_id if ob is not None \
+                        else str(self.bp.terminal.get("institution_id") or "the")
+                    e = {"day": day, "order": 2, "etype": "decision_trigger",
+                         "actor_id": m, "trigger_etype": "mandatory_terminal",
+                         # EXACT wave-reopening wording — an identical context is a free
+                         # decision-cache hit, never a duplicate call
+                         "situation": f"the {inst} decision deadline has arrived — you "
+                                      f"must now cast one of the allowed terminal actions"}
+                    ctx = self._build_context(nd, m, e)
+                    requests.append((nd, e, ctx, ctx.signature()))
+            distinct: dict = {}
+            for _nd, _e, ctx, sig in requests:
+                distinct.setdefault(sig, ctx)
+            try:
+                self._execute_distinct(distinct)
+            except BudgetExhausted as ex:
+                rec["budget_stop"] = f"{ex.dimension} during completion round {rnd}"
+                audit["rounds"].append(rec)
+                break
+            for nd, e, ctx, sig in sorted(requests, key=lambda r: (r[0].node_id,
+                                                                   r[2].actor_id)):
+                self._apply_decision(nd, e, ctx, sig, e["day"])
+                rec["reopened_decisions"] += 1
+            # (3) re-evaluate every eligible unresolved terminal under the pure law
+            for nd in nodes:
+                if self._completion_eligible(nd, horizon):
+                    self._evaluate_terminal(nd, nd.day or str(horizon)[:10])
+                    rec["re_evaluated"] += 1
+            still = [nd for nd in nodes if not nd.terminal.get("resolved")]
+            rec["still_unresolved"] = [
+                {"node": nd.node_id, "cause": nd.unresolved_reason,
+                 "weight": round(nd.weight, 6)}
+                for nd in still][:20]
+            audit["rounds"].append(rec)
+            nodes = self.coalescer.coalesce(nodes)
+            no_progress = (len(still) >= len(unresolved)
+                           and round(sum(n.weight for n in still), 9)
+                           >= round(sum(n.weight for n in unresolved), 9))
+            if no_progress or (rec["reopened_decisions"] == 0 and rec["splits"] == 0):
+                break               # nothing left to repair / nothing changed — honest stop
+        self.result.completion_audit = audit
+        return nodes
+
     # ---------------------------------------------------------------- helpers
     def _variant_mutator(self, actor_id: str, variant_id: str):
         def _m(child: WeightedWorldNode):
@@ -406,10 +588,6 @@ class WaveEngine:
 
     def _assign_variant(self, nd: WeightedWorldNode, actor_id: str, variant_id: str):
         nd.actor_variant[actor_id] = variant_id
-        if variant_id == UNKNOWN_STATE:
-            # explicit unmodeled reality — no invented beliefs, no invented action
-            nd.actor_states[actor_id] = {"__unknown_state__": True}
-            return
         a = self.bp.actor_by_id(actor_id) or {}
         v = next((v for v in a.get("private_state_variants") or []
                   if str(v.get("variant_id")) == variant_id), None)
@@ -550,6 +728,11 @@ class WaveEngine:
                        ) -> DecisionRelevantContext:
         a = self.bp.actor_by_id(aid) or {}
         st = nd.actor_states.get(aid) or {}
+        # at a mandatory-terminal closure the actor commits from their OWN private state —
+        # the mutable who-already-voted list is omitted from this one context type
+        # (disclosed modeling choice): it cannot re-open deliberation at a forced terminal
+        # choice, and carrying it would split one forced decision into 2^members contexts
+        at_terminal_closure = str(e.get("trigger_etype") or "") == "mandatory_terminal"
         inst_rules = []
         for inst in self.bp.institutions:
             if aid in (inst.get("members") or []):
@@ -557,8 +740,10 @@ class WaveEngine:
                     {"institution": inst.get("id"),
                      "decision_rule": inst.get("decision_rule"),
                      "stage": (nd.institution_state.get(inst.get("id")) or {}).get("stage"),
-                     "votes_recorded": sorted((nd.institution_state.get(inst.get("id"))
-                                               or {}).get("votes", {}))},
+                     "votes_recorded": "omitted_at_terminal_closure"
+                     if at_terminal_closure
+                     else sorted((nd.institution_state.get(inst.get("id"))
+                                  or {}).get("votes", {}))},
                     sort_keys=True))
         obs_records = self.builder.observation_facts(
             [{"channel": o.get("channel"), "content": o.get("content"),
@@ -713,6 +898,10 @@ class WaveEngine:
         return None
 
     def _validate_decision(self, r, ctx: DecisionRelevantContext) -> list:
+        """Validate AND deterministically normalize in place. A defect a rule can fix (a
+        hallucinated observation id, a vote phrased loosely around a listed option) is
+        FIXED here for zero calls — provider repair calls are reserved for decisions that
+        are genuinely unusable. Retrying instead of thinking is never the first answer."""
         if not isinstance(r, dict):
             return ["response_not_a_json_object"]
         fails = []
@@ -721,11 +910,15 @@ class WaveEngine:
         if not norm(dec.get("chosen_action")) and act not in (
                 "wait", "gather_information", "delegate", "do_nothing"):
             fails.append("no_chosen_action")
+        # noticed ids outside the availability set: STRIP them (deterministic repair) —
+        # the decision itself remains usable; inventing a repair call for this is waste
         ids = {o["obs_id"] for o in ctx.observations}
-        listed = [str(x.get("obs_id")) for x in
-                  ((r.get("attention") or {}).get("noticed") or []) if isinstance(x, dict)]
-        if any(x and x not in ids for x in listed):
-            fails.append("noticed_ids_outside_availability_set")
+        att = r.get("attention")
+        if isinstance(att, dict) and isinstance(att.get("noticed"), list):
+            att["noticed"] = [x for x in att["noticed"]
+                              if isinstance(x, dict)
+                              and (not str(x.get("obs_id") or "")
+                                   or str(x.get("obs_id")) in ids)]
         vote = norm(dec.get("vote_option"), 60)
         if vote:
             allowed = set()
@@ -735,7 +928,15 @@ class WaveEngine:
                         allowed |= {str(o) for o in
                                     (eff["params"].get("options") or [])}
             if allowed and vote not in allowed:
-                fails.append("vote_option_outside_mechanical_options")
+                # containment normalization first ("vote to cut rates" → "cut");
+                # only an unmappable vote is a genuine failure
+                vl = vote.lower()
+                mapped = next((o for o in sorted(allowed)
+                               if o.lower() in vl or vl in o.lower()), None)
+                if mapped is not None:
+                    dec["vote_option"] = mapped
+                else:
+                    fails.append("vote_option_outside_mechanical_options")
         return fails
 
     # ---------------------------------------------------------------- decision application
@@ -926,69 +1127,40 @@ class WaveEngine:
 
     # ---------------------------------------------------------------- terminal evaluation
     def _evaluate_terminal(self, nd: WeightedWorldNode, day: str):
+        """Delegates to the ONE pure terminal law (`readiness.pure_terminal_outcome`) — the
+        SAME function the synthetic round-trip proves before rollout, so a completed world
+        can never be discarded by a divergent inline reimplementation. The recovered bounded
+        mechanism and the node's world conditions (shared conditions + string world state,
+        so ACTOR ACTIONS can move the regime) feed the predicate path."""
+        votes = {}
         term = self.bp.terminal
-        tk = str(term.get("kind") or "")
-        if tk == "institution_vote":
+        if term.get("kind") == "institution_vote":
             inst = self.bp.institution_by_id(term.get("institution_id")) or {}
-            members = list(inst.get("members") or [])
             votes = (nd.institution_state.get(inst.get("id")) or {}).get("votes", {})
-            # a member on the explicit unknown state has an unmodeled vote → unknown-state mass
-            unknown_members = [m for m in members
-                               if nd.actor_variant.get(m) == UNKNOWN_STATE]
-            if unknown_members:
-                nd.unresolved_reason = f"unknown_state:{','.join(unknown_members[:5])}"
-                nd.terminal = {"resolved": False, "day": day,
-                               "detail": nd.unresolved_reason}
-                return
-            missing = [m for m in members if m not in votes]
-            if missing:
-                # missing only matters BEFORE the deadline; at/after it, a still-missing
-                # required participant is the (rare) no-terminal-action case already recorded
-                nd.unresolved_reason = f"votes_missing:{','.join(missing[:5])}"
-                nd.terminal = {"resolved": False, "day": day,
-                               "detail": nd.unresolved_reason}
-                return
-            rule = str(term.get("decision_rule") or inst.get("decision_rule") or "unanimity")
-            # abstain/recuse/absent are EXECUTED institutional actions with a rule-defined
-            # effect: they are not substantive votes, so a unanimity rule over substantive
-            # votes is broken by any non-substantive terminal action (a 4-1 with one abstention
-            # is NOT a 5-0 unanimous vote)
-            substantive = {m: v for m, v in votes.items()
-                           if not str(v).startswith("__")}
-            non_substantive = [m for m in members if str(votes.get(m, "")).startswith("__")]
-            vals = [substantive[m] for m in members if m in substantive]
-            if rule == "unanimity":
-                yes = (len(non_substantive) == 0 and len(vals) == len(members)
-                       and len(set(vals)) == 1)
-            elif rule in ("all_option", "single"):
-                opt = str((term.get("rule_params") or {}).get("option") or "")
-                yes = (len(non_substantive) == 0
-                       and (all(v == opt for v in vals) if opt else len(set(vals)) == 1))
-            elif rule in ("majority", "threshold"):
-                opt = str((term.get("rule_params") or {}).get("option") or
-                          (max(set(vals), key=vals.count) if vals else ""))
-                need = float((term.get("rule_params") or {}).get("threshold") or 0.5)
-                yes = (vals.count(opt) / max(1, len(members))) > need
-            else:
-                nd.unresolved_reason = f"unknown_rule:{rule}"
-                nd.terminal = {"resolved": False, "day": day, "detail": nd.unresolved_reason}
-                return
-            nd.terminal = {"resolved": True, "outcome": "YES" if yes else "NO",
-                           "day": day, "detail": {"votes": dict(votes), "rule": rule,
-                                                  "non_substantive": non_substantive}}
-        elif tk == "event_occurs":
-            key = norm(term.get("yes_when"), 80) or "occurred"
-            yes = bool(nd.world_state.get(key))
-            nd.terminal = {"resolved": True, "outcome": "YES" if yes else "NO", "day": day,
-                           "detail": {"predicate": key,
-                                      "note": "non-occurrence by evaluation day resolves NO"}}
+        wc = dict(nd.shared_conditions)
+        wc.update({str(k): v for k, v in nd.world_state.items() if isinstance(v, str)})
+        out = pure_terminal_outcome(self.bp, votes=votes, world_state=nd.world_state,
+                                    obligations=self.obligations,
+                                    mechanism=self.mechanism, world_conditions=wc)
+        if out.get("resolved"):
+            nd.terminal = {"resolved": True, "outcome": out.get("outcome"), "day": day,
+                           "detail": out.get("detail")}
+            nd.unresolved_reason = ""
+            if isinstance(out.get("detail"), dict) and out["detail"].get("straddle"):
+                self.result.mechanism_straddle = True
         else:
-            nd.unresolved_reason = "state_predicate_not_mechanically_bound"
+            nd.unresolved_reason = str(out.get("cause") or "unresolved")
             nd.terminal = {"resolved": False, "day": day, "detail": nd.unresolved_reason}
 
     # ---------------------------------------------------------------- finalize
     def _finalize(self, nodes: list):
         res = self.result
+        # idempotent accounting: a resumed completion (e.g. a mechanism recovered after the
+        # run) re-finalizes the SAME node population without double counting
+        res.yes_mass = res.no_mass = res.unresolved_mass = 0.0
+        res.unresolved_reasons = {}
+        res.node_audit = []
+        res.p_mid = res.p_low = res.p_high = None
         for nd in nodes:
             if nd.terminal.get("resolved"):
                 if nd.terminal.get("outcome") == "YES":
@@ -1016,10 +1188,45 @@ class WaveEngine:
         res.p_low, res.p_high = self._grounded_weight_sensitivity(nodes)
         if res.p_low is not None and res.p_high is not None:
             res.weight_sensitive = res.p_low < 0.5 < res.p_high
+        # BOUNDED omitted-state residual (the completeness law): P(≥1 actor in an
+        # unrepresented state) widens the interval — [p·(1−J), p·(1−J)+J] — it is never
+        # branch mass and never multiplied across actors as unknown worlds
+        res.residual_bound = self._joint_residual_bound()
+        if res.p_mid is not None:
+            j = res.residual_bound
+            base_lo = res.p_low if res.p_low is not None else res.p_mid
+            base_hi = res.p_high if res.p_high is not None else res.p_mid
+            res.p_low_bounded = round(base_lo * (1.0 - j), 4)
+            res.p_high_bounded = round(base_hi * (1.0 - j) + j, 4)
+        if res.mechanism_straddle:
+            res.weight_sensitive = True
         # dependence sensitivity: recompute under the independent vs comonotonic (shared-cause
         # locked) structures — when the answer flips, the joint dependence is unidentified
         res.dependence_sensitive, res.dependence_range = self._dependence_sensitivity(nodes)
         res.decisions_manifest = self.decisions.manifest()
+
+    def _joint_residual_bound(self) -> float:
+        j = 1.0
+        for r in self.actor_residual.values():
+            j *= (1.0 - min(MAX_ACTOR_RESIDUAL, max(0.0, r)))
+        return round(1.0 - j, 6)
+
+    def resume_with_mechanism(self, mechanism: dict) -> EngineResult:
+        """§completion loop: a mechanism recovered AFTER the run re-evaluates ONLY the
+        unresolved worlds (resolved worlds are never re-run) and re-finalizes. The decision
+        traces, deliberations and audit history are preserved."""
+        self.mechanism = mechanism
+        nodes = self._final_nodes or []
+        reeval = 0
+        for nd in nodes:
+            if not nd.terminal.get("resolved"):
+                self._evaluate_terminal(nd, nd.day)
+                reeval += 1
+        self.result.completion_audit.setdefault("post_run_mechanism_resume", []).append(
+            {"re_evaluated": reeval,
+             "mechanism_variable": (mechanism or {}).get("variable")})
+        self._finalize(nodes)
+        return self.result
 
     def _grounded_weight_sensitivity(self, nodes: list) -> tuple:
         """Bounded corner sweep across the COUNTED reference-class intervals (variant_rng holds
@@ -1122,9 +1329,15 @@ class WaveEngine:
                 "dependence_range": (list(self.result.dependence_range)
                                      if self.result.dependence_range else None),
                 "shared_world": dict(self.shared_world),
-                "actor_unknown_mass": {a: m for a, m in self.actor_unknown.items()},
+                "actor_residual_bounds": {a: m for a, m in self.actor_residual.items()},
+                "joint_residual_bound": self.result.residual_bound,
+                "unweighted_actors": list(self.unweighted_actors),
+                "completion_audit": self.result.completion_audit,
+                "mechanism_used": bool(self.mechanism),
                 "grounded_weight_law": {a: dict(v) for a, v in self.variant_mid.items()},
                 "grounded_weight_intervals": {a: {vid: list(r) for vid, r in v.items()}
                                               for a, v in self.variant_rng.items()},
                 "weight_source": "counted_reference_class_posteriors (no qualitative label is "
-                                 "mapped to a number anywhere in this engine)"}
+                                 "mapped to a number anywhere in this engine); represented "
+                                 "states carry the full branch mass — omitted-state residuals "
+                                 "are bounded interval-wideners, never unknown-state worlds"}
