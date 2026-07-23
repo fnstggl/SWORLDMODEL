@@ -66,7 +66,7 @@ def _budget() -> dict:
     return {"max_wall_s": 900.0, "max_calls": 160}
 
 
-def run_case(case_id: str = "banxico", *, live: bool = True) -> Path:
+def run_case(case_id: str = "banxico", *, case: dict = None) -> Path:
     from experiments.btf3_frozen_bundle import frozen_background_bundle
     from swm.api.deepseek_backend import deepseek_chat_fn
     from swm.world_model_v2.unified_runtime import simulate_world
@@ -74,7 +74,8 @@ def run_case(case_id: str = "banxico", *, live: bool = True) -> Path:
     from swm_viz.build_recording import build_recording
     from swm_viz.recorder import capture_lean_v2
 
-    case = CASES[case_id]
+    case = case or CASES[case_id]
+    case_id = case.get("slug", case_id)
     REC_DIR.mkdir(parents=True, exist_ok=True)
 
     evidence = (f"Resolution criteria: {case['resolution_criteria']}\n\n"
@@ -155,6 +156,42 @@ def run_case(case_id: str = "banxico", *, live: bool = True) -> Path:
     return out
 
 
+def _slugify(text: str) -> str:
+    import re
+    s = re.sub(r"[^a-z0-9]+", "_", str(text).lower()).strip("_")
+    return (s[:48] or "question")
+
+
+def run_custom(spec_path: str) -> Path:
+    """Record a REAL lean_v2 run for an arbitrary question described in a JSON file.
+
+    The JSON needs: question, as_of (YYYY-MM-DD), horizon (YYYY-MM-DD), and an as-of
+    `background` (the frozen, time-locked facts a user knows as of `as_of`). Optional:
+    resolution_criteria, title, slug. Example file:
+
+        {"question": "Will X happen by ...?",
+         "as_of": "2026-05-14", "horizon": "2026-06-25",
+         "resolution_criteria": "Resolves YES iff ...",
+         "background": "As of 2026-05-14, ..."}
+    """
+    spec = json.loads(Path(spec_path).read_text())
+    for k in ("question", "as_of", "horizon", "background"):
+        if not spec.get(k):
+            raise SystemExit(f"custom question JSON is missing required field: {k!r}")
+    slug = spec.get("slug") or _slugify(spec["question"])
+    case = {
+        "slug": slug,
+        "title": spec.get("title") or spec["question"][:70],
+        "question": spec["question"],
+        "as_of": spec["as_of"],
+        "horizon": spec["horizon"],
+        "resolution_criteria": spec.get("resolution_criteria", ""),
+        "background": spec["background"],
+        "note": spec.get("note", "user-supplied as-of background (sealed-replay evidence)"),
+    }
+    return run_case(case=case)
+
+
 def _result_to_dict(res) -> dict:
     import dataclasses
     if dataclasses.is_dataclass(res):
@@ -206,7 +243,12 @@ def _update_index(recording: dict, path: Path) -> None:
 
 if __name__ == "__main__":
     import sys
-    if len(sys.argv) > 1 and sys.argv[1] == "rebuild":
+    cmd = sys.argv[1] if len(sys.argv) > 1 else "banxico"
+    if cmd == "rebuild":
         rebuild(sys.argv[2] if len(sys.argv) > 2 else "banxico_unanimous_2026")
+    elif cmd == "custom":
+        if len(sys.argv) < 3:
+            raise SystemExit("usage: python -m swm_viz.record_run custom <question.json>")
+        run_custom(sys.argv[2])
     else:
-        run_case(sys.argv[1] if len(sys.argv) > 1 else "banxico")
+        run_case(cmd)

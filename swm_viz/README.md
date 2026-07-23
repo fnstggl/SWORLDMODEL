@@ -75,12 +75,22 @@ curl localhost:8756/api/run/status
 
 ---
 
-## Adding a question
+## Running your own question
 
-Add an entry to `CASES` in `record_run.py` (question, `as_of`, `horizon`,
-`resolution_criteria`, and an as-of `background`). The background is injected through the
+Fastest way — a JSON file, no code edit (see `example_question.json`):
+
+```bash
+python -m swm_viz.record_run custom swm_viz/example_question.json
+```
+
+The JSON needs `question`, `as_of`, `horizon`, and an as-of `background` (the frozen,
+time-locked facts a user knows as of `as_of`); `resolution_criteria`, `title`, `slug` are
+optional. The recording appears in the viewer's dropdown after you refresh.
+
+Or add a permanent entry to `CASES` in `record_run.py` and run
+`python -m swm_viz.record_run <case_id>`. Either way the background is injected through the
 runtime's own sealed-replay `prebuilt_bundle` port, so no live retrieval is needed — the only
-external dependency is the LLM backend. Then `python -m swm_viz.record_run <case_id>`.
+external dependency is the LLM backend.
 
 ## Notes on this run
 
