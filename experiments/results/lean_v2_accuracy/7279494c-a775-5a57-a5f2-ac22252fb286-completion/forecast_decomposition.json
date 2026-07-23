@@ -1,0 +1,75 @@
+{
+ "grounded_prior": {
+  "p": 0.875,
+  "source": "counted_outcome_reference_class",
+  "n": 3,
+  "interval": [
+   0.6317,
+   1.0
+  ],
+  "provenance": {
+   "quantity": "BOJ raises short-term policy interest rate at June 15-16, 2026 meeting",
+   "hierarchy_level": "broad_human_decision_class",
+   "numerator": 3,
+   "denominator": 3,
+   "fallback_reason": "all levels sparse (total 3 usable case(s)); rate is wide by construction"
+  }
+ },
+ "simulation_conditional": {
+  "p": 0.0364,
+  "resolved_mass": 1.0,
+  "interval": [
+   0.0,
+   0.2278
+  ],
+  "weight_sensitive": false,
+  "dependence_sensitive": false,
+  "provenance": {
+   "yes_mass": 0.0364,
+   "no_mass": 0.9636,
+   "dependence_range": [
+    0.0364,
+    0.0364
+   ]
+  }
+ },
+ "combined": null,
+ "combined_interval": [
+  0.0364,
+  0.875
+ ],
+ "method": "combiner_unavailable_range_only",
+ "disagreement": 0.8386,
+ "sim_weight": null,
+ "prior_weight": null,
+ "fixed_blend_used": false,
+ "combiner_available": false,
+ "notes": [
+  "no leakage-audited reliability combiner is fitted \u2014 prior and simulation are reported separately with the feasible combined range; no fixed blend is applied and Lean V2 must not become default on this basis"
+ ],
+ "reliability_features": {
+  "prior_n": 3,
+  "prior_specificity": "broad_human_decision_class",
+  "resolved_mass": 1.0,
+  "unknown_state_mass": 0.0,
+  "evidence_coverage": 0.6666666666666666,
+  "structural_sensitivity": false,
+  "weight_sensitive": false,
+  "dependence_sensitive": false,
+  "prior_sim_divergence": 0.8386,
+  "horizon_days": 0
+ },
+ "grounded_prior_probability": 0.875,
+ "simulation_conditional_probability": 0.0364,
+ "resolved_simulation_mass": 1.0,
+ "unresolved_mass_by_cause": {},
+ "simulation_probability_bounds": [
+  0.0,
+  0.7153
+ ],
+ "residual_bound": 0.63136,
+ "prior_forecast": 0.875,
+ "simulation_forecast": 0.0364,
+ "headline_forecast": 0.0364,
+ "headline_source": "mass_weighted:completed_rollouts+grounded_prior"
+}

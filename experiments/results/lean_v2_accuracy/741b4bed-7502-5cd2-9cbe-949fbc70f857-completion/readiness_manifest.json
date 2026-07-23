@@ -1,0 +1,257 @@
+{
+ "readiness": {
+  "verdict": "ready",
+  "checks": [
+   {
+    "check": "actor_states:matthew_wale",
+    "ok": true,
+    "note": "3 state(s)"
+   },
+   {
+    "check": "actor_weights:matthew_wale",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "actor_states:john_agovaka",
+    "ok": true,
+    "note": "3 state(s)"
+   },
+   {
+    "check": "actor_weights:john_agovaka",
+    "ok": true,
+    "note": "weight sum 0.9999"
+   },
+   {
+    "check": "actor_states:frederick_kologeto",
+    "ok": true,
+    "note": "3 state(s)"
+   },
+   {
+    "check": "actor_weights:frederick_kologeto",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "actor_states:jeremiah_manele",
+    "ok": true,
+    "note": "3 state(s)"
+   },
+   {
+    "check": "actor_weights:jeremiah_manele",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "actor_states:opposition_coalition_mps",
+    "ok": true,
+    "note": "3 state(s)"
+   },
+   {
+    "check": "actor_weights:opposition_coalition_mps",
+    "ok": true,
+    "note": "weight sum 0.9999"
+   },
+   {
+    "check": "shared_conditions_exist",
+    "ok": true,
+    "note": "6 combo(s)"
+   },
+   {
+    "check": "actor_trigger:matthew_wale",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:matthew_wale",
+    "ok": true,
+    "note": "6 option(s)"
+   },
+   {
+    "check": "actor_trigger:john_agovaka",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:john_agovaka",
+    "ok": true,
+    "note": "6 option(s)"
+   },
+   {
+    "check": "actor_trigger:frederick_kologeto",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:frederick_kologeto",
+    "ok": true,
+    "note": "6 option(s)"
+   },
+   {
+    "check": "actor_trigger:jeremiah_manele",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:jeremiah_manele",
+    "ok": true,
+    "note": "6 option(s)"
+   },
+   {
+    "check": "actor_trigger:opposition_coalition_mps",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:opposition_coalition_mps",
+    "ok": true,
+    "note": "6 option(s)"
+   },
+   {
+    "check": "institution_deadline:parliament",
+    "ok": true,
+    "note": "2026-05-21"
+   },
+   {
+    "check": "terminal_writer",
+    "ok": true,
+    "note": "vote writers"
+   },
+   {
+    "check": "terminal_units",
+    "ok": true,
+    "note": "vote tally in members \u2014 exact units"
+   },
+   {
+    "check": "terminal_round_trip",
+    "ok": true,
+    "note": "synthetic YES\u21921 / NO\u21920 through the live path"
+   }
+  ],
+  "repairs_needed": [],
+  "repairs_applied": [],
+  "round_trip": {
+   "mapping": {
+    "yes_label": "Matthew Wale elected PM",
+    "no_label": "Other outcome",
+    "aliases_yes": [
+     "1",
+     "matthew wale elected pm",
+     "matthew wale receives at least 26 votes.",
+     "true",
+     "yes"
+    ],
+    "aliases_no": [
+     "0",
+     "any other candidate receives at least 26 votes, or no candid",
+     "false",
+     "no",
+     "other outcome"
+    ]
+   },
+   "checks": [
+    {
+     "case": "known_yes",
+     "evaluator_ok": true,
+     "evaluator_out": {
+      "resolved": true,
+      "outcome": "YES",
+      "detail": {
+       "votes": {
+        "matthew_wale": "Matthew Wale",
+        "john_agovaka": "Matthew Wale",
+        "frederick_kologeto": "Matthew Wale",
+        "jeremiah_manele": "Matthew Wale",
+        "opposition_coalition_mps": "Matthew Wale"
+       },
+       "rule": "majority",
+       "non_substantive": []
+      }
+     },
+     "recovery_p": 1.0,
+     "mapping_ok": true
+    },
+    {
+     "case": "known_no",
+     "evaluator_ok": true,
+     "evaluator_out": {
+      "resolved": true,
+      "outcome": "NO",
+      "detail": {
+       "votes": {
+        "matthew_wale": "Abstain",
+        "john_agovaka": "Abstain",
+        "frederick_kologeto": "Abstain",
+        "jeremiah_manele": "Abstain",
+        "opposition_coalition_mps": "Abstain"
+       },
+       "rule": "majority",
+       "non_substantive": []
+      }
+     },
+     "recovery_p": 0.0,
+     "mapping_ok": true
+    }
+   ],
+   "ok": true
+  },
+  "version": "lean_v2.readiness.v1"
+ },
+ "terminal_canonicalization": {
+  "needed": false,
+  "why": "vote terminals read the tally directly"
+ },
+ "preflight": {
+  "verdict": "answerable",
+  "checks": [
+   {
+    "check": "terminal_predicate_exists",
+    "ok": true,
+    "note": "kind=institution_vote"
+   },
+   {
+    "check": "terminal_writer_exists",
+    "ok": true,
+    "note": "writers=['vote_for_pm']"
+   },
+   {
+    "check": "terminal_writer_instantiated",
+    "ok": true,
+    "note": "instantiated=['vote_for_pm'] of 1"
+   },
+   {
+    "check": "writer_inputs_producible",
+    "ok": true,
+    "note": "writer vote_for_pm reachable at 2026-05-07"
+   },
+   {
+    "check": "yes_path_exists",
+    "ok": true,
+    "note": "majority-family rule"
+   },
+   {
+    "check": "no_path_exists",
+    "ok": true,
+    "note": "majority-family rule"
+   },
+   {
+    "check": "outcome_mechanism_accepted",
+    "ok": true,
+    "note": "all terminal-writing effects are known mechanical kinds"
+   },
+   {
+    "check": "unresolved_recovery_pathway",
+    "ok": true,
+    "note": "forecast_recovery active; grounded_rates=1"
+   },
+   {
+    "check": "not_inevitably_unresolved",
+    "ok": true,
+    "note": "at least one resolving path exists"
+   }
+  ],
+  "blocking": [],
+  "probe": {},
+  "one_sided": ""
+ }
+}

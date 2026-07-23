@@ -1,0 +1,281 @@
+{
+ "readiness": {
+  "verdict": "ready",
+  "checks": [
+   {
+    "check": "actor_states:ueda_kazuo",
+    "ok": true,
+    "note": "2 state(s)"
+   },
+   {
+    "check": "actor_weights:ueda_kazuo",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "actor_states:nakagawa_junko",
+    "ok": true,
+    "note": "4 state(s)"
+   },
+   {
+    "check": "actor_weights:nakagawa_junko",
+    "ok": true,
+    "note": "weight sum 0.9999"
+   },
+   {
+    "check": "actor_states:takata_hajime",
+    "ok": true,
+    "note": "4 state(s)"
+   },
+   {
+    "check": "actor_weights:takata_hajime",
+    "ok": true,
+    "note": "weight sum 0.9999"
+   },
+   {
+    "check": "actor_states:tamura_naoki",
+    "ok": true,
+    "note": "4 state(s)"
+   },
+   {
+    "check": "actor_weights:tamura_naoki",
+    "ok": true,
+    "note": "weight sum 0.9999"
+   },
+   {
+    "check": "actor_states:other_members",
+    "ok": true,
+    "note": "2 state(s)"
+   },
+   {
+    "check": "actor_weights:other_members",
+    "ok": true,
+    "note": "weight sum 1.0000"
+   },
+   {
+    "check": "shared_conditions_exist",
+    "ok": true,
+    "note": "6 combo(s)"
+   },
+   {
+    "check": "actor_trigger:ueda_kazuo",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:ueda_kazuo",
+    "ok": true,
+    "note": "2 option(s)"
+   },
+   {
+    "check": "actor_trigger:nakagawa_junko",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:nakagawa_junko",
+    "ok": true,
+    "note": "2 option(s)"
+   },
+   {
+    "check": "actor_trigger:takata_hajime",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:takata_hajime",
+    "ok": true,
+    "note": "2 option(s)"
+   },
+   {
+    "check": "actor_trigger:tamura_naoki",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:tamura_naoki",
+    "ok": true,
+    "note": "2 option(s)"
+   },
+   {
+    "check": "actor_trigger:other_members",
+    "ok": true,
+    "note": ""
+   },
+   {
+    "check": "actor_feasible_actions:other_members",
+    "ok": true,
+    "note": "2 option(s)"
+   },
+   {
+    "check": "institution_deadline:boj_policy_board",
+    "ok": true,
+    "note": "2026-06-16"
+   },
+   {
+    "check": "terminal_writer",
+    "ok": true,
+    "note": "vote writers"
+   },
+   {
+    "check": "terminal_units",
+    "ok": true,
+    "note": "vote tally in members \u2014 exact units"
+   },
+   {
+    "check": "terminal_round_trip",
+    "ok": true,
+    "note": "synthetic YES\u21921 / NO\u21920 through the live path"
+   }
+  ],
+  "repairs_needed": [],
+  "repairs_applied": [
+   {
+    "repair": "schedule_mandatory_trigger",
+    "actor": "ueda_kazuo",
+    "day": "2026-06-16"
+   },
+   {
+    "repair": "schedule_mandatory_trigger",
+    "actor": "nakagawa_junko",
+    "day": "2026-06-16"
+   },
+   {
+    "repair": "schedule_mandatory_trigger",
+    "actor": "takata_hajime",
+    "day": "2026-06-16"
+   },
+   {
+    "repair": "schedule_mandatory_trigger",
+    "actor": "tamura_naoki",
+    "day": "2026-06-16"
+   },
+   {
+    "repair": "schedule_mandatory_trigger",
+    "actor": "other_members",
+    "day": "2026-06-16"
+   }
+  ],
+  "round_trip": {
+   "mapping": {
+    "yes_label": "Yes",
+    "no_label": "No",
+    "aliases_yes": [
+     "1",
+     "at least 5 votes for 'raise to 1.0%'.",
+     "true",
+     "yes"
+    ],
+    "aliases_no": [
+     "0",
+     "false",
+     "fewer than 5 votes for 'raise to 1.0%'.",
+     "no"
+    ]
+   },
+   "checks": [
+    {
+     "case": "known_yes",
+     "evaluator_ok": true,
+     "evaluator_out": {
+      "resolved": true,
+      "outcome": "YES",
+      "detail": {
+       "votes": {
+        "ueda_kazuo": "Raise to 1.0%",
+        "nakagawa_junko": "Raise to 1.0%",
+        "takata_hajime": "Raise to 1.0%",
+        "tamura_naoki": "Raise to 1.0%",
+        "other_members": "Raise to 1.0%"
+       },
+       "rule": "majority",
+       "non_substantive": []
+      }
+     },
+     "recovery_p": 1.0,
+     "mapping_ok": true
+    },
+    {
+     "case": "known_no",
+     "evaluator_ok": true,
+     "evaluator_out": {
+      "resolved": true,
+      "outcome": "NO",
+      "detail": {
+       "votes": {
+        "ueda_kazuo": "Maintain at 0.75%",
+        "nakagawa_junko": "Maintain at 0.75%",
+        "takata_hajime": "Maintain at 0.75%",
+        "tamura_naoki": "Maintain at 0.75%",
+        "other_members": "Maintain at 0.75%"
+       },
+       "rule": "majority",
+       "non_substantive": []
+      }
+     },
+     "recovery_p": 0.0,
+     "mapping_ok": true
+    }
+   ],
+   "ok": true
+  },
+  "version": "lean_v2.readiness.v1"
+ },
+ "terminal_canonicalization": {
+  "needed": false,
+  "why": "vote terminals read the tally directly"
+ },
+ "preflight": {
+  "verdict": "answerable",
+  "checks": [
+   {
+    "check": "terminal_predicate_exists",
+    "ok": true,
+    "note": "kind=institution_vote"
+   },
+   {
+    "check": "terminal_writer_exists",
+    "ok": true,
+    "note": "writers=['vote_on_rate']"
+   },
+   {
+    "check": "terminal_writer_instantiated",
+    "ok": true,
+    "note": "instantiated=['vote_on_rate'] of 1"
+   },
+   {
+    "check": "writer_inputs_producible",
+    "ok": true,
+    "note": "writer vote_on_rate reachable at 2026-05-14"
+   },
+   {
+    "check": "yes_path_exists",
+    "ok": true,
+    "note": "majority-family rule"
+   },
+   {
+    "check": "no_path_exists",
+    "ok": true,
+    "note": "majority-family rule"
+   },
+   {
+    "check": "outcome_mechanism_accepted",
+    "ok": true,
+    "note": "all terminal-writing effects are known mechanical kinds"
+   },
+   {
+    "check": "unresolved_recovery_pathway",
+    "ok": true,
+    "note": "forecast_recovery active; grounded_rates=2"
+   },
+   {
+    "check": "not_inevitably_unresolved",
+    "ok": true,
+    "note": "at least one resolving path exists"
+   }
+  ],
+  "blocking": [],
+  "probe": {},
+  "one_sided": ""
+ }
+}

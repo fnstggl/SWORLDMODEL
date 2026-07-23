@@ -105,6 +105,25 @@ class CompilationCache:
                 pass
         return key
 
+    def invalidate(self, kind: str, deps: dict) -> bool:
+        """Cache correctness: purge an artifact PROVEN inadequate after the fact (e.g. a
+        cached state generation that left a consequential actor empty) from both layers, so
+        no future run replays the failure. Recorded; returns whether anything was removed."""
+        key = dependency_hash(kind, deps)
+        removed = False
+        with self._lock:
+            if key in self._run:
+                del self._run[key]
+                removed = True
+            self.events.append({"kind": kind, "key": key[:8], "outcome": "invalidated"})
+        if self.persist and kind in PERSISTABLE_KINDS:
+            try:
+                os.remove(self._path(key))
+                removed = True
+            except OSError:
+                pass
+        return removed
+
     def get_or_compile(self, kind: str, deps: dict, compile_fn):
         """THE shared-compilation contract: consult first, compile only on miss, record both."""
         found = self.get(kind, deps)

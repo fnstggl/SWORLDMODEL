@@ -1,0 +1,77 @@
+{
+ "grounded_prior": {
+  "p": 0.8333,
+  "source": "counted_outcome_reference_class",
+  "n": 2,
+  "interval": [
+   0.5268,
+   1.0
+  ],
+  "provenance": {
+   "quantity": "Apple announces a new major version of visionOS at WWDC 2026",
+   "hierarchy_level": "broad_human_decision_class",
+   "numerator": 2,
+   "denominator": 2,
+   "fallback_reason": "all levels sparse (total 2 usable case(s)); rate is wide by construction"
+  }
+ },
+ "simulation_conditional": {
+  "p": 1.0,
+  "resolved_mass": 0.75,
+  "interval": [
+   1.0,
+   1.0
+  ],
+  "weight_sensitive": false,
+  "dependence_sensitive": false,
+  "provenance": {
+   "yes_mass": 0.75,
+   "no_mass": 0.0,
+   "dependence_range": [
+    1.0,
+    1.0
+   ]
+  }
+ },
+ "combined": null,
+ "combined_interval": [
+  0.8333,
+  1.0
+ ],
+ "method": "combiner_unavailable_range_only",
+ "disagreement": 0.1667,
+ "sim_weight": null,
+ "prior_weight": null,
+ "fixed_blend_used": false,
+ "combiner_available": false,
+ "notes": [
+  "no leakage-audited reliability combiner is fitted \u2014 prior and simulation are reported separately with the feasible combined range; no fixed blend is applied and Lean V2 must not become default on this basis"
+ ],
+ "reliability_features": {
+  "prior_n": 2,
+  "prior_specificity": "broad_human_decision_class",
+  "resolved_mass": 0.75,
+  "unknown_state_mass": 0.0,
+  "evidence_coverage": 0.3333333333333333,
+  "structural_sensitivity": false,
+  "weight_sensitive": false,
+  "dependence_sensitive": false,
+  "prior_sim_divergence": 0.16669999999999996,
+  "horizon_days": 0
+ },
+ "grounded_prior_probability": 0.8333,
+ "simulation_conditional_probability": 1.0,
+ "resolved_simulation_mass": 0.75,
+ "unresolved_mass_by_cause": {
+  "unresolved_missing_mechanism": 0.25
+ },
+ "simulation_probability_bounds": [
+  0.722,
+  1.0
+ ],
+ "residual_bound": 0.278,
+ "prior_forecast": 0.8333,
+ "simulation_forecast": 1.0,
+ "headline_forecast": 0.9583,
+ "headline_source": "mass_weighted:partial_rollouts+grounded_prior"
+}

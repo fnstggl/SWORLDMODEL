@@ -57,19 +57,28 @@ class LLMGateway:
         t = time.time()
         retried = False
         try:
-            reply = backend(prompt)
-        except Exception as first:  # noqa: BLE001 — ONE bounded retry, globally capped
-            if not self.ledger.retries_allowed():
-                raise BudgetExhausted("provider_retry_budget_exhausted", stage) from first
-            retried = True
-            reply = backend(prompt)              # a second failure propagates to the stage runner
+            try:
+                reply = backend(prompt)
+            except Exception as first:  # noqa: BLE001 — ONE bounded retry, globally capped
+                if not self.ledger.retries_allowed():
+                    raise BudgetExhausted("provider_retry_budget_exhausted",
+                                          stage) from first
+                retried = True
+                reply = backend(prompt)          # a second failure propagates to the caller
+        except BaseException:
+            self.ledger.release_reservation()    # the admitted slot never completed
+            raise
         reply = reply if isinstance(reply, str) else ""
         latency = time.time() - t
         self.ledger.record_call(stage, prompt_chars=len(prompt), reply_chars=len(reply),
                                 latency_s=latency, tier=tier, retried=retried)
+        # the EXACT prompt and returned text are part of the audit trace (§ under-the-hood
+        # completeness) — no hidden chain-of-thought exists; this is everything that was
+        # sent and everything that came back, bounded only by a generous hard cap
         self.rows.append({"stage": stage, "tier": tier, "prompt_chars": len(prompt),
                           "reply_chars": len(reply), "latency_s": round(latency, 3),
-                          "retried": retried})
+                          "retried": retried, "prompt": prompt[:24000],
+                          "reply": reply[:24000]})
         return reply
 
     def manifest(self) -> dict:

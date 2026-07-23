@@ -38,12 +38,18 @@ from swm.world_model_v2.lean_v2.calibration import (ForecastReliabilityCombiner,
                                                     GroundedPriorForecast,
                                                     SimulationConditionalForecast,
                                                     load_action_reliability)
-from swm.world_model_v2.lean_v2.engine import UNKNOWN_STATE, EngineConfig, WaveEngine
+from swm.world_model_v2.lean_v2.engine import EngineConfig, WaveEngine
 from swm.world_model_v2.lean_v2.gateway import BudgetExhausted, LLMGateway
 from swm.world_model_v2.lean_v2.grounding import gather_grounding
+from swm.world_model_v2.lean_v2.mechanisms import recover_mechanism
 from swm.world_model_v2.lean_v2.obligations import build_obligations
 from swm.world_model_v2.lean_v2.preflight import run_preflight
+from swm.world_model_v2.lean_v2.readiness import (CANONICAL_TERMINAL_KEY,
+                                                  canonicalize_terminal_writers,
+                                                  simulation_readiness)
 from swm.world_model_v2.lean_v2.slice import backward_slice
+from swm.world_model_v2.lean_v2.state_completeness import (ensure_actor_state_completeness,
+                                                           reversal_focused_search)
 from swm.world_model_v2.lean_v2.states import (ActorStatePosteriorEngine,
                                                generate_actor_states, validate_hypothesis_set)
 from swm.world_model_v2.lean_v2.traces import write_traces
@@ -136,6 +142,13 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
                                  "dropped_grounded_rates":
                                      bp.validation.get("dropped_grounded_rates", [])}
 
+    # ---------------- 4b. terminal writer canonicalization (the mapping-bug fix at the
+    # source): every predicate-terminal writer SETS the one canonical key the terminal
+    # reads, BEFORE templates compile — a completed simulation can never again be discarded
+    # because the writer and the evaluator disagreed on a key or label spelling
+    lean_v2_prov["terminal_canonicalization"] = ckpt.run_stage(
+        "terminal_canonicalization", lambda: canonicalize_terminal_writers(bp))
+
     # ---------------- 5. slice + 6. consequence templates -------------------------------
     sl = ckpt.run_stage("actor_authority_slicing", lambda: backward_slice(bp))
     executor = TemplateExecutor(ckpt.run_stage(
@@ -153,12 +166,35 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
 
     # ---------------- 6c. STATE GENERATION (no numbers) + counted posteriors ------------
     shared_cids = list((grounding.get("shared_world_conditions") or {}).keys())
-    states_by_actor, state_rejections = ckpt.run_stage(
+    states_by_actor, state_rejections, state_meta = ckpt.run_stage(
         "state_generation", lambda: generate_actor_states(
             question=question, as_of=as_of, evidence_text=evidence_text,
             actors=kept_actor_dicts, shared_condition_ids=shared_cids,
             gateway=gateway, cache=cache))
     hard_evidence_ids = _hard_evidence_ids(prebuilt_bundle)
+
+    # ---------------- 6d. ACTOR-STATE COMPLETENESS (the hard invariant) -----------------
+    # "the actor's true private state is unknown" is the REASON to simulate multiple
+    # weighted worlds, never a reason to stop one: every consequential actor must exit this
+    # stage with a valid, non-empty, weighted state set (4-attempt recovery ladder), plus
+    # ONE batched probe for omitted reversal-capable states. An empty set can NEVER reach
+    # rollout; an inadequate CACHED artifact is invalidated so no future run replays it.
+    consequential = _consequential_actors(bp, sl.kept_actors)
+    completed, completeness = ckpt.run_stage(
+        "actor_state_completeness", lambda: ensure_actor_state_completeness(
+            bp=bp, consequential_actors=consequential, states_by_actor=states_by_actor,
+            grounding=grounding, evidence_text=evidence_text,
+            hard_evidence_ids=hard_evidence_ids, gateway=gateway, budget_ledger=ledger))
+    completeness.reversal_search = reversal_focused_search(
+        bp=bp, completed=completed, evidence_text=evidence_text, gateway=gateway,
+        budget_ledger=ledger)
+    if (state_meta or {}).get("from_cache") and completeness.empty_sets_detected:
+        if cache.invalidate("actor_state_generation", state_meta["deps"]):
+            completeness.cache_invalidations += 1
+    states_by_actor = {**states_by_actor, **completed}
+    actor_residuals = {aid: rec.residual_r for aid, rec in completeness.actors.items()}
+    lean_v2_prov["state_recovery"] = completeness.manifest()
+
     posterior_engine = ActorStatePosteriorEngine(grounding)
     validated, grounded_weights, gw_by_combo, shared_combos, state_prov = \
         _build_grounded_weights(bp, states_by_actor, posterior_engine, grounding,
@@ -169,19 +205,71 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
     lean_v2_prov["state_generation_numeric_rejections"] = state_rejections
     lean_v2_prov["shared_condition_worlds"] = [
         {"combo": c, "weight": w} for c, w in shared_combos]
-    lean_v2_prov["unknown_state_mass"] = {aid: (gw.get("unknown") if gw else None)
-                                          for aid, gw in grounded_weights.items()}
+    lean_v2_prov["actor_residual_bounds"] = {
+        aid: (gw.get("unknown") if gw else None)
+        for aid, gw in grounded_weights.items()}
     obligations = ckpt.run_stage("mandatory_obligations",
                                  lambda: build_obligations(bp, grounding))
     lean_v2_prov["obligations"] = {k: o.as_dict() for k, o in obligations.items()}
     map_combo = shared_combos[0][0] if shared_combos else {}
 
+    # ---------------- 6e. MISSING-MECHANISM RECOVERY (predicate terminals) --------------
+    # a numeric-threshold terminal with no mechanical writer gets the 5-attempt bridge
+    # ladder BEFORE rollout — `missing_mechanism = 1.0` is never an accepted end state
+    # while a grounded bounded mechanism can be built (and when none can, the failure
+    # carries its proof). An event_occurs terminal that ALREADY has a canonical-key writer
+    # needs no bridge (occurrence via the writer; non-occurrence resolves NO by horizon) —
+    # a recovered mechanism must never displace that complete pathway.
+    tk = str(bp.terminal.get("kind") or "")
+    has_canonical_writer = any(
+        e.get("kind") == "set_state"
+        and (e.get("params") or {}).get("key") == CANONICAL_TERMINAL_KEY
+        for t in bp.action_templates for e in (t.get("effects") or []))
+    mechanism, mech_manifest = None, {"attempted": False,
+                                      "why": "terminal pathway already complete"}
+    if tk != "institution_vote" and (tk == "state_predicate" or not has_canonical_writer):
+        mechanism, mech_manifest = ckpt.run_stage(
+            "mechanism_recovery", lambda: recover_mechanism(
+                bp, cause="terminal_pathway_construction", evidence_text=evidence_text,
+                as_of=as_of, gateway=gateway, cache=cache, budget_ledger=ledger,
+                world_condition_keys=shared_cids))
+    lean_v2_prov["mechanism_recovery"] = mech_manifest
+
     # ---------------- 7. three-valued answerability preflight ---------------------------
     pre = ckpt.run_stage("answerability_preflight", lambda: run_preflight(
         bp, as_of=as_of, horizon=horizon, consequence_templates=executor.templates))
     lean_v2_prov["preflight"] = pre.as_dict()
-    if pre.verdict == "unanswerable" or (pre.verdict == "uncertain"
-                                         and not pre.probe.get("reached_terminal")):
+
+    # ---------------- 7b. SIMULATION READINESS GATE (proof before rollout) --------------
+    # rollout may not begin until the compiled world is PROVEN able to reach its measured
+    # outcome: weighted states for every consequential actor, triggers + feasible actions,
+    # institutional deadlines, a terminal writer in the question's units, and the synthetic
+    # YES/NO round-trip through the SAME evaluator + recovery path the live run uses.
+    # `repairable` triggers targeted repair and ONE re-check; `not_ready` stops LOUDLY with
+    # the exact structural reason — never a silent prior-only forecast.
+    def _readiness():
+        return simulation_readiness(
+            bp=bp, consequential_actors=consequential, completed_states=completed,
+            grounded_weights=grounded_weights, obligations=obligations,
+            executor=executor, mechanism=mechanism, shared_combos=shared_combos)
+    ready = ckpt.run_stage("simulation_readiness", _readiness)
+    if ready.verdict == "repairable":
+        applied = _apply_readiness_repairs(bp, ready, obligations=obligations,
+                                           consequential=consequential)
+        re_ready = _readiness()
+        re_ready.repairs_applied = applied
+        ready = re_ready
+    # a terminal round-trip that STAYS broken after repair is a HARD stop: a simulation whose
+    # completed distribution cannot map to the measured answer must never silently proceed
+    # and fall back to the prior (the BoJ/visionOS class). The exact failing checks are
+    # reported; rollout is refused.
+    if not (ready.round_trip or {}).get("ok"):
+        ready.verdict = "not_ready"
+    lean_v2_prov["readiness"] = ready.as_dict()
+    if ready.verdict == "not_ready":
+        return _finish(_stopped_not_ready(question, bp, ready, pre,
+                                          structural_fails=fails, grounding=grounding))
+    if pre.verdict == "unanswerable" and ready.verdict != "ready":
         return _finish(_stopped_before_rollout(question, bp, pre, evidence_text,
                                                structural_fails=fails, grounding=grounding))
 
@@ -197,14 +285,17 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
                          decision_cache=decision_cache, structural_model="primary",
                          grounded_weights=grounded_weights, obligations=obligations,
                          shared_world=map_combo, shared_world_combos=shared_combos,
-                         grounded_weights_by_combo=gw_by_combo)
+                         grounded_weights_by_combo=gw_by_combo,
+                         mechanism=mechanism, actor_residuals=actor_residuals,
+                         consequential_actors=consequential)
     try:
         eng = ckpt.run_stage("causal_waves_primary",
                              lambda: primary.run(as_of=as_of, horizon=horizon),
                              idempotent=False)
     except BudgetExhausted as e:
         eng = primary.result
-        primary._finalize([])                    # account what exists; nothing is invented
+        # account the CURRENT node population honestly (nothing invented, nothing dropped)
+        primary._finalize(primary._final_nodes or [])
         lean_v2_prov["budget_stop"] = {"during": "primary_waves", "dimension": e.dimension}
     lean_v2_prov["engine_primary"] = primary.manifest()
 
@@ -253,7 +344,9 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
                     structural_model="challenger",
                     grounded_weights=ch_gw, obligations=obligations,
                     shared_world=map_combo, shared_world_combos=shared_combos,
-                    grounded_weights_by_combo=ch_gw_combo)
+                    grounded_weights_by_combo=ch_gw_combo,
+                    mechanism=mechanism, actor_residuals=actor_residuals,
+                    consequential_actors=consequential)
                 try:
                     challenger_engine = ckpt.run_stage(
                         "causal_waves_challenger",
@@ -275,6 +368,28 @@ def simulate_world_lean_v2(question: str, *, as_of: str, horizon: str = "",
             "state_predicate_not_mechanically_bound")))
     lean_v2_prov["replicate_policy"] = {"allowed": rep_allowed, "reason": rep_reason,
                                         "ran": False}
+
+    # ---------------- 10b. SIMULATION COMPLETION AUDIT (explicit optimization target) ----
+    # after the run: how much world mass reached the exact terminal outcome, and WHY any
+    # rest did not. Repairable causes get one bounded post-run repair (a mechanism recovered
+    # against the now-known blocking cause re-evaluates ONLY the unresolved worlds); the
+    # acceptance targets are recorded pass/fail with reasons — never silently waved through.
+    audit = _completion_audit(eng, mechanism=mechanism, mech_manifest=mech_manifest)
+    if audit["repair_recommended"] == "mechanism_recovery" and mechanism is None:
+        mech2, mm2 = recover_mechanism(
+            bp, cause=audit["dominant_unresolved_cause"], evidence_text=evidence_text,
+            as_of=as_of, gateway=gateway, cache=cache, budget_ledger=ledger,
+            world_condition_keys=shared_cids)
+        lean_v2_prov["mechanism_recovery_post_run"] = mm2
+        if mech2 is not None:
+            mechanism = mech2
+            eng = primary.resume_with_mechanism(mech2)
+            lean_v2_prov["engine_primary"] = primary.manifest()
+            total = eng.yes_mass + eng.no_mass + eng.unresolved_mass + eng.truncated_mass
+            unresolved_share = (eng.unresolved_mass + eng.truncated_mass) / total \
+                if total else 1.0
+            audit = _completion_audit(eng, mechanism=mechanism, mech_manifest=mm2)
+    lean_v2_prov["completion_audit"] = audit
 
     # ---------------- 11. terminal projection + calibrated combination -------------------
     res = ckpt.run_stage("terminal_projection", lambda: _assemble_result(
@@ -321,6 +436,131 @@ def _hard_evidence_ids(bundle) -> set:
     return ids
 
 
+def _consequential_actors(bp, kept: list) -> list:
+    """The actors whose private state and decisions the terminal outcome actually runs
+    through: terminal-institution members, triggered deciders, terminal writers. These are
+    the actors the completeness invariant is HARD for."""
+    term = bp.terminal
+    inst_members = set()
+    if term.get("kind") == "institution_vote":
+        inst = bp.institution_by_id(term.get("institution_id")) or {}
+        inst_members = set(inst.get("members") or [])
+    triggered = {d.get("actor_id") for d in bp.decision_triggers}
+    writers = {aid for t in bp.action_templates
+               if t.get("writes_terminal") or any(e.get("kind") in ("record_vote",
+                                                                    "set_state")
+                                                  for e in (t.get("effects") or []))
+               for aid in (t.get("actor_ids") or [])}
+    out = [aid for aid in kept if aid in inst_members or aid in triggered
+           or aid in writers]
+    return out or list(kept)
+
+
+def _apply_readiness_repairs(bp, ready, *, obligations: dict, consequential: list) -> list:
+    """Targeted, deterministic repairs for a `repairable` readiness verdict — writer-key
+    canonicalization, deadlines derived from the terminal, missing triggers scheduled.
+    Anything deeper stays `not_ready` and stops loudly."""
+    applied = []
+    needed = {r.get("repair") for r in ready.repairs_needed}
+    if {"canonicalize_writers_or_mechanism_recovery", "terminal_mapping_repair"} & needed:
+        rec = canonicalize_terminal_writers(bp)
+        applied.append({"repair": "canonicalize_terminal_writers", "record": rec})
+    if "derive_deadline_from_terminal" in needed:
+        ev = str(bp.terminal.get("evaluation_day") or "")[:10]
+        for ob in obligations.values():
+            if not ob.deadline_day and ev:
+                ob.deadline_day = ev
+                applied.append({"repair": "derive_deadline_from_terminal",
+                                "institution": ob.institution_id, "deadline": ev})
+    if "schedule_mandatory_trigger" in needed:
+        ev = str(bp.terminal.get("evaluation_day") or "")[:10]
+        triggered = {d.get("actor_id") for d in bp.decision_triggers}
+        obligated = {m for ob in obligations.values()
+                     for m in (ob.required_participants or [])}
+        for aid in consequential:
+            if aid not in triggered and aid not in obligated and ev:
+                bp.decision_triggers.append(
+                    {"actor_id": aid, "when_day": ev, "etype": "deadline",
+                     "situation": "the decision deadline has arrived — act now"})
+                applied.append({"repair": "schedule_mandatory_trigger", "actor": aid,
+                                "day": ev})
+    return applied
+
+
+def _completion_audit(eng, *, mechanism, mech_manifest) -> dict:
+    """§completion: the run-level accounting of HOW MUCH world mass reached the exact
+    terminal outcome and why the rest did not — with the acceptance targets evaluated
+    pass/fail. This is the simulation's explicit optimization target, not a side effect."""
+    led = _build_unresolved_ledger(eng)
+    total = eng.yes_mass + eng.no_mass + eng.unresolved_mass + eng.truncated_mass
+    resolved = eng.yes_mass + eng.no_mass
+    resolved_share = resolved / total if total else 0.0
+    by_cause = dict(led.by_cause)
+    unknown_state_mass = by_cause.get("unresolved_unknown_state", 0.0)
+    missing_mech_mass = by_cause.get("unresolved_missing_mechanism", 0.0)
+    provider_mass = by_cause.get("unresolved_provider_failure", 0.0)
+    dominant = max(by_cause.items(), key=lambda kv: kv[1])[0] if by_cause else ""
+    proven_unavoidable = bool((mech_manifest or {}).get("failure_proof")) \
+        and missing_mech_mass > 0
+    repair = ""
+    if missing_mech_mass > 0.02 and mechanism is None and not proven_unavoidable:
+        repair = "mechanism_recovery"
+    acceptance = {
+        "terminal_unknown_state_mass": round(unknown_state_mass, 6),
+        "terminal_unknown_state_ok": unknown_state_mass <= 1e-9,
+        "terminal_missing_mechanism_mass": round(missing_mech_mass, 6),
+        "terminal_missing_mechanism_ok": missing_mech_mass <= 1e-9 or proven_unavoidable,
+        "provider_failure_mass": round(provider_mass, 6),
+        "provider_failure_ok": provider_mass <= 1e-9,
+        "resolved_share": round(resolved_share, 4),
+        "resolved_target_met": resolved_share >= 0.8,
+        "resolved_hard_floor_met": resolved_share >= 0.6 or proven_unavoidable,
+    }
+    acceptance["all_ok"] = all(acceptance[k] for k in
+                               ("terminal_unknown_state_ok",
+                                "terminal_missing_mechanism_ok", "provider_failure_ok",
+                                "resolved_target_met"))
+    return {"resolved_mass": round(resolved, 6), "total_mass": round(total, 6),
+            "unresolved_mass_by_cause": by_cause,
+            "dominant_unresolved_cause": dominant,
+            "proven_unavoidable": proven_unavoidable,
+            "repair_recommended": repair,
+            "engine_completion_rounds": eng.completion_audit,
+            "acceptance": acceptance}
+
+
+def _stopped_not_ready(question, bp, ready, pre, *, structural_fails, grounding) -> \
+        SimulationResult:
+    """The readiness gate refused rollout: a LOUD structural stop carrying the exact failing
+    checks — never a silent prior-only forecast, never an invented probability. The counted
+    grounded prior (when one exists) is reported honestly labeled."""
+    gp = _outcome_prior(grounding or {})
+    rec = recover_forecast(distribution={}, options=bp.resolution.get("options") or None,
+                           unresolved_mass=1.0, prior_mean=gp.p,
+                           prior_source_class="reference_class" if gp.p is not None else "")
+    failing = [c for c in ready.checks if not c.get("ok")]
+    blocking = "; ".join(f"{c['check']}: {c['note']}" for c in failing[:5]) \
+        or "readiness verdict not_ready"
+    res = SimulationResult(
+        question=question, simulation_status="under_modeled",
+        support_grade="exploratory",
+        under_modeled_subtypes=["under_modeled_nonhuman_mechanism"],
+        under_modeled_components=[{"component": c["check"], "kind": "readiness",
+                                   "why": c["note"], "sensitivity": "decisive"}
+                                  for c in failing[:6]],
+        limitations=[
+            f"SIMULATION READINESS GATE STOP (not_ready): {blocking}",
+            "rollout was refused BEFORE any actor call — the world cannot yet be proven to "
+            "reach its measured outcome; the failing checks above are the exact repairs "
+            "needed (this is a loud structural failure, never a silent prior-only forecast)"])
+    if structural_fails:
+        res.limitations.append("unrepaired validator failures: "
+                               + "; ".join(f["what"][:80] for f in structural_fails[:4]))
+    if rec is not None:
+        attach_recovery(res, rec, override_probability=True)
+    return res
+
+
 def _variant_to_hypothesis(actor_id: str, v: dict):
     from swm.world_model_v2.lean_v2.states import ActorStateHypothesis
     st = v.get("state") or {}
@@ -329,6 +569,7 @@ def _variant_to_hypothesis(actor_id: str, v: dict):
         beliefs=list(st.get("beliefs") or []), goals=list(st.get("goals") or []),
         stances=list(st.get("stances") or []), pressures=str(st.get("pressures") or ""),
         relationships=dict(st.get("relationships") or {}),
+        action_if_state=str(v.get("action_if_state") or ""),
         reversal_capable=bool(v.get("reversal_capable")),
         aligned_condition=dict(v.get("aligned_condition") or {}))
 
@@ -517,7 +758,19 @@ def _assemble_result(question, bp, eng, ch_eng, unresolved_share, evidence_text,
         "fixed_blend_used": combo_report.fixed_blend_used,
         "combiner_available": combo_report.combiner_available,
         "notes": combo_report.notes,
-        "reliability_features": feats.as_dict()}
+        "reliability_features": feats.as_dict(),
+        # §separation labels — the prior and the simulation stay fully separate and both
+        # are ALWAYS reported (the headline keys are filled in below once chosen)
+        "grounded_prior_probability": prior.p,
+        "simulation_conditional_probability": sim.p,
+        "resolved_simulation_mass": round(resolved_mass, 4),
+        "unresolved_mass_by_cause": dict(led.by_cause),
+        "simulation_probability_bounds": (
+            [eng.p_low_bounded, eng.p_high_bounded]
+            if eng.p_low_bounded is not None else None),
+        "residual_bound": eng.residual_bound,
+        "prior_forecast": prior.p,
+        "simulation_forecast": sim.p}
     lean_v2_prov["combiner"] = combiner.manifest()
     lean_v2_prov["action_calibration"] = load_action_reliability().as_dict()
 
@@ -546,6 +799,8 @@ def _assemble_result(question, bp, eng, ch_eng, unresolved_share, evidence_text,
                 ("simulation_conditional" if sim.p is not None else "grounded_prior")
     else:
         headline, source = None, ""
+    lean_v2_prov["forecast_decomposition"]["headline_forecast"] = headline
+    lean_v2_prov["forecast_decomposition"]["headline_source"] = source
     resolution_report = {}
     if status != "completed":
         resolution_report = {
@@ -570,9 +825,12 @@ def _assemble_result(question, bp, eng, ch_eng, unresolved_share, evidence_text,
         confidence=("low" if resolved_mass > 0.5 and not eng.weight_sensitive
                     else "very_low"),
         unresolved_mass=round(genuine_share, 4),
-        uncertainty_interval=(list(combo_report.combined_interval)
-                              if combo_report.combined_interval
-                              else (list(sim.interval) if sim.interval else None)),
+        uncertainty_interval=(
+            [eng.p_low_bounded, eng.p_high_bounded]
+            if eng.p_low_bounded is not None and eng.residual_bound > 0
+            else (list(combo_report.combined_interval)
+                  if combo_report.combined_interval
+                  else (list(sim.interval) if sim.interval else None))),
         weight_sensitive=bool(eng.weight_sensitive or eng.dependence_sensitive
                               or structural_sensitivity),
         resolution_report=resolution_report,
@@ -593,14 +851,25 @@ def _assemble_result(question, bp, eng, ch_eng, unresolved_share, evidence_text,
         res.limitations.append(
             f"weight_sensitive: within the counted reference-class intervals P({options[0]}) "
             f"spans [{eng.p_low}, {eng.p_high}]")
+    if eng.residual_bound > 0:
+        res.limitations.append(
+            f"bounded omitted-state residual {eng.residual_bound:.3f}: the interval widens "
+            f"to [{eng.p_low_bounded}, {eng.p_high_bounded}] — private-state omissions are "
+            f"BOUNDS, never unknown-state worlds")
+    if eng.mechanism_straddle:
+        res.limitations.append(
+            "mechanism straddle: the bounded numeric mechanism's min/max observations "
+            "disagree with its decisive statistic about the threshold — disclosed as "
+            "sensitivity, not hidden")
     for cause, mass in led.by_cause.items():
         if mass > 0.02:
             res.limitations.append(f"unresolved [{cause}]: {mass:.3f} — {led.treatment(cause)}")
     if not combo_report.combiner_available:
         res.limitations.append(
-            "no leakage-audited prior↔simulation reliability combiner is fitted — the headline "
-            "is the simulation-conditional forecast; the grounded prior is reported separately; "
-            "this is a stated reason Lean V2 must not become the default yet")
+            "no leakage-audited prior↔simulation reliability combiner is fitted — the "
+            "headline is the mass-based recovery blend (resolved mass keeps its simulated "
+            "conditional; unresolved mass takes the grounded prior); the two inputs are "
+            "reported separately and never blended by a fixed rule")
     return res
 
 

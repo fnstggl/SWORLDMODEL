@@ -26,7 +26,9 @@ def write_traces(qid: str, *, gateway_rows, lean_v2_prov: dict, result_dict: dic
     _wl(d / "llm_calls.jsonl", [
         {"call_id": i, "stage": r.get("stage"), "tier": r.get("tier"),
          "prompt_chars": r.get("prompt_chars"), "reply_chars": r.get("reply_chars"),
-         "latency_s": r.get("latency_s"), "retried": r.get("retried")}
+         "latency_s": r.get("latency_s"), "retried": r.get("retried"),
+         # the EXACT text sent and returned — the under-the-hood record is complete
+         "prompt": r.get("prompt"), "reply": r.get("reply")}
         for i, r in enumerate(gateway_rows or [])])
 
     shared = ((lean_v2_prov.get("grounding") or {}).get("shared_world_conditions") or {})
@@ -49,13 +51,39 @@ def write_traces(qid: str, *, gateway_rows, lean_v2_prov: dict, result_dict: dic
         "grounding": lean_v2_prov.get("grounding"),
         "state_posteriors": lean_v2_prov.get("state_posteriors"),
         "shared_condition_worlds": lean_v2_prov.get("shared_condition_worlds"),
-        "unknown_state_mass": lean_v2_prov.get("unknown_state_mass"),
+        "actor_residual_bounds": lean_v2_prov.get("actor_residual_bounds"),
         "dependence": lean_v2_prov.get("dependence"),
         "no_label_derived_weights_invariant":
             lean_v2_prov.get("weight_invariant")}, indent=1, default=str))
 
     (d / "forecast_decomposition.json").write_text(json.dumps(
         lean_v2_prov.get("forecast_decomposition") or {}, indent=1, default=str))
+
+    # the six completion-fix manifests (§traces): recovery, mechanisms, readiness,
+    # completion audit, decisions, caches — every attempt with its outcome
+    eng_manifest = lean_v2_prov.get("engine_primary") or {}
+    (d / "state_recovery_manifest.json").write_text(json.dumps(
+        lean_v2_prov.get("state_recovery") or {}, indent=1, default=str))
+    (d / "mechanism_recovery_manifest.json").write_text(json.dumps(
+        {"pre_run": lean_v2_prov.get("mechanism_recovery"),
+         "post_run": lean_v2_prov.get("mechanism_recovery_post_run")},
+        indent=1, default=str))
+    (d / "readiness_manifest.json").write_text(json.dumps(
+        {"readiness": lean_v2_prov.get("readiness"),
+         "terminal_canonicalization": lean_v2_prov.get("terminal_canonicalization"),
+         "preflight": lean_v2_prov.get("preflight")}, indent=1, default=str))
+    (d / "completion_audit_manifest.json").write_text(json.dumps(
+        lean_v2_prov.get("completion_audit") or {}, indent=1, default=str))
+    (d / "decision_manifest.json").write_text(json.dumps(
+        {"decisions": eng_manifest.get("decisions"),
+         "decision_trace": eng_manifest.get("decision_trace"),
+         "escalations": eng_manifest.get("escalations"),
+         "avoided_reasks": eng_manifest.get("avoided_reasks")}, indent=1, default=str))
+    (d / "cache_manifest.json").write_text(json.dumps(
+        {"compile_cache": (lean_v2_prov.get("lean_v2") or lean_v2_prov)
+         .get("compile_cache"),
+         "checkpoints": (lean_v2_prov.get("lean_v2") or lean_v2_prov)
+         .get("checkpoints")}, indent=1, default=str))
 
     report = render_report(qid, lean_v2_prov=lean_v2_prov, result_dict=result_dict)
     (d / "report.md").write_text(report)
@@ -87,15 +115,34 @@ def render_report(qid: str, *, lean_v2_prov: dict, result_dict: dict) -> str:
         L.append(f"- **{cid}**: {sc.get('claim', '')} — counted rate "
                  f"{tbl.get('rate')} (n={tbl.get('n')})")
     L.append("\n## Forecast decomposition\n")
-    L.append(f"- grounded prior: {fd.get('grounded_prior', {}).get('p')} "
+    L.append(f"- prior_forecast (grounded prior): {fd.get('grounded_prior', {}).get('p')} "
              f"(n={fd.get('grounded_prior', {}).get('n')}, "
              f"source={fd.get('grounded_prior', {}).get('source')})")
-    L.append(f"- simulation-conditional: {fd.get('simulation_conditional', {}).get('p')} "
-             f"(resolved mass {fd.get('simulation_conditional', {}).get('resolved_mass')})")
-    L.append(f"- combined: {fd.get('combined')} via {fd.get('method')}")
+    L.append(f"- simulation_forecast (conditional on resolved mass): "
+             f"{fd.get('simulation_conditional', {}).get('p')} "
+             f"(resolved mass {fd.get('resolved_simulation_mass')})")
+    L.append(f"- simulation probability bounds (residual-widened): "
+             f"{fd.get('simulation_probability_bounds')} "
+             f"(residual bound {fd.get('residual_bound')})")
+    L.append(f"- headline_forecast: {fd.get('headline_forecast')} "
+             f"via {fd.get('headline_source')}")
     L.append(f"- prior/simulation disagreement: {fd.get('disagreement')}")
     for n in fd.get("notes") or []:
         L.append(f"  - {n}")
+    ca = lean_v2_prov.get("completion_audit") or {}
+    acc = ca.get("acceptance") or {}
+    L.append("\n## Simulation completion audit\n")
+    L.append(f"- resolved mass: {ca.get('resolved_mass')} of {ca.get('total_mass')} "
+             f"(target ≥0.8 met: {acc.get('resolved_target_met')})")
+    L.append(f"- unresolved by cause: {ca.get('unresolved_mass_by_cause')}")
+    L.append(f"- unknown-state terminal mass: {acc.get('terminal_unknown_state_mass')} "
+             f"(must be 0: {acc.get('terminal_unknown_state_ok')})")
+    L.append(f"- missing-mechanism terminal mass: "
+             f"{acc.get('terminal_missing_mechanism_mass')} "
+             f"(ok: {acc.get('terminal_missing_mechanism_ok')})")
+    rd = lean_v2_prov.get("readiness") or {}
+    L.append(f"- readiness verdict: {rd.get('verdict')} | round-trip ok: "
+             f"{(rd.get('round_trip') or {}).get('ok')}")
     L.append("\n## Unresolved mass by cause\n")
     for c, m in (unresolved.get("by_cause") or {}).items():
         L.append(f"- {c}: {m} — {unresolved.get('treatments', {}).get(c, '')}")

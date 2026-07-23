@@ -12,8 +12,15 @@ Shared latent world conditions are weighted FIRST (counted), and actor states ar
 on them, so correlated actors are never independently multiplied. Where the data cannot
 identify the joint dependence, BOTH the independent and the comonotonic (shared-cause-locked)
 structures are carried and the forecast's sensitivity across them is reported
-(`dependence_sensitive`) — no arbitrary correlation is invented. Unknown-state mass is explicit
-and never receives the prior, the average action, or 50%."""
+(`dependence_sensitive`) — no arbitrary correlation is invented.
+
+THE COMPLETENESS LAW (simulation-completion fix): private-state uncertainty is an INPUT to
+simulation, never a reason to stop it. The represented states always carry the FULL branch
+mass (their weights normalize to 1). What used to be "unknown-state mass" is now a small
+BOUNDED per-actor residual r_a — the counted out-of-set frequency only, capped at
+`MAX_ACTOR_RESIDUAL` — reported as an outcome-interval widening at finalize
+(1 - prod(1-r_a)), never a world branch, never multiplied across actors as unknown worlds,
+and never receiving the prior, the average action, or 50%."""
 from __future__ import annotations
 
 import hashlib
@@ -21,7 +28,12 @@ from dataclasses import dataclass, field, asdict
 
 from swm.world_model_v2.lean_v2.blueprint import norm, norm_key
 
-STATES_VERSION = "lean_v2.states.v1"
+STATES_VERSION = "lean_v2.states.v2"
+
+#: per-actor residual cap — the genuinely-unrepresentable share may never exceed this (a
+#: larger counted out-of-set share means the represented basis is wrong and the completeness
+#: ladder must ADD states instead of widening the bound)
+MAX_ACTOR_RESIDUAL = 0.2
 
 #: numeric fields an actor-state hypothesis may NEVER contain (rejected + recorded)
 _BANNED_STATE_KEYS = ("weight", "probability", "prob", "likelihood", "confidence_score",
@@ -69,11 +81,15 @@ class ActorStateHypothesis:
         return asdict(self)
 
     def to_variant(self) -> dict:
-        """Render into the engine's variant shape (state content the actor prompt renders)."""
+        """Render into the engine's variant shape (state content the actor prompt renders).
+        `action_if_state` is carried so a HARD-deadline forced vote can fall back to the
+        grounded per-state action the completeness layer constructed — simulating the actor
+        in that state, never inventing a vote."""
         return {"variant_id": self.state_id,
                 "state": {"beliefs": list(self.beliefs), "goals": list(self.goals),
                           "stances": list(self.stances), "pressures": self.pressures,
                           "relationships": dict(self.relationships)},
+                "action_if_state": self.action_if_state,
                 "reversal_capable": self.reversal_capable,
                 "is_unknown": self.is_unknown}
 
@@ -194,9 +210,12 @@ class ActorStatePosteriorEngine:
     # -- per-actor state weights (counted, conditional on a shared world) -----------------
     def weight_actor_states(self, actor_id: str, hyps: list, *,
                             shared_world: dict = None) -> tuple:
-        """Returns ([ActorStatePosteriorRange...], unknown_mass, provenance). Weights are the
-        normalized counted reference-class rates of the SURVIVING states; unknown mass comes
-        from coverage diagnostics — never from a label."""
+        """Returns ([ActorStatePosteriorRange...], bounded_residual, provenance). Weights are
+        the normalized counted reference-class rates of the SURVIVING states and always sum to
+        1 — the represented states carry the full branch mass. The second element is the
+        BOUNDED omitted-state residual r_a (counted under-summing only, capped at
+        MAX_ACTOR_RESIDUAL) used ONLY to widen the outcome interval at finalize — it is never
+        branch mass, never a coverage penalty, never a label-derived number."""
         survivors = [h for h in hyps if not h.eliminated and not h.is_unknown]
         class_list = self.actor_classes.get(actor_id, [])
         matched, intervals, provs = {}, {}, {}
@@ -251,52 +270,55 @@ class ActorStatePosteriorEngine:
                               "note": "complement of the counted matched rates (1 - "
                                       f"{matched_sum:.3f}) shared among {len(unmatched)} "
                                       "unmatched modeled state(s) — grounded, not a label"}
-        elif matched_sum < 0.999 and matched:
-            # matched states under-sum and there's no unmatched state to hold the residual →
-            # the residual is genuine unknown-state mass
-            pass
         n_counted = len(matched)
         reversal = any(h.reversal_capable for h in survivors)
-        # coverage-driven unknown mass (diagnostics, never a qualitative label): a thin set, no
-        # reversal state, or no counted class at all widens the unknown pool
-        coverage_penalty = 0.0
-        if n_counted == 0:
-            if not survivors:
-                unknown = 1.0                        # nothing to model at all
-            else:
-                # states exist but none is counted: the residual (=1) sits on them as the
-                # complement, but the coverage unknown is HIGH because nothing is grounded —
-                # derived from diagnostics (set thinness + reversal presence), never a label
-                coverage_penalty = 0.25 if len(survivors) < 2 else 0.15
-                if not reversal:
-                    coverage_penalty += 0.10
-                unknown = round(min(0.6, coverage_penalty), 4)
+        # THE COMPLETENESS LAW: the represented states normalize to the FULL branch mass.
+        # The residual is the COUNTED under-summing only (matched counted rates that leave
+        # probability no represented state holds), capped — an interval-widening bound at
+        # finalize, never branch mass and never a coverage penalty. Set thinness / missing
+        # reversal states are handled by the completeness ladder (which ADDS states), not by
+        # converting doubt into unanswerable world mass.
+        if not survivors:
+            # nothing to weight — the completeness invariant makes this unreachable for a
+            # consequential actor; callers treat an empty row set as a hard readiness failure
+            self.provenance_log.append({"actor_id": actor_id, "residual": MAX_ACTOR_RESIDUAL,
+                                        "n_counted_states": 0, "empty_state_set": True})
+            return [], MAX_ACTOR_RESIDUAL, {"residual": MAX_ACTOR_RESIDUAL,
+                                            "empty_state_set": True, "n_counted_states": 0,
+                                            "matched_sum": 0.0}
+        if matched and matched_sum < 0.999 and not unmatched:
+            residual_bound = round(min(MAX_ACTOR_RESIDUAL, residual), 4)
+            residual_provenance = (f"counted classes sum to {matched_sum:.3f} with no "
+                                   f"unmatched state to hold the remainder — bounded residual")
+        elif n_counted == 0:
+            # no counted class at all: the states carry the mass uniformly; the residual is
+            # the bounded default (the ladder's decision-spanning basis drives this to 0)
+            residual_bound = MAX_ACTOR_RESIDUAL
+            residual_provenance = "no counted reference class — residual at the declared cap"
         else:
-            if len(survivors) < 2:
-                coverage_penalty += 0.15
-            if not reversal:
-                coverage_penalty += 0.10
-            if matched_sum < 0.999 and not unmatched:
-                coverage_penalty += residual        # unheld residual is unknown
-            unknown = round(min(0.6, coverage_penalty), 4)
-        represented = max(0.0, 1.0 - unknown)
+            residual_bound = 0.0
+            residual_provenance = "counted classes + complement cover the represented basis"
         z = sum(raw_weights.values()) or 1.0
         rows = []
         for h in survivors:
             w = raw_weights.get(h.state_id, 0.0)
-            share = w / z * represented
+            share = w / z
             iv = intervals.get(h.state_id, (0.0, 1.0))
             rows.append(ActorStatePosteriorRange(
                 state_id=h.state_id, mid=round(share, 4),
-                lo=round(iv[0] / z * represented, 4),
-                hi=round(min(1.0, iv[1]) / z * represented, 4),
+                lo=round(min(share, iv[0] / z), 4),
+                hi=round(min(1.0, max(share, iv[1] / z)), 4),
                 provenance=provs.get(h.state_id, {"source": "no_counted_class"})))
-        self.provenance_log.append({"actor_id": actor_id, "unknown_mass": unknown,
-                                    "represented": represented, "matched_sum": round(matched_sum,
-                                                                                     4),
-                                    "n_counted_states": n_counted, "reversal_present": reversal})
-        return rows, unknown, {"unknown_mass": unknown, "coverage_penalty": coverage_penalty,
-                               "n_counted_states": n_counted, "matched_sum": round(matched_sum, 4)}
+        self.provenance_log.append({"actor_id": actor_id, "residual": residual_bound,
+                                    "matched_sum": round(matched_sum, 4),
+                                    "n_counted_states": n_counted,
+                                    "reversal_present": reversal})
+        return rows, residual_bound, {"residual": residual_bound,
+                                      "residual_provenance": residual_provenance,
+                                      "n_counted_states": n_counted,
+                                      "matched_sum": round(matched_sum, 4),
+                                      "law": "represented states normalize to 1; residual is "
+                                             "a bounded interval-widener, never branch mass"}
 
     def _match_class(self, h: ActorStateHypothesis, classes: dict) -> dict | None:
         if h.reference_class_key and h.reference_class_key in classes:
@@ -353,7 +375,10 @@ Reply ONLY with JSON:
 def generate_actor_states(*, question: str, as_of: str, evidence_text: str, actors: list,
                           shared_condition_ids: list, gateway, cache) -> tuple:
     """ONE state-generation call → per-actor `ActorStateHypothesis` lists. Numeric weights in
-    the output are rejected + recorded. Returns (states_by_actor, numeric_rejections)."""
+    the output are rejected + recorded. Returns (states_by_actor, numeric_rejections, meta);
+    meta carries {from_cache, deps} so the completeness invariant can INVALIDATE a cached
+    artifact that turned out empty/incomplete (cache correctness: an empty, unparseable or
+    truncated result is NEVER cached, and a cached artifact proven inadequate is purged)."""
     from swm.engine.grounding import parse_json
     deps = {"question": norm(question, 300), "as_of": str(as_of)[:10],
             "actors": sorted(a["id"] for a in actors),
@@ -361,6 +386,7 @@ def generate_actor_states(*, question: str, as_of: str, evidence_text: str, acto
             .hexdigest()[:20], "backend": gateway.backend_fingerprint, "v": STATES_VERSION}
     cached = cache.get("actor_state_generation", deps)
     text = cached
+    meta = {"from_cache": cached is not None, "deps": deps}
     if text is None:
         prompt = _STATE_GEN_PROMPT.format(
             question=question, as_of=str(as_of)[:10],
@@ -370,9 +396,7 @@ def generate_actor_states(*, question: str, as_of: str, evidence_text: str, acto
         text = gateway.call("state_generation", prompt)
     r = parse_json(text)
     if not isinstance(r, dict):
-        return {}, [{"error": "state generation not a JSON object"}]
-    if cached is None:
-        cache.put("actor_state_generation", deps, text)
+        return {}, [{"error": "state generation not a JSON object (never cached)"}], meta
     states_by_actor: dict = {}
     rejections = []
     valid_actor_ids = {a["id"] for a in actors}
@@ -413,4 +437,8 @@ def generate_actor_states(*, question: str, as_of: str, evidence_text: str, acto
                 aligned_condition={norm_key(k): norm(v, 80)
                                    for k, v in (s.get("aligned_condition") or {}).items()})
             states_by_actor.setdefault(aid, []).append(h)
-    return states_by_actor, rejections
+    # cache correctness: only a NON-EMPTY parsed result may be cached — an empty artifact
+    # would silently replay the failure on every future run
+    if cached is None and any(states_by_actor.values()):
+        cache.put("actor_state_generation", deps, text)
+    return states_by_actor, rejections, meta
